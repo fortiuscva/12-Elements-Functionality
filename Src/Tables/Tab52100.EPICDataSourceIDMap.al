@@ -12,7 +12,6 @@ table 52100 "12E EPIC DataSourceID Map"
         field(1; "Data Source ID"; Integer)
         {
             Caption = 'Data Source ID';
-            TableRelation = "12E EPIC DataSourceID Map";
             DataClassification = CustomerContent;
         }
         field(5; "Company Code"; Text[50])

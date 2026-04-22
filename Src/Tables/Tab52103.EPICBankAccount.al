@@ -34,7 +34,7 @@ table 52103 "12E EPIC Bank Account"
     }
     fieldgroups
     {
-        fieldgroup(PK; "Data Source ID", Endpoint)
+        fieldgroup(DropDown; "Data Source ID", Endpoint)
         {
         }
     }

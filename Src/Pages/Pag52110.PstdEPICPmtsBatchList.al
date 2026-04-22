@@ -1,11 +1,12 @@
-page 52106 "12E EPIC Payments BatchSubform"
+page 52110 "12E Pstd. EPIC Pmts Batch List"
 {
     ApplicationArea = All;
-    Caption = 'EPIC Payments Batch Subform';
-    PageType = ListPart;
-    SourceTable = "12E EPIC Payments Batch Line";
+    Caption = 'Posted EPIC Payments Batch List';
+    PageType = List;
+    SourceTable = "12E EPIC Payments Batch Header";
+    CardPageId = "12E EPIC Payments Batch";
     UsageCategory = Lists;
-    AutoSplitKey = true;
+    Editable = false;
 
     layout
     {
@@ -17,13 +18,13 @@ page 52106 "12E EPIC Payments BatchSubform"
                 {
                     ToolTip = 'Specifies the value of the Batch No. field.', Comment = '%';
                 }
-                field("Line No."; Rec."Line No.")
-                {
-                    ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
-                }
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
+                }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }
         }

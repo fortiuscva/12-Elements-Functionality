@@ -6,6 +6,7 @@ page 52107 "12E EPIC Payments Batch List"
     SourceTable = "12E EPIC Payments Batch Header";
     CardPageId = "12E EPIC Payments Batch";
     UsageCategory = Lists;
+    Editable = false;
 
     layout
     {

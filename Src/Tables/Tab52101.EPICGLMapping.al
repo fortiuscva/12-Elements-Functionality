@@ -14,7 +14,7 @@ table 52101 "12E EPIC GL Mapping"
             Caption = 'Loan Status';
             DataClassification = CustomerContent;
         }
-        field(5; "Data Source ID"; Integer)
+        field(2; "Data Source ID"; Integer)
         {
             Caption = 'Data Source ID';
             TableRelation = "12E EPIC DataSourceID Map";

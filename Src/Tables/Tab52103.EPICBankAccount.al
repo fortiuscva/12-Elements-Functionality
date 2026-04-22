@@ -14,7 +14,7 @@ table 52103 "12E EPIC Bank Account"
             TableRelation = "12E EPIC DataSourceID Map";
             DataClassification = CustomerContent;
         }
-        field(5; Endpoint; Code[20])
+        field(2; Endpoint; Code[20])
         {
             Caption = 'Endpoint';
             DataClassification = CustomerContent;

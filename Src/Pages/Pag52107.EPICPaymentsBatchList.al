@@ -1,0 +1,31 @@
+page 52107 "12E EPIC Payments Batch List"
+{
+    ApplicationArea = All;
+    Caption = 'EPIC Payments Batch List';
+    PageType = List;
+    SourceTable = "12E EPIC Payments Batch Header";
+    CardPageId = "12E EPIC Payments Batch";
+    UsageCategory = Lists;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(General)
+            {
+                field("Batch No."; Rec."Batch No.")
+                {
+                    ToolTip = 'Specifies the value of the Batch No. field.', Comment = '%';
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
+                }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                }
+            }
+        }
+    }
+}

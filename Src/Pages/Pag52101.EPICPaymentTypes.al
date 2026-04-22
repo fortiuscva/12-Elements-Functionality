@@ -1,4 +1,4 @@
-page 52102 "12E EPIC Payment Types"
+page 52101 "12E EPIC Payment Types"
 {
     ApplicationArea = All;
     Caption = 'EPIC Payment Types';

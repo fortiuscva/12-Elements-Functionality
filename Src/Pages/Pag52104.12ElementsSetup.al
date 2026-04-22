@@ -1,4 +1,4 @@
-page 52105 "12E 12 Elements Setup"
+page 52104 "12E 12 Elements Setup"
 {
     ApplicationArea = All;
     Caption = '12 Elements Setup';

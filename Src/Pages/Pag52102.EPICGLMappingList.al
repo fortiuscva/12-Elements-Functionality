@@ -1,4 +1,4 @@
-page 52103 "12E EPIC GL Mapping List"
+page 52102 "12E EPIC GL Mapping List"
 {
     ApplicationArea = All;
     Caption = 'EPIC GL Mappings';

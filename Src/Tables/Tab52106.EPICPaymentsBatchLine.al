@@ -14,6 +14,11 @@ table 52106 "12E EPIC Payments Batch Line"
         {
             Caption = 'Line No.';
         }
+        field(5; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

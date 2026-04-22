@@ -1,7 +1,7 @@
 page 52105 "12E EPIC Payments Batch"
 {
     ApplicationArea = All;
-    Caption = '12E EPIC Payments Batch';
+    Caption = 'EPIC Payments Batch';
     PageType = Document;
     SourceTable = "12E EPIC Payments Batch Header";
 

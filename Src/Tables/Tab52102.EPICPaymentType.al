@@ -15,7 +15,7 @@ table 52102 "12E EPIC Payment Type"
             TableRelation = "12E EPIC DataSourceID Map";
             DataClassification = CustomerContent;
         }
-        field(5; "Payment Type Code"; Code[20])
+        field(2; "Payment Type Code"; Code[20])
         {
             Caption = 'Payment Type Code';
             DataClassification = CustomerContent;

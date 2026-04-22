@@ -1,11 +1,12 @@
-page 52106 "12E EPIC Payments BatchSubform"
+page 52109 "12E Pstd EPIC Pay BatchSubform"
 {
     ApplicationArea = All;
-    Caption = 'EPIC Payments Batch Subform';
+    Caption = 'Posted EPIC Payments Batch Subform';
     PageType = ListPart;
     SourceTable = "12E EPIC Payments Batch Line";
     UsageCategory = Lists;
     AutoSplitKey = true;
+    Editable = false;
 
     layout
     {

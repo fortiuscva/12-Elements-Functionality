@@ -9,10 +9,17 @@ table 52108 "12E Posted EPIC Pay Batch Line"
         field(1; "Batch No."; Code[20])
         {
             Caption = 'Batch No.';
+            DataClassification = CustomerContent;
         }
         field(2; "Line No."; Integer)
         {
             Caption = 'Line No.';
+            DataClassification = CustomerContent;
+        }
+        field(5; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
         }
     }
     keys

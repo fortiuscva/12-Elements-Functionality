@@ -1,4 +1,4 @@
-table 52107 "Posted EPIC Pay Batch Header"
+table 52107 "12E Pstd EPIC Pay Batch Header"
 {
     Caption = 'Posted EPIC Payments Batch Header';
     DataClassification = CustomerContent;

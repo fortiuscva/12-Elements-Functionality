@@ -45,7 +45,7 @@ table 52100 "12E EPIC DataSourceID Map"
     }
     fieldgroups
     {
-        fieldgroup(EPICDataSource; "Data Source ID", "Company Code")
+        fieldgroup(DropDown; "Data Source ID", "Company Code")
         {
 
         }

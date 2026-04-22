@@ -40,7 +40,7 @@ table 52102 "12E EPIC Payment Type"
     }
     fieldgroups
     {
-        fieldgroup(EPICPaymentType; "Data Source ID", "Payment Type Code")
+        fieldgroup(DropDown; "Data Source ID", "Payment Type Code")
         {
         }
     }

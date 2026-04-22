@@ -59,7 +59,7 @@ table 52101 "12E EPIC GL Mapping"
     }
     fieldgroups
     {
-        fieldgroup(EPICGLMapping; "Loan Status", "Data Source ID")
+        fieldgroup(DropDown; "Loan Status", "Data Source ID")
         {
 
         }

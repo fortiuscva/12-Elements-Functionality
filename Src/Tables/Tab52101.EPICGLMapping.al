@@ -9,7 +9,7 @@ table 52101 "12E EPIC GL Mapping"
 
     fields
     {
-        field(1; "Loan Status"; Enum "12E EPIC Loan Status")
+        field(1; "Loan Status"; Enum "12E EPIC Posting Loan Status")
         {
             Caption = 'Loan Status';
             DataClassification = CustomerContent;

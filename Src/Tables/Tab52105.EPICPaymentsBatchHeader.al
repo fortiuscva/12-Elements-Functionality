@@ -79,6 +79,24 @@ table 52105 "12E EPIC Payments Batch Header"
         end;
     end;
 
+    procedure PerformManualRelease(var EPICPayBatchHeader: Record "12E EPIC Payments Batch Header")
+    var
+        BatchProcessingMgt: Codeunit "Batch Processing Mgt.";
+        NoOfSelected: Integer;
+        NoOfSkipped: Integer;
+        PrevFilterGroup: Integer;
+    begin
+        NoOfSelected := EPICPayBatchHeader.Count;
+        PrevFilterGroup := EPICPayBatchHeader.FilterGroup();
+        EPICPayBatchHeader.FilterGroup(10);
+        EPICPayBatchHeader.SetFilter(Status, '<>%1', EPICPayBatchHeader.Status::Released);
+        NoOfSkipped := NoOfSelected - EPICPayBatchHeader.Count;
+        BatchProcessingMgt.BatchProcess(EPICPayBatchHeader, Codeunit::"12E EPay Batch Manual Release", Enum::"Error Handling Options"::"Show Error", NoOfSelected, NoOfSkipped);
+        EPICPayBatchHeader.SetRange(Status);
+        EPICPayBatchHeader.FilterGroup(PrevFilterGroup);
+
+    end;
+
     procedure PerformManualRelease()
     var
         ReleaseEPICPayBatchDoc: Codeunit "12E EPICPayBatch Release Mgmt.";
@@ -87,6 +105,18 @@ table 52105 "12E EPIC Payments Batch Header"
             ReleaseEPICPayBatchDoc.PerformManualRelease(Rec);
             Commit();
         end;
+    end;
+
+    procedure PerformManualReopen(var EPICPayBatchHeader: Record "12E EPIC Payments Batch Header")
+    var
+        BatchProcessingMgt: Codeunit "Batch Processing Mgt.";
+        NoOfSelected: Integer;
+        NoOfSkipped: Integer;
+    begin
+        NoOfSelected := EPICPayBatchHeader.Count;
+        EPICPayBatchHeader.SetFilter(Status, '<>%1', EPICPayBatchHeader.Status::Open);
+        NoOfSkipped := NoOfSelected - EPICPayBatchHeader.Count;
+        BatchProcessingMgt.BatchProcess(EPICPayBatchHeader, Codeunit::"12E EPAY Batch Manual Reopen", Enum::"Error Handling Options"::"Show Error", NoOfSelected, NoOfSkipped);
     end;
 
 }

@@ -16,7 +16,17 @@ table 52108 "12E Posted EPIC Pay Batch Line"
             Caption = 'Line No.';
             DataClassification = CustomerContent;
         }
-        field(5; "Posting Date"; Date)
+        field(5; "Account Type"; enum "Gen. Journal Account Type")
+        {
+            Caption = 'Account Type';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Account No."; Code[20])
+        {
+            Caption = 'Account No.';
+            DataClassification = CustomerContent;
+        }
+        field(15; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
             DataClassification = CustomerContent;

@@ -154,6 +154,28 @@ table 52109 "12E EPIC Payment"
         {
             Caption = 'RTT Return Code';
         }
+        field(145; County; Text[30])
+        {
+            Caption = 'County';
+            OptimizeForTextSearch = true;
+            ToolTip = 'Specifies the state, province or county as a part of the address.';
+            DataClassification = CustomerContent;
+        }
+        field(148; "Store Code"; Code[20])
+        {
+            Caption = 'Store';
+            DataClassification = CustomerContent;
+        }
+        field(150; "Loan Status"; enum "12E EPIC Posting Loan Status")
+        {
+            Caption = 'Loan Status';
+            DataClassification = CustomerContent;
+        }
+        field(154; "Created Date"; Date)
+        {
+            Caption = 'Created Date';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

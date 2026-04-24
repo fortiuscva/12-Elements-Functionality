@@ -14,7 +14,17 @@ table 52106 "12E EPIC Payments Batch Line"
         {
             Caption = 'Line No.';
         }
-        field(5; "Posting Date"; Date)
+        field(5; "Account Type"; enum "Gen. Journal Account Type")
+        {
+            Caption = 'Account Type';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Account No."; Code[20])
+        {
+            Caption = 'Account No.';
+            DataClassification = CustomerContent;
+        }
+        field(15; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
             DataClassification = CustomerContent;
@@ -34,4 +44,12 @@ table 52106 "12E EPIC Payments Batch Line"
 
         }
     }
+    trigger OnInsert()
+    var
+        EPICPaymentsBatchHeader: Record "12E EPIC Payments Batch Header";
+    begin
+        if EPICPaymentsBatchHeader.Get(Rec."Batch No.") then
+            if EPICPaymentsBatchHeader."Batch Date" <> 0D then
+                Rec.Validate("Posting Date", EPICPaymentsBatchHeader."Batch Date");
+    end;
 }

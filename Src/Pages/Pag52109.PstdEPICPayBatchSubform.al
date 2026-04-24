@@ -36,6 +36,18 @@ page 52109 "12E Pstd EPIC Pay BatchSubform"
                 {
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
+                field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
+                {
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.', Comment = '%';
+                }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.', Comment = '%';
+                }
             }
         }
     }

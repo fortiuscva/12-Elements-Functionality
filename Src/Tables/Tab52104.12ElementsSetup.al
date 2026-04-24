@@ -16,6 +16,12 @@ table 52104 "12E 12 Elements Setup"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
+        field(10; "Balancing G/L Account"; Code[20])
+        {
+            Caption = 'EPIC Balancing G/L Account';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

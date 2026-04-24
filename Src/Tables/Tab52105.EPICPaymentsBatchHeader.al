@@ -26,6 +26,18 @@ table 52105 "12E EPIC Payments Batch Header"
         {
             Caption = 'Batch Date';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                EPICPaymentsBatchLine: Record "12E EPIC Payments Batch Line";
+            begin
+                if Rec."Batch Date" <> xRec."Batch Date" then begin
+                    if Confirm('Lines are existed in the batch, do you want to update the posting date for all the lines?') then begin
+                        EPICPaymentsBatchLine.Reset();
+                        EPICPaymentsBatchLine.SetRange("Batch No.", Rec."Batch No.");
+                        EPICPaymentsBatchLine.ModifyAll(EPICPaymentsBatchLine."Posting Date", "Batch Date");
+                    end;
+                end;
+            end;
         }
         field(10; "No. Series"; Code[20])
         {

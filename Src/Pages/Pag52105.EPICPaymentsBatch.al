@@ -25,20 +25,6 @@ page 52105 "12E EPIC Payments Batch"
                 field("Batch Date"; Rec."Batch Date")
                 {
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
-                    trigger OnValidate()
-                    var
-                        EPICPaymentsBatchLine: Record "12E EPIC Payments Batch Line";
-                    begin
-                        if Rec."Batch Date" <> xRec."Batch Date" then begin
-                            EPICPaymentsBatchLine.Reset();
-                            EPICPaymentsBatchLine.SetRange("Batch No.", Rec."Batch No.");
-                            if EPICPaymentsBatchLine.FindSet() then begin
-                                repeat
-                                    EPICPaymentsBatchLine.Validate("Posting Date", Rec."Batch Date");
-                                until EPICPaymentsBatchLine.Next() = 0;
-                            end;
-                        end
-                    end;
                 }
                 field(Status; Rec.Status)
                 {

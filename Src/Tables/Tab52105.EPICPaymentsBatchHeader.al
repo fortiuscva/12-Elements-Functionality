@@ -22,9 +22,9 @@ table 52105 "12E EPIC Payments Batch Header"
                 end;
             end;
         }
-        field(5; "Posting Date"; Date)
+        field(5; "Batch Date"; Date)
         {
-            Caption = 'Posting Date';
+            Caption = 'Batch Date';
             DataClassification = CustomerContent;
         }
         field(10; "No. Series"; Code[20])
@@ -35,6 +35,7 @@ table 52105 "12E EPIC Payments Batch Header"
         field(15; Status; enum "12E EPIC Pay Batch Status")
         {
             Caption = 'Status';
+            Editable = false;
             DataClassification = ToBeClassified;
         }
     }

@@ -141,6 +141,22 @@ page 52111 "12E EPIC Payments"
                 {
                     ToolTip = 'Specifies the value of the RTT Return Code field.', Comment = '%';
                 }
+                field("Store Code"; Rec."Store Code")
+                {
+                    ToolTip = 'Specifies the value of the Store field.', Comment = '%';
+                }
+                field(County; Rec.County)
+                {
+                    ToolTip = 'Specifies the value of the County field.', Comment = '%';
+                }
+                field("Loan Status"; Rec."Loan Status")
+                {
+                    ToolTip = 'Specifies the value of the Loan Status field.', Comment = '%';
+                }
+                field("Created Date"; Rec."Created Date")
+                {
+                    ToolTip = 'Specifies the value of the Created Date field.', Comment = '%';
+                }
             }
         }
     }

@@ -95,6 +95,30 @@ page 52105 "12E EPIC Payments Batch"
                 }
             }
 
+            action(GetLines)
+            {
+                ApplicationArea = All;
+                Caption = 'Get Lines';
+                Image = GetLines;
+                ToolTip = 'Fetch and prepare EPIC payment lines for this batch.';
+
+                trigger OnAction()
+                var
+                    GetLinesMgt: Codeunit "12E EPIC Batch GetLines Mgt";
+                begin
+                    Rec.TestField("Batch Date");
+
+                    if Rec.Status <> Rec.Status::Open then
+                        Error('Batch must be Open to get lines.');
+
+                    if not Confirm('Existing lines will be deleted and recreated. Continue?') then
+                        exit;
+
+                    GetLinesMgt.GetLines(Rec);
+
+                    CurrPage.Update();
+                end;
+            }
             group("P&osting")
             {
                 Caption = 'P&osting';
@@ -113,7 +137,6 @@ page 52105 "12E EPIC Payments Batch"
 
                     trigger OnAction()
                     begin
-
                     end;
                 }
                 action(PreviewPosting)
@@ -125,8 +148,15 @@ page 52105 "12E EPIC Payments Batch"
                     ToolTip = 'Review the different types of entries that will be created when you post the document or journal.';
 
                     trigger OnAction()
+                    var
+                        PreviewMgt: Codeunit "12E EPIC Batch Preview Mgt";
                     begin
-                        // ShowPreview();
+                        Rec.TestField("Batch Date");
+
+                        if Rec.Status <> Rec.Status::Released then
+                            Error('Batch must be Released.');
+
+                        PreviewMgt.Preview(Rec);
                     end;
                 }
             }

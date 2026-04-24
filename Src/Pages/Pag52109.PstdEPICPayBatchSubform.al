@@ -3,10 +3,9 @@ page 52109 "12E Pstd EPIC Pay BatchSubform"
     ApplicationArea = All;
     Caption = 'Posted EPIC Payments Batch Subform';
     PageType = ListPart;
-    SourceTable = "12E EPIC Payments Batch Line";
+    SourceTable = "12E Posted EPIC Pay Batch Line";
     UsageCategory = Lists;
     AutoSplitKey = true;
-    Editable = false;
 
     layout
     {

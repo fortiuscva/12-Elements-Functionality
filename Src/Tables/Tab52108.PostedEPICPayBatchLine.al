@@ -29,7 +29,8 @@ table 52108 "12E Posted EPIC Pay Batch Line"
         field(15; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Pstd EPIC Pay Batch Header"."Batch Date" where("Batch No." = field("Batch No.")));
         }
         field(20; Amount; Decimal)
         {

@@ -34,7 +34,7 @@ table 52105 "12E EPIC Payments Batch Header"
                     if Confirm('Lines are existed in the batch, do you want to update the posting date for all the lines?') then begin
                         EPICPaymentsBatchLine.Reset();
                         EPICPaymentsBatchLine.SetRange("Batch No.", Rec."Batch No.");
-                        EPICPaymentsBatchLine.ModifyAll(EPICPaymentsBatchLine."Posting Date", "Batch Date");
+                        EPICPaymentsBatchLine.CalcFields("Posting Date");
                     end;
                 end;
             end;

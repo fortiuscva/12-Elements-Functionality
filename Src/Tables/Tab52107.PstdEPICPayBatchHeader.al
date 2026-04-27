@@ -10,9 +10,9 @@ table 52107 "12E Pstd EPIC Pay Batch Header"
         {
             Caption = 'Batch No.';
         }
-        field(5; "Posting Date"; Date)
+        field(5; "Batch Date"; Date)
         {
-            Caption = 'Posting Date';
+            Caption = 'Batch Date';
         }
         field(15; Status; Enum "12E EPIC Pay Batch Status")
         {

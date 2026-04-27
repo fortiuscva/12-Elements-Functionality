@@ -18,7 +18,7 @@ page 52108 "12E Posted EPIC Payments Batch"
                 {
                     ToolTip = 'Specifies the value of the Batch No. field.', Comment = '%';
                 }
-                field("Posting Date"; Rec."Posting Date")
+                field("Batch Date"; Rec."Batch Date")
                 {
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }

@@ -44,7 +44,8 @@ table 52106 "12E EPIC Payments Batch Line"
         field(15; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E EPIC Payments Batch Header"."Batch Date" where("Batch No." = field("Batch No.")));
         }
         field(20; Amount; Decimal)
         {
@@ -89,6 +90,6 @@ table 52106 "12E EPIC Payments Batch Line"
     begin
         if EPICPaymentsBatchHeader.Get(Rec."Batch No.") then
             if EPICPaymentsBatchHeader."Batch Date" <> 0D then
-                Rec.Validate("Posting Date", EPICPaymentsBatchHeader."Batch Date");
+                Rec.CalcFields("Posting Date");
     end;
 }

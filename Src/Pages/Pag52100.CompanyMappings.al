@@ -1,9 +1,9 @@
-page 52100 "12E EPIC Data Source Map List"
+page 52100 "12E Company Mappings"
 {
     ApplicationArea = All;
-    Caption = 'EPIC Data Source Mappings';
+    Caption = 'Company Mappings';
     PageType = List;
-    SourceTable = "12E EPIC DataSourceID Map";
+    SourceTable = "12E Company Mappings";
     UsageCategory = Lists;
     Editable = true;
 
@@ -13,10 +13,6 @@ page 52100 "12E EPIC Data Source Map List"
         {
             repeater(General)
             {
-                field("Data Source ID"; Rec."Data Source ID")
-                {
-                    ToolTip = 'Specifies the value of the Data Source ID field.', Comment = '%';
-                }
                 field("Company Code"; Rec."Company Code")
                 {
                     ToolTip = 'Specifies the value of the Company Code field.', Comment = '%';
@@ -28,6 +24,10 @@ page 52100 "12E EPIC Data Source Map List"
                 field(Company; Rec.Company)
                 {
                     ToolTip = 'Specifies the value of the Company field.', Comment = '%';
+                }
+                field("Data Source ID"; Rec."Data Source ID")
+                {
+                    ToolTip = 'Specifies the value of the Data Source ID field.', Comment = '%';
                 }
                 field(Blocked; Rec.Blocked)
                 {

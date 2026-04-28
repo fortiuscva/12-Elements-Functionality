@@ -1,33 +1,33 @@
-table 52100 "12E EPIC DataSourceID Map"
+table 52100 "12E Company Mappings"
 {
-    Caption = 'EPIC DataSourceID Map';
-    LookupPageId = "12E EPIC Data Source Map List";
-    DrillDownPageId = "12E EPIC Data Source Map List";
-    DataCaptionFields = "Data Source ID", "Company Code";
+    Caption = 'Company Mappings';
+    LookupPageId = "12E Company Mappings";
+    DrillDownPageId = "12E Company Mappings";
+    DataCaptionFields = "Company Code", "Company Name";
     DataClassification = CustomerContent;
     DataPerCompany = false;
 
     fields
     {
-        field(1; "Data Source ID"; Integer)
-        {
-            Caption = 'Data Source ID';
-            DataClassification = CustomerContent;
-        }
-        field(5; "Company Code"; Text[50])
+        field(1; "Company Code"; Code[20])
         {
             Caption = 'Company Code';
             DataClassification = CustomerContent;
         }
-        field(10; "Company Name"; Text[100])
+        field(5; "Company Name"; Text[100])
         {
             Caption = 'Company Name';
             DataClassification = CustomerContent;
         }
-        field(15; Company; Text[30])
+        field(10; Company; Text[30])
         {
             Caption = 'Company';
             TableRelation = Company;
+            DataClassification = CustomerContent;
+        }
+        field(15; "Data Source ID"; Integer)
+        {
+            Caption = 'Data Source ID';
             DataClassification = CustomerContent;
         }
 
@@ -38,14 +38,14 @@ table 52100 "12E EPIC DataSourceID Map"
     }
     keys
     {
-        key(PK; "Data Source ID")
+        key(PK; "Company Code")
         {
             Clustered = true;
         }
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Data Source ID", "Company Code")
+        fieldgroup(DropDown; "Company Code", "Company Name")
         {
 
         }

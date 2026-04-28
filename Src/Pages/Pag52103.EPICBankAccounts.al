@@ -25,6 +25,14 @@ page 52103 "12E EPIC Bank Accounts"
                 {
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
                 }
+                field("Account Type"; Rec."Account Type")
+                {
+                    ToolTip = 'Specifies the value of the Account Type field.', Comment = '%';
+                }
+                field("Account No."; Rec."Account No.")
+                {
+                    ToolTip = 'Specifies the value of the Account No. field.', Comment = '%';
+                }
             }
         }
     }

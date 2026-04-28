@@ -46,6 +46,7 @@ table 52106 "12E EPIC Payments Batch Line"
             Caption = 'Posting Date';
             FieldClass = FlowField;
             CalcFormula = lookup("12E EPIC Payments Batch Header"."Batch Date" where("Batch No." = field("Batch No.")));
+            Editable = false;
         }
         field(20; Amount; Decimal)
         {
@@ -67,6 +68,48 @@ table 52106 "12E EPIC Payments Batch Line"
             Caption = 'Shortcut Dimension 2 Code';
             ToolTip = 'Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2),
+                                                          Blocked = const(false));
+        }
+        field(43; "Shortcut Dimension 3 Code"; Code[20])
+        {
+            CaptionClass = '1,2,3';
+            Caption = 'Shortcut Dimension 3 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(3),
+                                                          Blocked = const(false));
+        }
+        field(45; "Shortcut Dimension 4 Code"; Code[20])
+        {
+            CaptionClass = '1,2,4';
+            Caption = 'Shortcut Dimension 4 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(4),
+                                                          Blocked = const(false));
+        }
+        field(47; "Shortcut Dimension 5 Code"; Code[20])
+        {
+            CaptionClass = '1,2,5';
+            Caption = 'Shortcut Dimension 5 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(5),
+                                                          Blocked = const(false));
+        }
+        field(49; "Shortcut Dimension 6 Code"; Code[20])
+        {
+            CaptionClass = '1,2,6';
+            Caption = 'Shortcut Dimension 6 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(6),
+                                                          Blocked = const(false));
+        }
+        field(51; "Shortcut Dimension 7 Code"; Code[20])
+        {
+            CaptionClass = '1,2,7';
+            Caption = 'Shortcut Dimension 7 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(7),
+                                                          Blocked = const(false));
+        }
+        field(53; "Shortcut Dimension 8 Code"; Code[20])
+        {
+            CaptionClass = '1,2,8';
+            Caption = 'Shortcut Dimension 8 Code';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(8),
                                                           Blocked = const(false));
         }
     }

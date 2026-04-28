@@ -17,7 +17,7 @@ table 52101 "12E EPIC GL Mapping"
         field(2; "Data Source ID"; Integer)
         {
             Caption = 'Data Source ID';
-            TableRelation = "12E EPIC DataSourceID Map";
+            // TableRelation = "12E Company Mappings"."Data Source ID";
             DataClassification = CustomerContent;
         }
         field(10; Description; Text[50])

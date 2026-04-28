@@ -22,8 +22,8 @@ codeunit 52104 "12E EPIC Batch Preview Mgt"
 
                 TempGenJnlLine."Line No." := LineNo;
 
-                TempGenJnlLine.Validate("Posting Date", BatchLine."Posting Date");
-                TempGenJnlLine.Validate("Document Date", BatchLine."Posting Date");
+                TempGenJnlLine.Validate("Posting Date", BatchHeader."Batch Date");
+                TempGenJnlLine.Validate("Document Date", BatchHeader."Batch Date");
 
                 TempGenJnlLine."Document Type" :=
                     TempGenJnlLine."Document Type"::Payment;

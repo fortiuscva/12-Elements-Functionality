@@ -10,6 +10,14 @@ page 52104 "12E 12 Elements Setup"
     {
         area(Content)
         {
+            group(General)
+            {
+                Caption = 'General';
+                field("Balancing G/L Account"; Rec."Balancing G/L Account")
+                {
+                    ToolTip = 'Specifies the value of the EPIC Balancing G/L Account field.', Comment = '%';
+                }
+            }
             group(Numbering)
             {
                 Caption = 'Numbering';
@@ -18,45 +26,50 @@ page 52104 "12E 12 Elements Setup"
                     ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
                 }
             }
-            field("Balancing G/L Account"; Rec."Balancing G/L Account")
-            {
-                ToolTip = 'Specifies the value of the EPIC Balancing G/L Account field.', Comment = '%';
-            }
         }
     }
     actions
     {
-        area(Navigation)
+        area(Processing)
         {
-            group("EPIC Mappings")
+            action(CompanyMappings)
             {
-                action(EPICDataSourceMapping)
-                {
-                    ApplicationArea = all;
-                    Caption = 'EPIC Data Source ID Mapping';
-                    image = MapAccounts;
-                    RunObject = page "12E EPIC Data Source Map List";
-                }
-                action(EPICGLMapping)
-                {
-                    ApplicationArea = all;
-                    Caption = 'EPIC G/L Mapping';
-                    image = MapAccounts;
-                    RunObject = page "12E EPIC GL Mapping List";
-                }
+                ApplicationArea = all;
+                Caption = 'Company Mappings';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = MapAccounts;
+                RunObject = page "12E Company Mappings";
+            }
+            action(EPICGLMapping)
+            {
+                ApplicationArea = all;
+                Caption = 'EPIC G/L Mapping';
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = MapAccounts;
+                RunObject = page "12E EPIC GL Mapping List";
             }
             action(EPICPaymentTypes)
             {
                 ApplicationArea = all;
                 Caption = 'EPIC Payment Types';
-                image = Payment;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = Payment;
                 RunObject = page "12E EPIC Payment Types";
             }
             action(EPICBankAccounts)
             {
                 ApplicationArea = all;
                 Caption = 'EPIC Bank Accounts';
-                image = Payment;
+                Promoted = true;
+                PromotedCategory = Process;
+                PromotedIsBig = true;
+                Image = Payment;
                 RunObject = page "12E EPIC Bank Accounts";
             }
         }

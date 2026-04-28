@@ -12,7 +12,7 @@ table 52102 "12E EPIC Payment Type"
         field(1; "Data Source ID"; Integer)
         {
             Caption = 'Data Source ID';
-            TableRelation = "12E EPIC DataSourceID Map";
+            // TableRelation = "12E Company Mappings"."Data Source ID";
             DataClassification = CustomerContent;
         }
         field(2; "Payment Type Code"; Code[20])

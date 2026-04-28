@@ -31,6 +31,17 @@ page 52105 "12E EPIC Payments Batch"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    Caption = 'Created At';
+                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                }
+                field(CreatedBy; CreatedBy)
+                {
+                    Caption = 'Created By';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the SystemCreatedBy field.', Comment = '%';
+                }
             }
             part("EPIC Payment Lines"; "12E EPIC Payments BatchSubform")
             {
@@ -180,4 +191,17 @@ page 52105 "12E EPIC Payments Batch"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        UserRec: Record User;
+    begin
+        Clear(CreatedBy);
+        CreatedBy := '';
+        UserRec.Reset();
+        UserRec.Get(Rec.SystemCreatedBy);
+        CreatedBy := UserRec."User Name";
+    end;
+
+    var
+        CreatedBy: Code[50];
 }

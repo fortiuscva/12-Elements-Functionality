@@ -22,6 +22,21 @@ page 52108 "12E Posted EPIC Payments Batch"
                 {
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    Caption = 'Created At';
+                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                }
+                field(CreatedBy; CreatedBy)
+                {
+                    Caption = 'Created By';
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the SystemCreatedBy field.', Comment = '%';
+                }
             }
             part("Posted EPIC Payment Lines"; "12E Pstd EPIC Pay BatchSubform")
             {
@@ -30,4 +45,17 @@ page 52108 "12E Posted EPIC Payments Batch"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        UserRec: Record User;
+    begin
+        Clear(CreatedBy);
+        CreatedBy := '';
+        UserRec.Reset();
+        UserRec.Get(Rec.SystemCreatedBy);
+        CreatedBy := UserRec."User Name";
+    end;
+
+    var
+        CreatedBy: Code[50];
 }

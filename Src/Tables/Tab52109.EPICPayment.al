@@ -11,7 +11,7 @@ table 52109 "12E EPIC Payment"
         field(1; "Data Source ID"; Integer)
         {
             Caption = 'Data Source ID';
-            TableRelation = "12E Company Mappings";
+            TableRelation = "12E EPIC DataSource";
             ValidateTableRelation = false;
         }
         field(2; "Payments ID"; Integer)

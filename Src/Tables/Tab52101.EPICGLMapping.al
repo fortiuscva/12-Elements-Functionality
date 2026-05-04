@@ -32,7 +32,7 @@ table 52101 "12E EPIC GL Mapping"
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
-                LookupChartofAccounts(0);
+                LookupChartofAccounts(GLAccountType::"Principal GL");
             end;
 
             trigger OnValidate()
@@ -47,7 +47,7 @@ table 52101 "12E EPIC GL Mapping"
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
-                LookupChartofAccounts(1);
+                LookupChartofAccounts(GLAccountType::"Finance Fee GL");
             end;
 
             trigger OnValidate()
@@ -62,7 +62,7 @@ table 52101 "12E EPIC GL Mapping"
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
-                LookupChartofAccounts(2);
+                LookupChartofAccounts(GLAccountType::"NSF Fee GL");
             end;
 
             trigger OnValidate()
@@ -77,7 +77,7 @@ table 52101 "12E EPIC GL Mapping"
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
-                LookupChartofAccounts(3);
+                LookupChartofAccounts(GLAccountType::"Late Fee GL");
             end;
 
             trigger OnValidate()
@@ -104,8 +104,9 @@ table 52101 "12E EPIC GL Mapping"
         CompanyMapping: Record "12E Company Mapping";
         GLAccount: Record "G/L Account";
         CompanyTxt: Text[30];
+        GLAccountType: Enum "12E GL Account Type";
 
-    local procedure LookupChartofAccounts(GLType: Option Principal,FinanceFee,NSFFee,LateFee)
+    local procedure LookupChartofAccounts(GLAccountTypePar: enum "12E GL Account Type")
     begin
         TestField("Data Source ID");
         CompanyMapping.Reset();
@@ -116,14 +117,14 @@ table 52101 "12E EPIC GL Mapping"
         GLAccount.ChangeCompany(CompanyMapping.Company);
         GLAccount.SetRange(Blocked, false);
         if Page.RunModal(Page::"Chart of Accounts", GLAccount) = Action::LookupOK then begin
-            case GLType of
-                GLType::Principal:
+            case GLAccountTypePar of
+                GLAccountTypePar::"Principal GL":
                     Rec."Principal G/L Account No." := GLAccount."No.";
-                GLType::FinanceFee:
+                GLAccountTypePar::"Finance Fee GL":
                     Rec."Finance Fee G/L Account No." := GLAccount."No.";
-                GLType::NSFFee:
+                GLAccountTypePar::"NSF Fee GL":
                     Rec."NSF Fee G/L Account No." := GLAccount."No.";
-                GLType::LateFee:
+                GLAccountTypePar::"Late Fee GL":
                     Rec."Late Fee G/L Account No." := GLAccount."No.";
             end;
         end;

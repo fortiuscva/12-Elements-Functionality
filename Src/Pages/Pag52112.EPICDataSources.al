@@ -1,11 +1,11 @@
 page 52112 "12E EPIC DataSources"
 {
     ApplicationArea = All;
-    Caption = '12E EPIC DataSources';
+    Caption = 'EPIC DataSources';
     PageType = List;
     SourceTable = "12E EPIC DataSource";
     UsageCategory = Lists;
-    
+
     layout
     {
         area(Content)

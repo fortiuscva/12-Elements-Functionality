@@ -28,7 +28,7 @@ table 52101 "12E EPIC GL Mapping"
         field(15; "Principal G/L Account No."; Code[20])
         {
             Caption = 'Principal G/L Account No.';
-            TableRelation = "G/L Account";
+            // TableRelation = "G/L Account";
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
@@ -43,7 +43,7 @@ table 52101 "12E EPIC GL Mapping"
         field(20; "Finance Fee G/L Account No."; Code[20])
         {
             Caption = 'Finance Fee G/L Account No.';
-            TableRelation = "G/L Account";
+            // TableRelation = "G/L Account";
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
@@ -58,7 +58,7 @@ table 52101 "12E EPIC GL Mapping"
         field(25; "NSF Fee G/L Account No."; Code[20])
         {
             Caption = 'NSF Fee G/L Account No.';
-            TableRelation = "G/L Account";
+            // TableRelation = "G/L Account";
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin
@@ -73,7 +73,7 @@ table 52101 "12E EPIC GL Mapping"
         field(30; "Late Fee G/L Account No."; Code[20])
         {
             Caption = 'Late Fee G/L Account No.';
-            TableRelation = "G/L Account";
+            // TableRelation = "G/L Account";
             DataClassification = CustomerContent;
             trigger OnLookup()
             begin

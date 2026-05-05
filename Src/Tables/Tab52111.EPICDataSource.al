@@ -31,7 +31,7 @@ table 52111 "12E EPIC DataSource"
     }
     fieldgroups
     {
-        fieldgroup(Dropdown; "DataSource ID", DBA)
+        fieldgroup(DropDown; "DataSource ID", DBA)
         {
 
         }

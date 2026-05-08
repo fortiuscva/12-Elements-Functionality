@@ -1,0 +1,100 @@
+page 52118 "12E CCD Interface List"
+{
+    ApplicationArea = All;
+    Caption = '12E CCD Interface List';
+    PageType = List;
+    SourceTable = "12E CC Distribution Header";
+    UsageCategory = Lists;
+    Editable = false;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(General)
+            {
+                field("No."; Rec."No.")
+                {
+                    ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+                }
+                field("From Date"; Rec."From Date")
+                {
+                    ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
+                }
+                field("To Date"; Rec."To Date")
+                {
+                    ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
+                }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            group(CCDReleaseGroup)
+            {
+                Caption = 'Release';
+                Image = ReleaseDoc;
+                action(Release)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Re&lease';
+                    Enabled = Rec.Status <> Rec.Status::Released;
+                    Image = ReleaseDoc;
+                    ShortCutKey = 'Ctrl+F9';
+                    ToolTip = 'Release the document to the next stage of processing. You must reopen the document before you can make changes to it.';
+
+                    trigger OnAction()
+                    var
+                        CCDHeader: Record "12E CC Distribution Header";
+                    begin
+                        CurrPage.SetSelectionFilter(CCDHeader);
+                        Rec.PerformManualRelease(CCDHeader);
+                        CurrPage.Update(false);
+                    end;
+                }
+
+                action(Reopen)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Re&open';
+                    Enabled = Rec.Status <> Rec.Status::Open;
+                    Image = ReOpen;
+                    ToolTip = 'Reopen the document to change it after it has been approved. Approved documents have the Released status and must be opened before they can be changed.';
+
+                    trigger OnAction()
+                    var
+                        CCDHeader: Record "12E CC Distribution Header";
+                    begin
+                        CurrPage.SetSelectionFilter(CCDHeader);
+                        Rec.PerformManualReopen(CCDHeader);
+                        CurrPage.Update(false);
+                    end;
+                }
+            }
+        }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                group(Category_Category5)
+                {
+                    Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                    ShowAs = SplitButton;
+
+                    actionref(Release_Promoted; Release)
+                    {
+                    }
+                    actionref(Reopen_Promoted; Reopen)
+                    {
+                    }
+                }
+            }
+        }
+    }
+}

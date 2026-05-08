@@ -11,6 +11,8 @@ table 52114 "12E CC Location Mapping"
         field(1; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = Location;
+            ValidateTableRelation = false;
         }
         field(3; Mapping; Text[30])
         {

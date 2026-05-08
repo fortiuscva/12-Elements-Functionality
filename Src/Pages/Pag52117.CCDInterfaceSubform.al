@@ -34,7 +34,7 @@ page 52117 "12E CCD Interface Subform"
                 {
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
-                field("Handling Time"; Rec."Handling Time")
+                field("Handle Time"; Rec."Handle Time")
                 {
                     ToolTip = 'Specifies the value of the Handling Time field.', Comment = '%';
                 }

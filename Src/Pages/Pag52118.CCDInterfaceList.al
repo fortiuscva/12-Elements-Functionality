@@ -1,9 +1,10 @@
 page 52118 "12E CCD Interface List"
 {
     ApplicationArea = All;
-    Caption = '12E CCD Interface List';
+    Caption = 'Call Center Distribution Interface List';
     PageType = List;
     SourceTable = "12E CC Distribution Header";
+    CardPageId = "12E CC Distribution Interface";
     UsageCategory = Lists;
     Editable = false;
 

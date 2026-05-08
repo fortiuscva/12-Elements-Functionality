@@ -3,7 +3,6 @@ table 52116 "12E CC Distribution Line"
     Caption = '12E CC Distribution Line';
     DataClassification = CustomerContent;
     DataPerCompany = false;
-
     fields
     {
         field(1; "Document No."; Code[20])
@@ -21,14 +20,23 @@ table 52116 "12E CC Distribution Line"
         field(7; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = Location;
+            ValidateTableRelation = false;
         }
         field(9; Portfolio; Text[30])
         {
             Caption = 'Portfolio';
         }
-        field(11; "Handling Time"; Integer)
+        field(11; "Handle Time"; Text[30])
         {
-            Caption = 'Handling Time';
+            Caption = 'Handle Time';
+        }
+        field(13; Percentage; Decimal)
+        {
+            Caption = 'Percentage';
+            DecimalPlaces = 0 : 5;
+            MaxValue = 100;
+            MinValue = 0;
         }
     }
     keys

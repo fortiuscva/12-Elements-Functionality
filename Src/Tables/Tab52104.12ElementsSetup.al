@@ -22,6 +22,12 @@ table 52104 "12E 12 Elements Setup"
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
+        field(13; "CCD Nos."; Code[20])
+        {
+            Caption = 'Call Center Distribution Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

@@ -1,7 +1,7 @@
 page 52116 "12E CC Distribution Interface"
 {
     ApplicationArea = All;
-    Caption = '12E CC Distribution Interface';
+    Caption = 'Call Center Distribution Interface';
     PageType = Document;
     SourceTable = "12E CC Distribution Header";
 

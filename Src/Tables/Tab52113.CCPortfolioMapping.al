@@ -20,6 +20,7 @@ table 52113 "12E CC Portfolio Mapping"
         {
             Caption = 'Company';
             DataClassification = CustomerContent;
+            TableRelation = Company;
         }
         field(7; "Customer No."; Code[20])
         {

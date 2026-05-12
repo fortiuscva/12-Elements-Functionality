@@ -20,16 +20,18 @@ table 52112 "12E CC Distribution Data"
         field(5; "Location Code"; Code[10])
         {
             Caption = 'Location';
+            TableRelation = "12E CC Location Mapping"."Location Code";
             DataClassification = CustomerContent;
         }
         field(7; Portfolio; Text[30])
         {
             Caption = 'Portfolio';
+            TableRelation = "12E CC Portfolio Mapping".Portfolio;
             DataClassification = CustomerContent;
         }
         field(9; "Handling Time"; Integer)
         {
-            Caption = 'Handling Time';
+            Caption = 'Handle Time';
             DataClassification = CustomerContent;
         }
     }

@@ -24,6 +24,7 @@ page 52117 "12E CCD Interface Subform"
                 }
                 field("CCD Date"; Rec."CCD Date")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the CCD Date field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
@@ -37,6 +38,10 @@ page 52117 "12E CCD Interface Subform"
                 field("Handle Time"; Rec."Handle Time")
                 {
                     ToolTip = 'Specifies the value of the Handling Time field.', Comment = '%';
+                }
+                field(Percentage; Rec.Percentage)
+                {
+                    ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
             }
         }

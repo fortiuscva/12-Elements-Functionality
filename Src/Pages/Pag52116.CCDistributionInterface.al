@@ -82,6 +82,20 @@ page 52116 "12E CC Distribution Interface"
                         CurrPage.Update();
                     end;
                 }
+                action(GetLines)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Get Lines';
+                    Image = GetLines;
+
+                    trigger OnAction()
+                    var
+                        CCDMgmt: Codeunit "12E CCD Mgmt";
+                    begin
+                        CCDMgmt.GetLines(Rec);
+                        CurrPage.Update();
+                    end;
+                }
             }
         }
         area(Promoted)
@@ -97,6 +111,9 @@ page 52116 "12E CC Distribution Interface"
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
+                    {
+                    }
+                    actionref(GetLines_Promoted; GetLines)
                     {
                     }
                 }

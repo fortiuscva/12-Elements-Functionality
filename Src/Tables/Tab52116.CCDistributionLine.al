@@ -27,7 +27,7 @@ table 52116 "12E CC Distribution Line"
         {
             Caption = 'Portfolio';
         }
-        field(11; "Handle Time"; Text[30])
+        field(11; "Handle Time"; Duration)
         {
             Caption = 'Handle Time';
         }

@@ -38,6 +38,17 @@ table 52116 "12E CC Distribution Line"
             MaxValue = 100;
             MinValue = 0;
         }
+        field(15; "Sales Invoice No."; Code[20])
+        {
+            Caption = 'Sales Invoice No.';
+            Editable = false;
+        }
+
+        field(17; "Sales Invoice Line No."; Integer)
+        {
+            Caption = 'Sales Invoice Line No.';
+            Editable = false;
+        }
     }
     keys
     {

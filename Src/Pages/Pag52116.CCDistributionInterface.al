@@ -96,6 +96,19 @@ page 52116 "12E CC Distribution Interface"
                         CurrPage.Update();
                     end;
                 }
+                action(CreateInvoices)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create Invoices';
+                    Image = CreateDocument;
+
+                    trigger OnAction()
+                    var
+                        CCDInvoiceMgmt: Codeunit "12E CCD Invoice Mgmt";
+                    begin
+                        CCDInvoiceMgmt.CreateInvoices(Rec);
+                    end;
+                }
             }
         }
         area(Promoted)

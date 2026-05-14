@@ -43,6 +43,14 @@ page 52117 "12E CCD Interface Subform"
                 {
                     ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
+                field("Sales Invoice No."; Rec."Sales Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                }
+                field("Sales Invoice Line No."; Rec."Sales Invoice Line No.")
+                {
+                    ToolTip = 'Specifies the value of the Sales Invoice Line No. field.', Comment = '%';
+                }
             }
         }
     }

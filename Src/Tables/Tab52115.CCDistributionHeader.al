@@ -115,4 +115,17 @@ table 52115 "12E CC Distribution Header"
         NoOfSkipped := NoOfSelected - CCDHeader.Count;
         BatchProcessingMgt.BatchProcess(CCDHeader, Codeunit::"12E CCD Manual Reopen", Enum::"Error Handling Options"::"Show Error", NoOfSelected, NoOfSkipped);
     end;
+
+    trigger OnDelete()
+    begin
+        DeleteAllCallCenterDistributionLines();
+    end;
+
+    procedure DeleteAllCallCenterDistributionLines()
+    var
+        CCDLine: Record "12E CC Distribution Line";
+    begin
+        CCDLine.SetRange("Document No.", Rec."No.");
+        CCDLine.DeleteAll(true);
+    end;
 }

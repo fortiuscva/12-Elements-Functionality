@@ -25,11 +25,13 @@ table 52113 "12E CC Portfolio Mapping"
         field(7; "Customer No."; Code[20])
         {
             Caption = 'Customer No.';
+            TableRelation = Customer;
             DataClassification = CustomerContent;
         }
         field(9; "G/L Account No."; Code[20])
         {
             Caption = 'G/L Account No.';
+            TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
     }

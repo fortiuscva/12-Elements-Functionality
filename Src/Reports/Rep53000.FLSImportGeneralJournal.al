@@ -39,12 +39,15 @@ report 53000 "12E FLS Import General Journal"
                         ToolTip = 'Loca data to this batch';
                         trigger Onlookup(var Test: Text): Boolean
                         begin
-                            if GenJournalTemplate.get(TemplateNameVar) then begin
-                                if not GenJournalBatch.get(TemplateNameVar, BatchNameVar) then
-                                    clear(GenJournalBatch);
-                                if page.Runmodal(0, GenJournalBatch) = Action::LookupOK then
-                                    BatchNameVar := GenJournalBatch.Name;
-                            end;
+                            GenJournalBatch.Reset();
+                            GenJournalBatch.SetRange("Journal Template Name", TemplateNameVar);
+
+                            if BatchNameVar <> '' then
+                                if not GenJournalBatch.Get(TemplateNameVar, BatchNameVar) then
+                                    Clear(GenJournalBatch);
+
+                            if Page.RunModal(0, GenJournalBatch) = Action::LookupOK then
+                                BatchNameVar := GenJournalBatch.Name;
                         end;
                     }
                     field(RowNo; RowNoVar)
@@ -70,7 +73,7 @@ report 53000 "12E FLS Import General Journal"
             clear(serverfilename);
             clear(sheetname);
             IF RowNoVar = 0 THEN
-                RowNoVar := 2;
+                RowNoVar := 3;
         end;
 
     }
@@ -79,7 +82,7 @@ report 53000 "12E FLS Import General Journal"
     trigger OnInitReport()
     begin
         IF RowNoVar = 0 THEN
-            RowNoVar := 2;
+            RowNoVar := 3;
     end;
 
     trigger OnPreReport()
@@ -485,8 +488,9 @@ report 53000 "12E FLS Import General Journal"
         CurrReport.QUIT();
     end;
 
-    procedure MyProcedure()
+    procedure SetJournalDefaults(NewTemplateName: Code[10]; NewBatchName: Code[20])
     begin
-
+        TemplateNameVar := NewTemplateName;
+        BatchNameVar := NewBatchName;
     end;
 }

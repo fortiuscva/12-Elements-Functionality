@@ -29,6 +29,10 @@ page 52104 "12E 12 Elements Setup"
                 {
                     ToolTip = 'Specifies the value of the Call Center Distribution Nos. field.', Comment = '%';
                 }
+                field("Lead Accrual Nos."; Rec."Lead Accrual Nos.")
+                {
+                    ToolTip = 'Specifies the value of the Lead Accrual Nos. field.', Comment = '%';
+                }
             }
         }
     }

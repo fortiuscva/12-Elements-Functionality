@@ -28,6 +28,12 @@ table 52104 "12E 12 Elements Setup"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
+        field(15; "Lead Accrual Nos."; Code[20])
+        {
+            Caption = 'Lead Accrual Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

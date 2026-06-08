@@ -5,6 +5,7 @@ page 52121 "12E Lead Validation"
     Caption = 'Lead Validation';
     ApplicationArea = All;
     UsageCategory = Tasks;
+    SourceTableTemporary = true;
 
     layout
     {

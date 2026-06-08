@@ -26,6 +26,10 @@ page 52120 "12E Lead Source Reconciliation"
                 {
                     ApplicationArea = All;
                 }
+                field("Portfolio Name"; Rec."Portfolio Name")
+                {
+                    ApplicationArea = all;
+                }
 
                 field("Lead Original Date"; Rec."Lead Original Date")
                 {
@@ -37,7 +41,7 @@ page 52120 "12E Lead Source Reconciliation"
                     ApplicationArea = All;
                 }
 
-                field("Vendor No."; Rec."Vendor No.")
+                field("Purchased Leads"; Rec."Purchased Leads")
                 {
                     ApplicationArea = All;
                 }

@@ -12,54 +12,33 @@ codeunit 52110 "12E Lead Validation Mgt"
 
         PurchInvHeader.Reset();
         PurchInvHeader.SetRange("Posting Date", StartDate, EndDate);
-
         if PurchInvHeader.FindSet() then
             repeat
 
-                PriorDate :=
-                    GetPreviousPostingDate(
-                        PurchInvHeader."Buy-from Vendor No.",
-                        PurchInvHeader."Posting Date");
-
-                LeadCost :=
-                    GetLeadCostAmount(
-                        PurchInvHeader."Buy-from Vendor No.",
-                        PriorDate,
-                        PurchInvHeader."Posting Date");
-
                 LeadValidation.Init();
 
-                LeadValidation."Vendor No." :=
-                    PurchInvHeader."Buy-from Vendor No.";
-
+                LeadValidation."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
                 if Vendor.Get(PurchInvHeader."Buy-from Vendor No.") then
                     LeadValidation."Vendor Name" := Vendor.Name;
 
-                LeadValidation."Posting Date" :=
-                    PurchInvHeader."Posting Date";
+                PriorDate := GetPreviousPostingDate(
+                                     Vendor."12E Lead Acq. Vendor No.",
+                                      PurchInvHeader."Posting Date");
 
-                LeadValidation."Purchase Invoice No." :=
-                    PurchInvHeader."No.";
+                LeadCost := GetLeadCostAmount(
+                        Vendor."12E Lead Acq. Vendor No.",
+                        PriorDate,
+                        PurchInvHeader."Posting Date");
 
-                LeadValidation.Amount :=
-                    PurchInvHeader.Amount;
-
-                LeadValidation."Prior Posting Date" :=
-                    PriorDate;
-
-                LeadValidation."Lead Cost Amount" :=
-                    LeadCost;
-
-                LeadValidation.Difference :=
-                    LeadValidation.Amount -
-                    LeadValidation."Lead Cost Amount";
+                LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
+                LeadValidation."Purchase Invoice No." := PurchInvHeader."No.";
+                LeadValidation.Amount := PurchInvHeader.Amount;
+                LeadValidation."Prior Posting Date" := PriorDate;
+                LeadValidation."Lead Cost Amount" := LeadCost;
+                LeadValidation.Difference := LeadValidation.Amount - LeadValidation."Lead Cost Amount";
 
                 if LeadValidation.Amount <> 0 then
-                    LeadValidation."Difference %" :=
-                        Round(
-                            (LeadValidation.Difference /
-                             LeadValidation.Amount) * 100,
-                             0.01);
+                    LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation.Amount) * 100, 0.01);
 
                 LeadValidation.Insert();
 
@@ -75,11 +54,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         PurchInvHeader.Reset();
         PurchInvHeader.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
         PurchInvHeader.SetRange("Buy-from Vendor No.", VendorNo);
-        PurchInvHeader.SetFilter(
-            "Posting Date",
-            '..%1',
-            CalcDate('<-1D>', CurrentPostingDate));
-
+        PurchInvHeader.SetFilter("Posting Date", '..%1', CalcDate('<-1D>', CurrentPostingDate));
         if PurchInvHeader.FindLast() then
             exit(PurchInvHeader."Posting Date");
 
@@ -87,7 +62,7 @@ codeunit 52110 "12E Lead Validation Mgt"
     end;
 
     local procedure GetLeadCostAmount(
-        VendorNo: Code[20];
+        VendorPortfolio: Code[20];
         PriorPostingDate: Date;
         CurrentPostingDate: Date): Decimal
     var
@@ -100,12 +75,8 @@ codeunit 52110 "12E Lead Validation Mgt"
             StartDate := CalcDate('<+1D>', PriorPostingDate);
 
         LeadRecon.Reset();
-        LeadRecon.SetRange("Vendor No.", VendorNo);
-        LeadRecon.SetRange(
-            "Lead Original Date",
-            StartDate,
-            CurrentPostingDate);
-
+        LeadRecon.SetRange("Portfolio Name", VendorPortfolio);
+        LeadRecon.SetRange("Lead Original Date", StartDate, CurrentPostingDate);
         LeadRecon.CalcSums("Lead Sold Cost");
 
         exit(LeadRecon."Lead Sold Cost");

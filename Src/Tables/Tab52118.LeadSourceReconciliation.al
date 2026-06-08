@@ -2,6 +2,7 @@ table 52118 "12E Lead Source Reconciliation"
 {
     Caption = 'Lead Source Reconciliation';
     DataClassification = CustomerContent;
+    DataPerCompany = false;
 
     fields
     {
@@ -22,27 +23,32 @@ table 52118 "12E Lead Source Reconciliation"
             Caption = 'Datasource ID';
             DataClassification = CustomerContent;
         }
+        field(4; "Portfolio Name"; text[100])
+        {
+            Caption = 'Portfolio Name';
+            DataClassification = CustomerContent;
+        }
 
-        field(4; "Lead Original Date"; Date)
+        field(5; "Lead Original Date"; Date)
         {
             Caption = 'Lead Original Date';
             DataClassification = CustomerContent;
         }
 
-        field(5; "Lead Provider"; Text[100])
+        field(6; "Lead Provider"; Text[100])
         {
             Caption = 'Lead Provider';
             DataClassification = CustomerContent;
         }
 
-        field(6; "Vendor No."; Code[20])
+        field(7; "Purchased Leads"; Code[20])
         {
-            Caption = 'Vendor No.';
+            Caption = 'Purchased Leads';
             TableRelation = Vendor;
             DataClassification = CustomerContent;
         }
 
-        field(7; "Lead Sold Cost"; Decimal)
+        field(8; "Lead Sold Cost"; Decimal)
         {
             Caption = 'Lead Sold Cost';
             DecimalPlaces = 2 : 2;
@@ -57,9 +63,5 @@ table 52118 "12E Lead Source Reconciliation"
             Clustered = true;
         }
 
-        key(VendorDate; "Vendor No.", "Lead Original Date")
-        {
-            SumIndexFields = "Lead Sold Cost";
-        }
     }
 }

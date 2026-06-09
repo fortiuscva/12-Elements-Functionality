@@ -5,6 +5,7 @@ page 52126 "12E Posted LeadAccrual Subform"
     PageType = ListPart;
     SourceTable = "12E Posted Lead Accrual Line";
     UsageCategory = None;
+    Editable = false;
 
     layout
     {
@@ -14,10 +15,12 @@ page 52126 "12E Posted LeadAccrual Subform"
             {
                 field("Lead Accrual No."; Rec."Lead Accrual No.")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Lead Accrual No. field.', Comment = '%';
                 }
                 field("Line No."; Rec."Line No.")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
                 }
                 field("Vendor No."; Rec."Vendor No.")

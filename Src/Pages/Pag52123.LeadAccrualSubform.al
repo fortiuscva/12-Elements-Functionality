@@ -15,10 +15,12 @@ page 52123 "12E Lead Accrual Subform"
             {
                 field("Lead Accrual No."; Rec."Lead Accrual No.")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Lead Accrual No. field.', Comment = '%';
                 }
                 field("Line No."; Rec."Line No.")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
                 }
                 field("Vendor No."; Rec."Vendor No.")

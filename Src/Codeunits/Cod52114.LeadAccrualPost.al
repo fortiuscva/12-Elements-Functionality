@@ -21,7 +21,7 @@ codeunit 52114 "12E Lead Accrual Post"
                 PostedLeadAccrualLine.Init();
                 PostedLeadAccrualLine.TransferFields(LeadAccrualLine);
                 PostedLeadAccrualLine."Lead Accrual No." := 'P-' + Rec."No.";
-                PostedLeadAccrual.Insert(true);
+                PostedLeadAccrualLine.Insert(true);
             until LeadAccrualLine.Next() = 0;
         end;
         LeadAccrualLine.DeleteAll(true);

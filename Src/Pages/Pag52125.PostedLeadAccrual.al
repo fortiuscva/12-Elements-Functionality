@@ -5,6 +5,7 @@ page 52125 "12E Posted Lead Accrual"
     PageType = Document;
     SourceTable = "12E Posted Lead Accrual";
     UsageCategory = None;
+    Editable = false;
 
     layout
     {
@@ -57,8 +58,8 @@ page 52125 "12E Posted Lead Accrual"
         Clear(CreatedBy);
         CreatedBy := '';
         UserRec.Reset();
-        UserRec.Get(Rec.SystemCreatedBy);
-        CreatedBy := UserRec."User Name";
+        if UserRec.Get(Rec.SystemCreatedBy) then
+            CreatedBy := UserRec."User Name";
     end;
 
     var

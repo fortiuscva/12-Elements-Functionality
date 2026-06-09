@@ -20,10 +20,9 @@ tableextension 52100 "12E Vendor" extends Vendor
             DataClassification = CustomerContent;
         }
 
-        field(50103; "12E Lead Acq. Vendor No."; Code[20])
+        field(50103; "12E Lead Acq. Vendor No."; Text[100])
         {
             Caption = 'Lead Acquisition Vendor No.';
-            TableRelation = Vendor;
             DataClassification = CustomerContent;
         }
     }

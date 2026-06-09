@@ -2,26 +2,30 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
 {
     layout
     {
-        addlast(General)
+        addafter(Receiving)
         {
-            field("12E Lead Acquisition"; Rec."12E Lead Acquisition")
+            group("12E Leads")
             {
-                ApplicationArea = All;
-            }
+                Caption = 'Leads';
+                field("12E Lead Acquisition"; Rec."12E Lead Acquisition")
+                {
+                    ApplicationArea = All;
+                }
 
-            field("12E Lead Billing Terms"; Rec."12E Lead Billing Terms")
-            {
-                ApplicationArea = All;
-            }
+                field("12E Lead Billing Terms"; Rec."12E Lead Billing Terms")
+                {
+                    ApplicationArea = All;
+                }
 
-            field("12E Lead Accrual Vendor"; Rec."12E Lead Accrual Vendor")
-            {
-                ApplicationArea = All;
-            }
+                field("12E Lead Accrual Vendor"; Rec."12E Lead Accrual Vendor")
+                {
+                    ApplicationArea = All;
+                }
 
-            field("12E Lead Acquisition Vendor No."; Rec."12E Lead Acq. Vendor No.")
-            {
-                ApplicationArea = All;
+                field("12E Lead Acquisition Vendor No."; Rec."12E Lead Acq. Vendor No.")
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

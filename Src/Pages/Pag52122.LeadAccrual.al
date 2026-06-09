@@ -205,8 +205,8 @@ page 52122 "12E Lead Accrual"
         Clear(CreatedBy);
         CreatedBy := '';
         UserRec.Reset();
-        UserRec.Get(Rec.SystemCreatedBy);
-        CreatedBy := UserRec."User Name";
+        if UserRec.Get(Rec.SystemCreatedBy) then
+            CreatedBy := UserRec."User Name";
     end;
 
     var

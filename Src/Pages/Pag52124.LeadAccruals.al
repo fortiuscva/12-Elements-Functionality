@@ -99,6 +99,8 @@ page 52124 "12E Lead Accruals"
                     var
                         LeadAccuralsPost: Codeunit "12E Lead Accrual Post";
                     begin
+                        if not Confirm('Do you want to proceed with the Lead Accrual posting now?') then
+                            exit;
                         LeadAccuralsPost.Run(Rec);
                     end;
                 }

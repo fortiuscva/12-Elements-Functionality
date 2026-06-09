@@ -9,6 +9,8 @@ codeunit 52114 "12E Lead Accrual Post"
         LeadAccrualLine: Record "12E Lead Accrual Line";
         PostedLeadAccrualLine: Record "12E Posted Lead Accrual Line";
     begin
+        if not (Rec.Status = Rec.Status::Released) then
+            Error('Only Released Lead Accrual Documents can be Posted');
         PostedLeadAccrual.Init();
         PostedLeadAccrual.TransferFields(Rec);
         PostedLeadAccrual."No." := 'P-' + Rec."No.";

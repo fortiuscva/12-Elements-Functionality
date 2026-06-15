@@ -5,44 +5,56 @@ codeunit 52110 "12E Lead Validation Mgt"
         PurchInvHeader: Record "Purch. Inv. Header";
         LeadValidation: Record "12E Lead Validation Entry";
         Vendor: Record Vendor;
+        Vendor2: Record Vendor;
         PriorDate: Date;
         LeadCost: Decimal;
     begin
-        LeadValidation.DeleteAll();
-
-        PurchInvHeader.Reset();
-        PurchInvHeader.SetRange("Posting Date", StartDate, EndDate);
-        if PurchInvHeader.FindSet() then
+        Vendor.Reset();
+        Vendor.SetRange("12E Lead Acquisition", true);
+        if Vendor.FindSet() then begin
             repeat
+                LeadValidation.DeleteAll();
 
-                LeadValidation.Init();
+                PurchInvHeader.Reset();
+                PurchInvHeader.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
+                PurchInvHeader.SetRange("Buy-from Vendor No.", Vendor."No.");
+                PurchInvHeader.SetRange("Posting Date", StartDate, EndDate);
+                if PurchInvHeader.FindSet() then begin
+                    repeat
 
-                LeadValidation."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
-                if Vendor.Get(PurchInvHeader."Buy-from Vendor No.") then
-                    LeadValidation."Vendor Name" := Vendor.Name;
+                        LeadValidation.Init();
 
-                PriorDate := GetPreviousPostingDate(
-                                     Vendor."12E Lead Acq. Vendor No.",
-                                      PurchInvHeader."Posting Date");
+                        LeadValidation."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
 
-                LeadCost := GetLeadCostAmount(
-                        Vendor."12E Lead Acq. Vendor No.",
-                        PriorDate,
-                        PurchInvHeader."Posting Date");
+                        Vendor2.Reset();
+                        if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
+                            LeadValidation."Vendor Name" := Vendor2.Name;
 
-                LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
-                LeadValidation."Purchase Invoice No." := PurchInvHeader."No.";
-                LeadValidation.Amount := PurchInvHeader.Amount;
-                LeadValidation."Prior Posting Date" := PriorDate;
-                LeadValidation."Lead Cost Amount" := LeadCost;
-                LeadValidation.Difference := LeadValidation.Amount - LeadValidation."Lead Cost Amount";
+                        PriorDate := GetPreviousPostingDate(
+                                             Vendor."12E Lead Acq. Vendor No.",
+                                              PurchInvHeader."Posting Date");
 
-                if LeadValidation.Amount <> 0 then
-                    LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation.Amount) * 100, 0.01);
+                        LeadCost := GetLeadCostAmount(
+                                Vendor."12E Lead Acq. Vendor No.",
+                                PriorDate,
+                                PurchInvHeader."Posting Date");
 
-                LeadValidation.Insert();
+                        LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
+                        LeadValidation."Purchase Invoice No." := PurchInvHeader."No.";
+                        LeadValidation.Amount := PurchInvHeader.Amount;
+                        LeadValidation."Prior Posting Date" := PriorDate;
+                        LeadValidation."Lead Cost Amount" := LeadCost;
+                        LeadValidation.Difference := LeadValidation.Amount - LeadValidation."Lead Cost Amount";
 
-            until PurchInvHeader.Next() = 0;
+                        if LeadValidation.Amount <> 0 then
+                            LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation.Amount) * 100, 0.01);
+
+                        LeadValidation.Insert();
+
+                    until PurchInvHeader.Next() = 0;
+                end;
+            until Vendor.Next() = 0;
+        end;
     end;
 
     local procedure GetPreviousPostingDate(

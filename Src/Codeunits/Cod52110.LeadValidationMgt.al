@@ -9,12 +9,11 @@ codeunit 52110 "12E Lead Validation Mgt"
         PriorDate: Date;
         LeadCost: Decimal;
     begin
+        LeadValidation.DeleteAll();
         Vendor.Reset();
         Vendor.SetRange("12E Lead Acquisition", true);
         if Vendor.FindSet() then begin
             repeat
-                LeadValidation.DeleteAll();
-
                 PurchInvHeader.Reset();
                 PurchInvHeader.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
                 PurchInvHeader.SetRange("Buy-from Vendor No.", Vendor."No.");

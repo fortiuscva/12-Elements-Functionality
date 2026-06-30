@@ -118,6 +118,20 @@ page 52124 "12E Lead Accruals"
                     end;
                 }
             }
+            action(GetInvoiceData)
+            {
+                Caption = 'Get Invoice Data';
+                ApplicationArea = All;
+                Image = GetEntries;
+
+                trigger OnAction()
+                var
+                    LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
+                begin
+                    LeadAccrualMgmt.Run(Rec);
+                    CurrPage.Update(false);
+                end;
+            }
         }
 
         area(Promoted)
@@ -146,6 +160,13 @@ page 52124 "12E Lead Accruals"
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
+                    {
+                    }
+                }
+                group(Category_Category7)
+                {
+                    Caption = 'Invoice';
+                    actionref(GetInvoiceData_Promoted; GetInvoiceData)
                     {
                     }
                 }

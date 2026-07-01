@@ -12,21 +12,21 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         VendorLcl.SetRange("12E Lead Accrual Vendor", true);
         if VendorLcl.FindSet() then begin
             repeat
-                if PostedPurchaseInvoiceExists(VendorLcl."No.", Rec."From Date", Rec."To Date") then begin
-                    Clear(LastPostingDate);
-                    LastPostingDate := 0D;
-                    LeadAccLineLcl.Init();
-                    LeadAccLineLcl."Lead Accrual No." := Rec."No.";
-                    LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
-                    LeadAccLineLcl.Insert(true);
-                    LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
-                    LeadAccLineLcl.Validate("Vendor Name", VendorLcl.Name);
-                    LastPostingDate := GetLastPostingDate(VendorLcl."No.");
-                    LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
-                    LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", LastPostingDate));
-                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
-                    LeadAccLineLcl.Modify(true);
-                end;
+                // if PostedPurchaseInvoiceExists(VendorLcl."No.", Rec."From Date", Rec."To Date") then begin
+                Clear(LastPostingDate);
+                LastPostingDate := 0D;
+                LeadAccLineLcl.Init();
+                LeadAccLineLcl."Lead Accrual No." := Rec."No.";
+                LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
+                LeadAccLineLcl.Insert(true);
+                LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
+                LeadAccLineLcl.Validate("Vendor Name", VendorLcl.Name);
+                LastPostingDate := GetLastPostingDate(VendorLcl."No.");
+                LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
+                LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", LastPostingDate));
+                LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
+                LeadAccLineLcl.Modify(true);
+            // end;
             until VendorLcl.Next() = 0;
         end;
     end;

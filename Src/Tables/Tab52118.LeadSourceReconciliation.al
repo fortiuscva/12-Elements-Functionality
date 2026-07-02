@@ -54,6 +54,13 @@ table 52118 "12E Lead Source Reconciliation"
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
+        field(9; "Vendor No."; Code[20])
+        {
+            Caption = 'Vendor No.';
+            TableRelation = Vendor;
+            FieldClass = FlowField;
+            CalcFormula = lookup(Vendor."No." where("12E Lead Acq. Vendor No." = field("Lead Provider")));
+        }
     }
 
     keys

@@ -2,9 +2,9 @@ page 52132 "12E GL Accounts"
 {
     PageType = API;
     SourceTable = "G/L Account";
-    APIPublisher = 'streamlineinc';
-    APIGroup = 'financePBI';
-    APIVersion = 'v1.0';
+    APIPublisher = '12Elements';
+    APIGroup = '12Elements';
+    APIVersion = 'v2.0';
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;

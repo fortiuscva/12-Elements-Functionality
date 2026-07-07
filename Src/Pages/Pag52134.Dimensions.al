@@ -2,9 +2,9 @@ page 52134 "12E Dimensions"
 {
     PageType = API;
     SourceTable = Dimension;
-    APIPublisher = 'streamlineinc';
-    APIGroup = 'financePBI';
-    APIVersion = 'v1.0';
+    APIPublisher = '12Elements';
+    APIGroup = '12Elements';
+    APIVersion = 'v2.0';
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;

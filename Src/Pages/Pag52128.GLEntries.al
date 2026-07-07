@@ -2,9 +2,9 @@ page 52128 "12E GL Entries"
 {
     PageType = API;
     SourceTable = "G/L Entry";
-    APIPublisher = 'streamlineinc';
-    APIGroup = 'financePBI';
-    APIVersion = 'v1.0';
+    APIPublisher = '12Elements';
+    APIGroup = '12Elements';
+    APIVersion = 'v2.0';
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;

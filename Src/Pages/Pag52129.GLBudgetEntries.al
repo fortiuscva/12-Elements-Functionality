@@ -2,9 +2,9 @@ page 52129 "12E GL Budget Entries"
 {
     PageType = API;
     SourceTable = "G/L Budget Entry";
-    APIPublisher = 'streamlineinc';
-    APIGroup = 'financePBI';
-    APIVersion = 'v1.0';
+    APIPublisher = '12Elements';
+    APIGroup = '12Elements';
+    APIVersion = 'v2.0';
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;

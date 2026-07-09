@@ -1,6 +1,6 @@
 table 52118 "12E Lead Source Reconciliation"
 {
-    Caption = 'Lead Source Reconciliation';
+    Caption = 'Lead Source Reconciliation Details';
     DataClassification = CustomerContent;
     DataPerCompany = false;
 
@@ -23,7 +23,8 @@ table 52118 "12E Lead Source Reconciliation"
             Caption = 'Datasource ID';
             DataClassification = CustomerContent;
         }
-        field(4; "Portfolio Name"; text[100])
+
+        field(4; "Portfolio Name"; Text[100])
         {
             Caption = 'Portfolio Name';
             DataClassification = CustomerContent;
@@ -41,10 +42,10 @@ table 52118 "12E Lead Source Reconciliation"
             DataClassification = CustomerContent;
         }
 
-        field(7; "Purchased Leads"; Code[20])
+        field(7; "Purchased Leads"; Decimal)
         {
             Caption = 'Purchased Leads';
-            TableRelation = Vendor;
+            DecimalPlaces = 0 : 5;
             DataClassification = CustomerContent;
         }
 
@@ -54,12 +55,21 @@ table 52118 "12E Lead Source Reconciliation"
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
+
         field(9; "Vendor No."; Code[20])
         {
             Caption = 'Vendor No.';
             TableRelation = Vendor;
             FieldClass = FlowField;
-            CalcFormula = lookup(Vendor."No." where("12E Lead Acq. Vendor No." = field("Lead Provider")));
+            Editable = false;
+            CalcFormula = lookup(Vendor."No."
+                where("12E Lead Acq. Vendor No." = field("Lead Provider")));
+        }
+
+        field(10; "DW Export DateTime"; DateTime)
+        {
+            Caption = 'DW Export DateTime';
+            DataClassification = CustomerContent;
         }
     }
 
@@ -69,6 +79,5 @@ table 52118 "12E Lead Source Reconciliation"
         {
             Clustered = true;
         }
-
     }
 }

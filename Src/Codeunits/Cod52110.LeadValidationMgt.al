@@ -3,7 +3,7 @@ codeunit 52110 "12E Lead Validation Mgt"
     procedure BuildValidationData(StartDate: Date; EndDate: Date)
     var
         PurchInvHeader: Record "Purch. Inv. Header";
-        LeadValidation: Record "12E Lead Validation Entry";
+        LeadValidation: Record "12E Lead Validation Details";
         Vendor: Record Vendor;
         Vendor2: Record Vendor;
         PriorDate: Date;
@@ -39,14 +39,14 @@ codeunit 52110 "12E Lead Validation Mgt"
                                 PurchInvHeader."Posting Date");
 
                         LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
-                        LeadValidation."Purchase Invoice No." := PurchInvHeader."No.";
-                        LeadValidation.Amount := PurchInvHeader.Amount;
+                        LeadValidation."Posted Purchase Invoice No." := PurchInvHeader."No.";
+                        LeadValidation."Invoice Amount" := PurchInvHeader.Amount;
                         LeadValidation."Prior Posting Date" := PriorDate;
                         LeadValidation."Lead Cost Amount" := LeadCost;
-                        LeadValidation.Difference := LeadValidation.Amount - LeadValidation."Lead Cost Amount";
+                        LeadValidation.Difference := LeadValidation."Invoice Amount" - LeadValidation."Lead Cost Amount";
 
-                        if LeadValidation.Amount <> 0 then
-                            LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation.Amount) * 100, 0.01);
+                        if LeadValidation."Invoice Amount" <> 0 then
+                            LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation."Invoice Amount") * 100, 0.01);
 
                         LeadValidation.Insert();
 

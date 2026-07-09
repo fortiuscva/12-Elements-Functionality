@@ -1,20 +1,20 @@
-table 52123 "12E Posted Lead Accrual Line"
+table 52119 "12E Lead Validation Details"
 {
-    Caption = 'Posted Lead Accrual Line';
+    Caption = 'Lead Validation Details';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Lead Accrual No."; Code[20])
+        field(1; "Entry No."; Integer)
         {
-            Caption = 'Document No.';
-            TableRelation = "12E Posted Lead Accrual";
+            Caption = 'Entry No.';
+            AutoIncrement = true;
             DataClassification = CustomerContent;
         }
 
-        field(2; "Line No."; Integer)
+        field(2; "Datasource ID"; Integer)
         {
-            Caption = 'Line No.';
+            Caption = 'Datasource ID';
             DataClassification = CustomerContent;
         }
 
@@ -37,54 +37,61 @@ table 52123 "12E Posted Lead Accrual Line"
             DataClassification = CustomerContent;
         }
 
-        field(6; "From Date"; Date)
+        field(6; "Posting Date"; Date)
         {
-            Caption = 'From Date';
+            Caption = 'Posting Date';
             DataClassification = CustomerContent;
         }
 
-        field(7; "To Date"; Date)
+        field(7; "Posted Purchase Invoice No."; Code[20])
         {
-            Caption = 'To Date';
+            Caption = 'Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
         }
 
-        field(8; "Last PPI Posting Date"; Date)
+        field(8; "Invoice Amount"; Decimal)
         {
-            Caption = 'Last Posted Purchase Invoice Posting Date';
-            DataClassification = CustomerContent;
-        }
-
-        field(9; "Lead Acq. Cost Vendor"; Decimal)
-        {
-            Caption = 'Lead Acquisition Costs for this Vendor';
+            Caption = 'Invoice Amount';
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
 
-        field(10; "Accrual Amount"; Decimal)
+        field(9; "Prior Posting Date"; Date)
         {
-            Caption = 'Accrual Amount';
+            Caption = 'Prior Posting Date';
+            DataClassification = CustomerContent;
+        }
+
+        field(10; "Lead Cost Amount"; Decimal)
+        {
+            Caption = 'Lead Cost Amount';
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
 
-        field(11; "Adjust Accrual Amount"; Decimal)
+        field(11; Difference; Decimal)
         {
-            Caption = 'Adjust Accrual Amount';
+            Caption = 'Difference';
             DecimalPlaces = 2 : 2;
+            DataClassification = CustomerContent;
+        }
+
+        field(12; "Difference %"; Decimal)
+        {
+            Caption = 'Difference %';
+            DecimalPlaces = 2 : 5;
             DataClassification = CustomerContent;
         }
     }
 
     keys
     {
-        key(PK; "Lead Accrual No.", "Line No.")
+        key(PK; "Entry No.")
         {
             Clustered = true;
         }
 
-        key(Vendor; "Vendor No.")
+        key(VendorPostingDate; "Vendor No.", "Posting Date")
         {
         }
     }

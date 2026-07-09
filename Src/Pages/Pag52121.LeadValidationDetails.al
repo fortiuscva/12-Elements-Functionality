@@ -1,8 +1,8 @@
-page 52121 "12E Lead Validation"
+page 52121 "12E Lead Validation Details"
 {
     PageType = Worksheet;
-    SourceTable = "12E Lead Validation Entry";
-    Caption = 'Lead Validation';
+    SourceTable = "12E Lead Validation Details";
+    Caption = 'Lead Validation Details';
     ApplicationArea = All;
     UsageCategory = Tasks;
     SourceTableTemporary = true;
@@ -42,17 +42,14 @@ page 52121 "12E Lead Validation"
                 {
                     ApplicationArea = All;
                 }
-
-                field("Purchase Invoice No."; Rec."Purchase Invoice No.")
+                field("Posted Purchase Invoice No."; Rec."Posted Purchase Invoice No.")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
                 }
-
-                field(Amount; Rec.Amount)
+                field("Invoice Amount"; Rec."Invoice Amount")
                 {
-                    ApplicationArea = All;
+                    ApplicationArea = all;
                 }
-
                 field("Prior Posting Date"; Rec."Prior Posting Date")
                 {
                     ApplicationArea = All;

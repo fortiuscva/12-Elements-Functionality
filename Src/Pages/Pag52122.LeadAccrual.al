@@ -97,28 +97,19 @@ page 52122 "12E Lead Accrual"
                 }
             }
 
-            action(GetLines)
+            action(CalcuateAccruals)
             {
                 ApplicationArea = All;
-                Caption = 'Get Lines';
+                Caption = 'Calcuate Accruals';
                 Image = GetLines;
                 ToolTip = 'Fetch and prepare EPIC payment lines for this batch.';
 
                 trigger OnAction()
                 var
-                // GetLinesMgt: Codeunit "12E EPIC Batch GetLines Mgt";
+                    LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
                 begin
-                    // Rec.TestField("Batch Date");
-
-                    // if Rec.Status <> Rec.Status::Open then
-                    //     Error('Batch must be Open to get lines.');
-
-                    // if not Confirm('Existing lines will be deleted and recreated. Continue?') then
-                    //     exit;
-
-                    // GetLinesMgt.GetLines(Rec);
-
-                    // CurrPage.Update();
+                    LeadAccrualMgmt.Run(Rec);
+                    CurrPage.Update(false);
                 end;
             }
             group("P&osting")
@@ -139,11 +130,14 @@ page 52122 "12E Lead Accrual"
 
                     trigger OnAction()
                     var
-                        LeadAccuralsPost: Codeunit "12E Lead Accrual Post";
+                        LeadAccPostMgmt: Codeunit "12E Lead Accrual Post Mgmt";
                     begin
-                        if not Confirm('Do you want to proceed with the Lead Accrual posting now?') then
+                        CurrPage.Update(true);
+                        if not Confirm(PostConfirmQst) then
                             exit;
-                        LeadAccuralsPost.Run(Rec);
+
+                        LeadAccPostMgmt.Run(Rec);
+                        Message(PostedMsg);
                     end;
                 }
                 action(PreviewPosting)
@@ -156,14 +150,10 @@ page 52122 "12E Lead Accrual"
 
                     trigger OnAction()
                     var
-                    // PreviewMgt: Codeunit "12E EPIC Batch Preview Mgt";
+                        LeadAccPostMgmt: Codeunit "12E Lead Accrual Post Mgmt";
                     begin
-                        // Rec.TestField("Batch Date");
-
-                        // if Rec.Status <> Rec.Status::Released then
-                        //     Error('Batch must be Released.');
-
-                        // PreviewMgt.Preview(Rec);
+                        CurrPage.Update(true);
+                        LeadAccPostMgmt.PreviewPost(Rec);
                     end;
                 }
             }
@@ -213,4 +203,6 @@ page 52122 "12E Lead Accrual"
 
     var
         CreatedBy: Code[50];
+        PostConfirmQst: Label 'Do you want to post the lead accrual journal lines for this document?';
+        PostedMsg: Label 'The lead accrual document has been posted.';
 }

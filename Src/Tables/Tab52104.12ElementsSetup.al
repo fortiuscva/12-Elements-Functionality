@@ -34,6 +34,24 @@ table 52104 "12E 12 Elements Setup"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
+        field(20; "Lead Accrual Jnl. Template"; Code[10])
+        {
+            Caption = 'Lead Accrual Journal Template';
+            TableRelation = "Gen. Journal Template";
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Lead Accrual Jnl. Template" <> xRec."Lead Accrual Jnl. Template" then
+                    Validate("Lead Accrual Jnl. Batch", '');
+            end;
+        }
+        field(21; "Lead Accrual Jnl. Batch"; Code[10])
+        {
+            Caption = 'Lead Accrual Journal Batch';
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Lead Accrual Jnl. Template"));
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

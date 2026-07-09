@@ -26,6 +26,14 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                 {
                     ApplicationArea = All;
                 }
+                field("12E Lead Credit Account No."; Rec."12E Lead Credit Account No.")
+                {
+                    ApplicationArea = all;
+                }
+                field("12E Lead Debit Account No."; Rec."12E Lead Debit Account No.")
+                {
+                    ApplicationArea = all;
+                }
             }
         }
     }

@@ -25,5 +25,17 @@ tableextension 52100 "12E Vendor" extends Vendor
             Caption = 'Lead Acquisition Vendor No.';
             DataClassification = CustomerContent;
         }
+        field(50104; "12E Lead Credit Account No."; Code[20])
+        {
+            Caption = 'Lead Credit Account No.';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account";
+        }
+        field(50105; "12E Lead Debit Account No."; Code[20])
+        {
+            Caption = 'Lead Debit Account No.';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Account";
+        }
     }
 }

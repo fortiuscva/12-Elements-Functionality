@@ -17,6 +17,14 @@ page 52104 "12E 12 Elements Setup"
                 {
                     ToolTip = 'Specifies the value of the EPIC Balancing G/L Account field.', Comment = '%';
                 }
+                field("Lead Accrual Jnl. Template"; Rec."Lead Accrual Jnl. Template")
+                {
+                    ApplicationArea = all;
+                }
+                field("Lead Accrual Jnl. Batch"; Rec."Lead Accrual Jnl. Batch")
+                {
+                    ApplicationArea = all;
+                }
             }
             group(Numbering)
             {

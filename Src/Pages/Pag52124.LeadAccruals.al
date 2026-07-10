@@ -97,11 +97,14 @@ page 52124 "12E Lead Accruals"
 
                     trigger OnAction()
                     var
-                        LeadAccuralsPost: Codeunit "12E Lead Accrual Post";
+                        LeadAccPostMgmt: Codeunit "12E Lead Accrual Post Mgmt";
                     begin
-                        if not Confirm('Do you want to proceed with the Lead Accrual posting now?') then
+                        CurrPage.Update(true);
+                        if not Confirm(PostConfirmQst) then
                             exit;
-                        LeadAccuralsPost.Run(Rec);
+
+                        LeadAccPostMgmt.Run(Rec);
+                        Message(PostedMsg);
                     end;
                 }
                 action(PreviewPosting)
@@ -113,8 +116,11 @@ page 52124 "12E Lead Accruals"
                     ToolTip = 'Review the different types of entries that will be created when you post the document or journal.';
 
                     trigger OnAction()
+                    var
+                        LeadAccPostMgmt: Codeunit "12E Lead Accrual Post Mgmt";
                     begin
-                        // ShowPreview();
+                        CurrPage.Update(true);
+                        LeadAccPostMgmt.PreviewPost(Rec);
                     end;
                 }
             }
@@ -173,4 +179,7 @@ page 52124 "12E Lead Accruals"
             }
         }
     }
+    var
+        PostConfirmQst: Label 'Do you want to post the lead accrual journal lines for this document?';
+        PostedMsg: Label 'The lead accrual document has been posted.';
 }

@@ -63,6 +63,7 @@ page 52121 "12E Lead Validation Details"
                 field(Difference; Rec.Difference)
                 {
                     ApplicationArea = All;
+                    StyleExpr = DifferenceStyle;
                 }
 
                 field("Difference %"; Rec."Difference %")
@@ -97,4 +98,13 @@ page 52121 "12E Lead Validation Details"
     var
         StartDate: Date;
         EndDate: Date;
+        DifferenceStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        if Rec.Difference <> 0 then
+            DifferenceStyle := 'Unfavorable'
+        else
+            DifferenceStyle := '';
+    end;
 }

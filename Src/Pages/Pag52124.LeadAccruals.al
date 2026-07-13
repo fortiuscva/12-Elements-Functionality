@@ -124,11 +124,12 @@ page 52124 "12E Lead Accruals"
                     end;
                 }
             }
-            action(GetInvoiceData)
+            action(CalcuateAccruals)
             {
-                Caption = 'Get Invoice Data';
                 ApplicationArea = All;
-                Image = GetEntries;
+                Caption = 'Calcuate Accruals';
+                Image = GetLines;
+                ToolTip = 'Fetch and prepare EPIC payment lines for this batch.';
 
                 trigger OnAction()
                 var
@@ -172,7 +173,7 @@ page 52124 "12E Lead Accruals"
                 group(Category_Category7)
                 {
                     Caption = 'Invoice';
-                    actionref(GetInvoiceData_Promoted; GetInvoiceData)
+                    actionref(GetInvoiceData_Promoted; CalcuateAccruals)
                     {
                     }
                 }

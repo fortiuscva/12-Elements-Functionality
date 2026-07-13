@@ -1,9 +1,9 @@
-page 52104 "12E 12 Elements Setup"
+page 52104 "12E Setup"
 {
     ApplicationArea = All;
-    Caption = '12 Elements Setup';
+    Caption = 'Setup';
     PageType = Card;
-    SourceTable = "12E 12 Elements Setup";
+    SourceTable = "12E Setup";
     UsageCategory = Administration;
 
     layout

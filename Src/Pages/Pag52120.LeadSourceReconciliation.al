@@ -1,6 +1,6 @@
 page 52120 "12E Lead Source Reconciliation"
 {
-    Caption = 'Lead Source Reconciliation';
+    Caption = 'Lead Source Reconciliation (Global)';
     PageType = List;
     SourceTable = "12E Lead Source Reconciliation";
     UsageCategory = Lists;

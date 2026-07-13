@@ -2,6 +2,8 @@ table 52119 "12E Lead Validation Details"
 {
     Caption = 'Lead Validation Details';
     DataClassification = CustomerContent;
+    LookupPageId = "12E Lead Validation Details";
+    DrillDownPageId = "12E Lead Validation Details";
 
     fields
     {
@@ -28,7 +30,9 @@ table 52119 "12E Lead Validation Details"
         field(4; "Vendor Name"; Text[100])
         {
             Caption = 'Vendor Name';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = lookup(Vendor.Name where("No." = field("Vendor No.")));
         }
 
         field(5; "Lead Provider"; Text[100])
@@ -46,6 +50,7 @@ table 52119 "12E Lead Validation Details"
         field(7; "Posted Purchase Invoice No."; Code[20])
         {
             Caption = 'Posted Purchase Invoice No.';
+            TableRelation = "Purch. Inv. Header";
             DataClassification = CustomerContent;
         }
 

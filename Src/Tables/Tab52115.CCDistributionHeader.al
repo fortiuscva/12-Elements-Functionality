@@ -14,7 +14,7 @@ table 52115 "12E CC Distribution Header"
             DataClassification = CustomerContent;
             trigger OnValidate()
             var
-                TwelveElementsSetup: Record "12E 12 Elements Setup";
+                TwelveElementsSetup: Record "12E Setup";
                 NoSeries: Codeunit "No. Series";
             begin
                 if "No." <> xRec."No." then begin
@@ -52,7 +52,7 @@ table 52115 "12E CC Distribution Header"
     }
     trigger OnInsert()
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         TwelveElementsSetup.Get();
@@ -67,7 +67,7 @@ table 52115 "12E CC Distribution Header"
 
     procedure AssistEdit(OldCCDHeader: Record "12E CC Distribution Header"): Boolean
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         TwelveElementsSetup.Get();

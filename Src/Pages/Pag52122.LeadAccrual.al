@@ -23,13 +23,30 @@ page 52122 "12E Lead Accrual"
                             CurrPage.Update();
                     end;
                 }
+                field(Year; Rec.Year)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the year for the accrual period.';
+                }
+
+                field(Month; Rec.Month)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the month for the accrual period.';
+                }
+
                 field("From Date"; Rec."From Date")
                 {
-                    ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Calculated from the selected month and year.';
                 }
+
                 field("To Date"; Rec."To Date")
                 {
-                    ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Calculated from the selected month and year.';
                 }
                 field(Status; Rec.Status)
                 {

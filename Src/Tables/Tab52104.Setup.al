@@ -1,6 +1,6 @@
-table 52104 "12E 12 Elements Setup"
+table 52104 "12E Setup"
 {
-    Caption = '12 Elements Setup';
+    Caption = 'Setup';
     DataClassification = CustomerContent;
 
     fields

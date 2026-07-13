@@ -26,7 +26,9 @@ table 52121 "12E Lead Accrual Line"
         field(4; "Vendor Name"; Text[100])
         {
             Caption = 'Vendor Name';
+            FieldClass = FlowField;
             Editable = false;
+            CalcFormula = lookup(Vendor.Name where("No." = field("Vendor No.")));
         }
 
         field(5; "Lead Provider"; Text[100])

@@ -115,7 +115,7 @@ codeunit 52103 "12E EPIC Batch GetLines Mgt"
         BatchHeader: Record "12E EPIC Payments Batch Header";
         var NextLineNo: Integer)
     var
-        Setup: Record "12E 12 Elements Setup";
+        Setup: Record "12E Setup";
         Line: Record "12E EPIC Payments Batch Line";
     begin
         if TotalAmount = 0 then

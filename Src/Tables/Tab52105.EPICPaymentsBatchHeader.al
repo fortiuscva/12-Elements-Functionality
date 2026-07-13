@@ -12,7 +12,7 @@ table 52105 "12E EPIC Payments Batch Header"
             DataClassification = CustomerContent;
             trigger OnValidate()
             var
-                TwelveElementsSetup: Record "12E 12 Elements Setup";
+                TwelveElementsSetup: Record "12E Setup";
                 NoSeries: Codeunit "No. Series";
             begin
                 if "Batch No." <> xRec."Batch No." then begin
@@ -67,7 +67,7 @@ table 52105 "12E EPIC Payments Batch Header"
     }
     trigger OnInsert()
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         TwelveElementsSetup.Get();
@@ -82,7 +82,7 @@ table 52105 "12E EPIC Payments Batch Header"
 
     procedure AssistEdit(OldEPICPaymentsBatchHeader: Record "12E EPIC Payments Batch Header"): Boolean
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         TwelveElementsSetup.Get();

@@ -55,20 +55,32 @@ table 52118 "12E Lead Source Reconciliation"
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
-
-        field(9; "Vendor No."; Code[20])
-        {
-            Caption = 'Vendor No.';
-            TableRelation = Vendor;
-            FieldClass = FlowField;
-            Editable = false;
-            CalcFormula = lookup(Vendor."No."
-                where("12E Lead Acq. Vendor No." = field("Lead Provider")));
-        }
-
-        field(10; "DW Export DateTime"; DateTime)
+        field(9; "DW Export DateTime"; DateTime)
         {
             Caption = 'DW Export DateTime';
+            DataClassification = CustomerContent;
+        }
+
+        field(10; "ERP Import DateTime"; DateTime)
+        {
+            Caption = 'ERP Import DateTime';
+            DataClassification = CustomerContent;
+        }
+
+        field(11; "ERP Status"; Text[50])
+        {
+            Caption = 'ERP Status';
+            DataClassification = CustomerContent;
+        }
+
+        field(12; "ERP Error Msg"; Text[200])
+        {
+            Caption = 'ERP Error Msg';
+            DataClassification = CustomerContent;
+        }
+        field(13; "Batch ID"; Guid)
+        {
+            Caption = 'Batch ID';
             DataClassification = CustomerContent;
         }
     }

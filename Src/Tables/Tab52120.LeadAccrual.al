@@ -12,7 +12,7 @@ table 52120 "12E Lead Accrual"
 
             trigger OnValidate()
             var
-                TwelveElementsSetup: Record "12E 12 Elements Setup";
+                TwelveElementsSetup: Record "12E Setup";
                 NoSeries: Codeunit "No. Series";
             begin
                 if "No." <> xRec."No." then begin
@@ -84,7 +84,7 @@ table 52120 "12E Lead Accrual"
 
     trigger OnInsert()
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         if "No." = '' then begin
@@ -104,7 +104,7 @@ table 52120 "12E Lead Accrual"
 
     procedure AssistEdit(OldLeadAccrual: Record "12E Lead Accrual"): Boolean
     var
-        TwelveElementsSetup: Record "12E 12 Elements Setup";
+        TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
     begin
         TwelveElementsSetup.Get();

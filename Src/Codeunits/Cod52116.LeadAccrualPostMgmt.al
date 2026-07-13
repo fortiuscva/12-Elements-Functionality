@@ -4,43 +4,51 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
     trigger OnRun()
     var
-        LeadAccSetup: Record "12E 12 Elements Setup";
+        TwelveSetup: Record "12E Setup";
         FirstLineNo: Integer;
         LastLineNo: Integer;
     begin
-        GetSetup(LeadAccSetup);
+        GetSetup(TwelveSetup);
 
-        CreateJournalLines(Rec, LeadAccSetup, FirstLineNo, LastLineNo);
+        DeleteExistingJournalLines(
+            TwelveSetup."Lead Accrual Jnl. Template",
+            TwelveSetup."Lead Accrual Jnl. Batch");
+
+        CreateJournalLines(
+            Rec,
+            TwelveSetup,
+            FirstLineNo,
+            LastLineNo);
 
         PostGenJournalLines(
-            LeadAccSetup."Lead Accrual Jnl. Template",
-            LeadAccSetup."Lead Accrual Jnl. Batch");
+            TwelveSetup."Lead Accrual Jnl. Template",
+            TwelveSetup."Lead Accrual Jnl. Batch");
 
         TransferToPostedLeadAccrual(Rec);
     end;
 
     procedure PreviewPost(var LeadAccHeader: Record "12E Lead Accrual")
     var
-        LeadAccSetup: Record "12E 12 Elements Setup";
+        TwelveSetup: Record "12E Setup";
         FirstLineNo: Integer;
         LastLineNo: Integer;
     begin
-        GetSetup(LeadAccSetup);
+        GetSetup(TwelveSetup);
 
-        CreateJournalLines(LeadAccHeader, LeadAccSetup, FirstLineNo, LastLineNo);
+        CreateJournalLines(LeadAccHeader, TwelveSetup, FirstLineNo, LastLineNo);
 
         PreviewGenJournalLines(
-            LeadAccSetup."Lead Accrual Jnl. Template",
-            LeadAccSetup."Lead Accrual Jnl. Batch");
+            TwelveSetup."Lead Accrual Jnl. Template",
+            TwelveSetup."Lead Accrual Jnl. Batch");
 
         DeleteJournalLines(
-            LeadAccSetup."Lead Accrual Jnl. Template",
-            LeadAccSetup."Lead Accrual Jnl. Batch",
+            TwelveSetup."Lead Accrual Jnl. Template",
+            TwelveSetup."Lead Accrual Jnl. Batch",
             FirstLineNo,
             LastLineNo);
     end;
 
-    local procedure GetSetup(var LeadAccSetup: Record "12E 12 Elements Setup")
+    local procedure GetSetup(var LeadAccSetup: Record "12E Setup")
     begin
         LeadAccSetup.Get();
 
@@ -51,7 +59,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             Error(SetupBatchMissingErr);
     end;
 
-    local procedure CreateJournalLines(var LeadAccHeader: Record "12E Lead Accrual"; LeadAccSetup: Record "12E 12 Elements Setup"; var FirstLineNo: Integer; var LastLineNo: Integer)
+    local procedure CreateJournalLines(var LeadAccHeader: Record "12E Lead Accrual"; LeadAccSetup: Record "12E Setup"; var FirstLineNo: Integer; var LastLineNo: Integer)
     var
         LeadAccLine: Record "12E Lead Accrual Line";
         NextLineNo: Integer;
@@ -260,6 +268,17 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             LeadAccLineLcl.DeleteAll(true);
 
         LeadAccHeader.Delete(true);
+    end;
+
+    local procedure DeleteExistingJournalLines(TemplateName: Code[10]; BatchName: Code[10])
+    var
+        GenJnlLine: Record "Gen. Journal Line";
+    begin
+        GenJnlLine.SetRange("Journal Template Name", TemplateName);
+        GenJnlLine.SetRange("Journal Batch Name", BatchName);
+
+        if not GenJnlLine.IsEmpty() then
+            GenJnlLine.DeleteAll(true);
     end;
 
     var

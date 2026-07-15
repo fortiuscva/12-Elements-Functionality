@@ -102,6 +102,16 @@ table 52120 "12E Lead Accrual"
         Status := Status::Open;
     end;
 
+    trigger OnDelete()
+    var
+        AccrualLine: Record "12E Lead Accrual Line";
+    begin
+        AccrualLine.Reset();
+        AccrualLine.SetRange("Lead Accrual No.", Rec."No.");
+        if AccrualLine.FindSet() then
+            AccrualLine.DeleteAll(true);
+    end;
+
     procedure AssistEdit(OldLeadAccrual: Record "12E Lead Accrual"): Boolean
     var
         TwelveElementsSetup: Record "12E Setup";

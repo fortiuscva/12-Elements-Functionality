@@ -1,9 +1,9 @@
-page 52117 "12E CCD Interface Subform"
+page 52117 "12E CCD Subform"
 {
     ApplicationArea = All;
-    Caption = 'CCD Interface Subform';
+    Caption = 'CCD Subform';
     PageType = ListPart;
-    SourceTable = "12E CC Distribution Line";
+    SourceTable = "12E CCD Line";
     AutoSplitKey = true;
 
     layout
@@ -22,7 +22,7 @@ page 52117 "12E CCD Interface Subform"
                     Visible = false;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
                 }
-                field("CCD Date"; Rec."CCD Date")
+                field("Call Date"; Rec."Call Date")
                 {
                     Visible = false;
                     ToolTip = 'Specifies the value of the CCD Date field.', Comment = '%';
@@ -35,7 +35,7 @@ page 52117 "12E CCD Interface Subform"
                 {
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
-                field("Handle Time"; Rec."Handle Time")
+                field("Handling Time"; Rec."Handling Time")
                 {
                     ToolTip = 'Specifies the value of the Handling Time field.', Comment = '%';
                 }
@@ -43,14 +43,26 @@ page 52117 "12E CCD Interface Subform"
                 {
                     ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
-                field("Sales Invoice No."; Rec."Sales Invoice No.")
+                field("Distribution Total"; Rec."Distribution Total")
                 {
-                    ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Distribution Total field.', Comment = '%';
                 }
-                field("Sales Invoice Line No."; Rec."Sales Invoice Line No.")
+                field("No. of Hours"; Rec."No. of Hours")
                 {
-                    ToolTip = 'Specifies the value of the Sales Invoice Line No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                 }
+                field("Distributed Quantity"; Rec."Distributed Quantity")
+                {
+                    ToolTip = 'Specifies the value of the Distributed Quantity field.', Comment = '%';
+                }
+                //     field("Sales Invoice No."; Rec."Sales Invoice No.")
+                //     {
+                //         ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                //     }
+                //     field("Sales Invoice Line No."; Rec."Sales Invoice Line No.")
+                //     {
+                //         ToolTip = 'Specifies the value of the Sales Invoice Line No. field.', Comment = '%';
+                //     }
             }
         }
     }

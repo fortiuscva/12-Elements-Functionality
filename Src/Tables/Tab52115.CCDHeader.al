@@ -1,8 +1,8 @@
-table 52115 "12E CC Distribution Header"
+table 52115 "12E CCD Header"
 {
-    Caption = '12E CC Distribution Header';
-    LookupPageId = "12E CCD Interface List";
-    DrillDownPageId = "12E CCD Interface List";
+    Caption = 'Contact Center Time Distribution Header';
+    LookupPageId = "12E CCD Details";
+    DrillDownPageId = "12E CCD Details";
     DataClassification = CustomerContent;
     DataPerCompany = false;
 
@@ -24,22 +24,31 @@ table 52115 "12E CC Distribution Header"
                 end;
             end;
         }
-        field(3; "From Date"; Date)
+        field(3; "Start Date"; Date)
         {
             Caption = 'From Date';
+            DataClassification = CustomerContent;
         }
-        field(5; "To Date"; Date)
+        field(5; "End Date"; Date)
         {
-            Caption = 'To Date';
+            Caption = 'End Date';
+            DataClassification = CustomerContent;
+        }
+        field(6; Processed; Boolean)
+        {
+            Caption = 'Processed';
+            DataClassification = CustomerContent;
         }
         field(7; Status; Enum "12E EPIC Pay Batch Status")
         {
             Caption = 'Status';
             Editable = false;
+            DataClassification = CustomerContent;
         }
         field(10; "No. Series"; Code[20])
         {
             Caption = 'No. Series';
+            TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
     }
@@ -65,7 +74,7 @@ table 52115 "12E CC Distribution Header"
         end;
     end;
 
-    procedure AssistEdit(OldCCDHeader: Record "12E CC Distribution Header"): Boolean
+    procedure AssistEdit(OldCCDHeader: Record "12E CCD Header"): Boolean
     var
         TwelveElementsSetup: Record "12E Setup";
         NoSeries: Codeunit "No. Series";
@@ -77,7 +86,7 @@ table 52115 "12E CC Distribution Header"
         end;
     end;
 
-    procedure PerformManualRelease(var CCDHeader: Record "12E CC Distribution Header")
+    procedure PerformManualRelease(var CCDHeader: Record "12E CCD Header")
     var
         BatchProcessingMgt: Codeunit "Batch Processing Mgt.";
         NoOfSelected: Integer;
@@ -104,7 +113,7 @@ table 52115 "12E CC Distribution Header"
         end;
     end;
 
-    procedure PerformManualReopen(var CCDHeader: Record "12E CC Distribution Header")
+    procedure PerformManualReopen(var CCDHeader: Record "12E CCD Header")
     var
         BatchProcessingMgt: Codeunit "Batch Processing Mgt.";
         NoOfSelected: Integer;
@@ -123,7 +132,7 @@ table 52115 "12E CC Distribution Header"
 
     procedure DeleteAllCallCenterDistributionLines()
     var
-        CCDLine: Record "12E CC Distribution Line";
+        CCDLine: Record "12E CCD Line";
     begin
         CCDLine.SetRange("Document No.", Rec."No.");
         CCDLine.DeleteAll(true);

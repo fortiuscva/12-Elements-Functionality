@@ -1,6 +1,6 @@
 codeunit 52106 "12E CCD Manual Release"
 {
-    TableNo = "12E CC Distribution Header";
+    TableNo = "12E CCD Header";
 
     trigger OnRun()
     var

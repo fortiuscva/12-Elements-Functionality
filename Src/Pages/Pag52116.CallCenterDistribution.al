@@ -1,9 +1,9 @@
-page 52116 "12E CC Distribution Interface"
+page 52116 "12E Call Center Distribution"
 {
     ApplicationArea = All;
-    Caption = 'Call Center Distribution Interface';
+    Caption = 'Contact Center Time Distribution';
     PageType = Document;
-    SourceTable = "12E CC Distribution Header";
+    SourceTable = "12E CCD Header";
 
     layout
     {
@@ -22,20 +22,24 @@ page 52116 "12E CC Distribution Interface"
                             CurrPage.Update();
                     end;
                 }
-                field("From Date"; Rec."From Date")
+                field("Start Date"; Rec."Start Date")
                 {
                     ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
                 }
-                field("To Date"; Rec."To Date")
+                field("End Date"; Rec."End Date")
                 {
                     ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
+                }
+                field(Processed; Rec.Processed)
+                {
+                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }
-            part(Lines; "12E CCD Interface Subform")
+            part(Lines; "12E CCD Subform")
             {
                 Caption = 'Lines';
                 SubPageLink = "Document No." = field("No.");

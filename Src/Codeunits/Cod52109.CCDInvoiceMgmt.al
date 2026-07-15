@@ -1,9 +1,9 @@
 codeunit 52109 "12E CCD Invoice Mgmt"
 {
-    procedure CreateInvoices(var CCDHeader: Record "12E CC Distribution Header")
+    procedure CreateInvoices(var CCDHeader: Record "12E CCD Header")
     var
-        CCDLine: Record "12E CC Distribution Line";
-        PortfolioMapping: Record "12E CC Portfolio Mapping";
+        CCDLine: Record "12E CCD Line";
+        PortfolioMapping: Record "12E CCD Port. Cust. Mapping";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         LastCustomerNo: Code[20];
@@ -13,12 +13,12 @@ codeunit 52109 "12E CCD Invoice Mgmt"
         if CCDHeader.Status <> CCDHeader.Status::Released then
             Error('Document must be Released before creating invoices.');
 
-        CCDLine.Reset();
-        CCDLine.SetRange("Document No.", CCDHeader."No.");
-        CCDLine.SetFilter("Sales Invoice No.", '<>%1', '');
+        // CCDLine.Reset();
+        // CCDLine.SetRange("Document No.", CCDHeader."No.");
+        // CCDLine.SetFilter("Sales Invoice No.", '<>%1', '');
 
-        if not CCDLine.IsEmpty() then
-            Error('Invoices have already been created for document %1.', CCDHeader."No.");
+        // if not CCDLine.IsEmpty() then
+        //     Error('Invoices have already been created for document %1.', CCDHeader."No.");
 
         CCDLine.Reset();
         CCDLine.SetRange("Document No.", CCDHeader."No.");
@@ -27,7 +27,7 @@ codeunit 52109 "12E CCD Invoice Mgmt"
             repeat
                 PortfolioMapping.Reset();
                 PortfolioMapping.SetRange(Portfolio, CCDLine.Portfolio);
-                PortfolioMapping.SetRange(Company, CompanyName());
+                // PortfolioMapping.SetRange(Company, CompanyName());
 
                 if not PortfolioMapping.FindFirst() then
                     Error(
@@ -58,7 +58,7 @@ codeunit 52109 "12E CCD Invoice Mgmt"
                 SalesLine."Line No." := LineNo;
 
                 SalesLine.Validate(Type, SalesLine.Type::"G/L Account");
-                SalesLine.Validate("No.", PortfolioMapping."G/L Account No.");
+                // SalesLine.Validate("No.", PortfolioMapping."G/L Account No.");
                 SalesLine.Validate(Quantity, 1);
 
                 SalesLine.Description :=
@@ -66,13 +66,13 @@ codeunit 52109 "12E CCD Invoice Mgmt"
                         '%1 - %2 - %3',
                         CCDLine."Location Code",
                         CCDLine.Portfolio,
-                        Format(CCDLine."CCD Date"));
+                        Format(CCDLine."Call Date"));
 
                 SalesLine.Insert(true);
 
-                CCDLine."Sales Invoice No." := SalesLine."Document No.";
-                CCDLine."Sales Invoice Line No." := SalesLine."Line No.";
-                CCDLine.Modify();
+            // CCDLine."Sales Invoice No." := SalesLine."Document No.";
+            // CCDLine."Sales Invoice Line No." := SalesLine."Line No.";
+            // CCDLine.Modify();
 
             until CCDLine.Next() = 0;
 

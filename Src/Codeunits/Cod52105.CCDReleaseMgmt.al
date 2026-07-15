@@ -1,13 +1,13 @@
 codeunit 52105 "12E CCD Release Mgmt"
 {
-    TableNo = "12E CC Distribution Header";
+    TableNo = "12E CCD Header";
 
     trigger OnRun()
     begin
 
     end;
 
-    procedure PerformManualRelease(var CCDHeader: Record "12E CC Distribution Header")
+    procedure PerformManualRelease(var CCDHeader: Record "12E CCD Header")
     begin
         // Validation check before release
         CheckForManualRelease(CCDHeader);
@@ -16,13 +16,13 @@ codeunit 52105 "12E CCD Release Mgmt"
         PerformManualCheckAndRelease(CCDHeader);
     end;
 
-    local procedure CheckForManualRelease(var CCDHeader: Record "12E CC Distribution Header")
+    local procedure CheckForManualRelease(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status = CCDHeader.Status::Released then
             Error('Call Center Distribution document %1 is already Released.', CCDHeader."No.");
     end;
 
-    local procedure PerformManualCheckAndRelease(var CCDHeader: Record "12E CC Distribution Header")
+    local procedure PerformManualCheckAndRelease(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status <> CCDHeader.Status::Open then
             Error('Only Open Call Center Distribution documents can be released. Document %1 skipped.', CCDHeader."No.");
@@ -31,7 +31,7 @@ codeunit 52105 "12E CCD Release Mgmt"
         CCDHeader.Modify(true);
     end;
 
-    procedure PerformManualReopen(var CCDHeader: Record "12E CC Distribution Header")
+    procedure PerformManualReopen(var CCDHeader: Record "12E CCD Header")
     begin
         // Validation before reopening
         CheckReopenStatus(CCDHeader);
@@ -40,13 +40,13 @@ codeunit 52105 "12E CCD Release Mgmt"
         Reopen(CCDHeader);
     end;
 
-    local procedure CheckReopenStatus(var CCDHeader: Record "12E CC Distribution Header")
+    local procedure CheckReopenStatus(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status = CCDHeader.Status::Open then
             Error('Call Center Distribution document %1 is already Open.', CCDHeader."No.");
     end;
 
-    local procedure Reopen(var CCDHeader: Record "12E CC Distribution Header")
+    local procedure Reopen(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status <> CCDHeader.Status::Released then
             Error('Only Released Call Center Distribution documents can be reopened. Document %1 skipped.', CCDHeader."No.");

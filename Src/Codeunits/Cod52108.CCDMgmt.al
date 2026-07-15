@@ -1,8 +1,8 @@
 codeunit 52108 "12E CCD Mgmt"
 {
-    procedure GetLines(var CCDHeader: Record "12E CC Distribution Header")
+    procedure GetLines(var CCDHeader: Record "12E CCD Header")
     var
-        CCDLine: Record "12E CC Distribution Line";
+        CCDLine: Record "12E CCD Line";
         CCDQuery: Query "12E CCD Grouped Data";
         LocationQuery: Query "12E CCD Location Totals";
         TempLocationTotals: Record "Name/Value Buffer" temporary;
@@ -11,14 +11,14 @@ codeunit 52108 "12E CCD Mgmt"
         Percentage: Decimal;
         TotalByLocation: Decimal;
     begin
-        CCDHeader.TestField("From Date");
-        CCDHeader.TestField("To Date");
+        CCDHeader.TestField("Start Date");
+        CCDHeader.TestField("End Date");
 
         DeleteExistingLines(CCDHeader);
 
         BuildLocationTotals(CCDHeader, TempLocationTotals);
 
-        CCDQuery.SetRange(CCDate, CCDHeader."From Date", CCDHeader."To Date");
+        CCDQuery.SetRange(CallDate, CCDHeader."Start Date", CCDHeader."End Date");
 
         CCDQuery.Open();
 
@@ -36,10 +36,10 @@ codeunit 52108 "12E CCD Mgmt"
             CCDLine.Init();
             CCDLine."Document No." := CCDHeader."No.";
             CCDLine."Line No." := CurrentLineNo;
-            CCDLine."CCD Date" := CCDQuery.CCDate;
+            CCDLine."Call Date" := CCDQuery.CallDate;
             CCDLine."Location Code" := CCDQuery.LocationCode;
             CCDLine.Portfolio := CCDQuery.Portfolio;
-            CCDLine."Handle Time" := HandleSeconds * 1000;
+            CCDLine."Handling Time" := HandleSeconds * 1000;
             CCDLine.Percentage := Percentage;
             CCDLine.Insert();
         end;
@@ -49,21 +49,21 @@ codeunit 52108 "12E CCD Mgmt"
         Message('CC Distribution Lines generated successfully.');
     end;
 
-    local procedure DeleteExistingLines(CCDHeader: Record "12E CC Distribution Header")
+    local procedure DeleteExistingLines(CCDHeader: Record "12E CCD Header")
     var
-        CCDLine: Record "12E CC Distribution Line";
+        CCDLine: Record "12E CCD Line";
     begin
         CCDLine.SetRange("Document No.", CCDHeader."No.");
         CCDLine.DeleteAll();
     end;
 
     local procedure BuildLocationTotals(
-        CCDHeader: Record "12E CC Distribution Header";
+        CCDHeader: Record "12E CCD Header";
         var TempLocationTotals: Record "Name/Value Buffer" temporary)
     var
         LocationQuery: Query "12E CCD Location Totals";
     begin
-        LocationQuery.SetRange(CCDate, CCDHeader."From Date", CCDHeader."To Date");
+        LocationQuery.SetRange(CallDate, CCDHeader."Start Date", CCDHeader."End Date");
 
         LocationQuery.Open();
 

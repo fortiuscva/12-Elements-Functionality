@@ -4,9 +4,9 @@ query 52101 "12E CCD Location Totals"
 
     elements
     {
-        dataitem(CCDData; "12E CC Distribution Data")
+        dataitem(CCDData; "12E CCD Detailed Data")
         {
-            column(CCDate; "CC Date")
+            column(CallDate; "Call Date")
             {
             }
 
@@ -19,13 +19,13 @@ query 52101 "12E CCD Location Totals"
                 Method = Sum;
             }
 
-            dataitem(LocationMapping; "12E CC Location Mapping")
+            dataitem(LocationMapping; "12E CCD Location Mapping")
             {
                 DataItemLink = "Location Code" = CCDData."Location Code";
 
-                filter(Active; Active)
+                filter(Blocked; Blocked)
                 {
-                    ColumnFilter = Active = const(true);
+                    ColumnFilter = Blocked = const(true);
                 }
             }
         }

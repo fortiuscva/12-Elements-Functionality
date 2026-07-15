@@ -1,10 +1,10 @@
-page 52118 "12E CCD Interface List"
+page 52118 "12E CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'Call Center Distribution Interface List';
+    Caption = 'Contact Center Time Distribution Details';
     PageType = List;
-    SourceTable = "12E CC Distribution Header";
-    CardPageId = "12E CC Distribution Interface";
+    SourceTable = "12E CCD Header";
+    CardPageId = "12E Call Center Distribution";
     UsageCategory = Lists;
     Editable = false;
 
@@ -18,13 +18,17 @@ page 52118 "12E CCD Interface List"
                 {
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("From Date"; Rec."From Date")
+                field("Start Date"; Rec."Start Date")
                 {
                     ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
                 }
-                field("To Date"; Rec."To Date")
+                field("End Date"; Rec."End Date")
                 {
                     ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
+                }
+                field(Processed; Rec.Processed)
+                {
+                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
@@ -52,7 +56,7 @@ page 52118 "12E CCD Interface List"
 
                     trigger OnAction()
                     var
-                        CCDHeader: Record "12E CC Distribution Header";
+                        CCDHeader: Record "12E CCD Header";
                     begin
                         CurrPage.SetSelectionFilter(CCDHeader);
                         Rec.PerformManualRelease(CCDHeader);
@@ -70,7 +74,7 @@ page 52118 "12E CCD Interface List"
 
                     trigger OnAction()
                     var
-                        CCDHeader: Record "12E CC Distribution Header";
+                        CCDHeader: Record "12E CCD Header";
                     begin
                         CurrPage.SetSelectionFilter(CCDHeader);
                         Rec.PerformManualReopen(CCDHeader);

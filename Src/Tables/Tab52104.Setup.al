@@ -52,6 +52,12 @@ table 52104 "12E Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Lead Accrual Jnl. Template"));
             DataClassification = CustomerContent;
         }
+        field(23; "CCD G/L Account No."; Code[20])
+        {
+            Caption = 'CCD G/L Account No.';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

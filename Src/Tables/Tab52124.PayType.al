@@ -1,6 +1,6 @@
 table 52124 "12E Pay Type"
 {
-    Caption = '12E Pay Type';
+    Caption = 'Pay Type';
     LookupPageId = "12E Pay Types";
     DrillDownPageId = "12E Pay Types";
     DataClassification = CustomerContent;

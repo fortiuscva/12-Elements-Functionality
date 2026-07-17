@@ -1,9 +1,9 @@
-page 52136 "12E Pay Types"
+page 52137 "12E Department Codes"
 {
     ApplicationArea = All;
-    Caption = 'Pay Types';
+    Caption = 'Department Codes';
     PageType = List;
-    SourceTable = "12E Pay Type";
+    SourceTable = "12E Department Code";
     UsageCategory = Lists;
 
     layout
@@ -12,9 +12,9 @@ page 52136 "12E Pay Types"
         {
             repeater(General)
             {
-                field("Pay Type Code"; Rec."Pay Type Code")
+                field("Code"; Rec."Code")
                 {
-                    ToolTip = 'Specifies the value of the Pay Type Code field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Code field.', Comment = '%';
                 }
                 field(Description; Rec.Description)
                 {
@@ -23,10 +23,6 @@ page 52136 "12E Pay Types"
                 field("Contact Center"; Rec."Contact Center")
                 {
                     ToolTip = 'Specifies the value of the Contact Center field.', Comment = '%';
-                }
-                field("Do not process for payroll"; Rec."Do not process for payroll")
-                {
-                    ToolTip = 'Specifies the value of the Do not process for payroll field.', Comment = '%';
                 }
             }
         }

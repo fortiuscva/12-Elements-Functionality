@@ -53,7 +53,7 @@ table 52116 "12E CCD Line"
             Caption = 'Distribution Total';
             DecimalPlaces = 0 : 2;
             FieldClass = FlowField;
-            CalcFormula = sum("12E CCD Allocation Details"."CCD Location Hours" where("CCD Location" = field("Location Code")));
+            CalcFormula = sum("12E CCD Allocation Details"."CCD Location Hours" where("CCD Location" = field("Location Code"), "CCD No." = field("Document No.")));
         }
         field(17; "No. of Hours"; Decimal)
         {

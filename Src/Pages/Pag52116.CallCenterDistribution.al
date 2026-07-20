@@ -86,10 +86,10 @@ page 52116 "12E Call Center Distribution"
                         CurrPage.Update();
                     end;
                 }
-                action(GetLines)
+                action(CalculateAlloCation)
                 {
                     ApplicationArea = All;
-                    Caption = 'Get Lines';
+                    Caption = 'Calculate Allocation';
                     Image = GetLines;
 
                     trigger OnAction()
@@ -113,6 +113,15 @@ page 52116 "12E Call Center Distribution"
                         CCDInvoiceMgmt.CreateInvoices(Rec);
                     end;
                 }
+                action(ShowAllocationDetails)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Allocation Details';
+                    Image = ViewDetails;
+
+                    RunObject = Page "12E CCD Allocation Details";
+                    RunPageLink = "CCD No." = FIELD("No.");
+                }
             }
         }
         area(Promoted)
@@ -130,7 +139,10 @@ page 52116 "12E Call Center Distribution"
                     actionref(Reopen_Promoted; Reopen)
                     {
                     }
-                    actionref(GetLines_Promoted; GetLines)
+                    actionref(GetLines_Promoted; CalculateAlloCation)
+                    {
+                    }
+                    actionref(ShowAllocation_Promoted; ShowAllocationDetails)
                     {
                     }
                 }

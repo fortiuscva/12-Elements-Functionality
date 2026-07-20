@@ -20,6 +20,10 @@ page 52115 "12E CCD Loc. Mapping Details"
                 {
                     ToolTip = 'Specifies the value of the Blocked field.', Comment = '%';
                 }
+                field("Processing Type"; Rec."Processing Type")
+                {
+                    ToolTip = 'Specifies the value of the Processing Type field.', Comment = '%';
+                }
                 field("Vendor No."; Rec."Vendor No.")
                 {
                     ToolTip = 'Specifies the value of the Vendor No. field.', Comment = '%';

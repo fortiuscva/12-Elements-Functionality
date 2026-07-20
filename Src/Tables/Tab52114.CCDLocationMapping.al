@@ -25,6 +25,11 @@ table 52114 "12E CCD Location Mapping"
             TableRelation = Vendor;
             DataClassification = CustomerContent;
         }
+        field(9; "Processing Type"; Enum "12E CCD Processing Types")
+        {
+            Caption = 'Processing Type';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

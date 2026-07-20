@@ -1,4 +1,4 @@
-query 52100 "12E CCD Grouped Data"
+query 52100 "12E CCD Allocation Data"
 {
     QueryType = Normal;
 
@@ -6,7 +6,7 @@ query 52100 "12E CCD Grouped Data"
     {
         dataitem(CCDData; "12E CCD Detailed Data")
         {
-            column(CallDate; "Call Date")
+            filter(CallDate; "Call Date")
             {
             }
 
@@ -29,7 +29,7 @@ query 52100 "12E CCD Grouped Data"
 
                 filter(Blocked; Blocked)
                 {
-                    ColumnFilter = Blocked = const(true);
+                    ColumnFilter = Blocked = const(false);
                 }
             }
         }

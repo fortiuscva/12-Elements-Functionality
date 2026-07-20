@@ -25,6 +25,10 @@ page 52104 "12E Setup"
                 {
                     ApplicationArea = all;
                 }
+                field("CCD G/L Account No."; Rec."CCD G/L Account No.")
+                {
+                    ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
+                }
             }
             group(Numbering)
             {

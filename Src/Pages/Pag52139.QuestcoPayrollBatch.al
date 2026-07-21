@@ -114,7 +114,52 @@ page 52139 "12E Questco Payroll Batch"
                     end;
                 }
             }
+            action(CreatePayrollDocuments)
+            {
+                ApplicationArea = All;
+                Caption = 'Create Payroll Documents';
+                Image = CreateDocument;
 
+                trigger OnAction()
+                var
+                    PayrollBatchMgmt: Codeunit "12E Payroll Batch Mgmt";
+                begin
+                    PayrollBatchMgmt.CreatePayrollDocuments(Rec);
+                    CurrPage.Update();
+                end;
+            }
+            action(Post)
+            {
+                ApplicationArea = All;
+                Caption = 'Post';
+                Image = Post;
+
+                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+
+                trigger OnAction()
+                var
+                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                begin
+                    PayrollBatchPost.Post(Rec);
+                    CurrPage.Update();
+                end;
+            }
+
+            action(PreviewPosting)
+            {
+                ApplicationArea = All;
+                Caption = 'Preview Posting';
+                Image = ViewPostedOrder;
+
+                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+
+                trigger OnAction()
+                var
+                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                begin
+                    PayrollBatchPost.PreviewPosting(Rec);
+                end;
+            }
         }
         area(Promoted)
         {
@@ -127,6 +172,15 @@ page 52139 "12E Questco Payroll Batch"
                 {
                 }
                 actionref(Reopen_Promoted; Reopen)
+                {
+                }
+                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
+                {
+                }
+                actionref(Post_Promoted; Post)
+                {
+                }
+                actionref(PreviewPosting_Promoted; PreviewPosting)
                 {
                 }
             }

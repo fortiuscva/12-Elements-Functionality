@@ -123,13 +123,13 @@ codeunit 52108 "12E CCD Mgmt"
 
         if QuestcoPayrollTxn.FindSet() then
             repeat
-                if not DepartmentCode.Get(QuestcoPayrollTxn."Department Code") then
+                if not DepartmentCode.Get(QuestcoPayrollTxn.Department) then
                     continue;
 
                 if not DepartmentCode."Contact Center" then
                     continue;
 
-                if not PayType.Get(QuestcoPayrollTxn."Pay Type Code") then
+                if not PayType.Get(QuestcoPayrollTxn."Pay Code") then
                     continue;
 
                 if not PayType."Contact Center" then

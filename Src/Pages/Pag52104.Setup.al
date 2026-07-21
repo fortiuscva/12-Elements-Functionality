@@ -25,6 +25,14 @@ page 52104 "12E Setup"
                 {
                     ApplicationArea = all;
                 }
+                field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
+                }
+                field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
+                }
                 field("CCD G/L Account No."; Rec."CCD G/L Account No.")
                 {
                     ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';

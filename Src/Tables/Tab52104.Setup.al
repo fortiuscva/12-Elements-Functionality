@@ -58,6 +58,36 @@ table 52104 "12E Setup"
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
+        field(25; "Payroll Batch Nos."; Code[20])
+        {
+            Caption = 'Payroll Batch Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
+        field(27; "Payroll Offset Account No."; Code[20])
+        {
+            Caption = 'Payroll Offset Account No.';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(29; "Payroll Jnl. Template"; Code[10])
+        {
+            Caption = 'Payroll Journal Template';
+            TableRelation = "Gen. Journal Template";
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Payroll Jnl. Template" <> xRec."Payroll Jnl. Template" then
+                    Validate("Payroll Jnl. Batch", '');
+            end;
+        }
+        field(31; "Payroll Jnl. Batch"; Code[10])
+        {
+            Caption = 'Payroll Journal Batch';
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Jnl. Template"));
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

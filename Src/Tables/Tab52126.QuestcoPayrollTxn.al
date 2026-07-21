@@ -32,67 +32,83 @@ table 52126 "12E Questco Payroll Txn"
             Caption = 'Pay Date';
             DataClassification = CustomerContent;
         }
-        field(6; "Employee No."; Code[20])
+        field(6; "Batch Type"; Code[50])
+        {
+            Caption = 'Batch Type';
+            DataClassification = CustomerContent;
+        }
+        field(7; "Pay Period Start Date"; Date)
+        {
+            Caption = 'Pay Period Start Date';
+            DataClassification = CustomerContent;
+        }
+        field(8; "Pay Period End Date"; Date)
+        {
+            Caption = 'Pay Period End Date';
+            DataClassification = CustomerContent;
+        }
+        field(9; "Employee No."; Code[20])
         {
             Caption = 'Employee No.';
             DataClassification = CustomerContent;
         }
-        field(7; Department; Code[20])
+        field(10; "Department Code"; Code[20])
         {
-            Caption = 'Department';
+            Caption = 'Department Code';
             DataClassification = CustomerContent;
         }
-        field(8; "G/L Account No."; Code[20])
+        field(11; "G/L Account No."; Code[20])
         {
             Caption = 'G/L Account No.';
             DataClassification = CustomerContent;
         }
-        field(9; "Pay Code"; Code[20])
+        field(12; "Pay Type Code"; Code[20])
         {
-            Caption = 'Pay Code';
+            Caption = 'Pay Type Code';
+            TableRelation = "12E Pay Type";
             DataClassification = CustomerContent;
         }
-        field(10; "Debit Amount"; Decimal)
+        field(13; "Debit Amount"; Decimal)
         {
             Caption = 'Debit Amount';
             DataClassification = CustomerContent;
         }
-        field(11; "Credit Amount"; Decimal)
+        field(14; "Credit Amount"; Decimal)
         {
             Caption = 'Credit Amount';
             DataClassification = CustomerContent;
         }
-        field(12; "Hours Worked"; Decimal)
+        field(15; "Hours Worked"; Decimal)
         {
             Caption = 'Hours Worked';
             DataClassification = CustomerContent;
         }
-        field(13; "Hours Paid"; Decimal)
+        field(16; "Hours Paid"; Decimal)
         {
             Caption = 'Hours Paid';
             DataClassification = CustomerContent;
         }
-        field(14; "DW Export Timestamp"; DateTime)
+        field(17; "DW Export Timestamp"; DateTime)
         {
             Caption = 'DWExportTimestamp';
             DataClassification = CustomerContent;
         }
-        field(15; "ERP Import Timestamp"; DateTime)
+        field(18; "ERP Import Timestamp"; DateTime)
         {
             Caption = 'ERPImportTimestamp';
             DataClassification = CustomerContent;
         }
-        field(16; "ERP Status"; Text[50])
+        field(19; "ERP Status"; Text[50])
         {
             Caption = 'ERPStatus';
             DataClassification = CustomerContent;
         }
-        field(17; "ERP Error Msg"; Text[250])
+        field(20; "ERP Error Msg"; Text[250])
         {
             Caption = 'ERPErrorMsg';
             DataClassification = CustomerContent;
         }
-        field(18; "Export Batch ID"; Guid)
+        field(21; "Export Batch ID"; Guid)
         {
             Caption = 'Export Batch ID';
         }

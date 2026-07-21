@@ -39,6 +39,11 @@ table 52100 "12E Company Mapping"
             Caption = 'Company ID';
             DataClassification = CustomerContent;
         }
+        field(4; "Client ID"; Integer)
+        {
+            Caption = 'Client ID';
+            DataClassification = CustomerContent;
+        }
         field(5; DBA; Text[100])
         {
             Caption = 'DBA';

@@ -29,6 +29,10 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
                 }
+                field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
+                }
             }
             group(Numbering)
             {
@@ -44,6 +48,10 @@ page 52104 "12E Setup"
                 field("Lead Accrual Nos."; Rec."Lead Accrual Nos.")
                 {
                     ToolTip = 'Specifies the value of the Lead Accrual Nos. field.', Comment = '%';
+                }
+                field("Payroll Batch Nos."; Rec."Payroll Batch Nos.")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Batch Nos. field.', Comment = '%';
                 }
             }
         }

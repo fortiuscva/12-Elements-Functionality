@@ -58,6 +58,18 @@ table 52104 "12E Setup"
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
+        field(25; "Payroll Batch Nos."; Code[20])
+        {
+            Caption = 'Payroll Batch Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
+        field(27; "Payroll Offset Account No."; Code[20])
+        {
+            Caption = 'Payroll Offset Account No.';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

@@ -36,7 +36,7 @@ page 52138 "12E Questco Payroll Txns"
                 {
                     ToolTip = 'Specifies the value of the Employee No. field.', Comment = '%';
                 }
-                field(Department; Rec.Department)
+                field(Department; Rec."Department Code")
                 {
                     ToolTip = 'Specifies the value of the Department field.', Comment = '%';
                 }
@@ -44,7 +44,7 @@ page 52138 "12E Questco Payroll Txns"
                 {
                     ToolTip = 'Specifies the value of the G/L Account No. field.', Comment = '%';
                 }
-                field("Pay Code"; Rec."Pay Code")
+                field("Pay Code"; Rec."Pay Type Code")
                 {
                     ToolTip = 'Specifies the value of the Pay Code field.', Comment = '%';
                 }

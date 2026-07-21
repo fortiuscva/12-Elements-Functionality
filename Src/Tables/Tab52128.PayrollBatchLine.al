@@ -1,0 +1,66 @@
+table 52128 "12E Payroll Batch Line"
+{
+    Caption = '12E Payroll Batch Line';
+    DataPerCompany = true;
+    DataClassification = CustomerContent;
+
+    fields
+    {
+        field(1; "Document No."; Code[20])
+        {
+            Caption = 'Document No.';
+            TableRelation = "12E Payroll Batch Header";
+            DataClassification = CustomerContent;
+        }
+        field(2; "Line No."; Integer)
+        {
+            Caption = 'Line No.';
+            DataClassification = CustomerContent;
+        }
+        field(4; "Employee No."; Code[20])
+        {
+            Caption = 'Employee No.';
+            TableRelation = Employee;
+            DataClassification = CustomerContent;
+        }
+        field(5; "Department Code"; Code[20])
+        {
+            Caption = 'Department Code';
+            DataClassification = CustomerContent;
+        }
+        field(6; "G/L Account No."; Code[20])
+        {
+            Caption = 'G/L Account No.';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(7; "Pay Type Code"; Code[20])
+        {
+            Caption = 'Pay Type Code';
+            TableRelation = "12E Pay Type";
+            DataClassification = CustomerContent;
+        }
+        field(8; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            DataClassification = CustomerContent;
+        }
+        field(9; "Hours Worked"; Decimal)
+        {
+            Caption = 'Hours Worked';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Hours Paid"; Decimal)
+        {
+            Caption = 'Hours Paid';
+            DataClassification = CustomerContent;
+        }
+    }
+    keys
+    {
+        key(PK; "Document No.", "Line No.")
+        {
+            Clustered = true;
+        }
+    }
+}

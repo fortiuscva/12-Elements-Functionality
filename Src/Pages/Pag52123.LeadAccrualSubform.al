@@ -35,6 +35,10 @@ page 52123 "12E Lead Accrual Subform"
                 {
                     ToolTip = 'Specifies the value of the Last Posted Purchase Invoice Posting Date field.', Comment = '%';
                 }
+                field("Override Last PPI Posting Date"; Rec."Override Last PPI Posting Date")
+                {
+                    ToolTip = 'Specifies the value of the Override Last PPI Posting Date field.', Comment = '%';
+                }
                 field("Accrual Amount"; Rec."Accrual Amount")
                 {
                     ToolTip = 'Specifies the value of the Accrual Amount field.', Comment = '%';

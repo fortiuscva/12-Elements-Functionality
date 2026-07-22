@@ -27,6 +27,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     Clear(LastPostingDate);
                     LastPostingDate := GetLastPostingDate(VendorLcl."No.", Rec."From Date", Rec."To Date");
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
+                    LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
 
                     StartDate := CalcDate('<+1D>', LastPostingDate);
@@ -97,7 +98,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         exit(LeadAcqCost);
     end;
 
-    local procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
+    procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
     var
         LeadSourceRecon: Record "12E Lead Source Reconciliation";
         AccrualAmount: Decimal;

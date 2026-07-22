@@ -75,6 +75,11 @@ table 52123 "12E Posted Lead Accrual Line"
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
+        field(12; "Override Last PPI Posting Date"; Date)
+        {
+            Caption = 'Override Last PPI Posting Date';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

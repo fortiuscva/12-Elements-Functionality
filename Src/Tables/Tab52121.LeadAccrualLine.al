@@ -80,17 +80,10 @@ table 52121 "12E Lead Accrual Line"
             DataClassification = CustomerContent;
             trigger OnValidate()
             var
-                Vendor: Record Vendor;
-                StartDate: Date;
-                EndDate: Date;
                 LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
             begin
-                if ("Override Last PPI Posting Date" <> "Last PPI Posting Date") and ("Override Last PPI Posting Date" <> 0D) then begin
-                    Vendor.Get("Vendor No.");
-                    StartDate := CalcDate('<+1D>', "Override Last PPI Posting Date");
-                    EndDate := CalcDate('<CM>', "Override Last PPI Posting Date");
-                    Validate("Accrual Amount", LeadAccrualMgmt.GetAccrualAmountsForThisVendor(Vendor."12E Lead Acq. Vendor No.", StartDate, EndDate));
-                end;
+                if "Override Last PPI Posting Date" <> "Last PPI Posting Date" then
+                    LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
             end;
         }
     }

@@ -74,6 +74,18 @@ table 52121 "12E Lead Accrual Line"
             Caption = 'Adjust Accrual Amount';
             DecimalPlaces = 2 : 2;
         }
+        field(12; "Override Last PPI Posting Date"; Date)
+        {
+            Caption = 'Override Last PPI Posting Date';
+            DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
+            begin
+                if "Override Last PPI Posting Date" <> "Last PPI Posting Date" then
+                    LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
+            end;
+        }
     }
 
     keys

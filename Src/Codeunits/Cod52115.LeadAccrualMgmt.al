@@ -27,11 +27,10 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     Clear(LastPostingDate);
                     LastPostingDate := GetLastPostingDate(VendorLcl."No.", Rec."From Date", Rec."To Date");
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
+                    LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
 
-                    StartDate := CalcDate('<+1D>', LastPostingDate);
-                    EndDate := CalcDate('<CM>', LastPostingDate);
-                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Acq. Vendor No.", StartDate, EndDate));
+                    RecalculateAccrualAmount(LeadAccLineLcl);
                 end
                 else
                     LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Acq. Vendor No.", Rec."From Date", Rec."To Date"));
@@ -97,7 +96,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         exit(LeadAcqCost);
     end;
 
-    local procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
+    procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
     var
         LeadSourceRecon: Record "12E Lead Source Reconciliation";
         AccrualAmount: Decimal;
@@ -112,6 +111,31 @@ codeunit 52115 "12E Lead Accrual Mgmt"
             until LeadSourceRecon.Next() = 0;
 
         exit(AccrualAmount);
+    end;
+
+    procedure RecalculateAccrualAmount(var LeadAccLine: Record "12E Lead Accrual Line")
+    var
+        Vendor: Record Vendor;
+        StartDate: Date;
+        EndDate: Date;
+    begin
+        if not Vendor.Get(LeadAccLine."Vendor No.") then
+            exit;
+
+        if LeadAccLine."Override Last PPI Posting Date" <> 0D then begin
+            StartDate := CalcDate('<+1D>', LeadAccLine."Override Last PPI Posting Date");
+            EndDate := CalcDate('<CM>', LeadAccLine."Override Last PPI Posting Date");
+        end else begin
+            StartDate := LeadAccLine."From Date";
+            EndDate := LeadAccLine."To Date";
+        end;
+
+        LeadAccLine.Validate(
+            "Accrual Amount",
+            GetAccrualAmountsForThisVendor(
+                Vendor."12E Lead Acq. Vendor No.",
+                StartDate,
+                EndDate));
     end;
 
     var

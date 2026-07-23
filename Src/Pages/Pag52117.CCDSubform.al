@@ -75,6 +75,15 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Invoice Date field.', Comment = '%';
                 }
+                field("Batch or Inv. Hours"; Rec."Batch or Inv. Hours")
+                {
+                    ToolTip = 'Specifies the value of the Batch/Invoice Hours field.', Comment = '%';
+                }
+                field("Batch or Inv. Percentage"; Rec."Batch or Inv. Percentage")
+                {
+                    ToolTip = 'Specifies the value of the Batch/Invoice Hours Distribution Percentage field.', Comment = '%';
+                }
+
                 //     field("Sales Invoice No."; Rec."Sales Invoice No.")
                 //     {
                 //         ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';

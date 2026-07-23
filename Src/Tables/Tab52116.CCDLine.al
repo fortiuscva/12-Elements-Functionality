@@ -90,6 +90,18 @@ table 52116 "12E CCD Line"
             Caption = 'Invoice Date';
             DataClassification = CustomerContent;
         }
+        field(29; "Batch or Inv. Hours"; Decimal)
+        {
+            Caption = 'Batch/Invoice Hours';
+            DecimalPlaces = 0 : 2;
+            DataClassification = CustomerContent;
+        }
+        field(31; "Batch or Inv. Percentage"; Decimal)
+        {
+            Caption = 'Batch/Invoice Hours Distribution Percentage';
+            DecimalPlaces = 0 : 2;
+            DataClassification = CustomerContent;
+        }
         // field(15; "Sales Invoice No."; Code[20])
         // {
         //     Caption = 'Sales Invoice No.';

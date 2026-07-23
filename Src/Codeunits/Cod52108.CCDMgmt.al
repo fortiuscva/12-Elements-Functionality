@@ -2,16 +2,12 @@ codeunit 52108 "12E CCD Mgmt"
 {
     procedure GetLines(var CCDHeader: Record "12E CCD Header")
     var
-        CCDLine: Record "12E CCD Line";
         CCDQuery: Query "12E CCD Allocation Data";
-        TempLocationTotals: Record "Name/Value Buffer" temporary;
         CCDLocationMapping: Record "12E CCD Location Mapping";
-        CurrentLineNo: Integer;
+        TempLocationTotals: Record "Name/Value Buffer" temporary;
         PortfolioHandleTime: Decimal;
-        TotalByLocation: Decimal;
-        Percentage: Decimal;
-        PFCCHours: Decimal;
-        TotalHours: Decimal;
+        TotalLocationHandleTime: Decimal;
+        AllocationPercentage: Decimal;
     begin
         CCDHeader.TestField("Start Date");
         CCDHeader.TestField("End Date");
@@ -20,52 +16,168 @@ codeunit 52108 "12E CCD Mgmt"
 
         BuildLocationTotals(CCDHeader, TempLocationTotals);
 
-        PFCCHours := GetPFCCHours(CCDHeader);
-
         CCDQuery.SetRange(CallDate, CCDHeader."Start Date", CCDHeader."End Date");
         CCDQuery.Open();
 
         while CCDQuery.Read() do begin
-            CurrentLineNo += 10000;
 
             PortfolioHandleTime := CCDQuery.TotalHandleTime;
-            TotalByLocation := GetLocationTotal(TempLocationTotals, CCDQuery.LocationCode);
+            TotalLocationHandleTime := GetLocationTotal(TempLocationTotals, CCDQuery.LocationCode);
+            AllocationPercentage := 0;
 
-            Percentage := 0;
-            if TotalByLocation <> 0 then
-                Percentage := Round((PortfolioHandleTime / TotalByLocation) * 100, 0.00001);
+            if TotalLocationHandleTime <> 0 then
+                AllocationPercentage := Round((PortfolioHandleTime / TotalLocationHandleTime) * 100, 0.00001);
 
-            CCDLocationMapping.Get(CCDQuery.LocationCode);
+            if not CCDLocationMapping.Get(CCDQuery.LocationCode) then
+                Error('CCD Location Mapping does not exist for Location %1.', CCDQuery.LocationCode);
 
             case CCDLocationMapping."Processing Type" of
                 CCDLocationMapping."Processing Type"::Payroll:
-                    TotalHours := PFCCHours;
+                    CreatePayrollCCDLines(CCDHeader, CCDQuery.LocationCode, CCDQuery.Portfolio, PortfolioHandleTime, AllocationPercentage);
 
                 CCDLocationMapping."Processing Type"::Vendor:
-                    TotalHours := GetVendorHours(CCDQuery.LocationCode, CCDHeader);
+                    CreateVendorCCDLines(CCDHeader, CCDQuery.LocationCode, CCDQuery.Portfolio, PortfolioHandleTime, AllocationPercentage);
 
                 else
-                    TotalHours := 0;
+                    Error('Processing Type must be specified for Location %1.', CCDQuery.LocationCode);
             end;
-
-            CCDLine.Init();
-            CCDLine."Document No." := CCDHeader."No.";
-            CCDLine."Line No." := CurrentLineNo;
-            CCDLine."Call Date" := CCDHeader."Start Date";
-            CCDLine."Location Code" := CCDQuery.LocationCode;
-            CCDLine.Portfolio := CCDQuery.Portfolio;
-            CCDLine."Handling Time" := PortfolioHandleTime;
-            CCDLine.Percentage := Percentage;
-            CCDLine."No. of Hours" := TotalHours;
-            CCDLine."Distributed Quantity" :=
-                Round((TotalHours * Percentage) / 100, 0.00001);
-
-            CCDLine.Insert();
         end;
 
         CCDQuery.Close();
 
         Message('Call Center Distribution Lines generated successfully.');
+    end;
+
+    local procedure CreatePayrollCCDLines(
+    CCDHeader: Record "12E CCD Header";
+    LocationCode: Code[10];
+    Portfolio: Code[20];
+    PortfolioHandleTime: Decimal;
+    AllocationPercentage: Decimal)
+    var
+        PayrollBatchSummary: Query "12E Payroll Batch Summary";
+        QuestcoPayrollTxn: Record "12E Questco Payroll Txn";
+    begin
+        PayrollBatchSummary.SetRange(PayDate, CCDHeader."Start Date", CCDHeader."End Date");
+        PayrollBatchSummary.Open();
+
+        while PayrollBatchSummary.Read() do begin
+            QuestcoPayrollTxn.Reset();
+            QuestcoPayrollTxn.SetRange("Batch ID", PayrollBatchSummary.BatchID);
+            if QuestcoPayrollTxn.FindFirst() then
+                InsertCCDLine(
+                    CCDHeader,
+                    LocationCode,
+                    Portfolio,
+                    PortfolioHandleTime,
+                    AllocationPercentage,
+                    PayrollBatchSummary.TotalHours,
+                    PayrollBatchSummary.BatchID,
+                    QuestcoPayrollTxn."Pay Period Start Date",
+                    QuestcoPayrollTxn."Pay Period End Date",
+                    '',
+                    0D);
+
+        end;
+
+        PayrollBatchSummary.Close();
+    end;
+
+    local procedure CreateVendorCCDLines(
+    CCDHeader: Record "12E CCD Header";
+    LocationCode: Code[10];
+    Portfolio: Code[20];
+    PortfolioHandleTime: Decimal;
+    AllocationPercentage: Decimal)
+    var
+        CCDLocationMapping: Record "12E CCD Location Mapping";
+        PurchInvHeader: Record "Purch. Inv. Header";
+        PurchInvLine: Record "Purch. Inv. Line";
+        InvoiceHours: Decimal;
+    begin
+        if not CCDLocationMapping.Get(LocationCode) then
+            exit;
+
+        CCDLocationMapping.TestField("Vendor No.");
+        PurchInvHeader.SetRange("Buy-from Vendor No.", CCDLocationMapping."Vendor No.");
+        PurchInvHeader.SetRange("Posting Date", CCDHeader."Start Date", CCDHeader."End Date");
+        if PurchInvHeader.FindSet() then
+            repeat
+                InvoiceHours := 0;
+
+                PurchInvLine.Reset();
+                PurchInvLine.SetRange("Document No.", PurchInvHeader."No.");
+                if PurchInvLine.FindSet() then
+                    repeat
+                        InvoiceHours += PurchInvLine.Quantity;
+                    until PurchInvLine.Next() = 0;
+
+                if InvoiceHours = 0 then
+                    continue;
+
+                InsertCCDLine(
+                    CCDHeader,
+                    LocationCode,
+                    Portfolio,
+                    PortfolioHandleTime,
+                    AllocationPercentage,
+                    InvoiceHours,
+                    0,
+                    0D,
+                    0D,
+                    PurchInvHeader."No.",
+                    PurchInvHeader."Posting Date");
+
+            until PurchInvHeader.Next() = 0;
+    end;
+
+    local procedure InsertCCDLine(
+    CCDHeader: Record "12E CCD Header";
+    LocationCode: Code[10];
+    Portfolio: Code[20];
+    PortfolioHandleTime: Decimal;
+    AllocationPercentage: Decimal;
+    Hours: Decimal;
+    PayrollBatchID: Integer;
+    PayrollStartDate: Date;
+    PayrollEndDate: Date;
+    PurchaseInvoiceNo: Code[20];
+    PurchaseInvoiceDate: Date)
+    var
+        CCDLine: Record "12E CCD Line";
+    begin
+        CCDLine.Init();
+
+        CCDLine."Document No." := CCDHeader."No.";
+        CCDLine."Line No." := GetNextLineNo(CCDHeader."No.");
+
+        CCDLine."Call Date" := CCDHeader."Start Date";
+        CCDLine."Location Code" := LocationCode;
+        CCDLine.Portfolio := Portfolio;
+
+        CCDLine."Handling Time" := PortfolioHandleTime;
+        CCDLine.Percentage := AllocationPercentage;
+
+        if PayrollBatchID <> 0 then begin
+            CCDLine."Payroll Batch ID" := PayrollBatchID;
+            CCDLine."Batch Start Date" := PayrollStartDate;
+            CCDLine."Batch End Date" := PayrollEndDate;
+
+            CCDLine."Batch or Inv. Hours" := Hours;
+            CCDLine."Batch or Inv. Percentage" :=
+                Round(Hours * AllocationPercentage / 100, 0.00001);
+        end;
+
+        if PurchaseInvoiceNo <> '' then begin
+            CCDLine."Invoice No." := PurchaseInvoiceNo;
+            CCDLine."Invoice Date" := PurchaseInvoiceDate;
+
+            CCDLine."Batch or Inv. Hours" := Hours;
+            CCDLine."Batch or Inv. Percentage" :=
+                Round(Hours * AllocationPercentage / 100, 0.00001);
+        end;
+
+        CCDLine.Insert(true);
     end;
 
     local procedure DeleteExistingLines(CCDHeader: Record "12E CCD Header")
@@ -76,14 +188,11 @@ codeunit 52108 "12E CCD Mgmt"
         CCDLine.DeleteAll();
     end;
 
-    local procedure BuildLocationTotals(
-        CCDHeader: Record "12E CCD Header";
-        var TempLocationTotals: Record "Name/Value Buffer" temporary)
+    local procedure BuildLocationTotals(CCDHeader: Record "12E CCD Header"; var TempLocationTotals: Record "Name/Value Buffer" temporary)
     var
         LocationQuery: Query "12E CCD Location Totals";
     begin
         LocationQuery.SetRange(CallDate, CCDHeader."Start Date", CCDHeader."End Date");
-
         LocationQuery.Open();
 
         while LocationQuery.Read() do begin
@@ -97,9 +206,7 @@ codeunit 52108 "12E CCD Mgmt"
         LocationQuery.Close();
     end;
 
-    local procedure GetLocationTotal(
-        var TempLocationTotals: Record "Name/Value Buffer" temporary;
-        LocationCode: Code[10]): Decimal
+    local procedure GetLocationTotal(var TempLocationTotals: Record "Name/Value Buffer" temporary; LocationCode: Code[10]): Decimal
     var
         TotalByLocation: Decimal;
     begin
@@ -112,65 +219,15 @@ codeunit 52108 "12E CCD Mgmt"
         exit(TotalByLocation);
     end;
 
-    local procedure GetPFCCHours(CCDHeader: Record "12E CCD Header"): Decimal
+    local procedure GetNextLineNo(DocumentNo: Code[20]): Integer
     var
-        QuestcoPayrollTxn: Record "12E Questco Payroll Txn";
-        DepartmentCode: Record "12E Department Code";
-        PayType: Record "12E Pay Type";
-        TotalHours: Decimal;
+        CCDLine: Record "12E CCD Line";
     begin
-        QuestcoPayrollTxn.SetRange("Pay Date", CCDHeader."Start Date", CCDHeader."End Date");
+        CCDLine.SetRange("Document No.", DocumentNo);
 
-        if QuestcoPayrollTxn.FindSet() then
-            repeat
-                if not DepartmentCode.Get(QuestcoPayrollTxn.Department) then
-                    continue;
+        if CCDLine.FindLast() then
+            exit(CCDLine."Line No." + 10000);
 
-                if not DepartmentCode."Contact Center" then
-                    continue;
-
-                if not PayType.Get(QuestcoPayrollTxn."Pay Code") then
-                    continue;
-
-                if not PayType."Contact Center" then
-                    continue;
-
-                if PayType."Do not process for payroll" then
-                    continue;
-
-                TotalHours += QuestcoPayrollTxn."Hours Worked";
-            until QuestcoPayrollTxn.Next() = 0;
-
-        exit(TotalHours);
-    end;
-
-    local procedure GetVendorHours(LocationCode: Code[10]; CCDHeader: Record "12E CCD Header"): Decimal
-    var
-        CCDLocationMapping: Record "12E CCD Location Mapping";
-        PurchInvHeader: Record "Purch. Inv. Header";
-        PurchInvLine: Record "Purch. Inv. Line";
-        TotalHours: Decimal;
-    begin
-        if not CCDLocationMapping.Get(LocationCode) then
-            exit(0);
-
-        CCDLocationMapping.TestField("Vendor No.");
-
-        PurchInvHeader.SetRange("Buy-from Vendor No.", CCDLocationMapping."Vendor No.");
-        PurchInvHeader.SetRange("Posting Date", CCDHeader."Start Date", CCDHeader."End Date");
-
-        if PurchInvHeader.FindSet() then
-            repeat
-                PurchInvLine.Reset();
-                PurchInvLine.SetRange("Document No.", PurchInvHeader."No.");
-                PurchInvLine.SetRange(Type, PurchInvLine.Type::"G/L Account");
-
-                if PurchInvLine.FindSet() then
-                    repeat
-                        TotalHours += PurchInvLine.Quantity;
-                    until PurchInvLine.Next() = 0;
-            until PurchInvHeader.Next() = 0;
-
-        exit(TotalHours);
+        exit(10000);
     end;
 }

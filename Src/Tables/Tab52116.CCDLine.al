@@ -65,6 +65,31 @@ table 52116 "12E CCD Line"
             Caption = 'Distributed Quantity';
             DataClassification = CustomerContent;
         }
+        field(21; "Payroll Batch ID"; Integer)
+        {
+            Caption = 'Payroll Batch ID';
+            DataClassification = CustomerContent;
+        }
+        field(22; "Batch Start Date"; Date)
+        {
+            Caption = 'Batch Start Date';
+            DataClassification = CustomerContent;
+        }
+        field(23; "Batch End Date"; Date)
+        {
+            Caption = 'Batch End Date';
+            DataClassification = CustomerContent;
+        }
+        field(25; "Invoice No."; Code[20])
+        {
+            Caption = 'Invoice No.';
+            DataClassification = CustomerContent;
+        }
+        field(27; "Invoice Date"; Date)
+        {
+            Caption = 'Invoice Date';
+            DataClassification = CustomerContent;
+        }
         // field(15; "Sales Invoice No."; Code[20])
         // {
         //     Caption = 'Sales Invoice No.';

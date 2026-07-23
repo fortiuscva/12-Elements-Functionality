@@ -18,7 +18,7 @@ query 52102 "12E Payroll Batch Data"
             {
             }
 
-            column(Department; Department)
+            column(Department; "Department Code")
             {
             }
 

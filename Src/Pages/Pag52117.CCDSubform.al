@@ -55,6 +55,35 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Distributed Quantity field.', Comment = '%';
                 }
+                field("Batch ID"; Rec."Payroll Batch ID")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Batch ID field.', Comment = '%';
+                }
+                field("Batch Start Date"; Rec."Batch Start Date")
+                {
+                    ToolTip = 'Specifies the value of the Batch Start Date field.', Comment = '%';
+                }
+                field("Batch End Date"; Rec."Batch End Date")
+                {
+                    ToolTip = 'Specifies the value of the Batch End Date field.', Comment = '%';
+                }
+                field("Invoice No."; Rec."Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                }
+                field("Invoice Date"; Rec."Invoice Date")
+                {
+                    ToolTip = 'Specifies the value of the Invoice Date field.', Comment = '%';
+                }
+                field("Batch or Inv. Hours"; Rec."Batch or Inv. Hours")
+                {
+                    ToolTip = 'Specifies the value of the Batch/Invoice Hours field.', Comment = '%';
+                }
+                field("Batch or Inv. Percentage"; Rec."Batch or Inv. Percentage")
+                {
+                    ToolTip = 'Specifies the value of the Batch/Invoice Hours Distribution Percentage field.', Comment = '%';
+                }
+
                 //     field("Sales Invoice No."; Rec."Sales Invoice No.")
                 //     {
                 //         ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';

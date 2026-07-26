@@ -34,8 +34,7 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             Clear(PayrollBatchLine."Pay Type Code");
 
             PayrollBatchLine."Hours Worked" := PayrollBatchQuery.TotalHoursWorked;
-            PayrollBatchLine."Hours Paid" := PayrollBatchQuery.TotalHoursPaid;
-
+            PayrollBatchLine."Hours Units Paid" := PayrollBatchQuery.TotalHoursPaid;
             PayrollBatchLine.Insert();
         end;
 

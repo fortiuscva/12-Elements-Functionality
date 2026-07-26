@@ -40,7 +40,7 @@ query 52102 "12E Payroll Batch Data"
                 Method = Sum;
             }
 
-            column(TotalHoursPaid; "Hours Paid")
+            column(TotalHoursPaid; "Hours Units Paid")
             {
                 Method = Sum;
             }

@@ -83,9 +83,9 @@ table 52126 "12E Questco Payroll Txn"
             Caption = 'Hours Worked';
             DataClassification = CustomerContent;
         }
-        field(16; "Hours Paid"; Decimal)
+        field(16; "Hours Units Paid"; Decimal)
         {
-            Caption = 'Hours Paid';
+            Caption = 'Hours Units Paid';
             DataClassification = CustomerContent;
         }
         field(17; "DW Export Timestamp"; DateTime)

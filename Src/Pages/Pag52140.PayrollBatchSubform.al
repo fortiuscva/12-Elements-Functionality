@@ -47,7 +47,7 @@ page 52140 "12E Payroll Batch Subform"
                 {
                     ToolTip = 'Specifies the value of the Hours Worked field.', Comment = '%';
                 }
-                field("Hours Paid"; Rec."Hours Paid")
+                field("Hours Paid"; Rec."Hours Units Paid")
                 {
                     ToolTip = 'Specifies the value of the Hours Paid field.', Comment = '%';
                 }

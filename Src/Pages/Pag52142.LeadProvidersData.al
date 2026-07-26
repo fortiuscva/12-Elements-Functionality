@@ -1,4 +1,4 @@
-page 52128 "12E Lead Providers Data"
+page 52142 "12E Lead Providers Data"
 {
     APIGroup = '12Elements';
     APIPublisher = '12Elements';

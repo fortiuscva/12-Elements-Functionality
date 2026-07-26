@@ -50,7 +50,7 @@ table 52128 "12E Payroll Batch Line"
             Caption = 'Hours Worked';
             DataClassification = CustomerContent;
         }
-        field(10; "Hours Paid"; Decimal)
+        field(10; "Hours Units Paid"; Decimal)
         {
             Caption = 'Hours Paid';
             DataClassification = CustomerContent;

@@ -32,6 +32,18 @@ page 52138 "12E Questco Payroll Txns"
                 {
                     ToolTip = 'Specifies the value of the Pay Date field.', Comment = '%';
                 }
+                field("Batch Type"; Rec."Batch Type")
+                {
+                    ToolTip = 'Specifies the value of the Batch Type field.', Comment = '%';
+                }
+                field("Pay Period Start Date"; Rec."Pay Period Start Date")
+                {
+                    ToolTip = 'Specifies the value of the Pay Period Start Date field.', Comment = '%';
+                }
+                field("Pay Period End Date"; Rec."Pay Period End Date")
+                {
+                    ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
+                }
                 field("Employee No."; Rec."Employee No.")
                 {
                     ToolTip = 'Specifies the value of the Employee No. field.', Comment = '%';
@@ -61,7 +73,7 @@ page 52138 "12E Questco Payroll Txns"
                 {
                     ToolTip = 'Specifies the value of the Hours Worked field.', Comment = '%';
                 }
-                field("Hours Paid"; Rec."Hours Paid")
+                field("Hours Units Paid"; Rec."Hours Units Paid")
                 {
                     ToolTip = 'Specifies the value of the Hours Paid field.', Comment = '%';
                 }
@@ -84,6 +96,14 @@ page 52138 "12E Questco Payroll Txns"
                 field("Export Batch ID"; Rec."Export Batch ID")
                 {
                     ToolTip = 'Specifies the value of the Export Batch ID field.', Comment = '%';
+                }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                }
+                field(SystemModifiedAt; Rec.SystemModifiedAt)
+                {
+                    ToolTip = 'Specifies the value of the SystemModifiedAt field.', Comment = '%';
                 }
             }
         }

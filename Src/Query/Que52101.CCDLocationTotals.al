@@ -6,7 +6,7 @@ query 52101 "12E CCD Location Totals"
     {
         dataitem(CCDData; "12E CCD Detailed Data")
         {
-            column(CallDate; "Call Date")
+            filter(CallDate; "Call Date")
             {
             }
 
@@ -25,7 +25,7 @@ query 52101 "12E CCD Location Totals"
 
                 filter(Blocked; Blocked)
                 {
-                    ColumnFilter = Blocked = const(true);
+                    ColumnFilter = Blocked = const(false);
                 }
             }
         }

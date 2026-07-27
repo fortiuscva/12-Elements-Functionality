@@ -1,7 +1,7 @@
 page 52113 "12E CCD Data"
 {
     ApplicationArea = All;
-    Caption = 'CCD Data';
+    Caption = 'CCD Detailed Data';
     PageType = List;
     SourceTable = "12E CCD Detailed Data";
     UsageCategory = Lists;
@@ -56,7 +56,18 @@ page 52113 "12E CCD Data"
                 {
                     ToolTip = 'Specifies the value of the ERPErrorMsg field.', Comment = '%';
                 }
-
+                field("Batch ID"; Rec."Batch ID")
+                {
+                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                }
+                field(SystemModifiedAt; Rec.SystemModifiedAt)
+                {
+                    ToolTip = 'Specifies the value of the SystemModifiedAt field.', Comment = '%';
+                }
             }
         }
     }

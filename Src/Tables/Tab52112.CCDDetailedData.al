@@ -64,6 +64,11 @@ table 52112 "12E CCD Detailed Data"
             Caption = 'ERPErrorMsg';
             DataClassification = CustomerContent;
         }
+        field(18; "Batch ID"; Guid)
+        {
+            Caption = 'Batch ID';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

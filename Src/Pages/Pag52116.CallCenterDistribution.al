@@ -142,6 +142,9 @@ page 52116 "12E Call Center Distribution"
                     actionref(GetLines_Promoted; CalculateAlloCation)
                     {
                     }
+                    actionref(CreateInvoices_Promoted; CreateInvoices)
+                    {
+                    }
                     actionref(ShowAllocation_Promoted; ShowAllocationDetails)
                     {
                     }

@@ -12,6 +12,11 @@ codeunit 52109 "12E CCD Invoice Mgmt"
         Qty: Decimal;
         NextLineNo: Integer;
     begin
+        if CCDHeader.Processed then
+            Error(
+                'Allocation cannot be recalculated because CCD %1 has already been processed.',
+                CCDHeader."No.");
+
         CCDHeader.TestField(Status, CCDHeader.Status::Released);
 
         TwelveElementsSetup.Get();
@@ -44,9 +49,7 @@ codeunit 52109 "12E CCD Invoice Mgmt"
                 NextLineNo := 10000;
             end;
 
-            Qty := 0;
-
-            Qty := CCDLine."Batch or Inv. Hours";
+            Qty := CCDLine."Distributed Quantity";
 
             SalesLine.Init();
             SalesLine."Document Type" := SalesHeader."Document Type";
@@ -56,7 +59,14 @@ codeunit 52109 "12E CCD Invoice Mgmt"
             SalesLine.Validate(Type, SalesLine.Type::"G/L Account");
             SalesLine.Validate("No.", TwelveElementsSetup."CCD G/L Account No.");
             SalesLine.Validate(Quantity, Qty);
-            SalesLine.Description := StrSubstNo('%1 - %2 - %3', CCDLine."Location Code", CCDLine.Portfolio, Format(CCDLine."Call Date"));
+
+            SalesLine.Description :=
+                StrSubstNo(
+                    '%1 - %2 - %3',
+                    CCDLine."Location Code",
+                    CCDLine.Portfolio,
+                    Format(CCDLine."Call Date"));
+
             SalesLine.Validate("12E CCD No.", CCDHeader."No.");
             SalesLine.Validate("12E CCD Line No.", CCDLine."Line No.");
             SalesLine.Insert(true);
@@ -64,7 +74,8 @@ codeunit 52109 "12E CCD Invoice Mgmt"
             NextLineNo += 10000;
 
         until CCDLine.Next() = 0;
-
+        CCDHeader.Processed := true;
+        CCDHeader.Modify(true);
         Message('Sales Invoices created successfully.');
     end;
 }

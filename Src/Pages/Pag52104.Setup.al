@@ -2,6 +2,8 @@ page 52104 "12E Setup"
 {
     ApplicationArea = All;
     Caption = 'Setup';
+    DeleteAllowed = false;
+    InsertAllowed = false;
     PageType = Card;
     SourceTable = "12E Setup";
     UsageCategory = Administration;
@@ -110,4 +112,14 @@ page 52104 "12E Setup"
             }
         }
     }
+
+    trigger OnOpenPage()
+    var
+    begin
+        Rec.Reset();
+        if not Rec.Get() then begin
+            Rec.Init();
+            Rec.Insert();
+        end;
+    end;
 }

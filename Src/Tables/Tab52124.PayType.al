@@ -7,7 +7,7 @@ table 52124 "12E Pay Type"
 
     fields
     {
-        field(1; "Pay Type Code"; Code[20])
+        field(1; "Pay Type Code"; Code[50])
         {
             Caption = 'Pay Type Code';
             DataClassification = CustomerContent;

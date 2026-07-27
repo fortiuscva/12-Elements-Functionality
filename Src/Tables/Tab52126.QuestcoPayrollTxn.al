@@ -62,10 +62,10 @@ table 52126 "12E Questco Payroll Txn"
             Caption = 'G/L Account No.';
             DataClassification = CustomerContent;
         }
-        field(12; "Pay Type Code"; Code[20])
+        field(12; "Pay Type Code"; Code[50])
         {
             Caption = 'Pay Type Code';
-            TableRelation = "12E Pay Type";
+            // TableRelation = "12E Pay Type";
             DataClassification = CustomerContent;
         }
         field(13; "Debit Amount"; Decimal)

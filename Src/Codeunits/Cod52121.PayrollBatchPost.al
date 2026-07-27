@@ -14,6 +14,11 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
     begin
+        if PayrollBatchHeader."Batch Status" = PayrollBatchHeader."Batch Status"::Processed then
+            Error(
+                'Lines cannot be posted because Payroll batch %1 has already been processed.',
+                PayrollBatchHeader."No.");
+
         PayrollBatchHeader.TestField("Batch Status", PayrollBatchHeader."Batch Status"::Released);
 
         GetSetup();
@@ -43,6 +48,11 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
     begin
+        if PayrollBatchHeader."Batch Status" = PayrollBatchHeader."Batch Status"::Processed then
+            Error(
+                'Lines cannot be posted because Payroll batch %1 has already been processed.',
+                PayrollBatchHeader."No.");
+
         GetSetup();
 
         PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
@@ -55,7 +65,7 @@ codeunit 52121 "12E Payroll Batch Post"
         CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
 
         CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
-
+        Commit();
         PreviewGenJournalLines();
 
         DeleteJournalLines();
@@ -149,21 +159,20 @@ codeunit 52121 "12E Payroll Batch Post"
     local procedure PreviewGenJournalLines()
     var
         GenJournalLine: Record "Gen. Journal Line";
-        GenJnlPostPreview: Codeunit "Gen. Jnl.-Post Preview";
-        GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line";
-        RecVar: Variant;
-        CodeunitVar: Variant;
+        GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange(
+            "Journal Template Name",
+            TwelveSetup."Payroll Jnl. Template");
+        GenJournalLine.SetRange(
+            "Journal Batch Name",
+            TwelveSetup."Payroll Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
 
-        RecVar := GenJournalLine;
-        CodeunitVar := GenJnlPostLine;
-        GenJnlPostPreview.Preview(RecVar, CodeunitVar);
+        GenJnlPost.Preview(GenJournalLine);
     end;
 
     local procedure DeleteJournalLines()

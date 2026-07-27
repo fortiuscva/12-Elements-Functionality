@@ -14,7 +14,7 @@ codeunit 52109 "12E CCD Invoice Mgmt"
     begin
         if CCDHeader.Processed then
             Error(
-                'Allocation cannot be recalculated because CCD %1 has already been processed.',
+                'Invoice cannot be Created because CCD %1 has already been processed.',
                 CCDHeader."No.");
 
         CCDHeader.TestField(Status, CCDHeader.Status::Released);

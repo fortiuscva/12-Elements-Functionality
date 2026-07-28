@@ -1,7 +1,7 @@
-page 52140 "12E Payroll Batch Subform"
+page 52140 "12E Payroll Document Subform"
 {
     ApplicationArea = All;
-    Caption = 'Payroll Batch Subform';
+    Caption = 'Payroll Document Subform';
     PageType = ListPart;
     SourceTable = "12E Payroll Batch Line";
     UsageCategory = None;
@@ -26,6 +26,7 @@ page 52140 "12E Payroll Batch Subform"
                 field("Employee No."; Rec."Employee No.")
                 {
                     ToolTip = 'Specifies the value of the Employee No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Department Code"; Rec."Department Code")
                 {
@@ -38,6 +39,7 @@ page 52140 "12E Payroll Batch Subform"
                 field("Pay Type Code"; Rec."Pay Type Code")
                 {
                     ToolTip = 'Specifies the value of the Pay Type Code field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Amount; Rec.Amount)
                 {
@@ -46,10 +48,12 @@ page 52140 "12E Payroll Batch Subform"
                 field("Hours Worked"; Rec."Hours Worked")
                 {
                     ToolTip = 'Specifies the value of the Hours Worked field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Hours Paid"; Rec."Hours Units Paid")
                 {
                     ToolTip = 'Specifies the value of the Hours Paid field.', Comment = '%';
+                    Visible = false;
                 }
             }
         }

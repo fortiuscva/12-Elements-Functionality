@@ -9,7 +9,9 @@ query 52102 "12E Payroll Batch Data"
             filter(ClientID; "Client ID")
             {
             }
-
+            filter(BatchIDFilter; "Batch ID")
+            {
+            }
             filter(PayDate; "Pay Date")
             {
             }

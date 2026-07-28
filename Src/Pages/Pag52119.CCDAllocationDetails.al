@@ -1,7 +1,7 @@
 page 52119 "12E CCD Allocation Details"
 {
     ApplicationArea = All;
-    Caption = '12E CCD Allocation Details';
+    Caption = 'CCD Allocation Details';
     PageType = List;
     SourceTable = "12E CCD Allocation Details";
     UsageCategory = Lists;

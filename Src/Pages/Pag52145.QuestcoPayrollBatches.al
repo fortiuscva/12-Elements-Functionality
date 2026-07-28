@@ -71,10 +71,12 @@ page 52145 "12E Questco Payroll Batches"
                 field("CC Processed"; Rec."CC Processed")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
+                    Editable = false;
                 }
                 field("Payroll Processed"; Rec."Payroll Processed")
                 {
                     ToolTip = 'Specifies the value of the Payroll Processed field.', Comment = '%';
+                    Editable = false;
                 }
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {

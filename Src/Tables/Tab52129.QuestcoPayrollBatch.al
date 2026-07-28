@@ -68,12 +68,18 @@ table 52129 "12E Questco Payroll Batch"
         field(13; "CC Processed"; Boolean)
         {
             Caption = 'CC Processed';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = Exist("12E CCD Header" where("Start Date" = field("Pay Period Start Date"),
+                                "End Date" = field("Pay Period End Date")));
+            Editable = false;
         }
         field(14; "Payroll Processed"; Boolean)
         {
             Caption = 'Payroll Processed';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            CalcFormula = Exist("12E Payroll Batch Header" where("Pay Period Start Date" = field("Pay Period Start Date"),
+                                "Pay Period End Date" = field("Pay Period End Date")));
+            Editable = false;
         }
         field(15; "DW Export Timestamp"; DateTime)
         {

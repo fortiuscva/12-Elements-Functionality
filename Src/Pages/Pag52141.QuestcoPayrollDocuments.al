@@ -26,13 +26,30 @@ page 52141 "12E Questco Payroll Documents"
                 {
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
-                field("No. Series"; Rec."No. Series")
+                field("Pay Date"; Rec."Pay Date")
                 {
-                    ToolTip = 'Specifies the value of the No. Series field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Pay Date field.', Comment = '%';
+                }
+                field("Batch Type"; Rec."Batch Type")
+                {
+                    ToolTip = 'Specifies the value of the Batch Type field.', Comment = '%';
+                }
+                field("Pay Period Start Date"; Rec."Pay Period Start Date")
+                {
+                    ToolTip = 'Specifies the value of the Pay Period Start Date field.', Comment = '%';
+                }
+                field("Pay Period End Date"; Rec."Pay Period End Date")
+                {
+                    ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
+                }
+                field("Batch Status"; Rec."Batch Status")
+                {
+                    ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
                 }
             }
         }
     }
+
     actions
     {
         area(Processing)

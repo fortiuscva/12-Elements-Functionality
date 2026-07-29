@@ -86,20 +86,7 @@ page 52116 "12E Call Center Distribution"
                         CurrPage.Update();
                     end;
                 }
-                action(CalculateAlloCation)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Calculate Allocation';
-                    Image = GetLines;
 
-                    trigger OnAction()
-                    var
-                        CCDMgmt: Codeunit "12E CCD Mgmt";
-                    begin
-                        CCDMgmt.GetLines(Rec);
-                        CurrPage.Update();
-                    end;
-                }
                 action(CreateInvoices)
                 {
                     ApplicationArea = All;
@@ -137,9 +124,6 @@ page 52116 "12E Call Center Distribution"
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
-                    {
-                    }
-                    actionref(GetLines_Promoted; CalculateAlloCation)
                     {
                     }
                     actionref(CreateInvoices_Promoted; CreateInvoices)

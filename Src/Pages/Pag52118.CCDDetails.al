@@ -81,6 +81,20 @@ page 52118 "12E CCD Details"
                         CurrPage.Update(false);
                     end;
                 }
+                action(CalculateAlloCation)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Calculate Allocation';
+                    Image = GetLines;
+
+                    trigger OnAction()
+                    var
+                        CCDMgmt: Codeunit "12E CCD Mgmt";
+                    begin
+                        CCDMgmt.Run();
+                        CurrPage.Update();
+                    end;
+                }
             }
         }
         area(Promoted)

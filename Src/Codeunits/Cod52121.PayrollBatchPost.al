@@ -13,6 +13,7 @@ codeunit 52121 "12E Payroll Batch Post"
     var
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
+        PayrollBatchNo: Code[20];
     begin
         if PayrollBatchHeader."Batch Status" = PayrollBatchHeader."Batch Status"::Processed then
             Error(
@@ -28,19 +29,20 @@ codeunit 52121 "12E Payroll Batch Post"
         if not PayrollBatchLine.FindSet() then
             Error(NoLinesToPostErr);
 
+        PayrollBatchNo := PayrollBatchHeader."No.";
+
         DeleteJournalLines();
 
         CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
-
         CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
+
         PostJournal();
 
         DeleteJournalLines();
 
-        PayrollBatchHeader."Batch Status" := PayrollBatchHeader."Batch Status"::Processed;
-        PayrollBatchHeader.Modify(true);
+        TransferToPostedPayroll(PayrollBatchHeader);
 
-        Message(PayrollPostedMsg, PayrollBatchHeader."No.");
+        Message(PayrollPostedMsg, PayrollBatchNo);
     end;
 
     procedure PreviewPosting(var PayrollBatchHeader: Record "12E Payroll Batch Header")
@@ -198,5 +200,32 @@ codeunit 52121 "12E Payroll Batch Post"
             exit(GenJournalLine."Line No." + 10000);
 
         exit(10000);
+    end;
+
+    local procedure TransferToPostedPayroll(var PayrollBatchHeader: Record "12E Payroll Batch Header")
+    var
+        PayrollBatchLine: Record "12E Payroll Batch Line";
+        PostedPayrollBatchHeader: Record "12E Posted Payroll Header";
+        PostedPayrollBatchLine: Record "12E Posted Payroll Line";
+    begin
+        PostedPayrollBatchHeader.Init();
+        PostedPayrollBatchHeader.TransferFields(PayrollBatchHeader, true);
+        PostedPayrollBatchHeader.Insert(true);
+
+        PayrollBatchLine.Reset();
+        PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
+
+        if PayrollBatchLine.FindSet() then
+            repeat
+                PostedPayrollBatchLine.Init();
+                PostedPayrollBatchLine.TransferFields(PayrollBatchLine, true);
+                PostedPayrollBatchLine.Insert(true);
+            until PayrollBatchLine.Next() = 0;
+
+        PayrollBatchLine.Reset();
+        PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
+        PayrollBatchLine.DeleteAll(true);
+
+        PayrollBatchHeader.Delete(true);
     end;
 }

@@ -18,14 +18,14 @@ page 52118 "12E CCD Details"
                 {
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
-                field("Start Date"; Rec."Start Date")
-                {
-                    ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
-                }
-                field("End Date"; Rec."End Date")
-                {
-                    ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
-                }
+                // field("Start Date"; Rec."Start Date")
+                // {
+                //     ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
+                // }
+                // field("End Date"; Rec."End Date")
+                // {
+                //     ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
+                // }
                 field(Processed; Rec.Processed)
                 {
                     ToolTip = 'Specifies the value of the Processed field.', Comment = '%';

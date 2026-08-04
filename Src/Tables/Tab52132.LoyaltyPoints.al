@@ -27,7 +27,7 @@ table 52132 "12E Loyalty Points"
             Caption = 'State';
             DataClassification = CustomerContent;
         }
-        field(5; Store; Code[20])
+        field(5; "Store Name"; Text[50])
         {
             Caption = 'Store';
             DataClassification = CustomerContent;

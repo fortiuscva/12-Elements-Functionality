@@ -28,7 +28,7 @@ page 52150 "12E Loyalty Points Global"
                 {
                     ToolTip = 'Specifies the value of the State field.', Comment = '%';
                 }
-                field(Store; Rec.Store)
+                field(Store; Rec."Store Name")
                 {
                     ToolTip = 'Specifies the value of the Store field.', Comment = '%';
                 }

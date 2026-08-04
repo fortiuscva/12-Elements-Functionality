@@ -19,7 +19,7 @@ table 52132 "12E Loyalty Points"
         field(3; Portfolio; Text[30])
         {
             Caption = 'Portfolio';
-            TableRelation = "12E CCD Port. Cust. Mapping";
+            // TableRelation = "12E CCD Port. Cust. Mapping";
             DataClassification = CustomerContent;
         }
         field(4; State; Code[20])
@@ -29,7 +29,7 @@ table 52132 "12E Loyalty Points"
         }
         field(5; "Store Name"; Text[50])
         {
-            Caption = 'Store';
+            Caption = 'Store Name';
             DataClassification = CustomerContent;
         }
         field(6; "Month End Date"; Date)
@@ -88,6 +88,10 @@ table 52132 "12E Loyalty Points"
         key(PK; "PK ID")
         {
             Clustered = true;
+        }
+        key(key2; Portfolio, "Month End Date")
+        {
+
         }
     }
 }

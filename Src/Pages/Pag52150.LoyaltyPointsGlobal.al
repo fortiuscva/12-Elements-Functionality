@@ -4,6 +4,7 @@ page 52150 "12E Loyalty Points Global"
     Caption = 'Loyalty Points (Global)';
     PageType = List;
     SourceTable = "12E Loyalty Points";
+    SourceTableView = sorting("PK ID") order(descending);
     UsageCategory = Lists;
 
     layout

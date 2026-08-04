@@ -6,7 +6,7 @@ page 52145 "12E Questco Payroll Batches"
     SourceTable = "12E Questco Payroll Batch";
     SourceTableView = sorting("Client ID", "Batch ID") order(descending);
     UsageCategory = Lists;
-    Editable = false;
+    // Editable = false;
 
     layout
     {

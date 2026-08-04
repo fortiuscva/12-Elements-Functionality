@@ -95,6 +95,18 @@ page 52118 "12E CCD Details"
                         CurrPage.Update();
                     end;
                 }
+                action(CreateCCDDocuments)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Create CCD Documents';
+                    Image = Create;
+
+                    trigger OnAction()
+                    begin
+                        Codeunit.Run(Codeunit::"12E CCD Mgmt");
+                        CurrPage.Update();
+                    end;
+                }
             }
         }
         area(Promoted)
@@ -110,6 +122,9 @@ page 52118 "12E CCD Details"
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
+                    {
+                    }
+                    actionref(CreateCCDDocuments_Promoted; CreateCCDDocuments)
                     {
                     }
                 }

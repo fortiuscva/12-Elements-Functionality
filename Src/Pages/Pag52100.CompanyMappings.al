@@ -37,6 +37,10 @@ page 52100 "12E Company Mappings"
                 {
                     ToolTip = 'Specifies the value of the Type of Company field.', Comment = '%';
                 }
+                field(Portfolio; Rec.Portfolio)
+                {
+                    ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
+                }
                 field(Company; Rec.Company)
                 {
                     ToolTip = 'Specifies the value of the Company field.', Comment = '%';

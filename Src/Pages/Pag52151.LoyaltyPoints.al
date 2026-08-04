@@ -28,7 +28,7 @@ page 52151 "12E Loyalty Points"
                 {
                     ToolTip = 'Specifies the value of the State field.', Comment = '%';
                 }
-                field(Store; Rec.Store)
+                field(Store; Rec."Store Name")
                 {
                     ToolTip = 'Specifies the value of the Store field.', Comment = '%';
                 }
@@ -75,4 +75,15 @@ page 52151 "12E Loyalty Points"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        CompanyInformation: Record "Company Information";
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyInformation.Get();
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyInformation.Name);
+        if CompanyMapping.FindFirst() then
+            Rec.SetRange(Portfolio, CompanyMapping.Portfolio);
+    end;
 }

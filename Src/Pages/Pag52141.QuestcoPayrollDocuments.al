@@ -102,10 +102,8 @@ page 52141 "12E Questco Payroll Documents"
                 Image = CreateDocument;
 
                 trigger OnAction()
-                var
-                    PayrollBatchMgmt: Codeunit "12E Payroll Batch Mgmt";
                 begin
-                    PayrollBatchMgmt.CreatePayrollDocuments(Rec);
+                    Codeunit.Run(Codeunit::"12E Payroll Batch Mgmt");
                     CurrPage.Update();
                 end;
             }

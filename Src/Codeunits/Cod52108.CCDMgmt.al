@@ -159,13 +159,17 @@ codeunit 52108 "12E CCD Mgmt"
     var
         PayrollBatchQuery: Query "12E Payroll Batch Data";
         TotalHours: Decimal;
+        DeptCode: Code[20];
     begin
+        DeptCode := GetDepartmentCode();
         PayrollBatchQuery.SetRange(ClientID, ClientID);
         PayrollBatchQuery.SetRange(BatchIDFilter, BatchID);
+        PayrollBatchQuery.SetRange(Department, DeptCode);
+        PayrollBatchQuery.SetFilter(HoursWorked, '>%1', 0);
         PayrollBatchQuery.Open();
 
         while PayrollBatchQuery.Read() do
-            TotalHours += PayrollBatchQuery.TotalHoursPaid;
+            TotalHours += PayrollBatchQuery.TotalHoursWorked;
 
         PayrollBatchQuery.Close();
 
@@ -255,5 +259,15 @@ codeunit 52108 "12E CCD Mgmt"
             Error('Multiple active Company Mappings exist for company %1.', CompanyName);
 
         exit(ClientID);
+    end;
+
+    local procedure GetDepartmentCode(): Code[20]
+    var
+        DepartmentCode: Record "12E Department Code";
+    begin
+        DepartmentCode.Reset();
+        DepartmentCode.SetRange("Contact Center", true);
+        if DepartmentCode.FindFirst() then
+            exit(DepartmentCode.Code);
     end;
 }

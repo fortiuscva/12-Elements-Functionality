@@ -15,6 +15,9 @@ query 52102 "12E Payroll Batch Data"
             filter(PayDate; "Pay Date")
             {
             }
+            filter(HoursWorked; "Hours Worked")
+            {
+            }
 
             column(BatchID; "Batch ID")
             {

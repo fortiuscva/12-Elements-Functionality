@@ -16,9 +16,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         WorkDate := Today();
 
         QuestcoPayrollBatch.Reset();
+        QuestcoPayrollBatch.SetRange("Payroll Processed", false);
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
-        QuestcoPayrollBatch.SetFilter("Pay Period Start Date", '..%1', WorkDate);
-        QuestcoPayrollBatch.SetFilter("Pay Period End Date", '%1..', WorkDate);
+        // QuestcoPayrollBatch.SetFilter("Pay Period Start Date", '..%1', WorkDate);
+        // QuestcoPayrollBatch.SetFilter("Pay Period End Date", '%1..', WorkDate);
         if QuestcoPayrollBatch.FindSet() then
             repeat
                 if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID")

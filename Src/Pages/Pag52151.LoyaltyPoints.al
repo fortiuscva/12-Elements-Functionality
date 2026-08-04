@@ -4,6 +4,7 @@ page 52151 "12E Loyalty Points"
     Caption = 'Loyalty Points';
     PageType = List;
     SourceTable = "12E Loyalty Points";
+    SourceTableView = sorting(Portfolio, "Month End Date") order(descending);
     UsageCategory = Lists;
 
     layout

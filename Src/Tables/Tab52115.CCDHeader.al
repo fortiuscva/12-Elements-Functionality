@@ -24,16 +24,16 @@ table 52115 "12E CCD Header"
                 end;
             end;
         }
-        field(3; "Start Date"; Date)
-        {
-            Caption = 'From Date';
-            DataClassification = CustomerContent;
-        }
-        field(5; "End Date"; Date)
-        {
-            Caption = 'End Date';
-            DataClassification = CustomerContent;
-        }
+        // field(3; "Start Date"; Date)
+        // {
+        //     Caption = 'From Date';
+        //     DataClassification = CustomerContent;
+        // }
+        // field(5; "End Date"; Date)
+        // {
+        //     Caption = 'End Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(6; Processed; Boolean)
         {
             Caption = 'Processed';

@@ -21,7 +21,6 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
                 LeadAccLineLcl.Insert(true);
                 LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
-                LeadAccLineLcl.Validate("Vendor Name", VendorLcl.Name);
 
                 if PostedPurchaseInvoiceExists(VendorLcl."No.", Rec."From Date", Rec."To Date") then begin
                     Clear(LastPostingDate);

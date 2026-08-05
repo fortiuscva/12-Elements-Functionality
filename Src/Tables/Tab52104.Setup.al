@@ -88,6 +88,53 @@ table 52104 "12E Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Jnl. Template"));
             DataClassification = CustomerContent;
         }
+        field(32; "Loyalty Points Earned"; Code[20])
+        {
+            Caption = 'Loyalty Points Earned';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(33; "Deferred Rev Loyalty Pts"; Code[20])
+        {
+            Caption = 'Deferred Rev Loyalty Pts';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(34; "Provision for Loyalty Points"; Code[20])
+        {
+            Caption = 'Provision for Loyalty Points';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(35; "Loyalty Points Reserve"; Code[20])
+        {
+            Caption = 'Loyalty Points Reserve';
+            TableRelation = "G/L Account";
+            DataClassification = CustomerContent;
+        }
+        field(36; "Loyalty Source Code"; Code[20])
+        {
+            Caption = 'Loyalty Source Code';
+            TableRelation = "Source Code";
+            DataClassification = CustomerContent;
+        }
+        field(37; "Loyalty Reason Code"; Code[20])
+        {
+            Caption = 'Loyalty Reason Code';
+            TableRelation = "Reason Code";
+            DataClassification = CustomerContent;
+        }
+        field(38; "Loyalty Pts. Provision %"; Decimal)
+        {
+            Caption = 'Loyalty Points Provision %';
+            DataClassification = CustomerContent;
+        }
+        field(39; "Loyalty Document Nos."; Code[20])
+        {
+            Caption = 'Loyalty Document Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

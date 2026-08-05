@@ -1,4 +1,4 @@
-query 52102 "12E Payroll Batch Data"
+query 52107 "12E CCD Payroll Data"
 {
     QueryType = Normal;
 
@@ -47,9 +47,9 @@ query 52102 "12E Payroll Batch Data"
             dataitem(PayType; "12E Pay Type")
             {
                 DataItemLink = "Pay Type Code" = PayrollTxn."Pay Type Code";
-                filter(DoNotProcessForPayroll; "Do not process for payroll")
+                filter(ContactCenter; "Contact Center")
                 {
-                    ColumnFilter = DoNotProcessForPayroll = Const(false);
+                    ColumnFilter = ContactCenter = Const(true);
                 }
             }
         }

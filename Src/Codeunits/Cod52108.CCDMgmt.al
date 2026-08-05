@@ -157,21 +157,20 @@ codeunit 52108 "12E CCD Mgmt"
 
     local procedure GetPayrollBatchHours(ClientID: Integer; BatchID: Integer): Decimal
     var
-        PayrollBatchQuery: Query "12E Payroll Batch Data";
+        CCDPayrollQuery: Query "12E CCD Payroll Data";
         TotalHours: Decimal;
         DeptCode: Code[20];
     begin
         DeptCode := GetDepartmentCode();
-        PayrollBatchQuery.SetRange(ClientID, ClientID);
-        PayrollBatchQuery.SetRange(BatchIDFilter, BatchID);
-        PayrollBatchQuery.SetRange(Department, DeptCode);
-        PayrollBatchQuery.SetFilter(HoursWorked, '>%1', 0);
-        PayrollBatchQuery.Open();
+        CCDPayrollQuery.SetRange(ClientID, ClientID);
+        CCDPayrollQuery.SetRange(BatchIDFilter, BatchID);
+        CCDPayrollQuery.SetRange(Department, DeptCode);
+        CCDPayrollQuery.Open();
 
-        while PayrollBatchQuery.Read() do
-            TotalHours += PayrollBatchQuery.TotalHoursWorked;
+        while CCDPayrollQuery.Read() do
+            TotalHours += CCDPayrollQuery.TotalHoursWorked;
 
-        PayrollBatchQuery.Close();
+        CCDPayrollQuery.Close();
 
         exit(TotalHours);
     end;

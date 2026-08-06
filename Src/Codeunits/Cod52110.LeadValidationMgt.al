@@ -7,10 +7,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         Vendor2: Record Vendor;
         PriorDate: Date;
         LeadCost: Decimal;
-        DatasourceId: Integer;
     begin
-        DatasourceId := GetDataSourceID();
-
         LeadValidation.DeleteAll();
         Vendor.Reset();
         Vendor.SetRange("12E Lead Acquisition", true);
@@ -38,7 +35,6 @@ codeunit 52110 "12E Lead Validation Mgt"
                                               PurchInvHeader."Posting Date");
 
                         LeadCost := GetLeadCostAmount(
-                                    DatasourceId,
                                     Vendor."12E Lead Acq. Vendor No.",
                                     PriorDate,
                                     PurchInvHeader."Posting Date");
@@ -79,7 +75,6 @@ codeunit 52110 "12E Lead Validation Mgt"
     end;
 
     local procedure GetLeadCostAmount(
-     DatasourceId: Integer;
      LeadProvider: Text[100];
      PriorPostingDate: Date;
      CurrentPostingDate: Date): Decimal
@@ -93,7 +88,7 @@ codeunit 52110 "12E Lead Validation Mgt"
             StartDate := CalcDate('<+1D>', PriorPostingDate);
 
         LeadRecon.Reset();
-        LeadRecon.SetRange("Datasource ID", DatasourceId);
+        LeadRecon.SetRange("Datasource ID", GetDataSourceID());
         LeadRecon.SetRange("Lead Provider", LeadProvider);
         LeadRecon.SetRange("Lead Original Date", StartDate, CurrentPostingDate);
         LeadRecon.CalcSums("Lead Sold Cost");

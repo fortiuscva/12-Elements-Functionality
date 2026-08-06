@@ -96,14 +96,14 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         exit(LeadAcqCost);
     end;
 
-    procedure GetAccrualAmountsForThisVendor(DatasourceId: Integer; LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
+    procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
     var
         LeadSourceRecon: Record "12E Lead Source Reconciliation";
         AccrualAmount: Decimal;
     begin
         Clear(AccrualAmount);
         LeadSourceRecon.Reset();
-        LeadSourceRecon.SetRange("Datasource ID", DatasourceId);
+        LeadSourceRecon.SetRange("Datasource ID", GetDataSourceID());
         LeadSourceRecon.SetRange("Lead Provider", LeadProvider);
         LeadSourceRecon.SetRange("Lead Original Date", StartDate, EndDate);
         LeadSourceRecon.CalcSums("Lead Sold Cost");
@@ -114,12 +114,9 @@ codeunit 52115 "12E Lead Accrual Mgmt"
     procedure RecalculateAccrualAmount(var LeadAccLine: Record "12E Lead Accrual Line")
     var
         Vendor: Record Vendor;
-        DatasourceId: Integer;
         StartDate: Date;
         EndDate: Date;
     begin
-        DatasourceId := GetDataSourceID();
-
         if not Vendor.Get(LeadAccLine."Vendor No.") then
             exit;
 
@@ -134,7 +131,6 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         LeadAccLine.Validate(
             "Accrual Amount",
             GetAccrualAmountsForThisVendor(
-                DatasourceId,
                 Vendor."12E Lead Acq. Vendor No.",
                 StartDate,
                 EndDate));

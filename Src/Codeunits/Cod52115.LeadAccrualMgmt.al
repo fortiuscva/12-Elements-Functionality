@@ -89,35 +89,37 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         PurchInvHeaderGbl.SetRange("Posting Date", StartDate, EndDate);
         if PurchInvHeaderGbl.FindSet() then
             repeat
+                PurchInvHeaderGbl.CalcFields(Amount);
                 LeadAcqCost += PurchInvHeaderGbl.Amount;
             until PurchInvHeaderGbl.Next() = 0;
 
         exit(LeadAcqCost);
     end;
 
-    procedure GetAccrualAmountsForThisVendor(LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
+    procedure GetAccrualAmountsForThisVendor(DatasourceId: Integer; LeadProvider: Text[100]; StartDate: Date; EndDate: Date): Decimal
     var
         LeadSourceRecon: Record "12E Lead Source Reconciliation";
         AccrualAmount: Decimal;
     begin
         Clear(AccrualAmount);
         LeadSourceRecon.Reset();
+        LeadSourceRecon.SetRange("Datasource ID", DatasourceId);
         LeadSourceRecon.SetRange("Lead Provider", LeadProvider);
         LeadSourceRecon.SetRange("Lead Original Date", StartDate, EndDate);
-        if LeadSourceRecon.FindSet() then
-            repeat
-                AccrualAmount += LeadSourceRecon."Lead Sold Cost";
-            until LeadSourceRecon.Next() = 0;
+        LeadSourceRecon.CalcSums("Lead Sold Cost");
 
-        exit(AccrualAmount);
+        exit(LeadSourceRecon."Lead Sold Cost");
     end;
 
     procedure RecalculateAccrualAmount(var LeadAccLine: Record "12E Lead Accrual Line")
     var
         Vendor: Record Vendor;
+        DatasourceId: Integer;
         StartDate: Date;
         EndDate: Date;
     begin
+        DatasourceId := GetDataSourceID();
+
         if not Vendor.Get(LeadAccLine."Vendor No.") then
             exit;
 
@@ -132,9 +134,20 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         LeadAccLine.Validate(
             "Accrual Amount",
             GetAccrualAmountsForThisVendor(
+                DatasourceId,
                 Vendor."12E Lead Acq. Vendor No.",
                 StartDate,
                 EndDate));
+    end;
+
+    procedure GetDataSourceID(): Integer
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindLast() then
+            exit(CompanyMapping."DataSource ID");
     end;
 
     var

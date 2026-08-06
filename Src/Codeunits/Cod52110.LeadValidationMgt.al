@@ -7,9 +7,9 @@ codeunit 52110 "12E Lead Validation Mgt"
         Vendor2: Record Vendor;
         PriorDate: Date;
         LeadCost: Decimal;
-        PortfolioName: Text[100];
+        DatasourceId: Integer;
     begin
-        PortfolioName := GetCurrentPortfolioName();
+        DatasourceId := GetDataSourceID();
 
         LeadValidation.DeleteAll();
         Vendor.Reset();
@@ -34,11 +34,12 @@ codeunit 52110 "12E Lead Validation Mgt"
                         LeadValidation."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
 
                         PriorDate := GetPreviousPostingDate(
-                                             Vendor."12E Lead Acq. Vendor No.",
+                                             Vendor."No.",
                                               PurchInvHeader."Posting Date");
 
                         LeadCost := GetLeadCostAmount(
-                                    PortfolioName,
+                                    DatasourceId,
+                                    Vendor."12E Lead Acq. Vendor No.",
                                     PriorDate,
                                     PurchInvHeader."Posting Date");
 
@@ -53,7 +54,7 @@ codeunit 52110 "12E Lead Validation Mgt"
                         if LeadValidation."Invoice Amount" <> 0 then
                             LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation."Invoice Amount") * 100, 0.01);
 
-                        LeadValidation.Insert(true);
+                        LeadValidation.Insert();
 
                     until PurchInvHeader.Next() = 0;
                 end;
@@ -78,7 +79,8 @@ codeunit 52110 "12E Lead Validation Mgt"
     end;
 
     local procedure GetLeadCostAmount(
-     PortfolioName: Text[100];
+     DatasourceId: Integer;
+     LeadProvider: Text[100];
      PriorPostingDate: Date;
      CurrentPostingDate: Date): Decimal
     var
@@ -91,22 +93,21 @@ codeunit 52110 "12E Lead Validation Mgt"
             StartDate := CalcDate('<+1D>', PriorPostingDate);
 
         LeadRecon.Reset();
-        LeadRecon.SetRange("Portfolio Name", PortfolioName);
+        LeadRecon.SetRange("Datasource ID", DatasourceId);
+        LeadRecon.SetRange("Lead Provider", LeadProvider);
         LeadRecon.SetRange("Lead Original Date", StartDate, CurrentPostingDate);
         LeadRecon.CalcSums("Lead Sold Cost");
 
         exit(LeadRecon."Lead Sold Cost");
     end;
 
-    local procedure GetCurrentPortfolioName(): Text[100]
+    procedure GetDataSourceID(): Integer
     var
         CompanyMapping: Record "12E Company Mapping";
     begin
+        CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyName());
-
-        if CompanyMapping.FindFirst() then
-            exit(CompanyMapping.Portfolio);
-
-        Error('Company Mapping not found for company %1.', CompanyName());
+        if CompanyMapping.FindLast() then
+            exit(CompanyMapping."DataSource ID");
     end;
 }

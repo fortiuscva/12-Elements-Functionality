@@ -1,9 +1,8 @@
 codeunit 52110 "12E Lead Validation Mgt"
 {
-    procedure BuildValidationData(StartDate: Date; EndDate: Date)
+    procedure BuildValidationData(var LeadValidation: Record "12E Lead Validation Details"; StartDate: Date; EndDate: Date)
     var
         PurchInvHeader: Record "Purch. Inv. Header";
-        LeadValidation: Record "12E Lead Validation Details";
         Vendor: Record Vendor;
         Vendor2: Record Vendor;
         PriorDate: Date;
@@ -32,6 +31,8 @@ codeunit 52110 "12E Lead Validation Mgt"
                         if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
                             LeadValidation."Vendor Name" := Vendor2.Name;
 
+                        LeadValidation."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
+
                         PriorDate := GetPreviousPostingDate(
                                              Vendor."12E Lead Acq. Vendor No.",
                                               PurchInvHeader."Posting Date");
@@ -43,6 +44,7 @@ codeunit 52110 "12E Lead Validation Mgt"
 
                         LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
                         LeadValidation."Posted Purchase Invoice No." := PurchInvHeader."No.";
+                        PurchInvHeader.CalcFields(Amount);
                         LeadValidation."Invoice Amount" := PurchInvHeader.Amount;
                         LeadValidation."Prior Posting Date" := PriorDate;
                         LeadValidation."Lead Cost Amount" := LeadCost;
@@ -51,7 +53,7 @@ codeunit 52110 "12E Lead Validation Mgt"
                         if LeadValidation."Invoice Amount" <> 0 then
                             LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation."Invoice Amount") * 100, 0.01);
 
-                        LeadValidation.Insert();
+                        LeadValidation.Insert(true);
 
                     until PurchInvHeader.Next() = 0;
                 end;
@@ -103,7 +105,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         CompanyMapping.SetRange(Company, CompanyName());
 
         if CompanyMapping.FindFirst() then
-            exit(CompanyMapping.DBA);
+            exit(CompanyMapping.Portfolio);
 
         Error('Company Mapping not found for company %1.', CompanyName());
     end;

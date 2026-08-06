@@ -26,7 +26,7 @@ table 52118 "12E Lead Source Reconciliation"
 
         field(4; "Portfolio Name"; Text[100])
         {
-            Caption = 'Portfolio Name';
+            Caption = 'Portfolio';
             DataClassification = CustomerContent;
         }
 
@@ -45,14 +45,14 @@ table 52118 "12E Lead Source Reconciliation"
         field(7; "Purchased Leads"; Decimal)
         {
             Caption = 'Purchased Leads';
-            DecimalPlaces = 0 : 5;
+            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
         }
 
         field(8; "Lead Sold Cost"; Decimal)
         {
             Caption = 'Lead Sold Cost';
-            DecimalPlaces = 2 : 2;
+            DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
         }
         field(9; "DW Export DateTime"; DateTime)

@@ -37,6 +37,10 @@ page 52121 "12E Lead Validation Details"
                 {
                     ApplicationArea = All;
                 }
+                field("Lead Provider"; Rec."Lead Provider")
+                {
+                    ToolTip = 'Specifies the value of the Lead Provider field.', Comment = '%';
+                }
 
                 field("Posting Date"; Rec."Posting Date")
                 {
@@ -88,7 +92,7 @@ page 52121 "12E Lead Validation Details"
                 var
                     LeadValidationMgt: Codeunit "12E Lead Validation Mgt";
                 begin
-                    LeadValidationMgt.BuildValidationData(StartDate, EndDate);
+                    LeadValidationMgt.BuildValidationData(Rec, StartDate, EndDate);
                     CurrPage.Update(false);
                 end;
             }

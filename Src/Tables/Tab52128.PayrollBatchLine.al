@@ -34,7 +34,7 @@ table 52128 "12E Payroll Batch Line"
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
-        field(7; "Pay Type Code"; Code[20])
+        field(7; "Pay Type Code"; Code[50])
         {
             Caption = 'Pay Type Code';
             TableRelation = "12E Pay Type";

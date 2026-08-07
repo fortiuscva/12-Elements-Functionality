@@ -4,7 +4,7 @@ page 52151 "12E Loyalty Points"
     Caption = 'Loyalty Points';
     PageType = List;
     SourceTable = "12E Loyalty Points";
-    SourceTableView = sorting(Portfolio, "Month End Date") order(descending);
+    SourceTableView = sorting("PK ID") order(descending);
     UsageCategory = Lists;
 
     layout
@@ -16,10 +16,12 @@ page 52151 "12E Loyalty Points"
                 field("PK ID"; Rec."PK ID")
                 {
                     ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
+                    Visible = false;
                 }
                 field(DWLoadDate; Rec.DWLoadDate)
                 {
                     ToolTip = 'Specifies the value of the DWLoadDate field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Portfolio; Rec.Portfolio)
                 {
@@ -53,25 +55,34 @@ page 52151 "12E Loyalty Points"
                 {
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
+                field(Processed; Rec.Processed)
+                {
+                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
+                }
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {
                     ToolTip = 'Specifies the value of the DW Export Timestamp field.', Comment = '%';
+                    Visible = false;
                 }
                 field("ERP Import Timestamp"; Rec."ERP Import Timestamp")
                 {
                     ToolTip = 'Specifies the value of the ERP Import Timestamp field.', Comment = '%';
+                    Visible = false;
                 }
                 field(ERPStatus; Rec.ERPStatus)
                 {
                     ToolTip = 'Specifies the value of the ERPStatus field.', Comment = '%';
+                    Visible = false;
                 }
                 field(ERPErrorMsg; Rec.ERPErrorMsg)
                 {
                     ToolTip = 'Specifies the value of the ERPErrorMsg field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Export Batch ID"; Rec."Export Batch ID")
                 {
                     ToolTip = 'Specifies the value of the Export Batch ID field.', Comment = '%';
+                    Visible = false;
                 }
             }
         }

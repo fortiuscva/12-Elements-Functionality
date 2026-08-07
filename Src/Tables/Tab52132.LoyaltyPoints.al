@@ -82,6 +82,11 @@ table 52132 "12E Loyalty Points"
             Caption = 'Export Batch ID';
             DataClassification = CustomerContent;
         }
+        field(16; Processed; Boolean)
+        {
+            Caption = 'Processed';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

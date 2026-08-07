@@ -2,6 +2,9 @@ page 52120 "12E Lead Source Reconciliation"
 {
     Caption = 'Lead Source Reconciliation (Global)';
     PageType = List;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
     SourceTable = "12E Lead Source Reconciliation";
     SourceTableView = sorting("PK ID") order(descending);
     UsageCategory = Lists;
@@ -17,13 +20,11 @@ page 52120 "12E Lead Source Reconciliation"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
-                    Visible = false;
                 }
                 field("DW Load Date"; Rec."DW Load Date")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
@@ -59,43 +60,26 @@ page 52120 "12E Lead Source Reconciliation"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Export DateTime field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Import DateTime"; Rec."ERP Import DateTime")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Import DateTime field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Status"; Rec."ERP Status")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Error Msg"; Rec."ERP Error Msg")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
-                    Visible = false;
-                }
-                field(SystemCreatedAt; Rec.SystemCreatedAt)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
-                    Visible = false;
-                }
-                field(SystemModifiedAt; Rec.SystemModifiedAt)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the SystemModifiedAt field.', Comment = '%';
-                    Visible = false;
                 }
             }
         }

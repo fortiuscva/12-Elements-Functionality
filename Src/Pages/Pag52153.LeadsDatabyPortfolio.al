@@ -3,6 +3,9 @@ page 52153 "12E Leads Data by Portfolio"
     ApplicationArea = All;
     Caption = 'Lead Source Reconciliation';
     PageType = List;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
     SourceTable = "12E Lead Source Reconciliation";
     SourceTableView = sorting("PK ID") order(descending);
     UsageCategory = Lists;
@@ -13,6 +16,14 @@ page 52153 "12E Leads Data by Portfolio"
         {
             repeater(General)
             {
+                field("PK ID"; Rec."PK ID")
+                {
+                    ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
+                }
+                field("DW Load Date"; Rec."DW Load Date")
+                {
+                    ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
+                }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
                     ApplicationArea = All;
@@ -42,6 +53,26 @@ page 52153 "12E Leads Data by Portfolio"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Sold Cost field.', Comment = '%';
+                }
+                field("DW Export DateTime"; Rec."DW Export DateTime")
+                {
+                    ToolTip = 'Specifies the value of the DW Export DateTime field.', Comment = '%';
+                }
+                field("ERP Import DateTime"; Rec."ERP Import DateTime")
+                {
+                    ToolTip = 'Specifies the value of the ERP Import DateTime field.', Comment = '%';
+                }
+                field("ERP Status"; Rec."ERP Status")
+                {
+                    ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
+                }
+                field("ERP Error Msg"; Rec."ERP Error Msg")
+                {
+                    ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
+                }
+                field("Batch ID"; Rec."Batch ID")
+                {
+                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
             }
         }

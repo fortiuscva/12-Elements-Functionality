@@ -1,6 +1,6 @@
 codeunit 52110 "12E Lead Validation Mgt"
 {
-    procedure BuildValidationData(var LeadValidation: Record "12E Lead Validation Details"; StartDate: Date; EndDate: Date)
+    procedure BuildValidationData(var LeadValidationPar: Record "12E Lead Validation Details"; StartDate: Date; EndDate: Date)
     var
         PurchInvHeader: Record "Purch. Inv. Header";
         Vendor: Record Vendor;
@@ -8,7 +8,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         PriorDate: Date;
         LeadCost: Decimal;
     begin
-        LeadValidation.DeleteAll();
+        LeadValidationPar.DeleteAll(true);
         Vendor.Reset();
         Vendor.SetRange("12E Lead Acquisition", true);
         if Vendor.FindSet() then begin
@@ -20,15 +20,17 @@ codeunit 52110 "12E Lead Validation Mgt"
                 if PurchInvHeader.FindSet() then begin
                     repeat
 
-                        LeadValidation.Init();
+                        LeadValidationPar.Init();
 
-                        LeadValidation."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
+                        LeadValidationPar."Entry No." := GetEntryNo();
+
+                        LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
 
                         Vendor2.Reset();
                         if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
-                            LeadValidation."Vendor Name" := Vendor2.Name;
+                            LeadValidationPar."Vendor Name" := Vendor2.Name;
 
-                        LeadValidation."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
+                        LeadValidationPar."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
 
                         PriorDate := GetPreviousPostingDate(
                                              Vendor."No.",
@@ -39,18 +41,18 @@ codeunit 52110 "12E Lead Validation Mgt"
                                     PriorDate,
                                     PurchInvHeader."Posting Date");
 
-                        LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
-                        LeadValidation."Posted Purchase Invoice No." := PurchInvHeader."No.";
+                        LeadValidationPar."Posting Date" := PurchInvHeader."Posting Date";
+                        LeadValidationPar."Posted Purchase Invoice No." := PurchInvHeader."No.";
                         PurchInvHeader.CalcFields(Amount);
-                        LeadValidation."Invoice Amount" := PurchInvHeader.Amount;
-                        LeadValidation."Prior Posting Date" := PriorDate;
-                        LeadValidation."Lead Cost Amount" := LeadCost;
-                        LeadValidation.Difference := Abs(LeadValidation."Invoice Amount" - LeadValidation."Lead Cost Amount");
+                        LeadValidationPar."Invoice Amount" := PurchInvHeader.Amount;
+                        LeadValidationPar."Prior Posting Date" := PriorDate;
+                        LeadValidationPar."Lead Cost Amount" := LeadCost;
+                        LeadValidationPar.Difference := Abs(LeadValidationPar."Invoice Amount" - LeadValidationPar."Lead Cost Amount");
 
-                        if LeadValidation."Invoice Amount" <> 0 then
-                            LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation."Invoice Amount") * 100, 0.01);
+                        if LeadValidationPar."Invoice Amount" <> 0 then
+                            LeadValidationPar."Difference %" := Round((LeadValidationPar.Difference / LeadValidationPar."Invoice Amount") * 100, 0.01);
 
-                        LeadValidation.Insert();
+                        LeadValidationPar.Insert(true);
 
                     until PurchInvHeader.Next() = 0;
                 end;
@@ -104,5 +106,16 @@ codeunit 52110 "12E Lead Validation Mgt"
         CompanyMapping.SetRange(Company, CompanyName());
         if CompanyMapping.FindLast() then
             exit(CompanyMapping."DataSource ID");
+    end;
+
+    local procedure GetEntryNo(): Integer
+    var
+        LeadValidationLcl: Record "12E Lead Validation Details";
+    begin
+        LeadValidationLcl.Reset();
+        if LeadValidationLcl.FindLast() then
+            exit(LeadValidationLcl."Entry No." + 1)
+        else
+            exit(1);
     end;
 }

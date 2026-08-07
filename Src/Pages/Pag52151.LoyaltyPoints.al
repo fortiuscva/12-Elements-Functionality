@@ -87,6 +87,47 @@ page 52151 "12E Loyalty Points"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(Post)
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Post';
+                Image = Post;
+                Promoted = true;
+                PromotedCategory = Process;
+                ToolTip = 'Post the Loyalty Point entries.';
+
+                trigger OnAction()
+                var
+                    LoyaltyPosting: Codeunit "12E Loyalty Posting";
+                begin
+                    LoyaltyPosting.Post();
+                    CurrPage.Update(false);
+                end;
+            }
+
+            action(PreviewPosting)
+            {
+                ApplicationArea = Basic, Suite;
+                Caption = 'Preview Posting';
+                Image = ViewPostedOrder;
+                Promoted = true;
+                PromotedCategory = Process;
+                ShortCutKey = 'Ctrl+Alt+F9';
+                ToolTip = 'Preview the General Ledger Entries that will be created.';
+
+                trigger OnAction()
+                var
+                    LoyaltyPosting: Codeunit "12E Loyalty Posting";
+                begin
+                    LoyaltyPosting.PreviewPosting();
+                end;
+            }
+        }
+    }
     trigger OnOpenPage()
     var
         CompanyInformation: Record "Company Information";

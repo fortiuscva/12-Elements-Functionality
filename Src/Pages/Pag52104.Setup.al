@@ -1,7 +1,7 @@
 page 52104 "12E Setup"
 {
     ApplicationArea = All;
-    Caption = 'Setup';
+    Caption = '12 Elements Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
@@ -68,51 +68,59 @@ page 52104 "12E Setup"
     }
     actions
     {
-        area(Processing)
+        area(Navigation)
         {
-            action(CompanyMappings)
+            group(Gen)
             {
-                ApplicationArea = all;
-                Caption = 'Company Mappings';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = MapAccounts;
-                RunObject = page "12E Company Mappings";
+                Caption = 'General';
+                action(CompanyMapping)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Company Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E Company Mappings";
+                }
             }
-            action(EPICGLMapping)
+            group(CCDistribution)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC G/L Mapping';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = MapAccounts;
-                RunObject = page "12E EPIC GL Mapping List";
+                Caption = 'Contact Center Distribution';
+                action(CCDLocationMapping)
+                {
+                    ApplicationArea = all;
+                    Caption = 'CCD Location Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E CCD Loc. Mapping Details";
+                }
+                action(CCDCustomerPortfolioMapping)
+                {
+                    ApplicationArea = all;
+                    Caption = 'CCD Customer Portfolio Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E CCDPort. Cust. Map. Detail";
+                }
             }
-            action(EPICPaymentTypes)
+        }
+        area(Promoted)
+        {
+            group(Category_Category4)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC Payment Types';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = Payment;
-                RunObject = page "12E EPIC Payment Types";
+                Caption = 'General', Comment = 'Generated from the PromotedActionCategories property index 3.';
+                actionref(CompanyMapping_Promoted; CompanyMapping)
+                {
+                }
             }
-            action(EPICBankAccounts)
+            group(Category_Category5)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC Bank Accounts';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = Payment;
-                RunObject = page "12E EPIC Bank Accounts";
+                Caption = 'Contact Center Distribution', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                actionref(CCDLocationMapping_Promoted; CCDLocationMapping)
+                {
+                }
+                actionref(CCDCustomerPortfolioMapping_Promoted; CCDCustomerPortfolioMapping)
+                {
+                }
             }
         }
     }
-
     trigger OnOpenPage()
     var
     begin

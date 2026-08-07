@@ -41,7 +41,7 @@ table 52100 "12E Company Mapping"
         }
         field(4; "Client ID"; Integer)
         {
-            Caption = 'Client ID';
+            Caption = 'Questco Client ID';
             DataClassification = CustomerContent;
         }
         field(5; DBA; Text[100])

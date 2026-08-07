@@ -1,7 +1,7 @@
 page 52116 "12E Call Center Distribution"
 {
     ApplicationArea = All;
-    Caption = 'Contact Center Time Distribution';
+    Caption = 'Contact Center Distribution';
     PageType = Document;
     SourceTable = "12E CCD Header";
 

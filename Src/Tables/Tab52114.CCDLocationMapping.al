@@ -24,6 +24,14 @@ table 52114 "12E CCD Location Mapping"
             Caption = 'Vendor No.';
             TableRelation = Vendor;
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            begin
+                if (("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '')) then
+                    Error('Vendor No. must be blank for Payroll processing type');
+
+                if (("Processing Type" = "Processing Type"::Vendor) and ("Vendor No." = '')) then
+                    Error('Vendor No. cannot be blank for Vendor-based processing type');
+            end;
         }
         field(9; "Processing Type"; Enum "12E CCD Processing Types")
         {
@@ -45,4 +53,12 @@ table 52114 "12E CCD Location Mapping"
 
         }
     }
+    trigger OnModify()
+    begin
+        if (("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '')) then
+            Error('Vendor No. must be blank for Payroll processing type');
+
+        if (("Processing Type" = "Processing Type"::Vendor) and ("Vendor No." = '')) then
+            Error('Vendor No. cannot be blank for Vendor-based processing type');
+    end;
 }

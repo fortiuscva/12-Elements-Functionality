@@ -7,7 +7,9 @@ codeunit 52110 "12E Lead Validation Mgt"
         Vendor2: Record Vendor;
         PriorDate: Date;
         LeadCost: Decimal;
+        EntryNo: Integer;
     begin
+        EntryNo := 1;
         LeadValidationPar.DeleteAll(true);
         Vendor.Reset();
         Vendor.SetRange("12E Lead Acquisition", true);
@@ -22,7 +24,7 @@ codeunit 52110 "12E Lead Validation Mgt"
 
                         LeadValidationPar.Init();
 
-                        LeadValidationPar."Entry No." := GetEntryNo();
+                        LeadValidationPar."Entry No." := EntryNo;
 
                         LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
 
@@ -53,6 +55,7 @@ codeunit 52110 "12E Lead Validation Mgt"
                             LeadValidationPar."Difference %" := Round((LeadValidationPar.Difference / LeadValidationPar."Invoice Amount") * 100, 0.01);
 
                         LeadValidationPar.Insert(true);
+                        EntryNo += 1;
 
                     until PurchInvHeader.Next() = 0;
                 end;

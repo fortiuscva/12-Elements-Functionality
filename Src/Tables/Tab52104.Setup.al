@@ -55,7 +55,7 @@ table 52104 "12E Setup"
         field(23; "CCD G/L Account No."; Code[20])
         {
             Caption = 'CCD G/L Account No.';
-            TableRelation = "G/L Account";
+            TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
         field(25; "Payroll Batch Nos."; Code[20])
@@ -67,7 +67,7 @@ table 52104 "12E Setup"
         field(27; "Payroll Offset Account No."; Code[20])
         {
             Caption = 'Payroll Offset Account No.';
-            TableRelation = "G/L Account";
+            TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
         field(29; "Payroll Jnl. Template"; Code[10])

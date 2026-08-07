@@ -1,7 +1,7 @@
 page 52118 "12E CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'Contact Center Time Distribution Details';
+    Caption = 'Contact Center Distribution Details';
     PageType = List;
     SourceTable = "12E CCD Header";
     CardPageId = "12E Call Center Distribution";

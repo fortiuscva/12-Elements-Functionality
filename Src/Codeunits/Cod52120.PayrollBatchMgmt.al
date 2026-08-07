@@ -90,9 +90,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             PayrollBatchLine."Line No." := CurrentLineNo;
             PayrollBatchLine."Department Code" := PayrollBatchQuery.Department;
             PayrollBatchLine."G/L Account No." := PayrollBatchQuery.GLAccountNo;
+            PayrollBatchLine."Pay Type Code" := PayrollBatchQuery.PayTypeCode;
             PayrollBatchLine.Amount := Amount;
             Clear(PayrollBatchLine."Employee No.");
-            Clear(PayrollBatchLine."Pay Type Code");
+            // Clear(PayrollBatchLine."Pay Type Code");
 
             PayrollBatchLine."Hours Worked" := PayrollBatchQuery.TotalHoursWorked;
             PayrollBatchLine."Hours Units Paid" := PayrollBatchQuery.TotalHoursPaid;

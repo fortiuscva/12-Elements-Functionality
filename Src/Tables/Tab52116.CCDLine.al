@@ -79,12 +79,12 @@ table 52116 "12E CCD Line"
         }
         field(22; "Batch Start Date"; Date)
         {
-            Caption = 'Batch Start Date';
+            Caption = 'Pay Batch Start Date';
             DataClassification = CustomerContent;
         }
         field(23; "Batch End Date"; Date)
         {
-            Caption = 'Batch End Date';
+            Caption = 'Pay Batch End Date';
             DataClassification = CustomerContent;
         }
         field(25; "Invoice No."; Code[20])

@@ -63,6 +63,14 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Batch End Date field.', Comment = '%';
                 }
+                field("Sales Invoice No."; Rec."Sales Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                }
+                field("Pstd. Sales Invoice No."; Rec."Pstd. Sales Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
+                }
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';

@@ -48,12 +48,19 @@ table 52116 "12E CCD Line"
             MinValue = 0;
             DataClassification = CustomerContent;
         }
-        field(15; "Distribution Total"; Decimal)
+        field(15; "Sales Invoice No."; Code[20])
         {
-            Caption = 'Distribution Total';
-            DecimalPlaces = 0 : 2;
+            Caption = 'Sales Invoice No.';
             FieldClass = FlowField;
-            CalcFormula = sum("12E CCD Allocation Details"."CCD Location Hours" where("CCD Location" = field("Location Code"), "CCD No." = field("Document No.")));
+            CalcFormula = lookup("Sales Line"."Document No." where("12E CCD No." = field("Document No."), "Document Type" = const(Invoice)));
+            Editable = false;
+        }
+        field(16; "Pstd. Sales Invoice No."; Code[20])
+        {
+            Caption = 'Posted Sales Invoice No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Invoice Line"."Document No." where("12E CCD No." = field("Document No.")));
+            Editable = false;
         }
         field(17; "No. of Hours"; Decimal)
         {
@@ -67,7 +74,7 @@ table 52116 "12E CCD Line"
         }
         field(21; "Payroll Batch ID"; Integer)
         {
-            Caption = 'Payroll Batch ID';
+            Caption = 'Pay Batch ID';
             DataClassification = CustomerContent;
         }
         field(22; "Batch Start Date"; Date)
@@ -82,12 +89,12 @@ table 52116 "12E CCD Line"
         }
         field(25; "Invoice No."; Code[20])
         {
-            Caption = 'Invoice No.';
+            Caption = 'Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
         }
         field(27; "Invoice Date"; Date)
         {
-            Caption = 'Invoice Date';
+            Caption = 'Posted Purchase Invoice Date';
             DataClassification = CustomerContent;
         }
         field(29; "Batch or Inv. Hours"; Decimal)
@@ -102,17 +109,6 @@ table 52116 "12E CCD Line"
             DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
         }
-        // field(15; "Sales Invoice No."; Code[20])
-        // {
-        //     Caption = 'Sales Invoice No.';
-        //     Editable = false;
-        // }
-
-        // field(17; "Sales Invoice Line No."; Integer)
-        // {
-        //     Caption = 'Sales Invoice Line No.';
-        //     Editable = false;
-        // }
     }
     keys
     {

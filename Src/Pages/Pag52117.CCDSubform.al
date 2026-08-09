@@ -43,10 +43,6 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
-                field("Distribution Total"; Rec."Distribution Total")
-                {
-                    ToolTip = 'Specifies the value of the Distribution Total field.', Comment = '%';
-                }
                 field("No. of Hours"; Rec."No. of Hours")
                 {
                     ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
@@ -83,15 +79,6 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Batch/Invoice Hours Distribution Percentage field.', Comment = '%';
                 }
-
-                //     field("Sales Invoice No."; Rec."Sales Invoice No.")
-                //     {
-                //         ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
-                //     }
-                //     field("Sales Invoice Line No."; Rec."Sales Invoice Line No.")
-                //     {
-                //         ToolTip = 'Specifies the value of the Sales Invoice Line No. field.', Comment = '%';
-                //     }
             }
         }
     }

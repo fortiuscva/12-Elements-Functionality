@@ -37,6 +37,7 @@ page 52116 "12E Call Center Distribution"
                 field(Status; Rec.Status)
                 {
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                    Editable = false;
                 }
             }
             part(Lines; "12E CCD Subform")

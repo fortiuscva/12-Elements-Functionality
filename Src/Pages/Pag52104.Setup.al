@@ -73,6 +73,7 @@ page 52104 "12E Setup"
             group(Gen)
             {
                 Caption = 'General';
+                Image = Setup;
                 action(CompanyMapping)
                 {
                     ApplicationArea = all;
@@ -84,6 +85,7 @@ page 52104 "12E Setup"
             group(CCDistribution)
             {
                 Caption = 'Contact Center Distribution';
+                Image = Setup;
                 action(CCDLocationMapping)
                 {
                     ApplicationArea = all;
@@ -97,6 +99,20 @@ page 52104 "12E Setup"
                     Caption = 'CCD Customer Portfolio Mapping';
                     Image = MapAccounts;
                     RunObject = page "12E CCDPort. Cust. Map. Detail";
+                }
+                action(Departments)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Departments';
+                    Image = Departments;
+                    RunObject = page "12E Department Codes";
+                }
+                action(PayTypes)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Pay Types';
+                    Image = SetupPayment;
+                    RunObject = page "12E Pay Types";
                 }
             }
         }
@@ -116,6 +132,12 @@ page 52104 "12E Setup"
                 {
                 }
                 actionref(CCDCustomerPortfolioMapping_Promoted; CCDCustomerPortfolioMapping)
+                {
+                }
+                actionref(Departments_Promoted; Departments)
+                {
+                }
+                actionref(PayTypes_Promoted; PayTypes)
                 {
                 }
             }

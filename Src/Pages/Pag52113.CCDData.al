@@ -3,6 +3,7 @@ page 52113 "12E CCD Data"
     ApplicationArea = All;
     Caption = 'CCD Detailed Data';
     PageType = List;
+    InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
     SourceTable = "12E CCD Detailed Data";
@@ -24,7 +25,6 @@ page 52113 "12E CCD Data"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DWLoadDate field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Call Date"; Rec."Call Date")
                 {
@@ -55,31 +55,26 @@ page 52113 "12E CCD Data"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Export Timestamp field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Import Timestamp"; Rec."ERP Import Timestamp")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Import Timestamp field.', Comment = '%';
-                    Visible = false;
                 }
                 field(ERPStatus; Rec.ERPStatus)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERPStatus field.', Comment = '%';
-                    Visible = false;
                 }
                 field(ERPErrorMsg; Rec.ERPErrorMsg)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERPErrorMsg field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
-                    Visible = false;
                 }
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {

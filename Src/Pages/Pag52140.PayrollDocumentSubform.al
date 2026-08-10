@@ -39,7 +39,7 @@ page 52140 "12E Payroll Document Subform"
                 field("Pay Type Code"; Rec."Pay Type Code")
                 {
                     ToolTip = 'Specifies the value of the Pay Type Code field.', Comment = '%';
-                    // Visible = false;
+                    Visible = false;
                 }
                 field(Amount; Rec.Amount)
                 {

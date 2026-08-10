@@ -20,12 +20,12 @@ table 52126 "12E Questco Payroll Txn"
         }
         field(3; "Client ID"; Integer)
         {
-            Caption = 'Client ID';
+            Caption = 'Questco Client ID';
             DataClassification = CustomerContent;
         }
         field(4; "Batch ID"; Integer)
         {
-            Caption = 'Batch ID';
+            Caption = 'Pay Batch ID';
             DataClassification = CustomerContent;
         }
         field(5; "Pay Date"; Date)
@@ -35,7 +35,7 @@ table 52126 "12E Questco Payroll Txn"
         }
         field(6; "Batch Type"; Code[50])
         {
-            Caption = 'Batch Type';
+            Caption = 'Pay Batch Type';
             DataClassification = CustomerContent;
         }
         field(7; "Pay Period Start Date"; Date)
@@ -119,6 +119,10 @@ table 52126 "12E Questco Payroll Txn"
         key(PK; "PK ID")
         {
             Clustered = true;
+        }
+        key(Key2; "Client ID", "Batch ID")
+        {
+
         }
     }
 }

@@ -1,10 +1,10 @@
-page 52138 "12E Questco Payroll Txns"
+page 52155 "12E QPAY Transactions"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Transactions (Global)';
+    Caption = 'Questco Payroll Transactions';
     PageType = List;
     SourceTable = "12E Questco Payroll Txn";
-    SourceTableView = sorting("PK ID") order(descending);
+    SourceTableView = sorting("Client ID", "Batch ID") order(descending);
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
@@ -112,4 +112,13 @@ page 52138 "12E Questco Payroll Txns"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindLast() then
+            Rec.SetRange("Client ID", CompanyMapping."Client ID");
+    end;
 }

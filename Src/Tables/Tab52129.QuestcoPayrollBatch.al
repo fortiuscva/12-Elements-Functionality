@@ -17,12 +17,12 @@ table 52129 "12E Questco Payroll Batch"
         }
         field(3; "Client ID"; Integer)
         {
-            Caption = 'Client ID';
+            Caption = 'Questco Client ID';
             DataClassification = CustomerContent;
         }
         field(4; "Batch ID"; Integer)
         {
-            Caption = 'Batch ID';
+            Caption = 'Pay Batch ID';
             DataClassification = CustomerContent;
         }
         field(5; "Pay Date"; Date)
@@ -32,7 +32,7 @@ table 52129 "12E Questco Payroll Batch"
         }
         field(6; "Batch Type"; Code[10])
         {
-            Caption = 'Batch Type';
+            Caption = 'Pay Batch Type';
             DataClassification = CustomerContent;
         }
         field(7; "Batch Status"; Code[10])

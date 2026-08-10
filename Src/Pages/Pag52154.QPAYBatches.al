@@ -1,7 +1,7 @@
-page 52145 "12E Questco Payroll Batches"
+page 52154 "12E QPAY Batches"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Batches (Global)';
+    Caption = 'Questco Payroll Batches';
     PageType = List;
     SourceTable = "12E Questco Payroll Batch";
     SourceTableView = sorting(PKID) order(descending);
@@ -110,4 +110,13 @@ page 52145 "12E Questco Payroll Batches"
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindLast() then
+            Rec.SetRange("Client ID", CompanyMapping."Client ID");
+    end;
 }

@@ -47,7 +47,7 @@ table 52100 "12E Company Mapping"
         field(5; DBA; Text[100])
         {
             Caption = 'DBA';
-            Editable = false;
+            // Editable = false;
             DataClassification = CustomerContent;
         }
         field(6; "Type of Company"; enum "12E Type of Company")

@@ -33,6 +33,7 @@ page 52116 "12E Call Center Distribution"
                 field(Processed; Rec.Processed)
                 {
                     ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
+                    Editable = false;
                 }
                 field(Status; Rec.Status)
                 {

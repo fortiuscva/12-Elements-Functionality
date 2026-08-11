@@ -17,6 +17,10 @@ page 52100 "12E Company Mappings"
                 {
                     ToolTip = 'Specifies the value of the Company Code field.', Comment = '%';
                 }
+                field(DBA; Rec.DBA)
+                {
+                    ToolTip = 'Specifies the value of the Company Name field.', Comment = '%';
+                }
                 field("DataSource ID"; Rec."DataSource ID")
                 {
                     ToolTip = 'Specifies the value of the DataSource ID field.', Comment = '%';
@@ -28,10 +32,6 @@ page 52100 "12E Company Mappings"
                 field("Client ID"; Rec."Client ID")
                 {
                     ToolTip = 'Specifies the value of the Client ID field.', Comment = '%';
-                }
-                field(DBA; Rec.DBA)
-                {
-                    ToolTip = 'Specifies the value of the Company Name field.', Comment = '%';
                 }
                 field("Type of Company"; Rec."Type of Company")
                 {

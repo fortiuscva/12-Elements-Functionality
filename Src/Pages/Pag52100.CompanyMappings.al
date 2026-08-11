@@ -29,6 +29,10 @@ page 52100 "12E Company Mappings"
                 {
                     ToolTip = 'Specifies the value of the Company ID field.', Comment = '%';
                 }
+                field(Portfolio; Rec.Portfolio)
+                {
+                    ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
+                }
                 field("Client ID"; Rec."Client ID")
                 {
                     ToolTip = 'Specifies the value of the Client ID field.', Comment = '%';
@@ -36,10 +40,6 @@ page 52100 "12E Company Mappings"
                 field("Type of Company"; Rec."Type of Company")
                 {
                     ToolTip = 'Specifies the value of the Type of Company field.', Comment = '%';
-                }
-                field(Portfolio; Rec.Portfolio)
-                {
-                    ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
                 field(Company; Rec.Company)
                 {

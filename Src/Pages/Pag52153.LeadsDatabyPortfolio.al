@@ -1,6 +1,7 @@
-page 52120 "12E Lead Source Reconciliation"
+page 52153 "12E Leads Data by Portfolio"
 {
-    Caption = 'Lead Source Reconciliation (Global)';
+    ApplicationArea = All;
+    Caption = 'Lead Source Reconciliation';
     PageType = List;
     InsertAllowed = false;
     DeleteAllowed = false;
@@ -8,7 +9,6 @@ page 52120 "12E Lead Source Reconciliation"
     SourceTable = "12E Lead Source Reconciliation";
     SourceTableView = sorting("PK ID") order(descending);
     UsageCategory = Lists;
-    ApplicationArea = All;
 
     layout
     {
@@ -18,12 +18,10 @@ page 52120 "12E Lead Source Reconciliation"
             {
                 field("PK ID"; Rec."PK ID")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
                 }
                 field("DW Load Date"; Rec."DW Load Date")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
                 }
                 field("Datasource ID"; Rec."Datasource ID")
@@ -33,7 +31,7 @@ page 52120 "12E Lead Source Reconciliation"
                 }
                 field("Portfolio Name"; Rec."Portfolio Name")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
                 field("Lead Original Date"; Rec."Lead Original Date")
@@ -58,30 +56,34 @@ page 52120 "12E Lead Source Reconciliation"
                 }
                 field("DW Export DateTime"; Rec."DW Export DateTime")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Export DateTime field.', Comment = '%';
                 }
                 field("ERP Import DateTime"; Rec."ERP Import DateTime")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Import DateTime field.', Comment = '%';
                 }
                 field("ERP Status"; Rec."ERP Status")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
                 }
                 field("ERP Error Msg"; Rec."ERP Error Msg")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
-                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
             }
         }
     }
+    trigger OnOpenPage()
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindFirst() then
+            Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");
+    end;
 }

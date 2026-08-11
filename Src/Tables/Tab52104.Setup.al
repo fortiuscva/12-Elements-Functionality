@@ -88,6 +88,9 @@ table 52104 "12E Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Jnl. Template"));
             DataClassification = CustomerContent;
         }
+        field(40; "CCD Process Enabled"; Boolean)
+        {
+            Caption = 'CCD Process Enabled';
         field(32; "Loyalty Points Earned"; Code[20])
         {
             Caption = 'Loyalty Points Earned';

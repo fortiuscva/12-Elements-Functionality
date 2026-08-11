@@ -17,5 +17,11 @@ tableextension 52114 "12E Purch. Inv. Header" extends "Purch. Inv. Header"
             Caption = 'Period Quantity';
             DataClassification = CustomerContent;
         }
+        field(52103; "12E Processed"; Boolean)
+        {
+            Caption = 'Processed';
+            FieldClass = FlowField;
+            CalcFormula = Exist("12E Posted CCD Line" where("Invoice No." = field("No.")));
+        }
     }
 }

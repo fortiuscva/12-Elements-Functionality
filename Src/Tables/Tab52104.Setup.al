@@ -88,6 +88,11 @@ table 52104 "12E Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Jnl. Template"));
             DataClassification = CustomerContent;
         }
+        field(40; "CCD Process Enabled"; Boolean)
+        {
+            Caption = 'CCD Process Enabled';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

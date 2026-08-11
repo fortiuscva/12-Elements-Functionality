@@ -111,8 +111,16 @@ table 52115 "12E CCD Header"
     end;
 
     trigger OnDelete()
+    var
+        CCDLine: Record "12E CCD Line";
     begin
         DeleteAllCallCenterDistributionLines();
+
+        CCDLine.Reset();
+        CCDLine.SetRange("Document No.", "No.");
+        CCDLine.SetFilter("Invoice No.", '<>%1', '');
+        if not CCDLine.IsEmpty() then
+            Error('CCD %1 cannot be deleted because it is attached to a posted invoice.', "No.");
     end;
 
     procedure DeleteAllCallCenterDistributionLines()

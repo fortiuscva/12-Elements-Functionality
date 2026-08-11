@@ -2,7 +2,6 @@ codeunit 52122 "12E Loyalty Posting"
 {
     var
         TwelveSetup: Record "12E Setup";
-
         NoEntriesToPostErr: Label 'There are no Loyalty Point entries to post.';
         NoEntriesToPreviewErr: Label 'There are no Loyalty Point entries to preview.';
         NoJournalLinesToPostErr: Label 'There are no General Journal Lines to post.';
@@ -28,7 +27,6 @@ codeunit 52122 "12E Loyalty Posting"
         CreateJournalLines();
         Commit();
         PreviewJournal();
-
         DeleteJournalLines();
     end;
 
@@ -38,7 +36,6 @@ codeunit 52122 "12E Loyalty Posting"
 
         TwelveSetup.TestField("Payroll Jnl. Template");
         TwelveSetup.TestField("Payroll Jnl. Batch");
-
         TwelveSetup.TestField("Loyalty Points Earned");
         TwelveSetup.TestField("Deferred Rev Loyalty Pts");
         TwelveSetup.TestField("Provision for Loyalty Points");
@@ -62,13 +59,11 @@ codeunit 52122 "12E Loyalty Posting"
 
         repeat
             if LoyaltyPoints."Document No." = '' then begin
-                LoyaltyPoints."Document No." :=
-                    NoSeries.GetNextNo(TwelveSetup."Loyalty Document Nos.", WorkDate(), true);
+                LoyaltyPoints."Document No." := NoSeries.GetNextNo(TwelveSetup."Loyalty Document Nos.", WorkDate(), true);
                 LoyaltyPoints.Modify(true);
             end;
 
             if LoyaltyPoints."Points Earned" <> 0 then begin
-
                 CreateGenJournalLine(
                     LoyaltyPoints."Month End Date",
                     LoyaltyPoints."Document No.",
@@ -76,11 +71,7 @@ codeunit 52122 "12E Loyalty Posting"
                     TwelveSetup."Loyalty Points Earned",
                     TwelveSetup."Deferred Rev Loyalty Pts");
 
-                ProvisionAmount :=
-                    Round(
-                        LoyaltyPoints."Points Earned" *
-                        TwelveSetup."Loyalty Pts. Provision %" / 100,
-                        0.01);
+                ProvisionAmount := Round(LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
                 if ProvisionAmount <> 0 then
                     CreateGenJournalLine(
@@ -92,7 +83,6 @@ codeunit 52122 "12E Loyalty Posting"
             end;
 
             if LoyaltyPoints."Points Expired" <> 0 then begin
-
                 CreateGenJournalLine(
                     LoyaltyPoints."Month End Date",
                     LoyaltyPoints."Document No.",
@@ -100,11 +90,7 @@ codeunit 52122 "12E Loyalty Posting"
                     TwelveSetup."Deferred Rev Loyalty Pts",
                     TwelveSetup."Loyalty Points Earned");
 
-                ProvisionAmount :=
-                    Round(
-                        LoyaltyPoints."Points Expired" *
-                        TwelveSetup."Loyalty Pts. Provision %" / 100,
-                        0.01);
+                ProvisionAmount := Round(LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
                 if ProvisionAmount <> 0 then
                     CreateGenJournalLine(
@@ -114,17 +100,10 @@ codeunit 52122 "12E Loyalty Posting"
                         TwelveSetup."Loyalty Points Reserve",
                         TwelveSetup."Provision for Loyalty Points");
             end;
-
         until LoyaltyPoints.Next() = 0;
     end;
 
-
-    local procedure CreateGenJournalLine(
-        PostingDate: Date;
-        DocumentNo: Code[20];
-        Amount: Decimal;
-        AccountNo: Code[20];
-        BalAccountNo: Code[20])
+    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; Amount: Decimal; AccountNo: Code[20]; BalAccountNo: Code[20])
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
@@ -136,7 +115,6 @@ codeunit 52122 "12E Loyalty Posting"
 
         GenJournalLine.Validate("Posting Date", PostingDate);
         GenJournalLine.Validate("Document No.", DocumentNo);
-
         GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
         GenJournalLine.Validate("Account No.", AccountNo);
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
@@ -181,34 +159,39 @@ codeunit 52122 "12E Loyalty Posting"
     local procedure UpdatePostedRecords()
     var
         LoyaltyPoints: Record "12E Loyalty Points";
+        LoyaltyPointsToUpdate: Record "12E Loyalty Points";
         GLEntry: Record "G/L Entry";
         GLRegister: Record "G/L Register";
+        CurrentDocumentNo: Code[20];
     begin
         LoyaltyPoints.Reset();
-        LoyaltyPoints.SetFilter("Document No.", '<>%1', '');
         LoyaltyPoints.SetRange(Processed, false);
+        LoyaltyPoints.SetFilter("Document No.", '<>%1', '');
 
-        if not LoyaltyPoints.FindFirst() then
-            exit;
+        if LoyaltyPoints.FindSet() then
+            repeat
+                CurrentDocumentNo := LoyaltyPoints."Document No.";
 
-        GLEntry.Reset();
-        GLEntry.SetRange("Document No.", LoyaltyPoints."Document No.");
+                GLEntry.Reset();
+                GLEntry.SetRange("Document No.", CurrentDocumentNo);
 
-        if not GLEntry.FindFirst() then
-            Error('No G/L Entries were found for Document No. %1.', LoyaltyPoints."Document No.");
+                if not GLEntry.FindFirst() then
+                    Error('No G/L Entries were found for Document No. %1.', CurrentDocumentNo);
 
-        GLRegister.Reset();
-        GLRegister.SetFilter("From Entry No.", '<=%1', GLEntry."Entry No.");
-        GLRegister.SetFilter("To Entry No.", '>=%1', GLEntry."Entry No.");
+                GLRegister.Reset();
+                GLRegister.SetFilter("From Entry No.", '<=%1', GLEntry."Entry No.");
+                GLRegister.SetFilter("To Entry No.", '>=%1', GLEntry."Entry No.");
 
-        if not GLRegister.FindFirst() then
-            Error(
-                'Unable to determine the G/L Register for Document No. %1.',
-                LoyaltyPoints."Document No.");
+                if not GLRegister.FindFirst() then
+                    Error('Unable to determine the G/L Register for Document No. %1.', CurrentDocumentNo);
 
-        LoyaltyPoints.ModifyAll("G/L Register No.", Format(GLRegister."No."));
+                LoyaltyPointsToUpdate.Reset();
+                LoyaltyPointsToUpdate.SetRange("Document No.", CurrentDocumentNo);
+                LoyaltyPointsToUpdate.SetRange(Processed, false);
 
-        LoyaltyPoints.ModifyAll(Processed, true);
+                LoyaltyPointsToUpdate.ModifyAll("G/L Register No.", Format(GLRegister."No."));
+                LoyaltyPointsToUpdate.ModifyAll(Processed, true);
+            until LoyaltyPoints.Next() = 0;
     end;
 
     local procedure DeleteJournalLines()
@@ -235,5 +218,4 @@ codeunit 52122 "12E Loyalty Posting"
 
         exit(10000);
     end;
-
 }

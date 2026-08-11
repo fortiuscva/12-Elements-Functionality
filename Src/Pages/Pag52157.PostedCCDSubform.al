@@ -1,9 +1,10 @@
-page 52117 "12E CCD Subform"
+page 52157 "12E Posted CCD Subform"
 {
     ApplicationArea = All;
-    Caption = 'CCD Subform';
+    Caption = 'Posted CCD Subform';
     PageType = ListPart;
-    SourceTable = "12E CCD Line";
+    SourceTable = "12E Posted CCD Line";
+    UsageCategory = None;
     AutoSplitKey = true;
 
     layout
@@ -14,18 +15,11 @@ page 52117 "12E CCD Subform"
             {
                 field("Document No."; Rec."Document No.")
                 {
-                    Visible = false;
                     ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
                 }
                 field("Line No."; Rec."Line No.")
                 {
-                    Visible = false;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
-                }
-                field("Call Date"; Rec."Call Date")
-                {
-                    Visible = false;
-                    ToolTip = 'Specifies the value of the CCD Date field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
@@ -51,25 +45,33 @@ page 52117 "12E CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Distributed Quantity field.', Comment = '%';
                 }
-                field("Batch ID"; Rec."Payroll Batch ID")
+                field("Payroll Batch ID"; Rec."Payroll Batch ID")
                 {
-                    ToolTip = 'Specifies the value of the Payroll Batch ID field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Pay Batch ID field.', Comment = '%';
                 }
                 field("Batch Start Date"; Rec."Batch Start Date")
                 {
-                    ToolTip = 'Specifies the value of the Batch Start Date field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Pay Batch Start Date field.', Comment = '%';
                 }
                 field("Batch End Date"; Rec."Batch End Date")
                 {
-                    ToolTip = 'Specifies the value of the Batch End Date field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Pay Batch End Date field.', Comment = '%';
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
-                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
                 }
                 field("Invoice Date"; Rec."Invoice Date")
                 {
-                    ToolTip = 'Specifies the value of the Invoice Date field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Posted Purchase Invoice Date field.', Comment = '%';
+                }
+                field("Sales Invoice No."; Rec."Sales Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                }
+                field("Pstd. Sales Invoice No."; Rec."Pstd. Sales Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
                 }
                 field("Batch or Inv. Hours"; Rec."Batch or Inv. Hours")
                 {

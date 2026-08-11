@@ -1,21 +1,22 @@
 codeunit 52109 "12E CCD Invoice Mgmt"
 {
-    procedure CreateInvoices(var CCDHeader: Record "12E CCD Header")
+    procedure PostandCreateInvoices(var CCDHeader: Record "12E CCD Header")
     var
         CCDLine: Record "12E CCD Line";
         PortfolioMapping: Record "12E CCD Port. Cust. Mapping";
         SalesHeader: Record "Sales Header";
         SalesLine: Record "Sales Line";
         TwelveElementsSetup: Record "12E Setup";
+        PostedCCDHeader: Record "12E Posted CCD Header";
+        PostedCCDLine: Record "12E Posted CCD Line";
         CurrentPortfolio: Code[20];
         CurrentLocation: Code[20];
         Qty: Decimal;
         NextLineNo: Integer;
     begin
-        if CCDHeader.Processed then
-            Error(
-                'Invoice cannot be Created because CCD %1 has already been processed.',
-                CCDHeader."No.");
+        PostedCCDHeader.Init();
+        PostedCCDHeader.TransferFields(CCDHeader);
+        PostedCCDHeader.Insert(true);
 
         CCDHeader.TestField(Status, CCDHeader.Status::Released);
 
@@ -29,6 +30,10 @@ codeunit 52109 "12E CCD Invoice Mgmt"
         if not CCDLine.FindSet() then
             exit;
         repeat
+            PostedCCDLine.Init();
+            PostedCCDLine.TransferFields(CCDLine);
+            PostedCCDLine.Insert(true);
+
             if (CurrentPortfolio <> CCDLine.Portfolio) or
                (CurrentLocation <> CCDLine."Location Code")
             then begin
@@ -74,8 +79,10 @@ codeunit 52109 "12E CCD Invoice Mgmt"
             NextLineNo += 10000;
 
         until CCDLine.Next() = 0;
-        CCDHeader.Processed := true;
-        CCDHeader.Modify(true);
-        Message('Sales Invoices created successfully.');
+
+
+        CCDHeader.Delete(true);
+
+        Message('Posted contact center distribution document &\Sales Invoices were created successfully.');
     end;
 }

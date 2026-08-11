@@ -89,19 +89,7 @@ page 52116 "12E Call Center Distribution"
                     end;
                 }
 
-                action(CreateInvoices)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Create Invoices';
-                    Image = CreateDocument;
 
-                    trigger OnAction()
-                    var
-                        CCDInvoiceMgmt: Codeunit "12E CCD Invoice Mgmt";
-                    begin
-                        CCDInvoiceMgmt.CreateInvoices(Rec);
-                    end;
-                }
                 action(ShowAllocationDetails)
                 {
                     ApplicationArea = All;
@@ -110,6 +98,27 @@ page 52116 "12E Call Center Distribution"
 
                     RunObject = Page "12E CCD Allocation Details";
                     RunPageLink = "CCD No." = FIELD("No.");
+                }
+            }
+            group("P&osting")
+            {
+                Caption = 'P&osting';
+                Image = Post;
+                action(PostandCreateInvoices)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post and Create Invoices';
+                    Ellipsis = true;
+                    Image = PostOrder;
+                    ShortCutKey = 'F9';
+                    ToolTip = 'Post the contact center distribution document and creates sales invoices.';
+
+                    trigger OnAction()
+                    var
+                        CCDInvoiceMgmt: Codeunit "12E CCD Invoice Mgmt";
+                    begin
+                        CCDInvoiceMgmt.PostandCreateInvoices(Rec);
+                    end;
                 }
             }
         }
@@ -128,10 +137,16 @@ page 52116 "12E Call Center Distribution"
                     actionref(Reopen_Promoted; Reopen)
                     {
                     }
-                    actionref(CreateInvoices_Promoted; CreateInvoices)
+
+                    actionref(ShowAllocation_Promoted; ShowAllocationDetails)
                     {
                     }
-                    actionref(ShowAllocation_Promoted; ShowAllocationDetails)
+                }
+                group(Category_Category6)
+                {
+                    Caption = 'Posting', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                    ShowAs = SplitButton;
+                    actionref(PostandCreateInvoices_Promoted; PostandCreateInvoices)
                     {
                     }
                 }

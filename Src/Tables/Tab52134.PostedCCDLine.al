@@ -1,6 +1,6 @@
-table 52116 "12E CCD Line"
+table 52134 "12E Posted CCD Line"
 {
-    Caption = 'Contact Center Time Distribution Line';
+    Caption = 'Posted CCD Line';
     DataClassification = CustomerContent;
     DataPerCompany = True;
     fields
@@ -26,7 +26,6 @@ table 52116 "12E CCD Line"
         {
             Caption = 'Location Code';
             TableRelation = "12E CCD Location Mapping";
-            // ValidateTableRelation = false;
             DataClassification = CustomerContent;
         }
         field(9; Portfolio; Text[30])
@@ -94,6 +93,20 @@ table 52116 "12E CCD Line"
             Caption = 'Batch/Invoice Hours Distribution Percentage';
             DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
+        }
+        field(33; "Sales Invoice No."; Code[20])
+        {
+            Caption = 'Sales Invoice No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Line"."Document No." where("12E CCD No." = field("Document No."), "12E CCD Line No." = field("Line No."), "Document Type" = const(Invoice)));
+            Editable = false;
+        }
+        field(35; "Pstd. Sales Invoice No."; Code[20])
+        {
+            Caption = 'Posted Sales Invoice No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Sales Invoice Line"."Document No." where("12E CCD No." = field("Document No."), "12E CCD Line No." = field("Line No.")));
+            Editable = false;
         }
     }
     keys

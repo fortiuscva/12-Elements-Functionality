@@ -14,11 +14,11 @@ codeunit 52109 "12E CCD Invoice Mgmt"
         Qty: Decimal;
         NextLineNo: Integer;
     begin
+        CCDHeader.TestField(Status, CCDHeader.Status::Released);
+
         PostedCCDHeader.Init();
         PostedCCDHeader.TransferFields(CCDHeader);
         PostedCCDHeader.Insert(true);
-
-        CCDHeader.TestField(Status, CCDHeader.Status::Released);
 
         TwelveElementsSetup.Get();
         TwelveElementsSetup.TestField("CCD G/L Account No.");

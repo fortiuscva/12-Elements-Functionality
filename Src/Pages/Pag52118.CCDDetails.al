@@ -27,6 +27,26 @@ page 52118 "12E CCD Details"
     }
     actions
     {
+        area(navigation)
+        {
+            group("&Line")
+            {
+                Caption = '&Line';
+                Image = Line;
+                action(ShowDocument)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Document';
+                    Image = EditLines;
+                    ShortCutKey = 'Return';
+
+                    trigger OnAction()
+                    begin
+                        Page.Run(Page::"12E Call Center Distribution", Rec);
+                    end;
+                }
+            }
+        }
         area(Processing)
         {
             group(CCDReleaseGroup)
@@ -83,12 +103,17 @@ page 52118 "12E CCD Details"
                         CurrPage.Update();
                     end;
                 }
+
+            }
+            group("F&unctions")
+            {
+                Caption = 'F&unctions';
+                Image = Action;
                 action(CreateCCDDocuments)
                 {
                     ApplicationArea = All;
                     Caption = 'Create CCD Documents';
-                    Image = Create;
-
+                    Image = Document;
                     trigger OnAction()
                     begin
                         Codeunit.Run(Codeunit::"12E CCD Mgmt");
@@ -101,6 +126,11 @@ page 52118 "12E CCD Details"
         {
             group(Category_Process)
             {
+                Caption = 'Process';
+
+                actionref(Card_Promoted; ShowDocument)
+                {
+                }
                 group(Category_Category5)
                 {
                     Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';

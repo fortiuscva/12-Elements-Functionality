@@ -3,8 +3,11 @@ page 52156 "12E Posted CCD"
     ApplicationArea = All;
     Caption = 'Posted Contact Center Distribution';
     PageType = Document;
+    InsertAllowed = false;
+    ModifyAllowed = false;
     SourceTable = "12E Posted CCD Header";
     UsageCategory = None;
+    Editable = false;
 
     layout
     {

@@ -6,6 +6,10 @@ page 52157 "12E Posted CCD Subform"
     SourceTable = "12E Posted CCD Line";
     UsageCategory = None;
     AutoSplitKey = true;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
+    Editable = false;
 
     layout
     {

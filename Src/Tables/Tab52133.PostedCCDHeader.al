@@ -21,4 +21,12 @@ table 52133 "12E Posted CCD Header"
             Clustered = true;
         }
     }
+    trigger OnDelete()
+    var
+        PostedCCDLine: Record "12E Posted CCD Line";
+    begin
+        PostedCCDLine.Reset();
+        PostedCCDLine.SetRange("Document No.", "No.");
+        PostedCCDLine.DeleteAll(true);
+    end;
 }

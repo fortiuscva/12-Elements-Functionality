@@ -67,10 +67,10 @@ codeunit 52109 "12E CCD Invoice Mgmt"
 
             SalesLine.Description :=
                 StrSubstNo(
-                    '%1 - %2 - %3',
+                    '%1 - %2 - %3 - %4',
                     CCDLine."Location Code",
                     CCDLine.Portfolio,
-                    Format(CCDLine."Call Date"));
+                    Format(CCDLine."Period Start Date"), Format(CCDLine."Period End Date"));
 
             SalesLine.Validate("12E CCD No.", CCDHeader."No.");
             SalesLine.Validate("12E CCD Line No.", CCDLine."Line No.");

@@ -17,16 +17,15 @@ table 52116 "12E CCD Line"
             Caption = 'Line No.';
             DataClassification = CustomerContent;
         }
-        field(5; "Call Date"; Date)
-        {
-            Caption = 'Call Date';
-            DataClassification = CustomerContent;
-        }
+        // field(5; "Call Date"; Date)
+        // {
+        //     Caption = 'Call Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(7; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
             TableRelation = "12E CCD Location Mapping";
-            // ValidateTableRelation = false;
             DataClassification = CustomerContent;
         }
         field(9; Portfolio; Text[30])
@@ -60,29 +59,29 @@ table 52116 "12E CCD Line"
         }
         field(21; "Payroll Batch ID"; Integer)
         {
-            Caption = 'Pay Batch ID';
+            Caption = 'Batch ID';
             DataClassification = CustomerContent;
         }
-        field(22; "Batch Start Date"; Date)
+        field(22; "Period Start Date"; Date)
         {
-            Caption = 'Pay Batch Start Date';
+            Caption = 'Period Start Date';
             DataClassification = CustomerContent;
         }
-        field(23; "Batch End Date"; Date)
+        field(23; "Period End Date"; Date)
         {
-            Caption = 'Pay Batch End Date';
+            Caption = 'Period End Date';
             DataClassification = CustomerContent;
         }
         field(25; "Invoice No."; Code[20])
         {
-            Caption = 'Posted Purchase Invoice No.';
+            Caption = 'Invoice No.';
             DataClassification = CustomerContent;
         }
-        field(27; "Invoice Date"; Date)
-        {
-            Caption = 'Posted Purchase Invoice Date';
-            DataClassification = CustomerContent;
-        }
+        // field(27; "Invoice Date"; Date)
+        // {
+        //     Caption = 'Posted Purchase Invoice Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(29; "Batch or Inv. Hours"; Decimal)
         {
             Caption = 'Batch/Invoice Hours';

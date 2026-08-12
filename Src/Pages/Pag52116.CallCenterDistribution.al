@@ -22,6 +22,22 @@ page 52116 "12E Call Center Distribution"
                             CurrPage.Update();
                     end;
                 }
+                field("Payroll Batch ID"; Rec."Payroll Batch ID")
+                {
+                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                }
+                field("Invoice No."; Rec."Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                }
+                field("Period Start Date"; Rec."Period Start Date")
+                {
+                    ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                }
+                field("Period End Date"; Rec."Period End Date")
+                {
+                    ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                }
                 field(Status; Rec.Status)
                 {
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';

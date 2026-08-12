@@ -29,14 +29,17 @@ page 52116 "12E Call Center Distribution"
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Period Start Date"; Rec."Period Start Date")
                 {
                     ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Period End Date"; Rec."Period End Date")
                 {
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -107,20 +110,22 @@ page 52116 "12E Call Center Distribution"
             {
                 Caption = 'P&osting';
                 Image = Post;
-                action(PostandCreateInvoices)
+
+                action(Post)
                 {
                     ApplicationArea = All;
-                    Caption = 'Post and Create Invoices';
+                    Caption = 'Post';
                     Ellipsis = true;
                     Image = PostOrder;
                     ShortCutKey = 'F9';
-                    ToolTip = 'Post the contact center distribution document and creates sales invoices.';
+                    ToolTip = 'Post the contact center distribution document.';
 
                     trigger OnAction()
                     var
-                        CCDInvoiceMgmt: Codeunit "12E CCD Invoice Mgmt";
+                        CCDInvoiceMgmt: Codeunit "12E CCD Post";
                     begin
-                        CCDInvoiceMgmt.PostandCreateInvoices(Rec);
+                        CCDInvoiceMgmt.Post(Rec);
+                        CurrPage.Update(false);
                     end;
                 }
             }
@@ -149,7 +154,7 @@ page 52116 "12E Call Center Distribution"
                 {
                     Caption = 'Posting', Comment = 'Generated from the PromotedActionCategories property index 5.';
                     ShowAs = SplitButton;
-                    actionref(PostandCreateInvoices_Promoted; PostandCreateInvoices)
+                    actionref(Post_Promoted; Post)
                     {
                     }
                 }

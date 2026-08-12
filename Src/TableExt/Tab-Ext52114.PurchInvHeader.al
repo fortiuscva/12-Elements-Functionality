@@ -17,19 +17,17 @@ tableextension 52114 "12E Purch. Inv. Header" extends "Purch. Inv. Header"
             Caption = 'Period Quantity';
             DataClassification = CustomerContent;
         }
-        field(52103; "12E CCD Exists"; Boolean)
+        field(52103; "12E CCD No."; Code[20])
         {
-            Caption = 'CCD Exists';
+            Caption = 'CCD No.';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E CCD Header" where("Invoice No." = field("No.")));
-            Editable = false;
+            CalcFormula = lookup("12E CCD Header"."No." where("Invoice No." = field("No.")));
         }
-        field(52104; "12E Posted CCD Exists"; Boolean)
+        field(52104; "12E Posted CCD No."; Code[20])
         {
-            Caption = 'Posted CCD Exists';
+            Caption = 'Posted CCD No.';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E Posted CCD Header" where("Invoice No." = field("No.")));
-            Editable = false;
+            CalcFormula = lookup("12E Posted CCD Header"."No." where("Invoice No." = field("No.")));
         }
     }
 }

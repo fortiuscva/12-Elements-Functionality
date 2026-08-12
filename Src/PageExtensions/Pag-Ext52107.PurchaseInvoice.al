@@ -6,7 +6,7 @@ pageextension 52107 "12E Purchase Invoice" extends "Purchase Invoice"
         {
             group("12E Contact Center Distribution")
             {
-                Caption = 'Contact Center Distribution [CCD]';
+                Caption = 'Contact Center Distribution';
 
                 field("12E Period Start Date"; Rec."12E Period Start Date")
                 {

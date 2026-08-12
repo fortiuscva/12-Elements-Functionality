@@ -65,13 +65,27 @@ table 52129 "12E Questco Payroll Batch"
             Caption = 'Deduct Period';
             DataClassification = CustomerContent;
         }
-        field(13; "CC Processed"; Boolean)
+        field(52103; "CCD Exists"; Boolean)
         {
-            Caption = 'CC Processed';
+            Caption = 'CCD Exists';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E CCD Line" where("Payroll Batch ID" = field("Batch ID")));
+            CalcFormula = Exist("12E CCD Header" where("Payroll Batch ID" = field("Batch ID")));
             Editable = false;
         }
+        field(52104; "Posted CCD Exists"; Boolean)
+        {
+            Caption = 'Posted CCD Exists';
+            FieldClass = FlowField;
+            CalcFormula = Exist("12E Posted CCD Header" where("Payroll Batch ID" = field("Batch ID")));
+            Editable = false;
+        }
+        // field(13; "CC Processed"; Boolean)
+        // {
+        //     Caption = 'CC Processed';
+        //     FieldClass = FlowField;
+        //     CalcFormula = Exist("12E CCD Line" where("Payroll Batch ID" = field("Batch ID")));
+        //     Editable = false;
+        // }
         field(14; "Payroll Processed"; Boolean)
         {
             Caption = 'Payroll Processed';

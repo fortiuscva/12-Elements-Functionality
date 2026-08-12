@@ -15,8 +15,9 @@ codeunit 52108 "12E CCD Mgmt"
         QuestcoPayrollBatch.Reset();
         QuestcoPayrollBatch.SetCurrentKey("Client ID", "Batch ID");
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
-        QuestcoPayrollBatch.SetRange("Batch Type", 'R');
-        QuestcoPayrollBatch.SetRange("CC Processed", false);
+        // QuestcoPayrollBatch.SetRange("Batch Type", 'R');
+        QuestcoPayrollBatch.SetRange("CCD Exists", false);
+        QuestcoPayrollBatch.SetRange("Posted CCD Exists", false);
 
         if QuestcoPayrollBatch.FindSet(true) then
             repeat
@@ -45,7 +46,7 @@ codeunit 52108 "12E CCD Mgmt"
 
         CreateCCDLines(CCDHeader, QuestcoPayrollBatch, PayrollTotalHours);
 
-        QuestcoPayrollBatch."CC Processed" := true;
+        // QuestcoPayrollBatch."CC Processed" := true;
         QuestcoPayrollBatch.Modify(true);
     end;
 

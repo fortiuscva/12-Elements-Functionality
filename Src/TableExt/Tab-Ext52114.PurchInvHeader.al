@@ -22,12 +22,14 @@ tableextension 52114 "12E Purch. Inv. Header" extends "Purch. Inv. Header"
             Caption = 'CCD Exists';
             FieldClass = FlowField;
             CalcFormula = Exist("12E CCD Header" where("Invoice No." = field("No.")));
+            Editable = false;
         }
         field(52104; "12E Posted CCD Exists"; Boolean)
         {
             Caption = 'Posted CCD Exists';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E Posted CCD Line" where("Invoice No." = field("No.")));
+            CalcFormula = Exist("12E Posted CCD Header" where("Invoice No." = field("No.")));
+            Editable = false;
         }
     }
 }

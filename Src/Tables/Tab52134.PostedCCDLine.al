@@ -19,11 +19,11 @@ table 52134 "12E Posted CCD Line"
             Caption = 'Line No.';
             DataClassification = CustomerContent;
         }
-        field(5; "Call Date"; Date)
-        {
-            Caption = 'Call Date';
-            DataClassification = CustomerContent;
-        }
+        // field(5; "Call Date"; Date)
+        // {
+        //     Caption = 'Call Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(7; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
@@ -79,11 +79,11 @@ table 52134 "12E Posted CCD Line"
             Caption = 'Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
         }
-        field(27; "Invoice Date"; Date)
-        {
-            Caption = 'Posted Purchase Invoice Date';
-            DataClassification = CustomerContent;
-        }
+        // field(27; "Invoice Date"; Date)
+        // {
+        //     Caption = 'Posted Purchase Invoice Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(29; "Batch or Inv. Hours"; Decimal)
         {
             Caption = 'Batch/Invoice Hours';

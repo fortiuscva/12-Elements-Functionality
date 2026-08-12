@@ -67,6 +67,42 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Payroll Batch Nos. field.', Comment = '%';
                 }
+                field("Loyalty Document Nos."; Rec."Loyalty Document Nos.")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Document Nos. field.', Comment = '%';
+                }
+            }
+            group(LoyaltyPoints)
+            {
+                Caption = 'Loyalty Points';
+                field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
+                {
+                    ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                }
+                field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
+                {
+                    ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                }
+                field("Provision for Loyalty Points"; Rec."Provision for Loyalty Points")
+                {
+                    ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
+                }
+                field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
+                }
+                field("Loyalty Source Code"; Rec."Loyalty Source Code")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
+                }
+                field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
+                }
+                field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
+                }
             }
         }
     }

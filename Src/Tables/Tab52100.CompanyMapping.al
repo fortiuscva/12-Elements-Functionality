@@ -55,6 +55,11 @@ table 52100 "12E Company Mapping"
             Caption = 'Type of Company';
             DataClassification = CustomerContent;
         }
+        field(7; Portfolio; Text[50])
+        {
+            Caption = 'Portfolio';
+            DataClassification = CustomerContent;
+        }
         field(10; Company; Text[30])
         {
             Caption = 'Company';

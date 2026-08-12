@@ -24,6 +24,26 @@ table 52115 "12E CCD Header"
                 end;
             end;
         }
+        field(2; "Payroll Batch ID"; Integer)
+        {
+            Caption = 'Batch ID';
+            DataClassification = CustomerContent;
+        }
+        field(3; "Invoice No."; Code[20])
+        {
+            Caption = 'Invoice No.';
+            DataClassification = CustomerContent;
+        }
+        field(4; "Period Start Date"; Date)
+        {
+            Caption = 'Period Start Date';
+            DataClassification = CustomerContent;
+        }
+        field(5; "Period End Date"; Date)
+        {
+            Caption = 'Period End Date';
+            DataClassification = CustomerContent;
+        }
         field(7; Status; Enum "12E EPIC Pay Batch Status")
         {
             Caption = 'Status';

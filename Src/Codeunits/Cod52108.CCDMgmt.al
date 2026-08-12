@@ -202,7 +202,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDLine.Init();
         CCDLine."Document No." := CCDHeader."No.";
         CCDLine."Line No." := GetNextLineNo(CCDHeader."No.");
-        CCDLine."Call Date" := CallDate;
+        // CCDLine."Call Date" := CallDate;
         CCDLine."Location Code" := LocationCode;
         CCDLine.Portfolio := Portfolio;
         CCDLine."Handling Time" := PortfolioHandleTime;
@@ -214,13 +214,13 @@ codeunit 52108 "12E CCD Mgmt"
 
         if PayrollBatchID <> 0 then begin
             CCDLine."Payroll Batch ID" := PayrollBatchID;
-            CCDLine."Batch Start Date" := PayrollStartDate;
-            CCDLine."Batch End Date" := PayrollEndDate;
+            CCDLine."Period Start Date" := PayrollStartDate;
+            CCDLine."Period End Date" := PayrollEndDate;
         end;
 
         if PurchaseInvoiceNo <> '' then begin
             CCDLine."Invoice No." := PurchaseInvoiceNo;
-            CCDLine."Invoice Date" := PurchaseInvoiceDate;
+            // CCDLine."Invoice Date" := PurchaseInvoiceDate;
         end;
 
         CCDLine.Insert(true);

@@ -61,10 +61,10 @@ page 52159 "12E Posted CCD Lines"
                 {
                     ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
                 }
-                field("Invoice Date"; Rec."Invoice Date")
-                {
-                    ToolTip = 'Specifies the value of the Posted Purchase Invoice Date field.', Comment = '%';
-                }
+                // field("Invoice Date"; Rec."Invoice Date")
+                // {
+                //     ToolTip = 'Specifies the value of the Posted Purchase Invoice Date field.', Comment = '%';
+                // }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';

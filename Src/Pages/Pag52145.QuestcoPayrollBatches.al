@@ -64,10 +64,14 @@ page 52145 "12E Questco Payroll Batches"
                 {
                     ToolTip = 'Specifies the value of the Deduct Period field.', Comment = '%';
                 }
-                field("CC Processed"; Rec."CC Processed")
+                field("CCD Exists"; Rec."CCD Exists")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
                     Editable = false;
+                }
+                field("Posted CCD Exists"; Rec."Posted CCD Exists")
+                {
+                    ToolTip = 'Specifies the value of the Posted CCD Exists field.', Comment = '%';
                 }
                 field("Payroll Processed"; Rec."Payroll Processed")
                 {

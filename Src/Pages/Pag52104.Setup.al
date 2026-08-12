@@ -35,14 +35,6 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
                 }
-                field("CCD G/L Account No."; Rec."CCD G/L Account No.")
-                {
-                    ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
-                }
-                field("CCD Process Enabled"; Rec."CCD Process Enabled")
-                {
-                    ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
-                }
                 field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
                 {
                     ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
@@ -71,6 +63,19 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Loyalty Document Nos. field.', Comment = '%';
                 }
+            }
+            group(CCD)
+            {
+                Caption = 'Contact Center Distribution';
+                field("CCD G/L Account No."; Rec."CCD G/L Account No.")
+                {
+                    ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
+                }
+                field("CCD Process Enabled"; Rec."CCD Process Enabled")
+                {
+                    ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
+                }
+
             }
             group(LoyaltyPoints)
             {

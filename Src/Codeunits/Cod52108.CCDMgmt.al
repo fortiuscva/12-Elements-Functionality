@@ -120,7 +120,6 @@ codeunit 52108 "12E CCD Mgmt"
                 PurchInvHeader."12E Period Start Date",
                 PurchInvHeader."12E Period End Date");
 
-        PurchInvHeader.Modify(true);
     end;
 
     local procedure CreateCCDLines(var CCDHeader: Record "12E CCD Header"; QuestcoPayrollBatch: Record "12E Questco Payroll Batch"; PayrollTotalHours: Decimal)

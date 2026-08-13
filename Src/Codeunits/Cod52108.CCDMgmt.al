@@ -9,6 +9,7 @@ codeunit 52108 "12E CCD Mgmt"
     var
         QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
         PurchInvHeader: Record "Purch. Inv. Header";
+        TwelveSetup: Record "12E Setup";
         ClientID: Integer;
     begin
         ClientID := GetClientID();
@@ -23,6 +24,11 @@ codeunit 52108 "12E CCD Mgmt"
             repeat
                 ProcessQuestcoPayrollBatch(QuestcoPayrollBatch);
             until QuestcoPayrollBatch.Next() = 0;
+
+        TwelveSetup.Get();
+
+        if not TwelveSetup."Process RDTJ Invoices" then
+            exit;
 
         PurchInvHeader.Reset();
         PurchInvHeader.SetRange("12E CCD No.", '');

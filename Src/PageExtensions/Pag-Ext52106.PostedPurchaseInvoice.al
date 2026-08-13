@@ -23,15 +23,15 @@ pageextension 52106 "12E Posted Purchase Invoice" extends "Posted Purchase Invoi
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Period Quantity field.', Comment = '%';
                 }
-                field("12E CCD Line Exists"; Rec."12E CCD Exists")
+                field("12E CCD No."; Rec."12E CCD No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the CCD Line Exists field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the CCD No. field.', Comment = '%';
                 }
-                field("12E Posted CCD Line Exists"; Rec."12E Posted CCD Exists")
+                field("12E Posted CCD No."; Rec."12E Posted CCD No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Posted CCD Line Exists field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Posted CCD No. field.', Comment = '%';
                 }
             }
         }

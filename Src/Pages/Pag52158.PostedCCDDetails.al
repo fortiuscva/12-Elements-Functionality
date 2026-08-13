@@ -34,14 +34,35 @@ page 52158 "12E Posted CCD Details"
                 {
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                 }
-                field("Sales Invoices Exist"; Rec."Sales Invoices Exist")
+                field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
-                    ToolTip = 'Specifies the value of the Sales Invoices Exist field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
                 }
-                field("Posted Sales Invoices Exist"; Rec."Posted Sales Invoices Exist")
+                field("Posted Sales Invoice No."; Rec."Posted Sales Invoice No.")
                 {
-                    ToolTip = 'Specifies the value of the Posted Sales Invoices Exist field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
                 }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+
+            action(CreateSalesInvoices)
+            {
+                ApplicationArea = All;
+                Caption = 'Create Sales Invoices';
+                Image = CreateDocument;
+                ToolTip = 'Create Sales Invoices for Posted CCDs that have not yet been invoiced.';
+
+                trigger OnAction()
+                var
+                    CreateCCDSalesInvoices: Report "12E Create CCD Sales Invoices";
+                begin
+                    CreateCCDSalesInvoices.RunModal();
+                end;
             }
         }
     }

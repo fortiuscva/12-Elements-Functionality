@@ -60,11 +60,12 @@ page 52154 "12E QPAY Batches"
                 {
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
                 }
-                field("CCD Exists"; Rec."CCD Exists")
+                field("CCD No."; Rec."CCD No.")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
+                    Editable = false;
                 }
-                field("Posted CCD Exists"; Rec."Posted CCD Exists")
+                field("Posted CCD No."; Rec."Posted CCD No.")
                 {
                     ToolTip = 'Specifies the value of the Posted CCD Exists field.', Comment = '%';
                 }

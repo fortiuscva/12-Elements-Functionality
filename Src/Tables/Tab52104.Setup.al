@@ -140,6 +140,11 @@ table 52104 "12E Setup"
         {
             Caption = 'CCD Process Enabled';
         }
+        field(41; "Process RDTJ Invoices"; Boolean)
+        {
+            Caption = 'Process RDTJ Invoices';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

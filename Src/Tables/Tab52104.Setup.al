@@ -136,9 +136,9 @@ table 52104 "12E Setup"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
-        field(40; "CCD Process Enabled"; Boolean)
+        field(40; "Enable CCD Process"; Boolean)
         {
-            Caption = 'CCD Process Enabled';
+            Caption = 'Enable CCD Process';
         }
         field(41; "Process RDTJ Invoices"; Boolean)
         {

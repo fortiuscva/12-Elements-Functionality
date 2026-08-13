@@ -5,6 +5,9 @@ page 52117 "12E CCD Subform"
     PageType = ListPart;
     SourceTable = "12E CCD Line";
     AutoSplitKey = true;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
 
     layout
     {
@@ -54,18 +57,22 @@ page 52117 "12E CCD Subform"
                 field("Batch ID"; Rec."Payroll Batch ID")
                 {
                     ToolTip = 'Specifies the value of the Payroll Batch ID field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Period Start Date"; Rec."Period Start Date")
                 {
                     ToolTip = 'Specifies the value of the Batch Start Date field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Period End Date"; Rec."Period End Date")
                 {
                     ToolTip = 'Specifies the value of the Batch End Date field.', Comment = '%';
+                    Visible = false;
                 }
                 // field("Invoice Date"; Rec."Invoice Date")
                 // {

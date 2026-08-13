@@ -12,6 +12,11 @@ codeunit 52108 "12E CCD Mgmt"
         TwelveSetup: Record "12E Setup";
         ClientID: Integer;
     begin
+        TwelveSetup.Get();
+
+        if not TwelveSetup."Enable CCD Process" then
+            Error('CCD Process is not enabled for this company.');
+
         ClientID := GetClientID();
 
         QuestcoPayrollBatch.Reset();
@@ -25,7 +30,7 @@ codeunit 52108 "12E CCD Mgmt"
                 ProcessQuestcoPayrollBatch(QuestcoPayrollBatch);
             until QuestcoPayrollBatch.Next() = 0;
 
-        TwelveSetup.Get();
+
 
         if not TwelveSetup."Process RDTJ Invoices" then
             exit;
@@ -65,6 +70,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Payroll Batch ID" := QuestcoPayrollBatch."Batch ID";
         CCDHeader."Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         CCDHeader."Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
+        CCDHeader."No. of Hours" := PayrollTotalHours;
 
         CCDHeader.Modify(true);
 
@@ -77,6 +83,7 @@ codeunit 52108 "12E CCD Mgmt"
     var
         CCDHeader: Record "12E CCD Header";
         CCDLocationMapping: Record "12E CCD Location Mapping";
+        InvoiceHours: Decimal;
         LinesCreated: Boolean;
     begin
         PurchInvHeader.TestField("No.");
@@ -89,6 +96,11 @@ codeunit 52108 "12E CCD Mgmt"
                 PurchInvHeader."12E Period Start Date",
                 PurchInvHeader."12E Period End Date",
                 PurchInvHeader."No.");
+
+        InvoiceHours := GetPurchaseInvoiceHours(PurchInvHeader."No.");
+
+        if InvoiceHours = 0 then
+            exit;
 
         CCDLocationMapping.Reset();
         CCDLocationMapping.SetRange("Vendor No.", PurchInvHeader."Buy-from Vendor No.");
@@ -105,6 +117,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Invoice No." := PurchInvHeader."No.";
         CCDHeader."Period Start Date" := PurchInvHeader."12E Period Start Date";
         CCDHeader."Period End Date" := PurchInvHeader."12E Period End Date";
+        CCDHeader."No. of Hours" := InvoiceHours;
 
         CCDHeader.Modify(true);
 
@@ -119,7 +132,6 @@ codeunit 52108 "12E CCD Mgmt"
                 PurchInvHeader."No.",
                 PurchInvHeader."12E Period Start Date",
                 PurchInvHeader."12E Period End Date");
-
     end;
 
     local procedure CreateCCDLines(var CCDHeader: Record "12E CCD Header"; QuestcoPayrollBatch: Record "12E Questco Payroll Batch"; PayrollTotalHours: Decimal)
@@ -369,15 +381,14 @@ codeunit 52108 "12E CCD Mgmt"
         CCDLine."Batch or Inv. Hours" := Hours;
         CCDLine."Batch or Inv. Percentage" := AllocationPercentage;
 
-        if PayrollBatchID <> 0 then begin
+        if PayrollBatchID <> 0 then
             CCDLine."Payroll Batch ID" := PayrollBatchID;
-            CCDLine."Period Start Date" := PayrollStartDate;
-            CCDLine."Period End Date" := PayrollEndDate;
-        end;
 
         if PurchaseInvoiceNo <> '' then
             CCDLine."Invoice No." := PurchaseInvoiceNo;
 
+        CCDLine."Period Start Date" := PayrollStartDate;
+        CCDLine."Period End Date" := PayrollEndDate;
         CCDLine.Insert(true);
     end;
 

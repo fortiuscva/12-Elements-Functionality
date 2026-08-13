@@ -26,17 +26,19 @@ table 52114 "12E CCD Location Mapping"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                if (("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '')) then
-                    Error('Vendor No. must be blank for Payroll processing type');
-
-                if (("Processing Type" = "Processing Type"::Vendor) and ("Vendor No." = '')) then
-                    Error('Vendor No. cannot be blank for Vendor-based processing type');
+                if ("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '') then
+                    Error(PayrollVendorNoErr);
             end;
         }
         field(9; "Processing Type"; Enum "12E CCD Processing Types")
         {
             Caption = 'Processing Type';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            begin
+                if "Processing Type" = "Processing Type"::Payroll then
+                    Clear("Vendor No.");
+            end;
         }
     }
     keys
@@ -53,12 +55,34 @@ table 52114 "12E CCD Location Mapping"
 
         }
     }
+    trigger OnInsert()
+    begin
+        ValidateProcessingTypeAndVendor();
+    end;
+
     trigger OnModify()
     begin
-        if (("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '')) then
-            Error('Vendor No. must be blank for Payroll processing type');
-
-        if (("Processing Type" = "Processing Type"::Vendor) and ("Vendor No." = '')) then
-            Error('Vendor No. cannot be blank for Vendor-based processing type');
+        ValidateProcessingTypeAndVendor();
     end;
+
+    local procedure ValidateProcessingTypeAndVendor()
+    begin
+        case "Processing Type" of
+            "Processing Type"::Payroll:
+                begin
+                    if "Vendor No." <> '' then
+                        Error(PayrollVendorNoErr);
+                end;
+
+            "Processing Type"::Vendor:
+                begin
+                    if "Vendor No." = '' then
+                        Error(VendorNoErr);
+                end;
+        end;
+    end;
+
+    var
+        PayrollVendorNoErr: Label 'Vendor No. must be blank for Payroll processing type.';
+        VendorNoErr: Label 'Vendor No. cannot be blank for Vendor processing type.';
 }

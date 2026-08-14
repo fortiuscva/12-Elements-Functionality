@@ -58,9 +58,9 @@ table 52104 "12E Setup"
             TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
-        field(25; "Payroll Batch Nos."; Code[20])
+        field(25; "Payroll Doc. No's."; Code[20])
         {
-            Caption = 'Payroll Batch Nos.';
+            Caption = 'Payroll Document Nos.';
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }

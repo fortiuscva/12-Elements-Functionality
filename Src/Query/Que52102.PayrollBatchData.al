@@ -25,10 +25,6 @@ query 52102 "12E Payroll Batch Data"
             column(GLAccountNo; "G/L Account No.")
             {
             }
-            column(PayTypeCode; "Pay Type Code")
-            {
-            }
-
             column(TotalDebit; "Debit Amount")
             {
                 Method = Sum;

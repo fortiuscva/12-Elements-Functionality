@@ -14,13 +14,14 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
         PayrollBatchNo: Code[20];
+        PostingError: Text;
     begin
-        if PayrollBatchHeader."Batch Status" = PayrollBatchHeader."Batch Status"::Processed then
+        if PayrollBatchHeader.Status = PayrollBatchHeader.Status::Processed then
             Error(
                 'Lines cannot be posted because Payroll batch %1 has already been processed.',
                 PayrollBatchHeader."No.");
 
-        PayrollBatchHeader.TestField("Batch Status", PayrollBatchHeader."Batch Status"::Released);
+        PayrollBatchHeader.TestField(Status, PayrollBatchHeader.Status::Released);
 
         GetSetup();
 
@@ -31,12 +32,29 @@ codeunit 52121 "12E Payroll Batch Post"
 
         PayrollBatchNo := PayrollBatchHeader."No.";
 
+        Clear(PayrollBatchHeader."Posting Error");
+        Clear(PayrollBatchHeader."G/L Register No.");
+        PayrollBatchHeader.Modify(true);
+
         DeleteJournalLines();
 
         CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
         CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
 
-        PostJournal();
+        if not TryPostJournal() then begin
+            PostingError := GetLastErrorText();
+
+            PayrollBatchHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(PayrollBatchHeader."Posting Error"));
+            PayrollBatchHeader.Modify(true);
+
+            DeleteJournalLines();
+            Error(PostingError);
+        end;
+
+        PayrollBatchHeader."G/L Register No." :=
+            GetGLRegisterNo(PayrollBatchHeader);
+
+        PayrollBatchHeader.Modify(true);
 
         DeleteJournalLines();
 
@@ -50,7 +68,7 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
     begin
-        if PayrollBatchHeader."Batch Status" = PayrollBatchHeader."Batch Status"::Processed then
+        if PayrollBatchHeader.Status = PayrollBatchHeader.Status::Processed then
             Error(
                 'Lines cannot be posted because Payroll batch %1 has already been processed.',
                 PayrollBatchHeader."No.");
@@ -118,13 +136,10 @@ codeunit 52121 "12E Payroll Batch Post"
         NextLineNo: Integer;
         BalanceAmount: Decimal;
     begin
-        if BatchTotal = 0 then
-            exit;
+        // if BatchTotal = 0 then
+        //     exit;
 
-        if BatchTotal > 0 then
-            BalanceAmount := -BatchTotal
-        else
-            BalanceAmount := Abs(BatchTotal);
+        BalanceAmount := BatchTotal * -1;
 
         NextLineNo := GetNextGenJnlLineNo();
 
@@ -141,6 +156,12 @@ codeunit 52121 "12E Payroll Batch Post"
         GenJournalLine.Validate(Amount, BalanceAmount);
 
         GenJournalLine.Modify(true);
+    end;
+
+    [TryFunction]
+    local procedure TryPostJournal()
+    begin
+        PostJournal();
     end;
 
     local procedure PostJournal()
@@ -164,12 +185,8 @@ codeunit 52121 "12E Payroll Batch Post"
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange(
-            "Journal Template Name",
-            TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange(
-            "Journal Batch Name",
-            TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
@@ -227,5 +244,38 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine.DeleteAll(true);
 
         PayrollBatchHeader.Delete(true);
+    end;
+
+    local procedure GetGLRegisterNo(PayrollBatchHeader: Record "12E Payroll Batch Header"): Integer
+    var
+        GLEntry: Record "G/L Entry";
+        GLRegister: Record "G/L Register";
+        FromEntryNo: Integer;
+        ToEntryNo: Integer;
+    begin
+        GLEntry.Reset();
+        GLEntry.SetRange("Document No.", PayrollBatchHeader."No.");
+        GLEntry.SetRange("Posting Date", PayrollBatchHeader."Pay Date");
+        GLEntry.SetRange("Journal Templ. Name", TwelveSetup."Payroll Jnl. Template");
+        GLEntry.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+
+        if not GLEntry.FindFirst() then
+            exit(0);
+
+        FromEntryNo := GLEntry."Entry No.";
+
+        if GLEntry.FindLast() then
+            ToEntryNo := GLEntry."Entry No.";
+
+        GLRegister.Reset();
+        GLRegister.SetRange("Journal Templ. Name", TwelveSetup."Payroll Jnl. Template");
+        GLRegister.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GLRegister.SetFilter("From Entry No.", '<=%1', FromEntryNo);
+        GLRegister.SetFilter("To Entry No.", '>=%1', ToEntryNo);
+
+        if GLRegister.FindFirst() then
+            exit(GLRegister."No.");
+
+        exit(0);
     end;
 }

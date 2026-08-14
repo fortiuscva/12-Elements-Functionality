@@ -55,6 +55,7 @@ table 52128 "12E Payroll Batch Line"
             Caption = 'Hours Paid';
             DataClassification = CustomerContent;
         }
+
     }
     keys
     {

@@ -136,6 +136,7 @@ page 52145 "12E Questco Payroll Batches"
                 end;
             }
         }
+
         area(Promoted)
         {
             group(Category_Process)

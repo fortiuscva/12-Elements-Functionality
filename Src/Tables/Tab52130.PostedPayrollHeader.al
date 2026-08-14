@@ -11,9 +11,9 @@ table 52130 "12E Posted Payroll Header"
             Caption = 'No.';
             DataClassification = CustomerContent;
         }
-        field(2; "Batch Status"; enum "12E Payroll Batch Status")
+        field(2; Status; enum "12E Payroll Batch Status")
         {
-            Caption = 'Batch Status';
+            Caption = 'Status';
             DataClassification = CustomerContent;
         }
         field(3; "Client ID"; Integer)
@@ -45,6 +45,18 @@ table 52130 "12E Posted Payroll Header"
         {
             Caption = 'Pay Period End Date';
             DataClassification = CustomerContent;
+        }
+        field(11; "Posting Error"; Text[250])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(12; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+            Editable = false;
         }
     }
     keys

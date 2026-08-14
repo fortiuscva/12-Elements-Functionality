@@ -5,6 +5,9 @@ page 52139 "12E Questco Payroll Document"
     PageType = Document;
     SourceTable = "12E Payroll Batch Header";
     UsageCategory = None;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
 
     layout
     {
@@ -17,52 +20,65 @@ page 52139 "12E Questco Payroll Document"
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the No. field.', Comment = '%';
-                    trigger OnAssistEdit()
-                    begin
-                        if Rec.AssistEdit(xRec) then
-                            CurrPage.Update();
-                    end;
+                    Editable = false;
                 }
+
                 field("Client ID"; Rec."Client ID")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Client ID field.', Comment = '%';
+                    Editable = false;
                 }
-                field("Batch ID"; Rec."Batch ID")
+
+                group(Batch)
+                {
+                    Caption = 'Batch';
+
+                    field("Batch ID"; Rec."Batch ID")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+
+                    field("Batch Type"; Rec."Batch Type")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+                }
+
+                group(Period)
+                {
+                    Caption = 'Period';
+
+                    field("Pay Date"; Rec."Pay Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+
+                    field("Pay Period Start Date"; Rec."Pay Period Start Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+
+                    field("Pay Period End Date"; Rec."Pay Period End Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                    }
+                }
+
+                field(Status; Rec."Status")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                    Editable = false;
                 }
-                field("Pay Date"; Rec."Pay Date")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Pay Date field.', Comment = '%';
-                }
-                field("Batch Type"; Rec."Batch Type")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Batch Type field.', Comment = '%';
-                }
-                field("Pay Period Start Date"; Rec."Pay Period Start Date")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Pay Period Start Date field.', Comment = '%';
-                }
-                field("Pay Period End Date"; Rec."Pay Period End Date")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
-                }
-                field("Batch Status"; Rec."Batch Status")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
-                }
+
                 field("Created By"; CreatedBy)
                 {
-                    Caption = 'Created By';
                     ApplicationArea = All;
+                    Editable = false;
                 }
             }
             part(Lines; "12E Payroll Document Subform")
@@ -70,6 +86,7 @@ page 52139 "12E Questco Payroll Document"
                 Caption = 'Lines';
                 ApplicationArea = All;
                 SubPageLink = "Document No." = field("No.");
+                Editable = false;
             }
         }
     }
@@ -85,7 +102,7 @@ page 52139 "12E Questco Payroll Document"
                 {
                     ApplicationArea = all;
                     Caption = 'Re&lease';
-                    Enabled = Rec."Batch Status" <> Rec."Batch Status"::Released;
+                    Enabled = Rec."Status" <> Rec."Status"::Released;
                     Image = ReleaseDoc;
                     ShortCutKey = 'Ctrl+F9';
                     ToolTip = 'Release the document to the next stage of processing. You must reopen the document before you can make changes to it.';
@@ -101,7 +118,7 @@ page 52139 "12E Questco Payroll Document"
                 {
                     ApplicationArea = all;
                     Caption = 'Re&open';
-                    Enabled = Rec."Batch Status" <> Rec."Batch Status"::Open;
+                    Enabled = Rec."Status" <> Rec."Status"::Open;
                     Image = ReOpen;
                     ToolTip = 'Reopen the document to change it after it has been approved. Approved documents have the Released "Batch Status" and must be opened before they can be changed.';
 
@@ -128,37 +145,70 @@ page 52139 "12E Questco Payroll Document"
                     CurrPage.Update();
                 end;
             }
-            action(Post)
+            group(Posting)
             {
-                ApplicationArea = All;
-                Caption = 'Post';
+                Caption = 'Posting';
                 Image = Post;
 
-                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+                action(Post)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post';
+                    Image = Post;
 
-                trigger OnAction()
-                var
-                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
-                begin
-                    PayrollBatchPost.Post(Rec);
-                    CurrPage.Update();
-                end;
+                    Enabled = Rec."Status" = Rec."Status"::Released;
+
+                    trigger OnAction()
+                    var
+                        PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                    begin
+                        PayrollBatchPost.Post(Rec);
+                        CurrPage.Update();
+                    end;
+                }
+
+                action(PreviewPosting)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Posting';
+                    Image = ViewPostedOrder;
+
+                    Enabled = Rec."Status" = Rec."Status"::Released;
+
+                    trigger OnAction()
+                    var
+                        PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                    begin
+                        PayrollBatchPost.PreviewPosting(Rec);
+                    end;
+                }
             }
-
-            action(PreviewPosting)
+        }
+        area(Navigation)
+        {
+            group(Navigate)
             {
-                ApplicationArea = All;
-                Caption = 'Preview Posting';
-                Image = ViewPostedOrder;
+                Caption = 'Navigate';
+                Image = Navigate;
 
-                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+                action("Show Payroll Batch")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Payroll Batch';
+                    Image = Entries;
+                    ToolTip = 'Shows the Payroll Batch related to this Payroll Document.';
 
-                trigger OnAction()
-                var
-                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
-                begin
-                    PayrollBatchPost.PreviewPosting(Rec);
-                end;
+                    trigger OnAction()
+                    var
+                        QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
+                    begin
+                        QuestcoPayrollBatch.Reset();
+                        QuestcoPayrollBatch.SetRange("Client ID", Rec."Client ID");
+                        QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
+                        QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Pay Period End Date");
+                        Page.Run(Page::"12E Questco Payroll Batches", QuestcoPayrollBatch);
+                    end;
+                }
             }
         }
         area(Promoted)
@@ -177,10 +227,25 @@ page 52139 "12E Questco Payroll Document"
                 actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
                 {
                 }
+            }
+            group(Category_Posting)
+            {
+                Caption = 'Posting';
+                ShowAs = SplitButton;
+
                 actionref(Post_Promoted; Post)
                 {
                 }
+
                 actionref(PreviewPosting_Promoted; PreviewPosting)
+                {
+                }
+            }
+            group(Category_Category7)
+            {
+                Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                ShowAs = Standard;
+                actionref(ShowPayrollBatch_Promoted; "Show Payroll Batch")
                 {
                 }
             }

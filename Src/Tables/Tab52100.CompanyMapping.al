@@ -43,6 +43,20 @@ table 52100 "12E Company Mapping"
         {
             Caption = 'Questco Client ID';
             DataClassification = CustomerContent;
+            trigger OnValidate()
+            var
+                CompanyMapping: Record "12E Company Mapping";
+                CliendIDExistsErr: Label 'Client ID %1 is already attached to Portfolio/Company %2. A Client ID cannot be attached to more than one Portfolio/Company.';
+            begin
+                if "Client ID" = 0 then
+                    exit;
+
+                CompanyMapping.Reset();
+                CompanyMapping.SetRange("Client ID", "Client ID");
+                CompanyMapping.SetFilter("Company Code", '<>%1', "Company Code");
+                if CompanyMapping.FindFirst() then
+                    Error(CliendIDExistsErr, "Client ID", CompanyMapping."Company Code");
+            end;
         }
         field(5; DBA; Text[100])
         {

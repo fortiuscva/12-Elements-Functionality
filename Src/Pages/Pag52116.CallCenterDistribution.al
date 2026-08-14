@@ -25,21 +25,30 @@ page 52116 "12E Call Center Distribution"
                 field("Payroll Batch ID"; Rec."Payroll Batch ID")
                 {
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                    Editable = false;
+
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
-                    Visible = false;
+                    Editable = false;
+
                 }
                 field("Period Start Date"; Rec."Period Start Date")
                 {
                     ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
-                    Visible = false;
+                    Editable = false;
+
                 }
                 field("Period End Date"; Rec."Period End Date")
                 {
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
-                    Visible = false;
+                    Editable = false;
+                }
+                field("No. of Hours"; Rec."No. of Hours")
+                {
+                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
+                    Editable = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -51,6 +60,7 @@ page 52116 "12E Call Center Distribution"
             {
                 Caption = 'Lines';
                 SubPageLink = "Document No." = field("No.");
+                Editable = false;
             }
         }
     }
@@ -95,16 +105,6 @@ page 52116 "12E Call Center Distribution"
                     end;
                 }
 
-
-                action(ShowAllocationDetails)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Show Allocation Details';
-                    Image = ViewDetails;
-
-                    RunObject = Page "12E CCD Allocation Details";
-                    RunPageLink = "CCD No." = FIELD("No.");
-                }
             }
             group("P&osting")
             {
@@ -129,6 +129,45 @@ page 52116 "12E Call Center Distribution"
                     end;
                 }
             }
+            group(Navigate)
+            {
+                Caption = 'Navigate';
+                Image = Navigate;
+
+                action("Show Call Center Detailed Data")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Call Center Detailed Data';
+                    Image = Entries;
+                    ToolTip = 'Shows the Call Center Detailed Data related to this CCD document.';
+
+                    trigger OnAction()
+                    var
+                        CCDDetailedData: Record "12E CCD Detailed Data";
+                    begin
+                        CCDDetailedData.Reset();
+                        CCDDetailedData.SetRange("Batch ID", format(Rec."Payroll Batch ID"));
+                        Page.Run(Page::"12E CCD Data", CCDDetailedData);
+                    end;
+                }
+
+                action("Show Payroll Batch")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Payroll Batch';
+                    Image = Entries;
+                    ToolTip = 'Shows the Payroll Batch related to this CCD document.';
+
+                    trigger OnAction()
+                    var
+                        QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
+                    begin
+                        QuestcoPayrollBatch.Reset();
+                        QuestcoPayrollBatch.SetRange("Batch ID", Rec."Payroll Batch ID");
+                        Page.Run(Page::"12E Questco Payroll Batches", QuestcoPayrollBatch);
+                    end;
+                }
+            }
         }
         area(Promoted)
         {
@@ -143,10 +182,6 @@ page 52116 "12E Call Center Distribution"
                     {
                     }
                     actionref(Reopen_Promoted; Reopen)
-                    {
-                    }
-
-                    actionref(ShowAllocation_Promoted; ShowAllocationDetails)
                     {
                     }
                 }

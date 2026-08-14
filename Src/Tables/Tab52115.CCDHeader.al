@@ -56,6 +56,11 @@ table 52115 "12E CCD Header"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
+        field(17; "No. of Hours"; Decimal)
+        {
+            Caption = 'No. of Hours';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {
@@ -77,6 +82,12 @@ table 52115 "12E CCD Header"
                 "No. Series" := xRec."No. Series";
             "No." := NoSeries.GetNextNo("No. Series");
         end;
+    end;
+
+    trigger OnModify()
+    begin
+        if "No." <> xRec."No." then
+            Error('CCD Document No. cannot be changed.');
     end;
 
     procedure AssistEdit(OldCCDHeader: Record "12E CCD Header"): Boolean

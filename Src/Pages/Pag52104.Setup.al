@@ -71,7 +71,7 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
                 }
-                field("CCD Process Enabled"; Rec."CCD Process Enabled")
+                field("Enable CCD Process"; Rec."Enable CCD Process")
                 {
                     ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
                 }

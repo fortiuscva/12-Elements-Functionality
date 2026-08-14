@@ -48,10 +48,12 @@ page 52158 "12E Posted CCD Details"
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Posted Sales Invoice No."; Rec."Posted Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
             }
         }

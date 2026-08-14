@@ -50,7 +50,7 @@ page 52147 "12E Posted Payroll Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
-                field("Batch Status"; Rec."Batch Status")
+                field(Status; Rec."Status")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';

@@ -6,6 +6,10 @@ page 52140 "12E Payroll Document Subform"
     SourceTable = "12E Payroll Batch Line";
     UsageCategory = None;
     AutoSplitKey = true;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
+    Editable = false;
 
     layout
     {

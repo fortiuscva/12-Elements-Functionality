@@ -3,6 +3,7 @@ page 52116 "12E Call Center Distribution"
     ApplicationArea = All;
     Caption = 'Contact Center Distribution';
     PageType = Document;
+    InsertAllowed = false;
     SourceTable = "12E CCD Header";
 
     layout
@@ -22,32 +23,43 @@ page 52116 "12E Call Center Distribution"
                             CurrPage.Update();
                     end;
                 }
-                field("Payroll Batch ID"; Rec."Payroll Batch ID")
+                field("Location Code"; Rec."Location Code")
                 {
-                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                     Editable = false;
+                }
+                group(Batch)
+                {
+                    Caption = 'Batch';
+                    field("Payroll Batch ID"; Rec."Payroll Batch ID")
+                    {
+                        ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                        Editable = false;
 
+                    }
+                    field("No. of Hours"; Rec."No. of Hours")
+                    {
+                        ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
+                        Editable = false;
+                    }
+                }
+                group(Period)
+                {
+                    Caption = 'Period';
+                    field("Period Start Date"; Rec."Period Start Date")
+                    {
+                        ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                        Editable = false;
+                    }
+                    field("Period End Date"; Rec."Period End Date")
+                    {
+                        ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                        Editable = false;
+                    }
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
-                    Editable = false;
-
-                }
-                field("Period Start Date"; Rec."Period Start Date")
-                {
-                    ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
-                    Editable = false;
-
-                }
-                field("Period End Date"; Rec."Period End Date")
-                {
-                    ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
-                    Editable = false;
-                }
-                field("No. of Hours"; Rec."No. of Hours")
-                {
-                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                     Editable = false;
                 }
                 field(Status; Rec.Status)
@@ -129,24 +141,28 @@ page 52116 "12E Call Center Distribution"
                     end;
                 }
             }
+        }
+        area(Navigation)
+        {
             group(Navigate)
             {
                 Caption = 'Navigate';
                 Image = Navigate;
 
-                action("Show Call Center Detailed Data")
+                action("Show Contact Center Detailed Data")
                 {
                     ApplicationArea = All;
-                    Caption = 'Show Call Center Detailed Data';
+                    Caption = 'Show Contact Center Detailed Data';
                     Image = Entries;
-                    ToolTip = 'Shows the Call Center Detailed Data related to this CCD document.';
+                    ToolTip = 'Shows the Contact Center Detailed Data related to this CCD document.';
 
                     trigger OnAction()
                     var
                         CCDDetailedData: Record "12E CCD Detailed Data";
                     begin
                         CCDDetailedData.Reset();
-                        CCDDetailedData.SetRange("Batch ID", format(Rec."Payroll Batch ID"));
+                        CCDDetailedData.SetRange("Location Code", Rec."Location Code");
+                        CCDDetailedData.SetRange("Call Date", Rec."Period Start Date", Rec."Period End Date");
                         Page.Run(Page::"12E CCD Data", CCDDetailedData);
                     end;
                 }
@@ -164,7 +180,7 @@ page 52116 "12E Call Center Distribution"
                     begin
                         QuestcoPayrollBatch.Reset();
                         QuestcoPayrollBatch.SetRange("Batch ID", Rec."Payroll Batch ID");
-                        Page.Run(Page::"12E Questco Payroll Batches", QuestcoPayrollBatch);
+                        Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);
                     end;
                 }
             }
@@ -190,6 +206,17 @@ page 52116 "12E Call Center Distribution"
                     Caption = 'Posting', Comment = 'Generated from the PromotedActionCategories property index 5.';
                     ShowAs = SplitButton;
                     actionref(Post_Promoted; Post)
+                    {
+                    }
+                }
+                group(Category_Category7)
+                {
+                    Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                    ShowAs = Standard;
+                    actionref(ShowContactCenterDetailedData_Promoted; "Show Contact Center Detailed Data")
+                    {
+                    }
+                    actionref(ShowPayrollBatch_Promoted; "Show Payroll Batch")
                     {
                     }
                 }

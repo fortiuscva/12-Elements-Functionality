@@ -42,7 +42,7 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         PayrollBatchHeader."Batch Type" := QuestcoPayrollBatch."Batch Type";
         PayrollBatchHeader."Pay Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         PayrollBatchHeader."Pay Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
-        PayrollBatchHeader."Batch Status" := PayrollBatchHeader."Batch Status"::Open;
+        PayrollBatchHeader.Status := PayrollBatchHeader.Status::Open;
         PayrollBatchHeader.Modify(true);
 
         CreatePayrollDocuments(PayrollBatchHeader);
@@ -57,8 +57,8 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         CurrentLineNo: Integer;
         Amount: Decimal;
     begin
-        if PayrollBatchHeader."Batch Status" =
-           PayrollBatchHeader."Batch Status"::Processed
+        if PayrollBatchHeader.Status =
+           PayrollBatchHeader.Status::Processed
         then
             Error(
                 'Lines cannot be created because Payroll batch %1 has already been processed.',
@@ -90,7 +90,7 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             PayrollBatchLine."Line No." := CurrentLineNo;
             PayrollBatchLine."Department Code" := PayrollBatchQuery.Department;
             PayrollBatchLine."G/L Account No." := PayrollBatchQuery.GLAccountNo;
-            PayrollBatchLine."Pay Type Code" := PayrollBatchQuery.PayTypeCode;
+            //PayrollBatchLine."Pay Type Code" := PayrollBatchQuery.PayTypeCode;
             PayrollBatchLine.Amount := Amount;
             Clear(PayrollBatchLine."Employee No.");
             // Clear(PayrollBatchLine."Pay Type Code");

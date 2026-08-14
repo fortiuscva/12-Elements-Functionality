@@ -33,20 +33,12 @@ table 52133 "12E Posted CCD Header"
             Caption = 'Period End Date';
             DataClassification = CustomerContent;
         }
-        // field(6; "Sales Invoices Exist"; Boolean)
-        // {
-        //     Caption = 'Sales Invoices Exist';
-        //     FieldClass = FlowField;
-        //     CalcFormula = exist("Sales Line" where("12E CCD No." = field("No."), "Document Type" = const(Invoice)));
-        //     Editable = false;
-        // }
-        // field(7; "Posted Sales Invoices Exist"; Boolean)
-        // {
-        //     Caption = 'Posted Sales Invoices Exist';
-        //     FieldClass = FlowField;
-        //     CalcFormula = exist("Sales Invoice Line" where("12E CCD No." = field("No.")));
-        //     Editable = false;
-        // }
+        field(6; "Location Code"; Code[10])
+        {
+            Caption = 'Location Code';
+            TableRelation = "12E CCD Location Mapping";
+            DataClassification = CustomerContent;
+        }
         field(10; "Sales Invoice No."; Code[20])
         {
             Caption = 'Sales Invoice No.';
@@ -59,6 +51,11 @@ table 52133 "12E Posted CCD Header"
             Caption = 'Posted Sales Invoice No.';
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Invoice Line"."Document No." where("12E CCD No." = field("No.")));
+        }
+        field(17; "No. of Hours"; Decimal)
+        {
+            Caption = 'Batch/Invoice Hours';
+            DataClassification = CustomerContent;
         }
     }
     keys

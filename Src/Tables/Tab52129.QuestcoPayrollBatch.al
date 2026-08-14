@@ -119,6 +119,11 @@ table 52129 "12E Questco Payroll Batch"
             Caption = 'ETL Batch ID';
             DataClassification = CustomerContent;
         }
+        field(20; "CC Hours"; Decimal)
+        {
+            Caption = 'Contact Center Hours';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

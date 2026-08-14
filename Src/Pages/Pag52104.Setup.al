@@ -27,18 +27,6 @@ page 52104 "12E Setup"
                 {
                     ApplicationArea = all;
                 }
-                field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
-                }
-                field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
-                }
-                field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
-                }
             }
             group(Numbering)
             {
@@ -55,7 +43,7 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Lead Accrual Nos. field.', Comment = '%';
                 }
-                field("Payroll Batch Nos."; Rec."Payroll Batch Nos.")
+                field("Payroll Doc. No's."; Rec."Payroll Doc. No's.")
                 {
                     ToolTip = 'Specifies the value of the Payroll Batch Nos. field.', Comment = '%';
                 }
@@ -81,6 +69,25 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies whether Posted Purchase Invoices for RDTJ should be processed for Contact Center Distribution.';
                 }
 
+            }
+            group(PayrollProcessing)
+            {
+                Caption = 'Payroll Processing';
+
+                field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
+                }
+
+                field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
+                }
+
+                field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
+                }
             }
             group(LoyaltyPoints)
             {
@@ -114,6 +121,7 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
                 }
             }
+
         }
     }
     actions
@@ -126,8 +134,8 @@ page 52104 "12E Setup"
                 Image = Setup;
                 action(CompanyMapping)
                 {
-                    ApplicationArea = all;
-                    Caption = 'Company Mapping';
+                    ApplicationArea = All;
+                    Caption = 'Company Mappings';
                     Image = MapAccounts;
                     RunObject = page "12E Company Mappings";
                 }

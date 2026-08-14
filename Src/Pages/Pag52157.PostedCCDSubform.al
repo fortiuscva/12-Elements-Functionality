@@ -20,13 +20,16 @@ page 52157 "12E Posted CCD Subform"
                 field("Document No."; Rec."Document No.")
                 {
                     ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Line No."; Rec."Line No.")
                 {
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Location Code"; Rec."Location Code")
                 {
+                    Visible = false;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 field(Portfolio; Rec.Portfolio)
@@ -41,49 +44,19 @@ page 52157 "12E Posted CCD Subform"
                 {
                     ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
-                field("No. of Hours"; Rec."No. of Hours")
-                {
-                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
-                }
                 field("Distributed Quantity"; Rec."Distributed Quantity")
                 {
                     ToolTip = 'Specifies the value of the Distributed Quantity field.', Comment = '%';
                 }
-                field("Payroll Batch ID"; Rec."Payroll Batch ID")
-                {
-                    ToolTip = 'Specifies the value of the Pay Batch ID field.', Comment = '%';
-                }
-                field("Batch Start Date"; Rec."Batch Start Date")
-                {
-                    ToolTip = 'Specifies the value of the Pay Batch Start Date field.', Comment = '%';
-                }
-                field("Batch End Date"; Rec."Batch End Date")
-                {
-                    ToolTip = 'Specifies the value of the Pay Batch End Date field.', Comment = '%';
-                }
-                field("Invoice No."; Rec."Invoice No.")
-                {
-                    ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
-                }
-                // field("Invoice Date"; Rec."Invoice Date")
-                // {
-                //     ToolTip = 'Specifies the value of the Posted Purchase Invoice Date field.', Comment = '%';
-                // }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Pstd. Sales Invoice No."; Rec."Pstd. Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
-                }
-                field("Batch or Inv. Hours"; Rec."Batch or Inv. Hours")
-                {
-                    ToolTip = 'Specifies the value of the Batch/Invoice Hours field.', Comment = '%';
-                }
-                field("Batch or Inv. Percentage"; Rec."Batch or Inv. Percentage")
-                {
-                    ToolTip = 'Specifies the value of the Batch/Invoice Hours Distribution Percentage field.', Comment = '%';
+                    Visible = false;
                 }
             }
         }

@@ -42,7 +42,7 @@ page 52149 "12E Posted Payroll Documents"
                 {
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
-                field("Batch Status"; Rec."Batch Status")
+                field(Status; Rec."Status")
                 {
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
                 }

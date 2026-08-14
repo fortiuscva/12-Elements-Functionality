@@ -14,8 +14,8 @@ report 52102 "12E Create CCD Sales Invoices"
             trigger OnPreDataItem()
             begin
                 ValidateDateRange();
-                SetFilter("Period Start Date", '<=%1', DateTo);
-                SetFilter("Period End Date", '>=%1', DateFrom);
+                SetFilter("Period Start Date", '>=%1', DateFrom);
+                SetFilter("Period End Date", '<=%1', DateTo);
             end;
 
             trigger OnAfterGetRecord()
@@ -81,7 +81,7 @@ report 52102 "12E Create CCD Sales Invoices"
         if SalesInvoicesCreated = 0 then
             Message('No Sales Invoices were created.')
         else
-            Message('%1 Sales Invoice(s) created successfully with %2 Sales Line(s).', SalesInvoicesCreated, SalesLinesCreated);
+            Message('Successfully Created %1 Sales Invoice(s)', SalesInvoicesCreated);
     end;
 
     local procedure ValidateDateRange()
@@ -188,7 +188,7 @@ report 52102 "12E Create CCD Sales Invoices"
         SalesLine.Validate("No.", TwelveElementsSetup."CCD G/L Account No.");
         SalesLine.Validate(Quantity, PostedCCDLine."Distributed Quantity");
 
-        SalesLine.Description := StrSubstNo('%1 - %2 - %3 - %4', PostedCCDLine."Location Code", PostedCCDLine.Portfolio, Format(PostedCCDHeader."Period Start Date"), Format(PostedCCDHeader."Period End Date"));
+        SalesLine.Description := StrSubstNo('%1 - %2 - %3 - %4 - %5', PostedCCDLine."Location Code", PostedCCDLine.Portfolio, Format(PostedCCDLine."Payroll Batch ID"), Format(PostedCCDHeader."Period Start Date"), Format(PostedCCDHeader."Period End Date"));
 
         SalesLine.Validate("12E CCD No.", PostedCCDHeader."No.");
         SalesLine.Validate("12E CCD Line No.", PostedCCDLine."Line No.");

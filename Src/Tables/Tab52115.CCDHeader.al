@@ -4,7 +4,7 @@ table 52115 "12E CCD Header"
     LookupPageId = "12E CCD Details";
     DrillDownPageId = "12E CCD Details";
     DataClassification = CustomerContent;
-    DataPerCompany = false;
+    DataPerCompany = true;
 
     fields
     {
@@ -44,6 +44,11 @@ table 52115 "12E CCD Header"
             Caption = 'Period End Date';
             DataClassification = CustomerContent;
         }
+        field(6; "Location Code"; Code[10])
+        {
+            Caption = 'Location Code';
+            DataClassification = CustomerContent;
+        }
         field(7; Status; Enum "12E EPIC Pay Batch Status")
         {
             Caption = 'Status';
@@ -58,7 +63,7 @@ table 52115 "12E CCD Header"
         }
         field(17; "No. of Hours"; Decimal)
         {
-            Caption = 'No. of Hours';
+            Caption = 'Batch/Invoice Hours';
             DataClassification = CustomerContent;
         }
     }
@@ -84,7 +89,7 @@ table 52115 "12E CCD Header"
         end;
     end;
 
-    trigger OnModify()
+    trigger OnRename()
     begin
         if "No." <> xRec."No." then
             Error('CCD Document No. cannot be changed.');

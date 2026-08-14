@@ -22,12 +22,14 @@ codeunit 52109 "12E CCD Post"
         PostedCCDHeader.TransferFields(CCDHeader, true);
         PostedCCDHeader.Insert(true);
 
-        if CCDLine.FindSet() then
+        CCDLine.SetRange("Document No.", CCDHeader."No.");
+        if CCDLine.FindSet() then begin
             repeat
                 PostedCCDLine.Init();
                 PostedCCDLine.TransferFields(CCDLine, true);
                 PostedCCDLine.Insert(true);
             until CCDLine.Next() = 0;
+        end;
 
         CCDLine.DeleteAll(true);
         CCDHeader.Delete(true);
@@ -39,7 +41,7 @@ codeunit 52109 "12E CCD Post"
 
     local procedure ValidatePosting(
         var CCDHeader: Record "12E CCD Header";
-        var CCDLine: Record "12E CCD Line")
+        CCDLine: Record "12E CCD Line")
     var
         TwelveSetup: Record "12E Setup";
     begin

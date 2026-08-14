@@ -14,8 +14,8 @@ report 52102 "12E Create CCD Sales Invoices"
             trigger OnPreDataItem()
             begin
                 ValidateDateRange();
-                SetFilter("Period Start Date", '<=%1', DateTo);
-                SetFilter("Period End Date", '>=%1', DateFrom);
+                SetFilter("Period Start Date", '>=%1', DateFrom);
+                SetFilter("Period End Date", '<=%1', DateTo);
             end;
 
             trigger OnAfterGetRecord()

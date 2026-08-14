@@ -111,6 +111,40 @@ page 52154 "12E QPAY Batches"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(ShowTransactions)
+            {
+                ApplicationArea = All;
+                Caption = 'Show Transactions';
+                Image = Transactions;
+                ShortCutKey = 'Return';
+                trigger OnAction()
+                var
+                    PayrollTxn: Record "12E Questco Payroll Txn";
+                begin
+                    PayrollTxn.Reset();
+                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
+                    PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
+                    Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
+                end;
+            }
+        }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+
+                Caption = 'Process';
+                actionref(ShowTransactions_Promoted; ShowTransactions)
+                {
+
+                }
+            }
+        }
+    }
     trigger OnOpenPage()
     var
         CompanyMapping: Record "12E Company Mapping";

@@ -33,6 +33,11 @@ table 52133 "12E Posted CCD Header"
             Caption = 'Period End Date';
             DataClassification = CustomerContent;
         }
+        field(6; "Location Code"; Code[10])
+        {
+            Caption = 'Location Code';
+            DataClassification = CustomerContent;
+        }
         // field(6; "Sales Invoices Exist"; Boolean)
         // {
         //     Caption = 'Sales Invoices Exist';
@@ -59,6 +64,11 @@ table 52133 "12E Posted CCD Header"
             Caption = 'Posted Sales Invoice No.';
             FieldClass = FlowField;
             CalcFormula = lookup("Sales Invoice Line"."Document No." where("12E CCD No." = field("No.")));
+        }
+        field(17; "No. of Hours"; Decimal)
+        {
+            Caption = 'Batch/Invoice Hours';
+            DataClassification = CustomerContent;
         }
     }
     keys

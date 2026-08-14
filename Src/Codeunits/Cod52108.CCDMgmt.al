@@ -71,6 +71,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         CCDHeader."Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
         CCDHeader."No. of Hours" := PayrollTotalHours;
+        CCDHeader."Location Code" := 'PFCC';
 
         CCDHeader.Modify(true);
 
@@ -118,6 +119,8 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Period Start Date" := PurchInvHeader."12E Period Start Date";
         CCDHeader."Period End Date" := PurchInvHeader."12E Period End Date";
         CCDHeader."No. of Hours" := InvoiceHours;
+        CCDHeader."Location Code" := 'RDTJ';
+
 
         CCDHeader.Modify(true);
 

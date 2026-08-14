@@ -6,6 +6,7 @@ page 52118 "12E CCD Details"
     SourceTable = "12E CCD Header";
     CardPageId = "12E Call Center Distribution";
     UsageCategory = Lists;
+    InsertAllowed = false;
     Editable = false;
 
     layout
@@ -26,9 +27,9 @@ page 52118 "12E CCD Details"
                 {
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
-                field("Invoice No."; Rec."Invoice No.")
+                field("No. of Hours"; Rec."No. of Hours")
                 {
-                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                 }
                 field("Period Start Date"; Rec."Period Start Date")
                 {
@@ -37,6 +38,10 @@ page 52118 "12E CCD Details"
                 field("Period End Date"; Rec."Period End Date")
                 {
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                }
+                field("Invoice No."; Rec."Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
@@ -49,23 +54,6 @@ page 52118 "12E CCD Details"
     {
         area(navigation)
         {
-            group("&Line")
-            {
-                Caption = '&Line';
-                Image = Line;
-                action(ShowDocument)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Show Document';
-                    Image = EditLines;
-                    ShortCutKey = 'Return';
-
-                    trigger OnAction()
-                    begin
-                        Page.Run(Page::"12E Call Center Distribution", Rec);
-                    end;
-                }
-            }
             group(Navigate)
             {
                 Caption = 'Navigate';
@@ -200,10 +188,6 @@ page 52118 "12E CCD Details"
             group(Category_Process)
             {
                 Caption = 'Process';
-
-                actionref(Card_Promoted; ShowDocument)
-                {
-                }
                 actionref(CreateCCDDocuments_Promoted; CreateCCDDocuments)
                 {
                 }

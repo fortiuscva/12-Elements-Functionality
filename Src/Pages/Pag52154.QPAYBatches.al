@@ -60,6 +60,10 @@ page 52154 "12E QPAY Batches"
                 {
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
                 }
+                field("CC Hours"; Rec."CC Hours")
+                {
+                    ToolTip = 'Specifies the value of the Contact Center Hours field.', Comment = '%';
+                }
                 field("CCD No."; Rec."CCD No.")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
@@ -131,6 +135,27 @@ page 52154 "12E QPAY Batches"
                     Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
                 end;
             }
+            action(ShowContactCenterHours)
+            {
+                ApplicationArea = All;
+                Caption = 'Show Contact Center Hours';
+                Ellipsis = true;
+                Image = ServiceHours;
+                trigger OnAction()
+                var
+                    PayrollTxn: Record "12E Questco Payroll Txn";
+                begin
+                    PayrollTxn.Reset();
+                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
+                    PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
+                    PayrollTxn.SetRange("Department Code", GetDepartmentCode());
+                    PayrollTxn.SetFilter("Hours Worked", '>%1', 0);
+                    PayrollTxn.CalcSums("Hours Worked");
+                    Message('Contact Center Hours for \Client ID: %1,\Location Code: %2,\and Batch ID: %3 is %4 hours', Rec."Client ID", 'PFCC', Rec."Batch ID", PayrollTxn."Hours Worked");
+                    Rec."CC Hours" := PayrollTxn."Hours Worked";
+                    Rec.Modify(true);
+                end;
+            }
         }
         area(Promoted)
         {
@@ -140,7 +165,9 @@ page 52154 "12E QPAY Batches"
                 Caption = 'Process';
                 actionref(ShowTransactions_Promoted; ShowTransactions)
                 {
-
+                }
+                actionref(ShowContactCenterHours_Promoted; ShowContactCenterHours)
+                {
                 }
             }
         }
@@ -153,5 +180,16 @@ page 52154 "12E QPAY Batches"
         CompanyMapping.SetRange(Company, CompanyName());
         if CompanyMapping.FindLast() then
             Rec.SetRange("Client ID", CompanyMapping."Client ID");
+    end;
+
+    local procedure GetDepartmentCode(): Code[20]
+    var
+        DepartmentCode: Record "12E Department Code";
+    begin
+        DepartmentCode.Reset();
+        DepartmentCode.SetRange("Contact Center", true);
+
+        if DepartmentCode.FindFirst() then
+            exit(DepartmentCode.Code);
     end;
 }

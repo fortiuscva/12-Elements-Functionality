@@ -36,22 +36,9 @@ table 52133 "12E Posted CCD Header"
         field(6; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = "12E CCD Location Mapping";
             DataClassification = CustomerContent;
         }
-        // field(6; "Sales Invoices Exist"; Boolean)
-        // {
-        //     Caption = 'Sales Invoices Exist';
-        //     FieldClass = FlowField;
-        //     CalcFormula = exist("Sales Line" where("12E CCD No." = field("No."), "Document Type" = const(Invoice)));
-        //     Editable = false;
-        // }
-        // field(7; "Posted Sales Invoices Exist"; Boolean)
-        // {
-        //     Caption = 'Posted Sales Invoices Exist';
-        //     FieldClass = FlowField;
-        //     CalcFormula = exist("Sales Invoice Line" where("12E CCD No." = field("No.")));
-        //     Editable = false;
-        // }
         field(10; "Sales Invoice No."; Code[20])
         {
             Caption = 'Sales Invoice No.';

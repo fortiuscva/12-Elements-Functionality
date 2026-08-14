@@ -47,6 +47,7 @@ table 52115 "12E CCD Header"
         field(6; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
+            TableRelation = "12E CCD Location Mapping";
             DataClassification = CustomerContent;
         }
         field(7; Status; Enum "12E EPIC Pay Batch Status")

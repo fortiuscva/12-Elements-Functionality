@@ -3,6 +3,7 @@ page 52116 "12E Call Center Distribution"
     ApplicationArea = All;
     Caption = 'Contact Center Distribution';
     PageType = Document;
+    InsertAllowed = false;
     SourceTable = "12E CCD Header";
 
     layout
@@ -22,36 +23,43 @@ page 52116 "12E Call Center Distribution"
                             CurrPage.Update();
                     end;
                 }
-                field("Payroll Batch ID"; Rec."Payroll Batch ID")
+                field("Location Code"; Rec."Location Code")
                 {
-                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                     Editable = false;
+                }
+                group(Batch)
+                {
+                    Caption = 'Batch';
+                    field("Payroll Batch ID"; Rec."Payroll Batch ID")
+                    {
+                        ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                        Editable = false;
 
+                    }
+                    field("No. of Hours"; Rec."No. of Hours")
+                    {
+                        ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
+                        Editable = false;
+                    }
+                }
+                group(Period)
+                {
+                    Caption = 'Period';
+                    field("Period Start Date"; Rec."Period Start Date")
+                    {
+                        ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                        Editable = false;
+                    }
+                    field("Period End Date"; Rec."Period End Date")
+                    {
+                        ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                        Editable = false;
+                    }
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
-                    Editable = false;
-
-                }
-                field("Period Start Date"; Rec."Period Start Date")
-                {
-                    ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
-                    Editable = false;
-
-                }
-                field("Period End Date"; Rec."Period End Date")
-                {
-                    ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
-                    Editable = false;
-                }
-                field("Location Code"; Rec."Location Code")
-                {
-                    ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
-                }
-                field("No. of Hours"; Rec."No. of Hours")
-                {
-                    ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                     Editable = false;
                 }
                 field(Status; Rec.Status)

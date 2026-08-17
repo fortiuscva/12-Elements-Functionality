@@ -51,12 +51,10 @@ page 52157 "12E Posted CCD Subform"
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Pstd. Sales Invoice No."; Rec."Pstd. Sales Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
-                    Visible = false;
                 }
             }
         }

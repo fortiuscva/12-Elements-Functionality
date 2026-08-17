@@ -59,10 +59,7 @@ page 52154 "12E QPAY Batches"
                 field("Weeks Worked"; Rec."Weeks Worked")
                 {
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
-                }
-                field("CC Hours"; Rec."CC Hours")
-                {
-                    ToolTip = 'Specifies the value of the Contact Center Hours field.', Comment = '%';
+                    Visible = false;
                 }
                 field("CCD No."; Rec."CCD No.")
                 {
@@ -72,6 +69,7 @@ page 52154 "12E QPAY Batches"
                 field("Posted CCD No."; Rec."Posted CCD No.")
                 {
                     ToolTip = 'Specifies the value of the Posted CCD Exists field.', Comment = '%';
+                    Editable = false;
                 }
 
                 field("Payroll Processed"; Rec."Payroll Processed")
@@ -150,10 +148,7 @@ page 52154 "12E QPAY Batches"
                     PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
                     PayrollTxn.SetRange("Department Code", GetDepartmentCode());
                     PayrollTxn.SetFilter("Hours Worked", '>%1', 0);
-                    PayrollTxn.CalcSums("Hours Worked");
-                    Message('Contact Center Hours for \Client ID: %1,\Location Code: %2,\and Batch ID: %3 is %4 hours', Rec."Client ID", 'PFCC', Rec."Batch ID", PayrollTxn."Hours Worked");
-                    Rec."CC Hours" := PayrollTxn."Hours Worked";
-                    Rec.Modify(true);
+                    Page.RunModal(Page::"12E QPAY Transactions", PayrollTxn);
                 end;
             }
         }

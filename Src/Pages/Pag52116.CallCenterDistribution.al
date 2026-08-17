@@ -27,6 +27,14 @@ page 52116 "12E Call Center Distribution"
                 {
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                     Editable = false;
+                    trigger OnDrillDown()
+                    var
+                        CCDLocationMapping: Record "12E CCD Location Mapping";
+                    begin
+                        CCDLocationMapping.Reset();
+                        CCDLocationMapping.SetRange("Location Code", Rec."Location Code");
+                        Page.RunModal(Page::"12E CCD Loc. Mapping Details", CCDLocationMapping);
+                    end;
                 }
                 group(Batch)
                 {
@@ -61,6 +69,7 @@ page 52116 "12E Call Center Distribution"
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                     Editable = false;
+                    Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
@@ -128,8 +137,8 @@ page 52116 "12E Call Center Distribution"
                     ApplicationArea = All;
                     Caption = 'Post';
                     Ellipsis = true;
-                    Image = PostOrder;
-                    ShortCutKey = 'F9';
+                    Image = Post;
+                    Enabled = Rec."Status" = Rec."Status"::Released;
                     ToolTip = 'Post the contact center distribution document.';
 
                     trigger OnAction()

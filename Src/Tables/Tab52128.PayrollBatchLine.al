@@ -69,13 +69,13 @@ table 52128 "12E Payroll Batch Line"
         {
             Caption = 'Credit Amount';
             FieldClass = FlowField;
-            CalcFormula = sum("12E Questco Payroll Txn"."Credit Amount" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), "Department Code" = field("Department Code"), "G/L Account No." = field("G/L Account No.")));
+            CalcFormula = sum("12E Questco Payroll Txn"."Credit Amount" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), "Department Code" = field("Department Code"), "G/L Account No." = field("G/L Account No."), "Credit Amount" = filter(> 0)));
         }
         field(14; "Debit Amount"; Decimal)
         {
             Caption = 'Debit Amount';
             FieldClass = FlowField;
-            CalcFormula = sum("12E Questco Payroll Txn"."Debit Amount" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), "Department Code" = field("Department Code"), "G/L Account No." = field("G/L Account No.")));
+            CalcFormula = sum("12E Questco Payroll Txn"."Debit Amount" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), "Department Code" = field("Department Code"), "G/L Account No." = field("G/L Account No."), "Debit Amount" = filter(> 0)));
         }
     }
     keys

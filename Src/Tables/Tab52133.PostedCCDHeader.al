@@ -65,6 +65,15 @@ table 52133 "12E Posted CCD Header"
             Clustered = true;
         }
     }
+    fieldgroups
+    {
+        fieldgroup(DropDown; "No.", "Location Code", "Period Start Date", "Period End Date", "Payroll Batch ID")
+        {
+        }
+        fieldgroup(Brick; "No.", "Location Code", "Period Start Date", "Period End Date", "Payroll Batch ID")
+        {
+        }
+    }
     trigger OnDelete()
     var
         PostedCCDLine: Record "12E Posted CCD Line";

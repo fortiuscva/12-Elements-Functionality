@@ -4,13 +4,16 @@ tableextension 52116 "12E Sales Header" extends "Sales Header"
     var
         SalesLine: Record "Sales Line";
         Setup: Record "12E Setup";
+        UserSetup: Record "User Setup";
     begin
         Setup.Get();
 
         if not Setup."Enable CCD Process" then
             exit;
 
-        if Setup."Allow CCD Invoice Deletion" then
+        UserSetup.Get(UserId);
+
+        if UserSetup."12E Allow CCD Invoice Deletion" then
             exit;
 
         SalesLine.Reset();

@@ -24,6 +24,14 @@ page 52158 "12E Posted CCD Details"
                 field("Location Code"; Rec."Location Code")
                 {
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
+                    trigger OnDrillDown()
+                    var
+                        CCDLocationMapping: Record "12E CCD Location Mapping";
+                    begin
+                        CCDLocationMapping.Reset();
+                        CCDLocationMapping.SetRange("Location Code", Rec."Location Code");
+                        Page.RunModal(Page::"12E CCD Loc. Mapping Details", CCDLocationMapping);
+                    end;
                 }
                 field("Payroll Batch ID"; Rec."Payroll Batch ID")
                 {
@@ -44,6 +52,7 @@ page 52158 "12E Posted CCD Details"
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {

@@ -112,7 +112,7 @@ table 52127 "12E Payroll Batch Header"
     trigger OnRename()
     begin
         if "No." <> xRec."No." then
-            Error('CCD Document No. cannot be changed.');
+            Error('Payroll Document No. cannot be changed.');
     end;
 
     procedure AssistEdit(OldPayrollBatchHeader: Record "12E Payroll Batch Header"): Boolean

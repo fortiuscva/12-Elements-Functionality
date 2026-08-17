@@ -68,7 +68,10 @@ page 52104 "12E Setup"
                     ApplicationArea = All;
                     ToolTip = 'Specifies whether Posted Purchase Invoices for RDTJ should be processed for Contact Center Distribution.';
                 }
-
+                field("Allow CCD Invoice Deletion"; Rec."Allow CCD Invoice Deletion")
+                {
+                    ToolTip = 'Specifies the value of the Allow CCD Invoice Deletion field.', Comment = '%';
+                }
             }
             group(PayrollProcessing)
             {

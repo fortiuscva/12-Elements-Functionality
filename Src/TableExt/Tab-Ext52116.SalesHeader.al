@@ -10,6 +10,9 @@ tableextension 52116 "12E Sales Header" extends "Sales Header"
         if not Setup."Enable CCD Process" then
             exit;
 
+        if Setup."Allow CCD Invoice Deletion" then
+            exit;
+
         SalesLine.Reset();
         SalesLine.SetRange("Document Type", Rec."Document Type");
         SalesLine.SetRange("Document No.", Rec."No.");

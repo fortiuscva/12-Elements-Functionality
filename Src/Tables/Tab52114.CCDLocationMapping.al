@@ -65,6 +65,22 @@ table 52114 "12E CCD Location Mapping"
         ValidateProcessingTypeAndVendor();
     end;
 
+    trigger OnDelete()
+    var
+        CCDHeader: Record "12E CCD Header";
+        PostedCCDHeader: Record "12E Posted CCD Header";
+    begin
+        CCDHeader.Reset();
+        CCDHeader.SetRange("Location Code", Rec."Location Code");
+        if not CCDHeader.IsEmpty then
+            Error('Cannot delete this location code, because one or more contact center distribution documents exist with this location code');
+
+        PostedCCDHeader.Reset();
+        PostedCCDHeader.SetRange("Location Code", Rec."Location Code");
+        if not PostedCCDHeader.IsEmpty then
+            Error('Cannot delete this location code, because one or more posted contact center distribution documents exist with this location code');
+    end;
+
     local procedure ValidateProcessingTypeAndVendor()
     begin
         case "Processing Type" of

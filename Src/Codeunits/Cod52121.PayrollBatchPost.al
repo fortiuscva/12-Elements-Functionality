@@ -226,7 +226,7 @@ codeunit 52121 "12E Payroll Batch Post"
         PostedPayrollBatchLine: Record "12E Posted Payroll Line";
     begin
         PostedPayrollBatchHeader.Init();
-        PostedPayrollBatchHeader.TransferFields(PayrollBatchHeader, true);
+        PostedPayrollBatchHeader.TransferFields(PayrollBatchHeader);
         PostedPayrollBatchHeader.Insert(true);
 
         PayrollBatchLine.Reset();
@@ -239,9 +239,9 @@ codeunit 52121 "12E Payroll Batch Post"
                 PostedPayrollBatchLine.Insert(true);
             until PayrollBatchLine.Next() = 0;
 
-        PayrollBatchLine.Reset();
-        PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
-        PayrollBatchLine.DeleteAll(true);
+        // PayrollBatchLine.Reset();
+        // PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
+        // PayrollBatchLine.DeleteAll(true);
 
         PayrollBatchHeader.Delete(true);
     end;

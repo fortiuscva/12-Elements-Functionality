@@ -88,6 +88,8 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             PayrollBatchLine.Init();
             PayrollBatchLine."Document No." := PayrollBatchHeader."No.";
             PayrollBatchLine."Line No." := CurrentLineNo;
+            PayrollBatchLine."Client ID" := PayrollBatchQuery.Client_ID;
+            PayrollBatchLine."Batch ID" := PayrollBatchQuery.BatchID;
             PayrollBatchLine."Department Code" := PayrollBatchQuery.Department;
             PayrollBatchLine."G/L Account No." := PayrollBatchQuery.GLAccountNo;
             //PayrollBatchLine."Pay Type Code" := PayrollBatchQuery.PayTypeCode;
@@ -145,10 +147,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
 
         CompanyMapping.TestField("Client ID");
         ClientID := CompanyMapping."Client ID";
-        if CompanyMapping.Next() <> 0 then
-            Error(
-                'Multiple active Company Mappings exist for company %1.',
-                CompanyName);
+        // if CompanyMapping.Next() <> 0 then
+        //     Error(
+        //         'Multiple active Company Mappings exist for company %1.',
+        //         CompanyName);
 
         exit(ClientID);
     end;

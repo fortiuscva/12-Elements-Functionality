@@ -176,8 +176,17 @@ page 52141 "12E Questco Payroll Documents"
                 }
             }
         }
+
         area(Promoted)
         {
+            group(Category_Process)
+            {
+
+                Caption = 'Process';
+                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
+                {
+                }
+            }
             group(Category_Category5)
             {
                 Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
@@ -189,10 +198,8 @@ page 52141 "12E Questco Payroll Documents"
                 actionref(Reopen_Promoted; Reopen)
                 {
                 }
-                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
-                {
-                }
             }
+
             group(Category_Posting)
             {
                 Caption = 'Posting';

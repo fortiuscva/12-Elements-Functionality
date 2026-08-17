@@ -31,7 +31,7 @@ codeunit 52109 "12E CCD Post"
             until CCDLine.Next() = 0;
         end;
 
-        CCDLine.DeleteAll(true);
+        // CCDLine.DeleteAll(true);
         CCDHeader.Delete(true);
 
         Message(

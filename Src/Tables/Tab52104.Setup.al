@@ -145,6 +145,11 @@ table 52104 "12E Setup"
             Caption = 'Process RDTJ Invoices';
             DataClassification = CustomerContent;
         }
+        field(42; "Allow CCD Invoice Deletion"; Boolean)
+        {
+            Caption = 'Allow CCD Invoice Deletion';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

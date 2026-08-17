@@ -35,6 +35,14 @@ page 52148 "12E Posted Payroll Subform"
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
+                field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
+                }
+                field("Debit Amount"; Rec."Debit Amount")
+                {
+                    ToolTip = 'Specifies the value of the Debit Amount field.', Comment = '%';
+                }
             }
         }
     }

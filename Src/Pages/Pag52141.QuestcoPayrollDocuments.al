@@ -107,7 +107,6 @@ page 52141 "12E Questco Payroll Documents"
                 trigger OnAction()
                 begin
                     Codeunit.Run(Codeunit::"12E Payroll Batch Mgmt");
-                    CurrPage.Update();
                 end;
             }
             group(Posting)
@@ -128,7 +127,6 @@ page 52141 "12E Questco Payroll Documents"
                         PayrollBatchPost: Codeunit "12E Payroll Batch Post";
                     begin
                         PayrollBatchPost.Post(Rec);
-                        CurrPage.Update();
                     end;
                 }
 

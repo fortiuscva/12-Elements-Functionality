@@ -20,20 +20,14 @@ page 52139 "12E Questco Payroll Document"
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
+                    trigger OnAssistEdit()
+                    begin
+                        if Rec.AssistEdit(xRec) then
+                            CurrPage.Update();
+                    end;
                 }
 
                 field("Client ID"; Rec."Client ID")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field(Status; Rec."Status")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-
-                field("Created By"; CreatedBy)
                 {
                     ApplicationArea = All;
                     Editable = false;
@@ -77,8 +71,17 @@ page 52139 "12E Questco Payroll Document"
                         Editable = false;
                     }
                 }
-
-
+                field(Status; Rec."Status")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Created By"; CreatedBy)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Visible = false;
+                }
             }
             part(Lines; "12E Payroll Document Subform")
             {
@@ -162,7 +165,6 @@ page 52139 "12E Questco Payroll Document"
                         PayrollBatchPost: Codeunit "12E Payroll Batch Post";
                     begin
                         PayrollBatchPost.Post(Rec);
-                        CurrPage.Update();
                     end;
                 }
 

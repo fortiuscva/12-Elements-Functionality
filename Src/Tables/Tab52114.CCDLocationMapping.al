@@ -11,7 +11,6 @@ table 52114 "12E CCD Location Mapping"
         field(1; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
-            TableRelation = Location;
             DataClassification = CustomerContent;
         }
         field(5; Blocked; Boolean)
@@ -50,9 +49,11 @@ table 52114 "12E CCD Location Mapping"
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "Location Code", Blocked, "Vendor No.")
+        fieldgroup(DropDown; "Location Code", Blocked, "Processing Type")
         {
-
+        }
+        fieldgroup(Brick; "Location Code", Blocked, "Processing Type")
+        {
         }
     }
     trigger OnInsert()

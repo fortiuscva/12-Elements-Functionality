@@ -16,10 +16,8 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchNo: Code[20];
         PostingError: Text;
     begin
-        if PayrollBatchHeader.Status = PayrollBatchHeader.Status::Processed then
-            Error(
-                'Lines cannot be posted because Payroll batch %1 has already been processed.',
-                PayrollBatchHeader."No.");
+        if not Confirm('Do you want to post Payroll document %1?', false, PayrollBatchHeader."No.") then
+            exit;
 
         PayrollBatchHeader.TestField(Status, PayrollBatchHeader.Status::Released);
 
@@ -68,11 +66,6 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchLine: Record "12E Payroll Batch Line";
         BatchTotal: Decimal;
     begin
-        if PayrollBatchHeader.Status = PayrollBatchHeader.Status::Processed then
-            Error(
-                'Lines cannot be posted because Payroll batch %1 has already been processed.',
-                PayrollBatchHeader."No.");
-
         GetSetup();
 
         PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");

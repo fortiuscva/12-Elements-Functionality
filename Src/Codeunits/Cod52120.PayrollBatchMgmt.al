@@ -57,13 +57,6 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         CurrentLineNo: Integer;
         Amount: Decimal;
     begin
-        if PayrollBatchHeader.Status =
-           PayrollBatchHeader.Status::Processed
-        then
-            Error(
-                'Lines cannot be created because Payroll batch %1 has already been processed.',
-                PayrollBatchHeader."No.");
-
         PayrollBatchHeader.TestField("Client ID");
         PayrollBatchHeader.TestField("Batch ID");
         PayrollBatchHeader.TestField("Pay Date");
@@ -92,10 +85,8 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             PayrollBatchLine."Batch ID" := PayrollBatchQuery.BatchID;
             PayrollBatchLine."Department Code" := PayrollBatchQuery.Department;
             PayrollBatchLine."G/L Account No." := PayrollBatchQuery.GLAccountNo;
-            //PayrollBatchLine."Pay Type Code" := PayrollBatchQuery.PayTypeCode;
             PayrollBatchLine.Amount := Amount;
             Clear(PayrollBatchLine."Employee No.");
-            // Clear(PayrollBatchLine."Pay Type Code");
 
             PayrollBatchLine."Hours Worked" := PayrollBatchQuery.TotalHoursWorked;
             PayrollBatchLine."Hours Units Paid" := PayrollBatchQuery.TotalHoursPaid;

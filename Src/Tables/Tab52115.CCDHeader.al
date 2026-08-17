@@ -75,6 +75,15 @@ table 52115 "12E CCD Header"
             Clustered = true;
         }
     }
+    fieldgroups
+    {
+        fieldgroup(DropDown; "No.", "Location Code", "Period Start Date", "Period End Date", Status)
+        {
+        }
+        fieldgroup(Brick; "No.", "Location Code", "Period Start Date", "Period End Date", Status)
+        {
+        }
+    }
     trigger OnInsert()
     var
         TwelveElementsSetup: Record "12E Setup";

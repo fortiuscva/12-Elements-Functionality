@@ -80,13 +80,6 @@ table 52129 "12E Questco Payroll Batch"
             CalcFormula = Lookup("12E Posted CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));
             Editable = false;
         }
-        // field(13; "CC Processed"; Boolean)
-        // {
-        //     Caption = 'CC Processed';
-        //     FieldClass = FlowField;
-        //     CalcFormula = Exist("12E CCD Line" where("Payroll Batch ID" = field("Batch ID")));
-        //     Editable = false;
-        // }
         field(14; "Payroll Processed"; Boolean)
         {
             Caption = 'Payroll Processed';
@@ -117,11 +110,6 @@ table 52129 "12E Questco Payroll Batch"
         field(19; "ETL Batch ID"; Guid)
         {
             Caption = 'ETL Batch ID';
-            DataClassification = CustomerContent;
-        }
-        field(20; "CC Hours"; Decimal)
-        {
-            Caption = 'Contact Center Hours';
             DataClassification = CustomerContent;
         }
     }

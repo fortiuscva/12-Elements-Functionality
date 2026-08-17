@@ -188,7 +188,7 @@ report 52102 "12E Create CCD Sales Invoices"
         SalesLine.Validate("No.", TwelveElementsSetup."CCD G/L Account No.");
         SalesLine.Validate(Quantity, PostedCCDLine."Distributed Quantity");
 
-        SalesLine.Description := StrSubstNo('%1 - %2 - %3 - %4 - %5', PostedCCDLine."Location Code", PostedCCDLine.Portfolio, Format(PostedCCDLine."Payroll Batch ID"), Format(PostedCCDHeader."Period Start Date"), Format(PostedCCDHeader."Period End Date"));
+        SalesLine.Description := StrSubstNo('%1-Batch(%2)-(%3-%4)', PostedCCDLine."Location Code", Format(PostedCCDLine."Payroll Batch ID"), Format(PostedCCDHeader."Period Start Date"), Format(PostedCCDHeader."Period End Date"));
 
         SalesLine.Validate("12E CCD No.", PostedCCDHeader."No.");
         SalesLine.Validate("12E CCD Line No.", PostedCCDLine."Line No.");

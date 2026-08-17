@@ -20,7 +20,6 @@ page 52139 "12E Questco Payroll Document"
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
-                    Editable = false;
                 }
 
                 field("Client ID"; Rec."Client ID")
@@ -28,7 +27,17 @@ page 52139 "12E Questco Payroll Document"
                     ApplicationArea = All;
                     Editable = false;
                 }
+                field(Status; Rec."Status")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
 
+                field("Created By"; CreatedBy)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 group(Batch)
                 {
                     Caption = 'Batch';
@@ -69,17 +78,7 @@ page 52139 "12E Questco Payroll Document"
                     }
                 }
 
-                field(Status; Rec."Status")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
 
-                field("Created By"; CreatedBy)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
             }
             part(Lines; "12E Payroll Document Subform")
             {
@@ -213,6 +212,14 @@ page 52139 "12E Questco Payroll Document"
         }
         area(Promoted)
         {
+            group(Category_Process)
+            {
+
+                Caption = 'Process';
+                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
+                {
+                }
+            }
             group(Category_Category5)
             {
                 Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
@@ -224,9 +231,7 @@ page 52139 "12E Questco Payroll Document"
                 actionref(Reopen_Promoted; Reopen)
                 {
                 }
-                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
-                {
-                }
+
             }
             group(Category_Posting)
             {
@@ -241,6 +246,7 @@ page 52139 "12E Questco Payroll Document"
                 {
                 }
             }
+
             group(Category_Category7)
             {
                 Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 5.';

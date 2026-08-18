@@ -27,14 +27,6 @@ page 52116 "12E Call Center Distribution"
                 {
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                     Editable = false;
-                    trigger OnDrillDown()
-                    var
-                        CCDLocationMapping: Record "12E CCD Location Mapping";
-                    begin
-                        CCDLocationMapping.Reset();
-                        CCDLocationMapping.SetRange("Location Code", Rec."Location Code");
-                        Page.RunModal(Page::"12E CCD Loc. Mapping Details", CCDLocationMapping);
-                    end;
                 }
                 group(Batch)
                 {

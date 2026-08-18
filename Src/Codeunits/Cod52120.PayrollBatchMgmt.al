@@ -16,8 +16,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         WorkDate := Today();
 
         QuestcoPayrollBatch.Reset();
-        QuestcoPayrollBatch.SetRange("Payroll Processed", false);
+        // QuestcoPayrollBatch.SetRange("Payroll Processed", false);
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
+        QuestcoPayrollBatch.SetRange("Payroll Doc. No.", '');
+        QuestcoPayrollBatch.SetRange("Posted Payroll Doc. No.", '');
         if QuestcoPayrollBatch.FindSet() then
             repeat
                 if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID")

@@ -1,7 +1,7 @@
 page 52141 "12E Questco Payroll Documents"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Documents';
+    Caption = 'Payroll Documents';
     PageType = List;
     SourceTable = "12E Payroll Batch Header";
     CardPageId = "12E Questco Payroll Document";

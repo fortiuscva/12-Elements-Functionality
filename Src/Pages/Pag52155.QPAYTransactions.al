@@ -1,7 +1,7 @@
 page 52155 "12E QPAY Transactions"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Transactions';
+    Caption = 'Payroll Transactions';
     PageType = List;
     SourceTable = "12E Questco Payroll Txn";
     SourceTableView = sorting("Client ID", "Batch ID") order(descending);

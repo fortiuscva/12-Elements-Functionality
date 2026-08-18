@@ -1,8 +1,8 @@
 table 52126 "12E Questco Payroll Txn"
 {
-    Caption = 'Questco Payroll Transaction';
-    LookupPageId = "12E Questco Payroll Txns";
-    DrillDownPageId = "12E Questco Payroll Txns";
+    Caption = 'Payroll Transaction';
+    LookupPageId = "12E QPAY Transactions";
+    DrillDownPageId = "12E QPAY Transactions";
     DataClassification = CustomerContent;
     DataPerCompany = false;
 

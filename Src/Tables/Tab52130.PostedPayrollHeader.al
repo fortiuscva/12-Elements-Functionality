@@ -55,8 +55,14 @@ table 52130 "12E Posted Payroll Header"
         field(12; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
+            TableRelation = "G/L Register";
             DataClassification = CustomerContent;
             Editable = false;
+        }
+        field(13; Reversed; Boolean)
+        {
+            Caption = 'Reversed';
+            DataClassification = CustomerContent;
         }
     }
     keys

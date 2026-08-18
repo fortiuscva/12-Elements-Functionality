@@ -1,6 +1,6 @@
 table 52116 "12E CCD Line"
 {
-    Caption = 'Contact Center Time Distribution Line';
+    Caption = 'CCD Line';
     DataClassification = CustomerContent;
     DataPerCompany = True;
     fields

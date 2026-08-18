@@ -1,7 +1,7 @@
 page 52145 "12E Questco Payroll Batches"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Batches (Global)';
+    Caption = 'Payroll Batches (Global)';
     PageType = List;
     SourceTable = "12E Questco Payroll Batch";
     SourceTableView = sorting(PKID) order(descending);
@@ -74,10 +74,13 @@ page 52145 "12E Questco Payroll Batches"
                     ToolTip = 'Specifies the value of the Posted CCD Exists field.', Comment = '%';
                     Editable = false;
                 }
-                field("Payroll Processed"; Rec."Payroll Processed")
+                field("Payroll Doc. No."; Rec."Payroll Doc. No.")
                 {
-                    ToolTip = 'Specifies the value of the Payroll Processed field.', Comment = '%';
-                    Editable = false;
+                    ToolTip = 'Specifies the value of the Payroll Document No. field.', Comment = '%';
+                }
+                field("Posted Payroll Doc. No."; Rec."Posted Payroll Doc. No.")
+                {
+                    ToolTip = 'Specifies the value of the Posted Payroll Document No. field.', Comment = '%';
                 }
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {

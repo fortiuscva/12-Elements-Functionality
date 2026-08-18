@@ -64,6 +64,10 @@ page 52147 "12E Posted Payroll Document"
                 {
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
+                field(Reversed; Rec.Reversed)
+                {
+                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
+                }
                 field(Status; Rec."Status")
                 {
                     ApplicationArea = All;

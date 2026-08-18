@@ -1,6 +1,6 @@
 table 52115 "12E CCD Header"
 {
-    Caption = 'Contact Center Time Distribution Header';
+    Caption = 'CCD Header';
     LookupPageId = "12E CCD Details";
     DrillDownPageId = "12E CCD Details";
     DataClassification = CustomerContent;

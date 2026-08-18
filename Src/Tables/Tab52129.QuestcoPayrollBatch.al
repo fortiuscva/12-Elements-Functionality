@@ -1,6 +1,6 @@
 table 52129 "12E Questco Payroll Batch"
 {
-    Caption = 'Questco Payroll Batch';
+    Caption = 'Payroll Batch';
     DataClassification = CustomerContent;
     DataPerCompany = false;
     fields
@@ -65,7 +65,7 @@ table 52129 "12E Questco Payroll Batch"
             Caption = 'Deduct Period';
             DataClassification = CustomerContent;
         }
-        field(52103; "CCD No."; Code[20])
+        field(13; "CCD No."; Code[20])
         {
             Caption = 'CCD No.';
             FieldClass = FlowField;
@@ -73,18 +73,11 @@ table 52129 "12E Questco Payroll Batch"
             Editable = false;
         }
 
-        field(52104; "Posted CCD No."; Code[20])
+        field(14; "Posted CCD No."; Code[20])
         {
             Caption = 'Posted CCD No.';
             FieldClass = FlowField;
             CalcFormula = Lookup("12E Posted CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));
-            Editable = false;
-        }
-        field(14; "Payroll Processed"; Boolean)
-        {
-            Caption = 'Payroll Processed';
-            FieldClass = FlowField;
-            CalcFormula = Exist("12E Payroll Batch Header" where("Batch ID" = field("Batch ID")));
             Editable = false;
         }
         field(15; "DW Export Timestamp"; DateTime)
@@ -111,6 +104,18 @@ table 52129 "12E Questco Payroll Batch"
         {
             Caption = 'ETL Batch ID';
             DataClassification = CustomerContent;
+        }
+        field(20; "Payroll Doc. No."; Code[20])
+        {
+            Caption = 'Payroll Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Payroll Batch Header"."No." where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID")));
+        }
+        field(21; "Posted Payroll Doc. No."; Code[20])
+        {
+            Caption = 'Posted Payroll Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Posted Payroll Header"."No." where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), Reversed = const(false)));
         }
     }
     keys

@@ -1,7 +1,7 @@
 page 52139 "12E Questco Payroll Document"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Document';
+    Caption = 'Payroll Document';
     PageType = Document;
     SourceTable = "12E Payroll Batch Header";
     UsageCategory = None;

@@ -16,7 +16,7 @@ codeunit 52121 "12E Payroll Batch Post"
         PayrollBatchNo: Code[20];
         PostingError: Text;
     begin
-        if not Confirm('Do you want to post Payroll document %1?', false, PayrollBatchHeader."No.") then
+        if not Confirm('Do you want to post the payroll document %1?', false, PayrollBatchHeader."No.") then
             exit;
 
         PayrollBatchHeader.TestField(Status, PayrollBatchHeader.Status::Released);

@@ -7,6 +7,8 @@ codeunit 52123 "12E Payroll Reverse Mgt."
         ReversalEntry: Record "Reversal Entry";
         PayrollBatchHeader: Record "12E Payroll Batch Header";
     begin
+        CheckReversalPermission();
+
         PostedPayrollHeader.TestField("G/L Register No.");
 
         if PostedPayrollHeader.Reversed then
@@ -28,6 +30,22 @@ codeunit 52123 "12E Payroll Reverse Mgt."
             'Payroll Document %1 was reversed and new Payroll Document %2 was created.',
             PostedPayrollHeader."No.",
             PayrollBatchHeader."No.");
+    end;
+
+    local procedure CheckReversalPermission()
+    var
+        UserSetup: Record "User Setup";
+    begin
+        UserSetup.Reset();
+
+        if not UserSetup.Get(UserId) then
+            Error(
+                'User Setup does not exist for user %1.',
+                UserId);
+
+        if not UserSetup."12E Allow Pay Doc. Reversal" then
+            Error(
+                'You do not have permission to reverse Payroll Documents.');
     end;
 
     local procedure CreatePayrollDocument(

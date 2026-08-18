@@ -25,4 +25,48 @@ codeunit 52114 "12E Event Management"
             PurchaseHeader.TestField("12E Period Quantity");
         end;
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnBeforeUpdateGLReg', '', false, false)]
+    local procedure OnBeforeUpdateGLReg(IsTransactionConsistent: Boolean; var IsGLRegInserted: Boolean; var GLReg: Record "G/L Register";
+       var IsHandled: Boolean; var GenJnlLine: Record "Gen. Journal Line"; GlobalGLEntry: Record "G/L Entry"; FirstNewVATEntryNo: Integer; NextTaxEntryNo: Integer)
+    begin
+        if IsGLRegInserted then
+            exit;
+
+        HandleGLRegister(GenJnlLine, GLReg);
+    end;
+
+    local procedure HandleGLRegister(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register")
+    begin
+        if TryUpdatePayroll(GenJnlLine, GLReg) then
+            exit;
+
+    end;
+
+    local procedure TryUpdatePayroll(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        TwelveElementsSetup: Record "12E Setup";
+    begin
+        TwelveElementsSetup.Get();
+
+        if GenJnlLine."Journal Template Name" <> TwelveElementsSetup."Payroll Jnl. Template" then
+            exit(false);
+
+        if GenJnlLine."Journal Batch Name" <> TwelveElementsSetup."Payroll Jnl. Batch" then
+            exit(false);
+
+        if GenJnlLine."Document No." = '' then
+            exit(false);
+
+        PayrollBatchHeader.Reset();
+        PayrollBatchHeader.SetRange("No.", GenJnlLine."Document No.");
+        if not PayrollBatchHeader.FindFirst() then
+            exit(false);
+
+        PayrollBatchHeader."G/L Register No." := GLReg."No.";
+        PayrollBatchHeader.Modify(true);
+
+        exit(true);
+    end;
 }

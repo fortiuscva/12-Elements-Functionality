@@ -74,6 +74,29 @@ page 52149 "12E Posted Payroll Documents"
                     Page.RunModal(Page::"General Ledger Entries", GLEntry);
                 end;
             }
+            group(Reverse)
+            {
+                Caption = 'Reverse';
+                Image = ReverseRegister;
+
+                action(ReverseRegister)
+                {
+                    ApplicationArea = Basic, Suite;
+                    Caption = 'Reverse Register';
+                    Ellipsis = true;
+                    Image = ReverseRegister;
+                    ToolTip = 'Reverses the payroll register and creates a new Payroll Document.';
+                    Enabled = not Rec.Reversed;
+
+                    trigger OnAction()
+                    var
+                        PayrollReverseMgt: Codeunit "12E Payroll Reverse Mgt.";
+                    begin
+                        PayrollReverseMgt.ReversePayroll(Rec);
+                        CurrPage.Update();
+                    end;
+                }
+            }
         }
         area(Navigation)
         {
@@ -110,6 +133,8 @@ page 52149 "12E Posted Payroll Documents"
                 {
 
                 }
+                actionref(ReverseRegister_Promoted; ReverseRegister)
+                { }
             }
             group(Category_Category5)
             {

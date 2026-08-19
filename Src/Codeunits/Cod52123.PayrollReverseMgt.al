@@ -15,21 +15,17 @@ codeunit 52123 "12E Payroll Reverse Mgt."
             Error('Payroll document %1 has already been reversed.',
                 PostedPayrollHeader."No.");
 
-        if not Confirm('Do you want to reverse Payroll Document %1 and create a new Payroll Document?', false, PostedPayrollHeader."No.")
-        then
-            exit;
-
         ReversalEntry.ReverseRegister(PostedPayrollHeader."G/L Register No.");
 
-        PostedPayrollHeader.Reversed := true;
-        PostedPayrollHeader.Modify(true);
+        // PostedPayrollHeader.Reversed := true;
+        // PostedPayrollHeader.Modify(true);
 
-        CreatePayrollDocument(PostedPayrollHeader);
+        //CreatePayrollDocument(PostedPayrollHeader);
 
-        Message(
-            'Payroll Document %1 was reversed and new Payroll Document %2 was created.',
-            PostedPayrollHeader."No.",
-            PayrollBatchHeader."No.");
+        // Message(
+        //     'Payroll Document %1 was reversed and new Payroll Document %2 was created.',
+        //     PostedPayrollHeader."No.",
+        //     PayrollBatchHeader."No.");
     end;
 
     local procedure CheckReversalPermission()

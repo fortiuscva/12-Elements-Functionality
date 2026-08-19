@@ -38,7 +38,7 @@ codeunit 52122 "12E Loyalty Posting"
         TwelveSetup.TestField("Payroll Jnl. Batch");
         TwelveSetup.TestField("Loyalty Points Earned");
         TwelveSetup.TestField("Deferred Rev Loyalty Pts");
-        TwelveSetup.TestField("Provision for Loyalty Points");
+        TwelveSetup.TestField("Loyalty Points Provision");
         TwelveSetup.TestField("Loyalty Points Reserve");
         TwelveSetup.TestField("Loyalty Source Code");
         TwelveSetup.TestField("Loyalty Reason Code");
@@ -78,7 +78,7 @@ codeunit 52122 "12E Loyalty Posting"
                         LoyaltyPoints."Month End Date",
                         LoyaltyPoints."Document No.",
                         ProvisionAmount,
-                        TwelveSetup."Provision for Loyalty Points",
+                        TwelveSetup."Loyalty Points Provision",
                         TwelveSetup."Loyalty Points Reserve");
             end;
 
@@ -98,7 +98,7 @@ codeunit 52122 "12E Loyalty Posting"
                         LoyaltyPoints."Document No.",
                         ProvisionAmount,
                         TwelveSetup."Loyalty Points Reserve",
-                        TwelveSetup."Provision for Loyalty Points");
+                        TwelveSetup."Loyalty Points Provision");
             end;
         until LoyaltyPoints.Next() = 0;
     end;

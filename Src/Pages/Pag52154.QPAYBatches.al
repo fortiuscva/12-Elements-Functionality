@@ -61,7 +61,7 @@ page 52154 "12E QPAY Batches"
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
                     Visible = false;
                 }
-                field(CCHours; CCHours)
+                field(CCHours; Functions.GetContactCenterHours(Rec."Client ID", Rec."Batch ID", GetDepartmentCode()))
                 {
                     ApplicationArea = All;
                     Caption = 'Contact Center Hours';
@@ -148,9 +148,14 @@ page 52154 "12E QPAY Batches"
                 Image = ServiceHours;
                 trigger OnAction()
                 var
-                    Functions: Codeunit "12E Functions";
+                    PayrollTxn: Record "12E Questco Payroll Txn";
                 begin
-                    CCHours := Functions.GetContactCenterHours(Rec."Client ID", Rec."Batch ID", GetDepartmentCode());
+                    PayrollTxn.Reset();
+                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
+                    PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
+                    PayrollTxn.SetRange("Department Code", GetDepartmentCode());
+                    PayrollTxn.SetFilter("Hours Worked", '>%1', 0);
+                    Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
                 end;
             }
         }
@@ -192,5 +197,5 @@ page 52154 "12E QPAY Batches"
 
 
     var
-        CCHours: Decimal;
+        Functions: Codeunit "12E Functions";
 }

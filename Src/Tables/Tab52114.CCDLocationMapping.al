@@ -58,10 +58,10 @@ table 52114 "12E CCD Location Mapping"
     }
     trigger OnRename()
     begin
-        if CheckCCDExists(Rec."Location Code") then
+        if CheckCCDExists(xRec."Location Code") then
             Error(ChangeCCDLocationErr);
 
-        if CheckPostedCCDExists(Rec."Location Code") then
+        if CheckPostedCCDExists(xRec."Location Code") then
             Error(ChangePostedCCDLocationErr);
     end;
 

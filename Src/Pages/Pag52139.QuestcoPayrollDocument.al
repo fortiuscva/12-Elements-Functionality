@@ -76,6 +76,18 @@ page 52139 "12E Questco Payroll Document"
                         Editable = false;
                     }
                 }
+
+                field(Status; Rec."Status")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+                field("Created By"; CreatedBy)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    Visible = false;
+                }
                 group(PostingError)
                 {
                     Caption = 'Posting Error';
@@ -88,17 +100,6 @@ page 52139 "12E Questco Payroll Document"
                         Editable = false;
                         ToolTip = 'Specifies the value of the Posting Error field.', Comment = '%';
                     }
-                }
-                field(Status; Rec."Status")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                }
-                field("Created By"; CreatedBy)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    Visible = false;
                 }
             }
             part(Lines; "12E Payroll Document Subform")

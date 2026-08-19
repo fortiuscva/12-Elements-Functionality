@@ -47,17 +47,14 @@ codeunit 52121 "12E Payroll Batch Post"
 
             DeleteJournalLines();
             Message(PostingError);
+        end else begin
+
+            // PayrollBatchHeader."G/L Register No." := GetGLRegisterNo(PayrollBatchHeader);
+            // PayrollBatchHeader.Modify(true);
+            DeleteJournalLines();
+            TransferToPostedPayroll(PayrollBatchHeader);
+            Message(PayrollPostedMsg, PayrollBatchNo);
         end;
-
-        // PayrollBatchHeader."G/L Register No." := GetGLRegisterNo(PayrollBatchHeader);
-
-        PayrollBatchHeader.Modify(true);
-
-        DeleteJournalLines();
-
-        TransferToPostedPayroll(PayrollBatchHeader);
-
-        Message(PayrollPostedMsg, PayrollBatchNo);
     end;
 
     procedure PreviewPosting(var PayrollBatchHeader: Record "12E Payroll Batch Header")

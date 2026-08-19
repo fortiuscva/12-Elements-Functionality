@@ -61,6 +61,11 @@ page 52154 "12E QPAY Batches"
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
                     Visible = false;
                 }
+                field(CCHours; CCHours)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Contact Center Hours';
+                }
                 field("CCD No."; Rec."CCD No.")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
@@ -143,14 +148,9 @@ page 52154 "12E QPAY Batches"
                 Image = ServiceHours;
                 trigger OnAction()
                 var
-                    PayrollTxn: Record "12E Questco Payroll Txn";
+                    Functions: Codeunit "12E Functions";
                 begin
-                    PayrollTxn.Reset();
-                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
-                    PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
-                    PayrollTxn.SetRange("Department Code", GetDepartmentCode());
-                    PayrollTxn.SetFilter("Hours Worked", '>%1', 0);
-                    Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
+                    CCHours := Functions.GetContactCenterHours(Rec."Client ID", Rec."Batch ID", GetDepartmentCode());
                 end;
             }
         }
@@ -189,4 +189,8 @@ page 52154 "12E QPAY Batches"
         if DepartmentCode.FindFirst() then
             exit(DepartmentCode.Code);
     end;
+
+
+    var
+        CCHours: Decimal;
 }

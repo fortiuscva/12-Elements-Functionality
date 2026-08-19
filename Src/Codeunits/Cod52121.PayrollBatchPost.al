@@ -46,11 +46,10 @@ codeunit 52121 "12E Payroll Batch Post"
             PayrollBatchHeader.Modify(true);
 
             DeleteJournalLines();
-            Error(PostingError);
+            Message(PostingError);
         end;
 
-        PayrollBatchHeader."G/L Register No." :=
-            GetGLRegisterNo(PayrollBatchHeader);
+        // PayrollBatchHeader."G/L Register No." := GetGLRegisterNo(PayrollBatchHeader);
 
         PayrollBatchHeader.Modify(true);
 

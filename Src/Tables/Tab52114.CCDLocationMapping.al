@@ -25,7 +25,7 @@ table 52114 "12E CCD Location Mapping"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                if ("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '') then
+                if (("Processing Type" = "Processing Type"::Payroll) and ("Vendor No." <> '')) then
                     Error(PayrollVendorNoErr);
             end;
         }
@@ -35,7 +35,7 @@ table 52114 "12E CCD Location Mapping"
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                if "Processing Type" = "Processing Type"::Payroll then
+                if Rec."Processing Type" <> xRec."Processing Type" then
                     Clear("Vendor No.");
             end;
         }
@@ -56,50 +56,67 @@ table 52114 "12E CCD Location Mapping"
         {
         }
     }
-    trigger OnInsert()
+    trigger OnRename()
     begin
-        ValidateProcessingTypeAndVendor();
+        if CheckCCDExists(Rec."Location Code") then
+            Error(ChangeCCDLocationErr);
+
+        if CheckPostedCCDExists(Rec."Location Code") then
+            Error(ChangePostedCCDLocationErr);
     end;
 
     trigger OnModify()
     begin
-        ValidateProcessingTypeAndVendor();
+        if CheckCCDExists(Rec."Location Code") then
+            Error(ChangeCCDLocationErr);
+
+        if CheckPostedCCDExists(Rec."Location Code") then
+            Error(ChangePostedCCDLocationErr);
     end;
 
     trigger OnDelete()
+    begin
+        if CheckCCDExists(Rec."Location Code") then
+            Error(DeleteCCDLocationErr);
+
+        if CheckPostedCCDExists(Rec."Location Code") then
+            Error(DeletePostedCCDLocationErr);
+    end;
+
+    local procedure CheckCCDExists(LocationCodePar: Code[10]): Boolean
     var
         CCDHeader: Record "12E CCD Header";
-        PostedCCDHeader: Record "12E Posted CCD Header";
     begin
+        Clear(CCDExists);
+        CCDExists := false;
         CCDHeader.Reset();
-        CCDHeader.SetRange("Location Code", Rec."Location Code");
+        CCDHeader.SetRange("Location Code", LocationCodePar);
         if not CCDHeader.IsEmpty then
-            Error('Cannot delete this location code, because one or more contact center distribution documents exist with this location code');
+            CCDExists := true;
 
-        PostedCCDHeader.Reset();
-        PostedCCDHeader.SetRange("Location Code", Rec."Location Code");
-        if not PostedCCDHeader.IsEmpty then
-            Error('Cannot delete this location code, because one or more posted contact center distribution documents exist with this location code');
+        exit(CCDExists);
     end;
 
-    local procedure ValidateProcessingTypeAndVendor()
+    local procedure CheckPostedCCDExists(LocationCodePar: Code[10]): Boolean
+    var
+        PostedCCDHeader: Record "12E Posted CCD Header";
     begin
-        case "Processing Type" of
-            "Processing Type"::Payroll:
-                begin
-                    if "Vendor No." <> '' then
-                        Error(PayrollVendorNoErr);
-                end;
+        Clear(PostedCCDExists);
+        PostedCCDExists := false;
+        PostedCCDHeader.Reset();
+        PostedCCDHeader.SetRange("Location Code", LocationCodePar);
+        if not PostedCCDHeader.IsEmpty then
+            PostedCCDExists := true;
 
-            "Processing Type"::Vendor:
-                begin
-                    if "Vendor No." = '' then
-                        Error(VendorNoErr);
-                end;
-        end;
+        exit(PostedCCDExists);
     end;
 
     var
+        CCDExists: Boolean;
+        PostedCCDExists: Boolean;
+        DeleteCCDLocationErr: Label 'Cannot delete this location code, because one or more contact center distribution documents exist with this location code';
+        DeletePostedCCDLocationErr: Label 'Cannot delete this location code, because one or more posted contact center distribution documents exist with this location code';
+        ChangeCCDLocationErr: Label 'Cannot change this location code, because one or more contact center distribution documents exist with this location code';
+        ChangePostedCCDLocationErr: Label 'Cannot change this location code, because one or more posted contact center distribution documents exist with this location code';
         PayrollVendorNoErr: Label 'Vendor No. must be blank for Payroll processing type.';
-        VendorNoErr: Label 'Vendor No. cannot be blank for Vendor processing type.';
 }

@@ -63,7 +63,7 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
                 }
-                field("Process RDTJ Invoices"; Rec."Process RDTJ Invoices")
+                field("Process Dialer Tone Invoices"; Rec."Process Dialer Tone Invoices")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies whether Posted Purchase Invoices for RDTJ should be processed for Contact Center Distribution.';

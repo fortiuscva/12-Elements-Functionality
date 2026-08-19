@@ -42,6 +42,10 @@ page 52149 "12E Posted Payroll Documents"
                 {
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';

@@ -71,21 +71,33 @@ page 52104 "12E Setup"
             group(LoyaltyPoints)
             {
                 Caption = 'Loyalty Points';
-                field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
+                group("Earned/Expired")
                 {
-                    ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                    Caption = 'Earned/Expired';
+                    field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
+                    {
+                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                    }
+                    field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
+                    {
+                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                    }
                 }
-                field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
+                group(Provision)
                 {
-                    ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
-                }
-                field("Provision for Loyalty Points"; Rec."Provision for Loyalty Points")
-                {
-                    ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
-                }
-                field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
-                {
-                    ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
+                    Caption = 'Provision';
+                    field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
+                    {
+                        ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
+                    }
+                    field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
+                    {
+                        ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
+                    }
+                    field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
+                    {
+                        ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
+                    }
                 }
                 field("Loyalty Source Code"; Rec."Loyalty Source Code")
                 {
@@ -95,9 +107,18 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
                 }
-                field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
+
+                field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
                 {
-                    ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
+                }
+                field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
+                {
+                    ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
+                }
+                field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
+                {
+                    ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                 }
             }
         }

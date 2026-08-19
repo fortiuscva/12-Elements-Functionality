@@ -46,6 +46,8 @@ codeunit 52114 "12E Event Management"
         if TryUpdatePayroll(GenJnlLine, GLReg) then
             exit;
 
+        if TryUpdateLoyalty(GenJnlLine, GLReg) then
+            exit;
     end;
 
     local procedure TryUpdatePayroll(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
@@ -73,6 +75,34 @@ codeunit 52114 "12E Event Management"
         PayrollBatchHeader.Modify(true);
 
         exit(true);
+    end;
+
+    local procedure TryUpdateLoyalty(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        LoyaltyPoints: Record "12E Loyalty Points";
+    begin
+        if GenJnlLine."Source Code" <> GetLoyaltySourceCode() then
+            exit(false);
+
+        LoyaltyPoints.Reset();
+        LoyaltyPoints.SetRange("Document No.", GenJnlLine."Document No.");
+        LoyaltyPoints.SetRange(Processed, false);
+
+        if LoyaltyPoints.IsEmpty() then
+            exit(false);
+
+        LoyaltyPoints.ModifyAll("G/L Register No.", Format(GLReg."No."));
+        LoyaltyPoints.ModifyAll(Processed, true);
+
+        exit(true);
+    end;
+
+    local procedure GetLoyaltySourceCode(): Code[20]
+    var
+        TwelveSetup: Record "12E Setup";
+    begin
+        TwelveSetup.Get();
+        exit(TwelveSetup."Loyalty Source Code");
     end;
 
     local procedure HandleReversal(

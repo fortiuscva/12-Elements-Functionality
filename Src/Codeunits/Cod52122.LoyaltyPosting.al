@@ -8,16 +8,21 @@ codeunit 52122 "12E Loyalty Posting"
         NoJournalLinesToPreviewErr: Label 'There are no General Journal Lines to preview.';
         LoyaltyPostedMsg: Label 'Loyalty Points posted successfully.';
 
+    trigger OnRun()
+    begin
+        Post();
+    end;
+
     procedure Post()
     begin
         GetSetup();
         DeleteJournalLines();
         CreateJournalLines();
         PostJournal();
-        UpdatePostedRecords();
         DeleteJournalLines();
 
-        Message(LoyaltyPostedMsg);
+        if GuiAllowed() then
+            Message(LoyaltyPostedMsg);
     end;
 
     procedure PreviewPosting()
@@ -34,8 +39,11 @@ codeunit 52122 "12E Loyalty Posting"
     begin
         TwelveSetup.Get();
 
-        TwelveSetup.TestField("Payroll Jnl. Template");
-        TwelveSetup.TestField("Payroll Jnl. Batch");
+        if not TwelveSetup."Enable Loyalty Process" then
+            Error('Loyalty Process is not enabled in 12 Elements Setup.');
+
+        TwelveSetup.TestField("Loyalty Jnl. Template");
+        TwelveSetup.TestField("Loyalty Jnl. Batch");
         TwelveSetup.TestField("Loyalty Points Earned");
         TwelveSetup.TestField("Deferred Rev Loyalty Pts");
         TwelveSetup.TestField("Loyalty Points Provision");
@@ -64,41 +72,21 @@ codeunit 52122 "12E Loyalty Posting"
             end;
 
             if LoyaltyPoints."Points Earned" <> 0 then begin
-                CreateGenJournalLine(
-                    LoyaltyPoints."Month End Date",
-                    LoyaltyPoints."Document No.",
-                    LoyaltyPoints."Points Earned",
-                    TwelveSetup."Loyalty Points Earned",
-                    TwelveSetup."Deferred Rev Loyalty Pts");
+                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Earned", TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts");
 
                 ProvisionAmount := Round(LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
                 if ProvisionAmount <> 0 then
-                    CreateGenJournalLine(
-                        LoyaltyPoints."Month End Date",
-                        LoyaltyPoints."Document No.",
-                        ProvisionAmount,
-                        TwelveSetup."Loyalty Points Provision",
-                        TwelveSetup."Loyalty Points Reserve");
+                    CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve");
             end;
 
             if LoyaltyPoints."Points Expired" <> 0 then begin
-                CreateGenJournalLine(
-                    LoyaltyPoints."Month End Date",
-                    LoyaltyPoints."Document No.",
-                    LoyaltyPoints."Points Expired",
-                    TwelveSetup."Deferred Rev Loyalty Pts",
-                    TwelveSetup."Loyalty Points Earned");
+                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Expired", TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned");
 
                 ProvisionAmount := Round(LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
                 if ProvisionAmount <> 0 then
-                    CreateGenJournalLine(
-                        LoyaltyPoints."Month End Date",
-                        LoyaltyPoints."Document No.",
-                        ProvisionAmount,
-                        TwelveSetup."Loyalty Points Reserve",
-                        TwelveSetup."Loyalty Points Provision");
+                    CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision");
             end;
         until LoyaltyPoints.Next() = 0;
     end;
@@ -108,8 +96,8 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := TwelveSetup."Payroll Jnl. Template";
-        GenJournalLine."Journal Batch Name" := TwelveSetup."Payroll Jnl. Batch";
+        GenJournalLine."Journal Template Name" := TwelveSetup."Loyalty Jnl. Template";
+        GenJournalLine."Journal Batch Name" := TwelveSetup."Loyalty Jnl. Batch";
         GenJournalLine."Line No." := GetNextJournalLineNo();
         GenJournalLine.Insert(true);
 
@@ -132,8 +120,8 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPostBatch: Codeunit "Gen. Jnl.-Post Batch";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
@@ -147,8 +135,8 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
@@ -156,51 +144,13 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPost.Preview(GenJournalLine);
     end;
 
-    local procedure UpdatePostedRecords()
-    var
-        LoyaltyPoints: Record "12E Loyalty Points";
-        LoyaltyPointsToUpdate: Record "12E Loyalty Points";
-        GLEntry: Record "G/L Entry";
-        GLRegister: Record "G/L Register";
-        CurrentDocumentNo: Code[20];
-    begin
-        LoyaltyPoints.Reset();
-        LoyaltyPoints.SetRange(Processed, false);
-        LoyaltyPoints.SetFilter("Document No.", '<>%1', '');
-
-        if LoyaltyPoints.FindSet() then
-            repeat
-                CurrentDocumentNo := LoyaltyPoints."Document No.";
-
-                GLEntry.Reset();
-                GLEntry.SetRange("Document No.", CurrentDocumentNo);
-
-                if not GLEntry.FindFirst() then
-                    Error('No G/L Entries were found for Document No. %1.', CurrentDocumentNo);
-
-                GLRegister.Reset();
-                GLRegister.SetFilter("From Entry No.", '<=%1', GLEntry."Entry No.");
-                GLRegister.SetFilter("To Entry No.", '>=%1', GLEntry."Entry No.");
-
-                if not GLRegister.FindFirst() then
-                    Error('Unable to determine the G/L Register for Document No. %1.', CurrentDocumentNo);
-
-                LoyaltyPointsToUpdate.Reset();
-                LoyaltyPointsToUpdate.SetRange("Document No.", CurrentDocumentNo);
-                LoyaltyPointsToUpdate.SetRange(Processed, false);
-
-                LoyaltyPointsToUpdate.ModifyAll("G/L Register No.", Format(GLRegister."No."));
-                LoyaltyPointsToUpdate.ModifyAll(Processed, true);
-            until LoyaltyPoints.Next() = 0;
-    end;
-
     local procedure DeleteJournalLines()
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
@@ -210,8 +160,8 @@ codeunit 52122 "12E Loyalty Posting"
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Payroll Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Payroll Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
 
         if GenJournalLine.FindLast() then
             exit(GenJournalLine."Line No." + 10000);

@@ -97,13 +97,13 @@ table 52104 "12E Setup"
         }
         field(33; "Deferred Rev Loyalty Pts"; Code[20])
         {
-            Caption = 'Deferred Rev Loyalty Pts';
+            Caption = 'Deferred Rev Loyalty Points';
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
-        field(34; "Provision for Loyalty Points"; Code[20])
+        field(34; "Loyalty Points Provision"; Code[20])
         {
-            Caption = 'Provision for Loyalty Points';
+            Caption = 'Loyalty Points Provision';
             TableRelation = "G/L Account";
             DataClassification = CustomerContent;
         }
@@ -144,6 +144,28 @@ table 52104 "12E Setup"
         {
             Caption = 'Process Dialer Tone Invoices';
             DataClassification = CustomerContent;
+        }
+        field(42; "Enable Loyalty Process"; Boolean)
+        {
+            Caption = 'Enable Loyalty Process';
+            DataClassification = CustomerContent;
+        }
+        field(43; "Loyalty Jnl. Template"; Code[10])
+        {
+            Caption = 'Loyalty Journal Template';
+            TableRelation = "Gen. Journal Template";
+            DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                if "Loyalty Jnl. Template" <> xRec."Loyalty Jnl. Template" then
+                    Validate("Loyalty Jnl. Batch", '');
+            end;
+        }
+        field(44; "Loyalty Jnl. Batch"; Code[10])
+        {
+            Caption = 'Loyalty Journal Batch';
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Loyalty Jnl. Template"));
         }
     }
     keys

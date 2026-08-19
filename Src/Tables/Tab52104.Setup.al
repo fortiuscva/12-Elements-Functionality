@@ -55,19 +55,19 @@ table 52104 "12E Setup"
         field(23; "CCD G/L Account No."; Code[20])
         {
             Caption = 'CCD G/L Account No.';
-            TableRelation = "G/L Account";
+            TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
-        field(25; "Payroll Batch Nos."; Code[20])
+        field(25; "Payroll Doc. No's."; Code[20])
         {
-            Caption = 'Payroll Batch Nos.';
+            Caption = 'Payroll Document Nos.';
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
         field(27; "Payroll Offset Account No."; Code[20])
         {
             Caption = 'Payroll Offset Account No.';
-            TableRelation = "G/L Account";
+            TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
         field(29; "Payroll Jnl. Template"; Code[10])
@@ -88,6 +88,7 @@ table 52104 "12E Setup"
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Payroll Jnl. Template"));
             DataClassification = CustomerContent;
         }
+
         field(32; "Loyalty Points Earned"; Code[20])
         {
             Caption = 'Loyalty Points Earned';
@@ -135,12 +136,21 @@ table 52104 "12E Setup"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
-        field(40; "Enable Loyalty Process"; Boolean)
+        field(40; "Enable CCD Process"; Boolean)
+        {
+            Caption = 'Enable CCD Process';
+        }
+        field(41; "Process Dialer Tone Invoices"; Boolean)
+        {
+            Caption = 'Process Dialer Tone Invoices';
+            DataClassification = CustomerContent;
+        }
+        field(42; "Enable Loyalty Process"; Boolean)
         {
             Caption = 'Enable Loyalty Process';
             DataClassification = CustomerContent;
         }
-        field(41; "Loyalty Jnl. Template"; Code[10])
+        field(43; "Loyalty Jnl. Template"; Code[10])
         {
             Caption = 'Loyalty Journal Template';
             TableRelation = "Gen. Journal Template";
@@ -152,11 +162,10 @@ table 52104 "12E Setup"
                     Validate("Loyalty Jnl. Batch", '');
             end;
         }
-        field(42; "Loyalty Jnl. Batch"; Code[10])
+        field(44; "Loyalty Jnl. Batch"; Code[10])
         {
             Caption = 'Loyalty Journal Batch';
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Loyalty Jnl. Template"));
-            DataClassification = CustomerContent;
         }
     }
     keys

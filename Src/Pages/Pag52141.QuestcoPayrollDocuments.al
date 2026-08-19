@@ -1,12 +1,15 @@
 page 52141 "12E Questco Payroll Documents"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Documents';
+    Caption = 'Payroll Documents';
     PageType = List;
     SourceTable = "12E Payroll Batch Header";
     CardPageId = "12E Questco Payroll Document";
     UsageCategory = Lists;
     Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
 
     layout
     {
@@ -42,7 +45,11 @@ page 52141 "12E Questco Payroll Documents"
                 {
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
-                field("Batch Status"; Rec."Batch Status")
+                field(Amount; Rec.Amount)
+                {
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
+                field(Status; Rec."Status")
                 {
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
                 }
@@ -62,7 +69,7 @@ page 52141 "12E Questco Payroll Documents"
                 {
                     ApplicationArea = all;
                     Caption = 'Re&lease';
-                    Enabled = Rec."Batch Status" <> Rec."Batch Status"::Released;
+                    Enabled = Rec."Status" <> Rec."Status"::Released;
                     Image = ReleaseDoc;
                     ShortCutKey = 'Ctrl+F9';
                     ToolTip = 'Release the document to the next stage of processing. You must reopen the document before you can make changes to it.';
@@ -81,7 +88,7 @@ page 52141 "12E Questco Payroll Documents"
                 {
                     ApplicationArea = all;
                     Caption = 'Re&open';
-                    Enabled = Rec."Batch Status" <> Rec."Batch Status"::Open;
+                    Enabled = Rec."Status" <> Rec."Status"::Open;
                     Image = ReOpen;
                     ToolTip = 'Reopen the document to change it after it has been approved. Approved documents have the Released status and must be opened before they can be changed.';
 
@@ -104,44 +111,84 @@ page 52141 "12E Questco Payroll Documents"
                 trigger OnAction()
                 begin
                     Codeunit.Run(Codeunit::"12E Payroll Batch Mgmt");
-                    CurrPage.Update();
                 end;
             }
-            action(Post)
+            group(Posting)
             {
-                ApplicationArea = All;
-                Caption = 'Post';
+                Caption = 'Posting';
                 Image = Post;
 
-                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+                action(Post)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post';
+                    Image = Post;
 
-                trigger OnAction()
-                var
-                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
-                begin
-                    PayrollBatchPost.Post(Rec);
-                    CurrPage.Update();
-                end;
-            }
+                    Enabled = Rec."Status" = Rec."Status"::Released;
 
-            action(PreviewPosting)
-            {
-                ApplicationArea = All;
-                Caption = 'Preview Posting';
-                Image = ViewPostedOrder;
+                    trigger OnAction()
+                    var
+                        PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                    begin
+                        PayrollBatchPost.Post(Rec);
+                    end;
+                }
 
-                Enabled = Rec."Batch Status" = Rec."Batch Status"::Released;
+                action(PreviewPosting)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Posting';
+                    Image = ViewPostedOrder;
 
-                trigger OnAction()
-                var
-                    PayrollBatchPost: Codeunit "12E Payroll Batch Post";
-                begin
-                    PayrollBatchPost.PreviewPosting(Rec);
-                end;
+                    Enabled = Rec."Status" = Rec."Status"::Released;
+
+                    trigger OnAction()
+                    var
+                        PayrollBatchPost: Codeunit "12E Payroll Batch Post";
+                    begin
+                        PayrollBatchPost.PreviewPosting(Rec);
+                    end;
+                }
             }
         }
+        area(Navigation)
+        {
+            group(Navigate)
+            {
+                Caption = 'Navigate';
+                Image = Navigate;
+
+                action("Show Payroll Batch")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show Payroll Batch';
+                    Image = Entries;
+                    ToolTip = 'Shows the Payroll Batch related to this Payroll Document.';
+
+                    trigger OnAction()
+                    var
+                        QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
+                    begin
+                        QuestcoPayrollBatch.Reset();
+                        QuestcoPayrollBatch.SetRange("Client ID", Rec."Client ID");
+                        QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
+                        QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Pay Period End Date");
+                        Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);
+                    end;
+                }
+            }
+        }
+
         area(Promoted)
         {
+            group(Category_Process)
+            {
+
+                Caption = 'Process';
+                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
+                {
+                }
+            }
             group(Category_Category5)
             {
                 Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
@@ -153,13 +200,26 @@ page 52141 "12E Questco Payroll Documents"
                 actionref(Reopen_Promoted; Reopen)
                 {
                 }
-                actionref(CreatePayrollDocuments_Promoted; CreatePayrollDocuments)
-                {
-                }
+            }
+
+            group(Category_Posting)
+            {
+                Caption = 'Posting';
+                ShowAs = SplitButton;
+
                 actionref(Post_Promoted; Post)
                 {
                 }
+
                 actionref(PreviewPosting_Promoted; PreviewPosting)
+                {
+                }
+            }
+            group(Category_Category7)
+            {
+                Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                ShowAs = Standard;
+                actionref(ShowPayrollBatch_Promoted; "Show Payroll Batch")
                 {
                 }
             }

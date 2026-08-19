@@ -1,18 +1,16 @@
 codeunit 52110 "12E Lead Validation Mgt"
 {
-    procedure BuildValidationData(StartDate: Date; EndDate: Date)
+    procedure BuildValidationData(var LeadValidationPar: Record "12E Lead Validation Details"; StartDate: Date; EndDate: Date)
     var
         PurchInvHeader: Record "Purch. Inv. Header";
-        LeadValidation: Record "12E Lead Validation Details";
         Vendor: Record Vendor;
         Vendor2: Record Vendor;
         PriorDate: Date;
         LeadCost: Decimal;
-        PortfolioName: Text[100];
+        EntryNo: Integer;
     begin
-        PortfolioName := GetCurrentPortfolioName();
-
-        LeadValidation.DeleteAll();
+        EntryNo := 1;
+        LeadValidationPar.DeleteAll(true);
         Vendor.Reset();
         Vendor.SetRange("12E Lead Acquisition", true);
         if Vendor.FindSet() then begin
@@ -24,34 +22,40 @@ codeunit 52110 "12E Lead Validation Mgt"
                 if PurchInvHeader.FindSet() then begin
                     repeat
 
-                        LeadValidation.Init();
+                        LeadValidationPar.Init();
 
-                        LeadValidation."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
+                        LeadValidationPar."Entry No." := EntryNo;
+
+                        LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
 
                         Vendor2.Reset();
                         if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
-                            LeadValidation."Vendor Name" := Vendor2.Name;
+                            LeadValidationPar."Vendor Name" := Vendor2.Name;
+
+                        LeadValidationPar."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
 
                         PriorDate := GetPreviousPostingDate(
-                                             Vendor."12E Lead Acq. Vendor No.",
+                                             Vendor."No.",
                                               PurchInvHeader."Posting Date");
 
                         LeadCost := GetLeadCostAmount(
-                                    PortfolioName,
+                                    Vendor."12E Lead Acq. Vendor No.",
                                     PriorDate,
                                     PurchInvHeader."Posting Date");
 
-                        LeadValidation."Posting Date" := PurchInvHeader."Posting Date";
-                        LeadValidation."Posted Purchase Invoice No." := PurchInvHeader."No.";
-                        LeadValidation."Invoice Amount" := PurchInvHeader.Amount;
-                        LeadValidation."Prior Posting Date" := PriorDate;
-                        LeadValidation."Lead Cost Amount" := LeadCost;
-                        LeadValidation.Difference := Abs(LeadValidation."Invoice Amount" - LeadValidation."Lead Cost Amount");
+                        LeadValidationPar."Posting Date" := PurchInvHeader."Posting Date";
+                        LeadValidationPar."Posted Purchase Invoice No." := PurchInvHeader."No.";
+                        PurchInvHeader.CalcFields(Amount);
+                        LeadValidationPar."Invoice Amount" := PurchInvHeader.Amount;
+                        LeadValidationPar."Prior Posting Date" := PriorDate;
+                        LeadValidationPar."Lead Cost Amount" := LeadCost;
+                        LeadValidationPar.Difference := Abs(LeadValidationPar."Invoice Amount" - LeadValidationPar."Lead Cost Amount");
 
-                        if LeadValidation."Invoice Amount" <> 0 then
-                            LeadValidation."Difference %" := Round((LeadValidation.Difference / LeadValidation."Invoice Amount") * 100, 0.01);
+                        if LeadValidationPar."Invoice Amount" <> 0 then
+                            LeadValidationPar."Difference %" := Round((LeadValidationPar.Difference / LeadValidationPar."Invoice Amount") * 100, 0.01);
 
-                        LeadValidation.Insert();
+                        LeadValidationPar.Insert(true);
+                        EntryNo += 1;
 
                     until PurchInvHeader.Next() = 0;
                 end;
@@ -76,7 +80,7 @@ codeunit 52110 "12E Lead Validation Mgt"
     end;
 
     local procedure GetLeadCostAmount(
-     PortfolioName: Text[100];
+     LeadProvider: Text[100];
      PriorPostingDate: Date;
      CurrentPostingDate: Date): Decimal
     var
@@ -89,22 +93,32 @@ codeunit 52110 "12E Lead Validation Mgt"
             StartDate := CalcDate('<+1D>', PriorPostingDate);
 
         LeadRecon.Reset();
-        LeadRecon.SetRange("Portfolio Name", PortfolioName);
+        LeadRecon.SetRange("Datasource ID", GetDataSourceID());
+        LeadRecon.SetRange("Lead Provider", LeadProvider);
         LeadRecon.SetRange("Lead Original Date", StartDate, CurrentPostingDate);
         LeadRecon.CalcSums("Lead Sold Cost");
 
         exit(LeadRecon."Lead Sold Cost");
     end;
 
-    local procedure GetCurrentPortfolioName(): Text[100]
+    procedure GetDataSourceID(): Integer
     var
         CompanyMapping: Record "12E Company Mapping";
     begin
+        CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindLast() then
+            exit(CompanyMapping."DataSource ID");
+    end;
 
-        if CompanyMapping.FindFirst() then
-            exit(CompanyMapping.DBA);
-
-        Error('Company Mapping not found for company %1.', CompanyName());
+    local procedure GetEntryNo(): Integer
+    var
+        LeadValidationLcl: Record "12E Lead Validation Details";
+    begin
+        LeadValidationLcl.Reset();
+        if LeadValidationLcl.FindLast() then
+            exit(LeadValidationLcl."Entry No." + 1)
+        else
+            exit(1);
     end;
 }

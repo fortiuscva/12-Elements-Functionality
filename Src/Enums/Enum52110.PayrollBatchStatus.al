@@ -10,8 +10,4 @@ enum 52110 "12E Payroll Batch Status"
     {
         Caption = 'Released';
     }
-    value(2; Processed)
-    {
-        Caption = 'Processed';
-    }
 }

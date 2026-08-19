@@ -1,6 +1,6 @@
 table 52129 "12E Questco Payroll Batch"
 {
-    Caption = 'Questco Payroll Batch';
+    Caption = 'Payroll Batch';
     DataClassification = CustomerContent;
     DataPerCompany = false;
     fields
@@ -17,12 +17,12 @@ table 52129 "12E Questco Payroll Batch"
         }
         field(3; "Client ID"; Integer)
         {
-            Caption = 'Client ID';
+            Caption = 'Questco Client ID';
             DataClassification = CustomerContent;
         }
         field(4; "Batch ID"; Integer)
         {
-            Caption = 'Batch ID';
+            Caption = 'Pay Batch ID';
             DataClassification = CustomerContent;
         }
         field(5; "Pay Date"; Date)
@@ -32,7 +32,7 @@ table 52129 "12E Questco Payroll Batch"
         }
         field(6; "Batch Type"; Code[10])
         {
-            Caption = 'Batch Type';
+            Caption = 'Pay Batch Type';
             DataClassification = CustomerContent;
         }
         field(7; "Batch Status"; Code[10])
@@ -65,18 +65,19 @@ table 52129 "12E Questco Payroll Batch"
             Caption = 'Deduct Period';
             DataClassification = CustomerContent;
         }
-        field(13; "CC Processed"; Boolean)
+        field(13; "CCD No."; Code[20])
         {
-            Caption = 'CC Processed';
+            Caption = 'CCD No.';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E CCD Line" where("Payroll Batch ID" = field("Batch ID")));
+            CalcFormula = Lookup("12E CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));
             Editable = false;
         }
-        field(14; "Payroll Processed"; Boolean)
+
+        field(14; "Posted CCD No."; Code[20])
         {
-            Caption = 'Payroll Processed';
+            Caption = 'Posted CCD No.';
             FieldClass = FlowField;
-            CalcFormula = Exist("12E Payroll Batch Header" where("Batch ID" = field("Batch ID")));
+            CalcFormula = Lookup("12E Posted CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));
             Editable = false;
         }
         field(15; "DW Export Timestamp"; DateTime)
@@ -103,6 +104,18 @@ table 52129 "12E Questco Payroll Batch"
         {
             Caption = 'ETL Batch ID';
             DataClassification = CustomerContent;
+        }
+        field(20; "Payroll Doc. No."; Code[20])
+        {
+            Caption = 'Payroll Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Payroll Batch Header"."No." where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID")));
+        }
+        field(21; "Posted Payroll Doc. No."; Code[20])
+        {
+            Caption = 'Posted Payroll Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Posted Payroll Header"."No." where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), Reversed = const(false)));
         }
     }
     keys

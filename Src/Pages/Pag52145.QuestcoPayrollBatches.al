@@ -1,12 +1,14 @@
 page 52145 "12E Questco Payroll Batches"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Batches';
+    Caption = 'Payroll Batches (Global)';
     PageType = List;
     SourceTable = "12E Questco Payroll Batch";
-    SourceTableView = sorting("Client ID", "Batch ID") order(descending);
+    SourceTableView = sorting(PKID) order(descending);
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
     UsageCategory = Lists;
-    // Editable = false;
 
     layout
     {
@@ -17,12 +19,10 @@ page 52145 "12E Questco Payroll Batches"
                 field(PKID; Rec.PKID)
                 {
                     ToolTip = 'Specifies the value of the PKID field.', Comment = '%';
-                    Visible = false;
                 }
                 field(DWLoadDate; Rec.DWLoadDate)
                 {
                     ToolTip = 'Specifies the value of the DWLoadDate field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Client ID"; Rec."Client ID")
                 {
@@ -43,12 +43,10 @@ page 52145 "12E Questco Payroll Batches"
                 field("Batch Status"; Rec."Batch Status")
                 {
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Pay Group ID"; Rec."Pay Group ID")
                 {
                     ToolTip = 'Specifies the value of the Pay Group ID field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Pay Period Start Date"; Rec."Pay Period Start Date")
                 {
@@ -61,42 +59,44 @@ page 52145 "12E Questco Payroll Batches"
                 field("Weeks Worked"; Rec."Weeks Worked")
                 {
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
-                    Visible = false;
                 }
                 field("Deduct Period"; Rec."Deduct Period")
                 {
                     ToolTip = 'Specifies the value of the Deduct Period field.', Comment = '%';
-                    Visible = false;
                 }
-                field("CC Processed"; Rec."CC Processed")
+                field("CCD No."; Rec."CCD No.")
                 {
                     ToolTip = 'Specifies the value of the CC Processed field.', Comment = '%';
                     Editable = false;
                 }
-                field("Payroll Processed"; Rec."Payroll Processed")
+                field("Posted CCD No."; Rec."Posted CCD No.")
                 {
-                    ToolTip = 'Specifies the value of the Payroll Processed field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Posted CCD Exists field.', Comment = '%';
                     Editable = false;
+                }
+                field("Payroll Doc. No."; Rec."Payroll Doc. No.")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Document No. field.', Comment = '%';
+                }
+                field("Posted Payroll Doc. No."; Rec."Posted Payroll Doc. No.")
+                {
+                    ToolTip = 'Specifies the value of the Posted Payroll Document No. field.', Comment = '%';
                 }
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {
                     ToolTip = 'Specifies the value of the DW Export Timestamp field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Import Timestamp"; Rec."ERP Import Timestamp")
                 {
                     ToolTip = 'Specifies the value of the ERP Import Timestamp field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Status"; Rec."ERP Status")
                 {
                     ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ERP Error Message"; Rec."ERP Error Message")
                 {
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
-                    Visible = false;
                 }
                 field("ETL Batch ID"; Rec."ETL Batch ID")
                 {
@@ -114,6 +114,41 @@ page 52145 "12E Questco Payroll Batches"
                     Caption = 'Modified At';
                     ToolTip = 'Specifies the value of the SystemModifiedAt field.', Comment = '%';
                     Visible = false;
+                }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action(ShowTransactions)
+            {
+                ApplicationArea = All;
+                Caption = 'Show Transactions';
+                Image = Transactions;
+                ShortCutKey = 'Return';
+                trigger OnAction()
+                var
+                    PayrollTxn: Record "12E Questco Payroll Txn";
+                begin
+                    PayrollTxn.Reset();
+                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
+                    PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
+                    Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
+                end;
+            }
+        }
+
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+
+                Caption = 'Process';
+                actionref(ShowTransactions_Promoted; ShowTransactions)
+                {
+
                 }
             }
         }

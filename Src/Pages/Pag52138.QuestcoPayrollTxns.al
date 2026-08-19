@@ -1,9 +1,13 @@
 page 52138 "12E Questco Payroll Txns"
 {
     ApplicationArea = All;
-    Caption = 'Questco Payroll Transactions';
+    Caption = 'Payroll Transactions (Global)';
     PageType = List;
     SourceTable = "12E Questco Payroll Txn";
+    SourceTableView = sorting("PK ID") order(descending);
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
     UsageCategory = Lists;
 
     layout

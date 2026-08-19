@@ -1,7 +1,7 @@
 page 52104 "12E Setup"
 {
     ApplicationArea = All;
-    Caption = 'Setup';
+    Caption = '12 Elements Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;
@@ -27,22 +27,6 @@ page 52104 "12E Setup"
                 {
                     ApplicationArea = all;
                 }
-                field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
-                }
-                field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
-                }
-                field("CCD G/L Account No."; Rec."CCD G/L Account No.")
-                {
-                    ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
-                }
-                field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
-                {
-                    ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
-                }
             }
             group(Numbering)
             {
@@ -59,13 +43,49 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Lead Accrual Nos. field.', Comment = '%';
                 }
-                field("Payroll Batch Nos."; Rec."Payroll Batch Nos.")
+                field("Payroll Doc. No's."; Rec."Payroll Doc. No's.")
                 {
                     ToolTip = 'Specifies the value of the Payroll Batch Nos. field.', Comment = '%';
                 }
                 field("Loyalty Document Nos."; Rec."Loyalty Document Nos.")
                 {
                     ToolTip = 'Specifies the value of the Loyalty Document Nos. field.', Comment = '%';
+                }
+            }
+            group(CCD)
+            {
+                Caption = 'Contact Center Distribution';
+                field("CCD G/L Account No."; Rec."CCD G/L Account No.")
+                {
+                    ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
+                }
+                field("Enable CCD Process"; Rec."Enable CCD Process")
+                {
+                    ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
+                }
+                field("Process Dialer Tone Invoices"; Rec."Process Dialer Tone Invoices")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies whether Posted Purchase Invoices for RDTJ should be processed for Contact Center Distribution.';
+                }
+            }
+            group(PayrollProcessing)
+            {
+                Caption = 'Payroll Processing';
+
+                field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
+                }
+
+                field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
+                }
+
+                field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
+                {
+                    ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
                 }
             }
             group(LoyaltyPoints)
@@ -121,55 +141,86 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                 }
             }
+
         }
     }
     actions
     {
-        area(Processing)
+        area(Navigation)
         {
-            action(CompanyMappings)
+            group(Gen)
             {
-                ApplicationArea = all;
-                Caption = 'Company Mappings';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = MapAccounts;
-                RunObject = page "12E Company Mappings";
+                Caption = 'General';
+                Image = Setup;
+                action(CompanyMapping)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Company Mappings';
+                    Image = MapAccounts;
+                    RunObject = page "12E Company Mappings";
+                }
             }
-            action(EPICGLMapping)
+            group(CCDistribution)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC G/L Mapping';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = MapAccounts;
-                RunObject = page "12E EPIC GL Mapping List";
+                Caption = 'Contact Center Distribution';
+                Image = Setup;
+                action(CCDLocationMapping)
+                {
+                    ApplicationArea = all;
+                    Caption = 'CCD Location Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E CCD Loc. Mapping Details";
+                }
+                action(CCDCustomerPortfolioMapping)
+                {
+                    ApplicationArea = all;
+                    Caption = 'CCD Customer Portfolio Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E CCDPort. Cust. Map. Detail";
+                }
+                action(Departments)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Departments';
+                    Image = Departments;
+                    RunObject = page "12E Department Codes";
+                }
+                action(PayTypes)
+                {
+                    ApplicationArea = all;
+                    Caption = 'Pay Types';
+                    Image = SetupPayment;
+                    RunObject = page "12E Pay Types";
+                }
             }
-            action(EPICPaymentTypes)
+        }
+        area(Promoted)
+        {
+            group(Category_Category4)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC Payment Types';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = Payment;
-                RunObject = page "12E EPIC Payment Types";
+                Caption = 'General', Comment = 'Generated from the PromotedActionCategories property index 3.';
+                actionref(CompanyMapping_Promoted; CompanyMapping)
+                {
+                }
             }
-            action(EPICBankAccounts)
+            group(Category_Category5)
             {
-                ApplicationArea = all;
-                Caption = 'EPIC Bank Accounts';
-                Promoted = true;
-                PromotedCategory = Process;
-                PromotedIsBig = true;
-                Image = Payment;
-                RunObject = page "12E EPIC Bank Accounts";
+                Caption = 'Contact Center Distribution', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                actionref(CCDLocationMapping_Promoted; CCDLocationMapping)
+                {
+                }
+                actionref(CCDCustomerPortfolioMapping_Promoted; CCDCustomerPortfolioMapping)
+                {
+                }
+                actionref(Departments_Promoted; Departments)
+                {
+                }
+                actionref(PayTypes_Promoted; PayTypes)
+                {
+                }
             }
         }
     }
-
     trigger OnOpenPage()
     var
     begin

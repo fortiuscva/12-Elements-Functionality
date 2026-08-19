@@ -16,9 +16,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         WorkDate := Today();
 
         QuestcoPayrollBatch.Reset();
+        // QuestcoPayrollBatch.SetRange("Payroll Processed", false);
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
-        QuestcoPayrollBatch.SetFilter("Pay Period Start Date", '..%1', WorkDate);
-        QuestcoPayrollBatch.SetFilter("Pay Period End Date", '%1..', WorkDate);
+        QuestcoPayrollBatch.SetRange("Payroll Doc. No.", '');
+        QuestcoPayrollBatch.SetRange("Posted Payroll Doc. No.", '');
         if QuestcoPayrollBatch.FindSet() then
             repeat
                 if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID")
@@ -43,7 +44,7 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         PayrollBatchHeader."Batch Type" := QuestcoPayrollBatch."Batch Type";
         PayrollBatchHeader."Pay Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         PayrollBatchHeader."Pay Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
-        PayrollBatchHeader."Batch Status" := PayrollBatchHeader."Batch Status"::Open;
+        PayrollBatchHeader.Status := PayrollBatchHeader.Status::Open;
         PayrollBatchHeader.Modify(true);
 
         CreatePayrollDocuments(PayrollBatchHeader);
@@ -58,13 +59,6 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         CurrentLineNo: Integer;
         Amount: Decimal;
     begin
-        if PayrollBatchHeader."Batch Status" =
-           PayrollBatchHeader."Batch Status"::Processed
-        then
-            Error(
-                'Lines cannot be created because Payroll batch %1 has already been processed.',
-                PayrollBatchHeader."No.");
-
         PayrollBatchHeader.TestField("Client ID");
         PayrollBatchHeader.TestField("Batch ID");
         PayrollBatchHeader.TestField("Pay Date");
@@ -89,11 +83,12 @@ codeunit 52120 "12E Payroll Batch Mgmt"
             PayrollBatchLine.Init();
             PayrollBatchLine."Document No." := PayrollBatchHeader."No.";
             PayrollBatchLine."Line No." := CurrentLineNo;
+            PayrollBatchLine."Client ID" := PayrollBatchQuery.Client_ID;
+            PayrollBatchLine."Batch ID" := PayrollBatchQuery.BatchID;
             PayrollBatchLine."Department Code" := PayrollBatchQuery.Department;
             PayrollBatchLine."G/L Account No." := PayrollBatchQuery.GLAccountNo;
             PayrollBatchLine.Amount := Amount;
             Clear(PayrollBatchLine."Employee No.");
-            Clear(PayrollBatchLine."Pay Type Code");
 
             PayrollBatchLine."Hours Worked" := PayrollBatchQuery.TotalHoursWorked;
             PayrollBatchLine."Hours Units Paid" := PayrollBatchQuery.TotalHoursPaid;
@@ -145,10 +140,10 @@ codeunit 52120 "12E Payroll Batch Mgmt"
 
         CompanyMapping.TestField("Client ID");
         ClientID := CompanyMapping."Client ID";
-        if CompanyMapping.Next() <> 0 then
-            Error(
-                'Multiple active Company Mappings exist for company %1.',
-                CompanyName);
+        // if CompanyMapping.Next() <> 0 then
+        //     Error(
+        //         'Multiple active Company Mappings exist for company %1.',
+        //         CompanyName);
 
         exit(ClientID);
     end;

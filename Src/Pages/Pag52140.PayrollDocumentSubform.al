@@ -6,6 +6,10 @@ page 52140 "12E Payroll Document Subform"
     SourceTable = "12E Payroll Batch Line";
     UsageCategory = None;
     AutoSplitKey = true;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
+    Editable = false;
 
     layout
     {
@@ -44,6 +48,14 @@ page 52140 "12E Payroll Document Subform"
                 field(Amount; Rec.Amount)
                 {
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
+                field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
+                }
+                field("Debit Amount"; Rec."Debit Amount")
+                {
+                    ToolTip = 'Specifies the value of the Debit Amount field.', Comment = '%';
                 }
                 field("Hours Worked"; Rec."Hours Worked")
                 {

@@ -22,7 +22,7 @@ tableextension 52100 "12E Vendor" extends Vendor
 
         field(50103; "12E Lead Acq. Vendor No."; Text[100])
         {
-            Caption = 'Lead Acquisition Vendor No.';
+            Caption = 'Lead Provider';
             DataClassification = CustomerContent;
         }
         field(50104; "12E Lead Credit Account No."; Code[20])

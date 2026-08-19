@@ -21,7 +21,6 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
                 LeadAccLineLcl.Insert(true);
                 LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
-                LeadAccLineLcl.Validate("Vendor Name", VendorLcl.Name);
 
                 if PostedPurchaseInvoiceExists(VendorLcl."No.", Rec."From Date", Rec."To Date") then begin
                     Clear(LastPostingDate);
@@ -90,6 +89,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         PurchInvHeaderGbl.SetRange("Posting Date", StartDate, EndDate);
         if PurchInvHeaderGbl.FindSet() then
             repeat
+                PurchInvHeaderGbl.CalcFields(Amount);
                 LeadAcqCost += PurchInvHeaderGbl.Amount;
             until PurchInvHeaderGbl.Next() = 0;
 
@@ -103,14 +103,12 @@ codeunit 52115 "12E Lead Accrual Mgmt"
     begin
         Clear(AccrualAmount);
         LeadSourceRecon.Reset();
+        LeadSourceRecon.SetRange("Datasource ID", GetDataSourceID());
         LeadSourceRecon.SetRange("Lead Provider", LeadProvider);
         LeadSourceRecon.SetRange("Lead Original Date", StartDate, EndDate);
-        if LeadSourceRecon.FindSet() then
-            repeat
-                AccrualAmount += LeadSourceRecon."Lead Sold Cost";
-            until LeadSourceRecon.Next() = 0;
+        LeadSourceRecon.CalcSums("Lead Sold Cost");
 
-        exit(AccrualAmount);
+        exit(LeadSourceRecon."Lead Sold Cost");
     end;
 
     procedure RecalculateAccrualAmount(var LeadAccLine: Record "12E Lead Accrual Line")
@@ -136,6 +134,16 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 Vendor."12E Lead Acq. Vendor No.",
                 StartDate,
                 EndDate));
+    end;
+
+    procedure GetDataSourceID(): Integer
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.Reset();
+        CompanyMapping.SetRange(Company, CompanyName());
+        if CompanyMapping.FindLast() then
+            exit(CompanyMapping."DataSource ID");
     end;
 
     var

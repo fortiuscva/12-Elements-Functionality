@@ -1,7 +1,6 @@
 enum 52105 "12E Type of Company"
 {
     Extensible = true;
-    
     value(0; " ")
     {
         Caption = ' ';
@@ -17,5 +16,9 @@ enum 52105 "12E Type of Company"
     value(3; Capital)
     {
         Caption = 'Capital';
+    }
+    value(4; Consulting)
+    {
+        Caption = 'Consulting';
     }
 }

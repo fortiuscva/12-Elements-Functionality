@@ -1,6 +1,6 @@
 table 52116 "12E CCD Line"
 {
-    Caption = 'Contact Center Time Distribution Line';
+    Caption = 'CCD Line';
     DataClassification = CustomerContent;
     DataPerCompany = True;
     fields
@@ -17,16 +17,15 @@ table 52116 "12E CCD Line"
             Caption = 'Line No.';
             DataClassification = CustomerContent;
         }
-        field(5; "Call Date"; Date)
-        {
-            Caption = 'Call Date';
-            DataClassification = CustomerContent;
-        }
+        // field(5; "Call Date"; Date)
+        // {
+        //     Caption = 'Call Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(7; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
             TableRelation = "12E CCD Location Mapping";
-            // ValidateTableRelation = false;
             DataClassification = CustomerContent;
         }
         field(9; Portfolio; Text[30])
@@ -48,13 +47,6 @@ table 52116 "12E CCD Line"
             MinValue = 0;
             DataClassification = CustomerContent;
         }
-        field(15; "Distribution Total"; Decimal)
-        {
-            Caption = 'Distribution Total';
-            DecimalPlaces = 0 : 2;
-            FieldClass = FlowField;
-            CalcFormula = sum("12E CCD Allocation Details"."CCD Location Hours" where("CCD Location" = field("Location Code"), "CCD No." = field("Document No.")));
-        }
         field(17; "No. of Hours"; Decimal)
         {
             Caption = 'No. of Hours';
@@ -67,17 +59,17 @@ table 52116 "12E CCD Line"
         }
         field(21; "Payroll Batch ID"; Integer)
         {
-            Caption = 'Payroll Batch ID';
+            Caption = 'Batch ID';
             DataClassification = CustomerContent;
         }
-        field(22; "Batch Start Date"; Date)
+        field(22; "Period Start Date"; Date)
         {
-            Caption = 'Batch Start Date';
+            Caption = 'Period Start Date';
             DataClassification = CustomerContent;
         }
-        field(23; "Batch End Date"; Date)
+        field(23; "Period End Date"; Date)
         {
-            Caption = 'Batch End Date';
+            Caption = 'Period End Date';
             DataClassification = CustomerContent;
         }
         field(25; "Invoice No."; Code[20])
@@ -85,11 +77,11 @@ table 52116 "12E CCD Line"
             Caption = 'Invoice No.';
             DataClassification = CustomerContent;
         }
-        field(27; "Invoice Date"; Date)
-        {
-            Caption = 'Invoice Date';
-            DataClassification = CustomerContent;
-        }
+        // field(27; "Invoice Date"; Date)
+        // {
+        //     Caption = 'Posted Purchase Invoice Date';
+        //     DataClassification = CustomerContent;
+        // }
         field(29; "Batch or Inv. Hours"; Decimal)
         {
             Caption = 'Batch/Invoice Hours';
@@ -102,17 +94,6 @@ table 52116 "12E CCD Line"
             DecimalPlaces = 0 : 2;
             DataClassification = CustomerContent;
         }
-        // field(15; "Sales Invoice No."; Code[20])
-        // {
-        //     Caption = 'Sales Invoice No.';
-        //     Editable = false;
-        // }
-
-        // field(17; "Sales Invoice Line No."; Integer)
-        // {
-        //     Caption = 'Sales Invoice Line No.';
-        //     Editable = false;
-        // }
     }
     keys
     {

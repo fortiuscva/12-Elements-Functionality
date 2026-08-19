@@ -15,7 +15,9 @@ query 52102 "12E Payroll Batch Data"
             filter(PayDate; "Pay Date")
             {
             }
-
+            column(Client_ID; "Client ID")
+            {
+            }
             column(BatchID; "Batch ID")
             {
             }
@@ -23,11 +25,9 @@ query 52102 "12E Payroll Batch Data"
             column(Department; "Department Code")
             {
             }
-
             column(GLAccountNo; "G/L Account No.")
             {
             }
-
             column(TotalDebit; "Debit Amount")
             {
                 Method = Sum;
@@ -45,6 +45,14 @@ query 52102 "12E Payroll Batch Data"
             column(TotalHoursPaid; "Hours Units Paid")
             {
                 Method = Sum;
+            }
+            dataitem(PayType; "12E Pay Type")
+            {
+                DataItemLink = "Pay Type Code" = PayrollTxn."Pay Type Code";
+                filter(DoNotProcessForPayroll; "Do not process for payroll")
+                {
+                    ColumnFilter = DoNotProcessForPayroll = Const(false);
+                }
             }
         }
     }

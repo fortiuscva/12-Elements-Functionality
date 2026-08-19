@@ -17,14 +17,14 @@ table 52127 "12E Payroll Batch Header"
             begin
                 if "No." <> xRec."No." then begin
                     TwelveElementsSetup.Get();
-                    NoSeries.TestManual(TwelveElementsSetup."Payroll Batch Nos.");
+                    NoSeries.TestManual(TwelveElementsSetup."Payroll Doc. No's.");
                     "No. Series" := '';
                 end;
             end;
         }
-        field(2; "Batch Status"; enum "12E Payroll Batch Status")
+        field(2; Status; enum "12E Payroll Batch Status")
         {
-            Caption = 'Batch Status';
+            Caption = 'Status';
             DataClassification = CustomerContent;
         }
         field(3; "Client ID"; Integer)
@@ -62,6 +62,25 @@ table 52127 "12E Payroll Batch Header"
             Caption = 'No. Series';
             DataClassification = CustomerContent;
         }
+        field(11; "Posting Error"; Text[2048])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(12; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(13; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            FieldClass = FlowField;
+            CalcFormula = Sum("12E Payroll Batch Line".Amount where("Document No." = field("No.")));
+            Editable = false;
+        }
     }
     keys
     {
@@ -84,17 +103,23 @@ table 52127 "12E Payroll Batch Header"
     begin
         if "No." = '' then begin
             TwelveElementsSetup.Get();
-            TwelveElementsSetup.TestField("Payroll Batch Nos.");
+            TwelveElementsSetup.TestField("Payroll Doc. No's.");
 
-            "No. Series" := TwelveElementsSetup."Payroll Batch Nos.";
+            "No. Series" := TwelveElementsSetup."Payroll Doc. No's.";
 
             if NoSeries.AreRelated("No. Series", xRec."No. Series") then
                 "No. Series" := xRec."No. Series";
 
             "No." := NoSeries.GetNextNo("No. Series");
 
-            "Batch Status" := "Batch Status"::Open;
+            Status := Status::Open;
         end;
+    end;
+
+    trigger OnRename()
+    begin
+        if "No." <> xRec."No." then
+            Error('Payroll Document No. cannot be changed.');
     end;
 
     procedure AssistEdit(OldPayrollBatchHeader: Record "12E Payroll Batch Header"): Boolean
@@ -105,7 +130,7 @@ table 52127 "12E Payroll Batch Header"
         TwelveElementsSetup.Get();
 
         if NoSeries.LookupRelatedNoSeries(
-            TwelveElementsSetup."Payroll Batch Nos.",
+            TwelveElementsSetup."Payroll Doc. No's.",
             OldPayrollBatchHeader."No. Series",
             "No. Series")
         then begin
@@ -125,7 +150,7 @@ table 52127 "12E Payroll Batch Header"
         PrevFilterGroup := PayrollHeader.FilterGroup();
 
         PayrollHeader.FilterGroup(10);
-        PayrollHeader.SetFilter("Batch Status", '<>%1', PayrollHeader."Batch Status"::Released);
+        PayrollHeader.SetFilter(Status, '<>%1', PayrollHeader.Status::Released);
 
         NoOfSkipped := NoOfSelected - PayrollHeader.Count;
 
@@ -136,7 +161,7 @@ table 52127 "12E Payroll Batch Header"
             NoOfSelected,
             NoOfSkipped);
 
-        PayrollHeader.SetRange("Batch Status");
+        PayrollHeader.SetRange(Status);
         PayrollHeader.FilterGroup(PrevFilterGroup);
     end;
 
@@ -145,7 +170,7 @@ table 52127 "12E Payroll Batch Header"
     var
         ReleasePayrollDoc: Codeunit "12E Payroll Release Mgmt";
     begin
-        if "Batch Status" <> "Batch Status"::Released then begin
+        if Status <> Status::Released then begin
             ReleasePayrollDoc.PerformManualRelease(Rec);
             Commit();
         end;
@@ -159,7 +184,7 @@ table 52127 "12E Payroll Batch Header"
     begin
         NoOfSelected := PayrollHeader.Count;
 
-        PayrollHeader.SetFilter("Batch Status", '<>%1', PayrollHeader."Batch Status"::Open);
+        PayrollHeader.SetFilter(Status, '<>%1', PayrollHeader.Status::Open);
 
         NoOfSkipped := NoOfSelected - PayrollHeader.Count;
 

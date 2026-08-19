@@ -1,0 +1,39 @@
+pageextension 52106 "12E Posted Purchase Invoice" extends "Posted Purchase Invoice"
+{
+    layout
+    {
+        addafter("Shipping and Payment")
+        {
+            group("12E Contact Center Distribution")
+            {
+                Caption = 'Contact Center Distribution';
+
+                field("12E Period Start Date"; Rec."12E Period Start Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                }
+                field("12E Period End Date"; Rec."12E Period End Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                }
+                field("12E Period Quantity"; Rec."12E Period Quantity")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Period Quantity field.', Comment = '%';
+                }
+                field("12E CCD No."; Rec."12E CCD No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the CCD No. field.', Comment = '%';
+                }
+                field("12E Posted CCD No."; Rec."12E Posted CCD No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posted CCD No. field.', Comment = '%';
+                }
+            }
+        }
+    }
+}

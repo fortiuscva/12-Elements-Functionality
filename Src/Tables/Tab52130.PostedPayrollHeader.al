@@ -11,9 +11,9 @@ table 52130 "12E Posted Payroll Header"
             Caption = 'No.';
             DataClassification = CustomerContent;
         }
-        field(2; "Batch Status"; enum "12E Payroll Batch Status")
+        field(2; Status; enum "12E Payroll Batch Status")
         {
-            Caption = 'Batch Status';
+            Caption = 'Status';
             DataClassification = CustomerContent;
         }
         field(3; "Client ID"; Integer)
@@ -45,6 +45,31 @@ table 52130 "12E Posted Payroll Header"
         {
             Caption = 'Pay Period End Date';
             DataClassification = CustomerContent;
+        }
+        field(11; "Posting Error"; Text[2048])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(12; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            TableRelation = "G/L Register";
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(13; Reversed; Boolean)
+        {
+            Caption = 'Reversed';
+            DataClassification = CustomerContent;
+        }
+        field(14; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            FieldClass = FlowField;
+            CalcFormula = Sum("12E Posted Payroll Line".Amount where("Document No." = field("No.")));
+            Editable = false;
         }
     }
     keys

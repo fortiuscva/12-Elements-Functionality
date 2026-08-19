@@ -1,10 +1,10 @@
 table 52115 "12E CCD Header"
 {
-    Caption = 'Contact Center Time Distribution Header';
+    Caption = 'CCD Header';
     LookupPageId = "12E CCD Details";
     DrillDownPageId = "12E CCD Details";
     DataClassification = CustomerContent;
-    DataPerCompany = false;
+    DataPerCompany = true;
 
     fields
     {
@@ -24,19 +24,30 @@ table 52115 "12E CCD Header"
                 end;
             end;
         }
-        // field(3; "Start Date"; Date)
-        // {
-        //     Caption = 'From Date';
-        //     DataClassification = CustomerContent;
-        // }
-        // field(5; "End Date"; Date)
-        // {
-        //     Caption = 'End Date';
-        //     DataClassification = CustomerContent;
-        // }
-        field(6; Processed; Boolean)
+        field(2; "Payroll Batch ID"; Integer)
         {
-            Caption = 'Processed';
+            Caption = 'Batch ID';
+            DataClassification = CustomerContent;
+        }
+        field(3; "Invoice No."; Code[20])
+        {
+            Caption = 'Invoice No.';
+            DataClassification = CustomerContent;
+        }
+        field(4; "Period Start Date"; Date)
+        {
+            Caption = 'Period Start Date';
+            DataClassification = CustomerContent;
+        }
+        field(5; "Period End Date"; Date)
+        {
+            Caption = 'Period End Date';
+            DataClassification = CustomerContent;
+        }
+        field(6; "Location Code"; Code[10])
+        {
+            Caption = 'Location Code';
+            TableRelation = "12E CCD Location Mapping";
             DataClassification = CustomerContent;
         }
         field(7; Status; Enum "12E EPIC Pay Batch Status")
@@ -51,12 +62,26 @@ table 52115 "12E CCD Header"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
+        field(17; "No. of Hours"; Decimal)
+        {
+            Caption = 'Batch/Invoice Hours';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {
         key(PK; "No.")
         {
             Clustered = true;
+        }
+    }
+    fieldgroups
+    {
+        fieldgroup(DropDown; "No.", "Location Code", "Period Start Date", "Period End Date", Status)
+        {
+        }
+        fieldgroup(Brick; "No.", "Location Code", "Period Start Date", "Period End Date", Status)
+        {
         }
     }
     trigger OnInsert()
@@ -72,6 +97,12 @@ table 52115 "12E CCD Header"
                 "No. Series" := xRec."No. Series";
             "No." := NoSeries.GetNextNo("No. Series");
         end;
+    end;
+
+    trigger OnRename()
+    begin
+        if "No." <> xRec."No." then
+            Error('CCD Document No. cannot be changed.');
     end;
 
     procedure AssistEdit(OldCCDHeader: Record "12E CCD Header"): Boolean
@@ -126,8 +157,16 @@ table 52115 "12E CCD Header"
     end;
 
     trigger OnDelete()
+    var
+        CCDLine: Record "12E CCD Line";
     begin
         DeleteAllCallCenterDistributionLines();
+
+        CCDLine.Reset();
+        CCDLine.SetRange("Document No.", "No.");
+        CCDLine.SetFilter("Invoice No.", '<>%1', '');
+        if not CCDLine.IsEmpty() then
+            Error('CCD %1 cannot be deleted because it is attached to a posted invoice.', "No.");
     end;
 
     procedure DeleteAllCallCenterDistributionLines()

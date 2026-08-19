@@ -46,7 +46,7 @@ table 52130 "12E Posted Payroll Header"
             Caption = 'Pay Period End Date';
             DataClassification = CustomerContent;
         }
-        field(11; "Posting Error"; Text[250])
+        field(11; "Posting Error"; Text[2048])
         {
             Caption = 'Posting Error';
             DataClassification = CustomerContent;
@@ -63,6 +63,13 @@ table 52130 "12E Posted Payroll Header"
         {
             Caption = 'Reversed';
             DataClassification = CustomerContent;
+        }
+        field(14; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            FieldClass = FlowField;
+            CalcFormula = Sum("12E Posted Payroll Line".Amount where("Document No." = field("No.")));
+            Editable = false;
         }
     }
     keys

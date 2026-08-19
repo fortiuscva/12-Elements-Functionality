@@ -83,6 +83,7 @@ table 52128 "12E Payroll Batch Line"
         key(PK; "Document No.", "Line No.")
         {
             Clustered = true;
+            SumIndexFields = Amount;
         }
     }
 }

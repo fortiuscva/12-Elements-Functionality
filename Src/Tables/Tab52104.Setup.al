@@ -140,9 +140,9 @@ table 52104 "12E Setup"
         {
             Caption = 'Enable CCD Process';
         }
-        field(41; "Process RDTJ Invoices"; Boolean)
+        field(41; "Process Dialer Tone Invoices"; Boolean)
         {
-            Caption = 'Process RDTJ Invoices';
+            Caption = 'Process Dialer Tone Invoices';
             DataClassification = CustomerContent;
         }
     }

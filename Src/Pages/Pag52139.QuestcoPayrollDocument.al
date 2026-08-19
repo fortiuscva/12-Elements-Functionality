@@ -70,6 +70,24 @@ page 52139 "12E Questco Payroll Document"
                         ApplicationArea = All;
                         Editable = false;
                     }
+                    field(Amount; Rec.Amount)
+                    {
+                        ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                        Editable = false;
+                    }
+                }
+                group(PostingError)
+                {
+                    Caption = 'Posting Error';
+                    field("Posting Error"; Rec."Posting Error")
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                        MultiLine = true;
+                        ShowCaption = false;
+                        Editable = false;
+                        ToolTip = 'Specifies the value of the Posting Error field.', Comment = '%';
+                    }
                 }
                 field(Status; Rec."Status")
                 {
@@ -207,7 +225,7 @@ page 52139 "12E Questco Payroll Document"
                         QuestcoPayrollBatch.SetRange("Client ID", Rec."Client ID");
                         QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
                         QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Pay Period End Date");
-                        Page.Run(Page::"12E Questco Payroll Batches", QuestcoPayrollBatch);
+                        Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);
                     end;
                 }
             }

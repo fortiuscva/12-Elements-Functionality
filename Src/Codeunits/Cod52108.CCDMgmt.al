@@ -32,7 +32,7 @@ codeunit 52108 "12E CCD Mgmt"
 
 
 
-        if not TwelveSetup."Process RDTJ Invoices" then
+        if not TwelveSetup."Process Dialer Tone Invoices" then
             exit;
 
         PurchInvHeader.Reset();

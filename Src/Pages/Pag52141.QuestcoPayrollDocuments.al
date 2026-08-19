@@ -45,6 +45,10 @@ page 52141 "12E Questco Payroll Documents"
                 {
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
                 field(Status; Rec."Status")
                 {
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
@@ -169,7 +173,7 @@ page 52141 "12E Questco Payroll Documents"
                         QuestcoPayrollBatch.SetRange("Client ID", Rec."Client ID");
                         QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
                         QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Pay Period End Date");
-                        Page.Run(Page::"12E Questco Payroll Batches", QuestcoPayrollBatch);
+                        Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);
                     end;
                 }
             }

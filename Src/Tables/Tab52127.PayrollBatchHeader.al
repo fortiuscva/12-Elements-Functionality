@@ -62,7 +62,7 @@ table 52127 "12E Payroll Batch Header"
             Caption = 'No. Series';
             DataClassification = CustomerContent;
         }
-        field(11; "Posting Error"; Text[250])
+        field(11; "Posting Error"; Text[2048])
         {
             Caption = 'Posting Error';
             DataClassification = CustomerContent;
@@ -72,6 +72,13 @@ table 52127 "12E Payroll Batch Header"
         {
             Caption = 'G/L Register No.';
             DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(13; Amount; Decimal)
+        {
+            Caption = 'Amount';
+            FieldClass = FlowField;
+            CalcFormula = Sum("12E Payroll Batch Line".Amount where("Document No." = field("No.")));
             Editable = false;
         }
     }

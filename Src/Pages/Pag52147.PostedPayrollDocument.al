@@ -59,15 +59,25 @@ page 52147 "12E Posted Payroll Document"
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                     }
+                    field(Amount; Rec.Amount)
+                    {
+                        Editable = false;
+                        ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                    }
                 }
-                field("G/L Register No."; Rec."G/L Register No.")
+                group(Posting)
                 {
-                    ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
+                    Caption = 'Posting';
+                    field("G/L Register No."; Rec."G/L Register No.")
+                    {
+                        ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
+                    }
+                    field(Reversed; Rec.Reversed)
+                    {
+                        ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
+                    }
                 }
-                field(Reversed; Rec.Reversed)
-                {
-                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
-                }
+
                 field(Status; Rec."Status")
                 {
                     ApplicationArea = All;

@@ -89,7 +89,7 @@ codeunit 52114 "12E Event Management"
         LoyaltyPoints.SetRange("Document No.", GenJnlLine."Document No.");
         LoyaltyPoints.SetRange(Processed, false);
 
-        if LoyaltyPoints.FindFirst() then
+        if not LoyaltyPoints.FindFirst() then
             exit(false);
 
         LoyaltyPoints."G/L Register No." := GLReg."No.";

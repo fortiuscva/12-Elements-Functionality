@@ -234,6 +234,9 @@ codeunit 52121 "12E Payroll Batch Post"
         // PayrollBatchLine.DeleteAll(true);
 
         PayrollBatchHeader.Delete(true);
+
+        if Confirm('Payroll document %1 posted successfully. Do you want to open the posted document?', true, PostedPayrollBatchHeader."No.") then
+            Page.Run(Page::"12E Posted Payroll Document", PostedPayrollBatchHeader);
     end;
 
     local procedure GetGLRegisterNo(PayrollBatchHeader: Record "12E Payroll Batch Header"): Integer

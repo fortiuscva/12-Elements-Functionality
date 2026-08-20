@@ -135,8 +135,10 @@ page 52154 "12E QPAY Batches"
                     PayrollTxn: Record "12E Questco Payroll Txn";
                 begin
                     PayrollTxn.Reset();
-                    PayrollTxn.SetRange("Client ID", Rec."Client ID");
+                    PayrollTxn.FilterGroup := 8;
                     PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
+                    PayrollTxn.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
+                    PayrollTxn.SetRange("Pay Period End Date", Rec."Pay Period End Date");
                     Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
                 end;
             }
@@ -180,8 +182,10 @@ page 52154 "12E QPAY Batches"
     begin
         CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyName());
-        if CompanyMapping.FindLast() then
+        if CompanyMapping.FindLast() then begin
+            Rec.FilterGroup(8);
             Rec.SetRange("Client ID", CompanyMapping."Client ID");
+        end;
     end;
 
     local procedure GetDepartmentCode(): Code[20]

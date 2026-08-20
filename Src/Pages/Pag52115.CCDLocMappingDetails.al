@@ -33,18 +33,7 @@ page 52115 "12E CCD Loc. Mapping Details"
     }
     trigger OnQueryClosePage(CloseAction: Action): Boolean
     begin
-        CheckForMandatoryFields();
+        Rec.TestField(Rec."Vendor No.");
         exit(true);
-    end;
-
-    local procedure CheckForMandatoryFields()
-    var
-        CCDLocationMap: Record "12E CCD Location Mapping";
-    begin
-        CCDLocationMap.Reset();
-        CCDLocationMap.SetRange("Processing Type", CCDLocationMap."Processing Type"::Vendor);
-        CCDLocationMap.SetRange("Vendor No.", '');
-        if CCDLocationMap.FindLast() then
-            Error('Vendor No. cannot be blank for %1 location code because it is of processing type vendor', CCDLocationMap."Location Code");
     end;
 }

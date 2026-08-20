@@ -6,8 +6,6 @@ page 52139 "12E Questco Payroll Document"
     SourceTable = "12E Payroll Batch Header";
     UsageCategory = None;
     InsertAllowed = false;
-    DeleteAllowed = false;
-    ModifyAllowed = false;
 
     layout
     {
@@ -223,7 +221,8 @@ page 52139 "12E Questco Payroll Document"
                         QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
                     begin
                         QuestcoPayrollBatch.Reset();
-                        QuestcoPayrollBatch.SetRange("Client ID", Rec."Client ID");
+                        QuestcoPayrollBatch.FilterGroup := 8;
+                        QuestcoPayrollBatch.SetRange("Batch ID", Rec."Batch ID");
                         QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Pay Period Start Date");
                         QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Pay Period End Date");
                         Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);

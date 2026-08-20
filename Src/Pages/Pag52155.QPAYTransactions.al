@@ -118,7 +118,9 @@ page 52155 "12E QPAY Transactions"
     begin
         CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyName());
-        if CompanyMapping.FindLast() then
+        if CompanyMapping.FindLast() then begin
+            Rec.FilterGroup(8);
             Rec.SetRange("Client ID", CompanyMapping."Client ID");
+        end;
     end;
 }

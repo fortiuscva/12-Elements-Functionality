@@ -91,8 +91,7 @@ codeunit 52114 "12E Event Management"
         if LoyaltyPoints.IsEmpty() then
             exit(false);
 
-        LoyaltyPoints.ModifyAll("G/L Register No.", Format(GLReg."No."));
-        //LoyaltyPoints.ModifyAll(Processed, true);
+        LoyaltyPoints.ModifyAll("G/L Register No.", GLReg."No.");
 
         exit(true);
     end;

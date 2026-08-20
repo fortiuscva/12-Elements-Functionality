@@ -15,6 +15,11 @@ pageextension 52108 "12E User Setup" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Allow Payroll Document Reversal field.', Comment = '%';
             }
+            field("12E Allow Loyalty Reversal"; Rec."12E Allow Loyalty Reversal")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Allow Loyalty Reversal field.', Comment = '%';
+            }
         }
     }
 }

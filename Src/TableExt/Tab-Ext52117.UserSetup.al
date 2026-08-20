@@ -12,5 +12,10 @@ tableextension 52117 "12E User Setup" extends "User Setup"
             Caption = 'Allow Payroll Document Reversal';
             DataClassification = CustomerContent;
         }
+        field(52102; "12E Allow Loyalty Reversal"; Boolean)
+        {
+            Caption = 'Allow Loyalty Reversal';
+            DataClassification = CustomerContent;
+        }
     }
 }

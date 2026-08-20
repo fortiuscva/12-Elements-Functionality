@@ -36,6 +36,15 @@ codeunit 52114 "12E Event Management"
         HandleGLRegister(GenJnlLine, GLReg);
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Job Queue Entry", 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnJobQueueAfterModify(var Rec: Record "Job Queue Entry"; var xRec: Record "Job Queue Entry")
+    var
+        TweleveFunctions: Codeunit "12E Functions";
+    begin
+        if Rec.Status = Rec.Status::Error then
+            TweleveFunctions.HandleFailedJob(Rec);
+    end;
+
     local procedure OnReverseOnAfterFinishPosting(var ReversalEntry2: Record "Reversal Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; var GLRegister: Record "G/L Register"; GLRegister2: Record "G/L Register")
     begin
         HandleReversal(ReversalEntry2);

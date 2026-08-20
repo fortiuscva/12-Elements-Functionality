@@ -32,8 +32,14 @@ page 52115 "12E CCD Loc. Mapping Details"
         }
     }
     trigger OnQueryClosePage(CloseAction: Action): Boolean
+    var
+        CCDLocationMapping: Record "12E CCD Location Mapping";
     begin
-        Rec.TestField(Rec."Vendor No.");
-        exit(true);
+        CCDLocationMapping.Reset();
+        CCDLocationMapping.SetRange("Location Code", Rec."Location Code");
+        CCDLocationMapping.SetRange("Processing Type", CCDLocationMapping."Processing Type"::Vendor);
+
+        if CCDLocationMapping.FindFirst() then
+            CCDLocationMapping.TestField("Vendor No.");
     end;
 }

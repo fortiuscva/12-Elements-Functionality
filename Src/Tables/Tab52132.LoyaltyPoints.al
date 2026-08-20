@@ -55,6 +55,7 @@ table 52132 "12E Loyalty Points"
         field(10; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
+            TableRelation = "G/L Register";
             DataClassification = CustomerContent;
         }
         field(11; "DW Export Timestamp"; DateTime)

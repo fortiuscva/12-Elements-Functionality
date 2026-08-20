@@ -146,8 +146,10 @@ page 52151 "12E Loyalty Points"
                 var
                     LoyaltyPoints: Record "12E Loyalty Points";
                 begin
-                    LoyaltyPoints.CopyFilters(Rec);
-                    Report.RunModal(Report::"12E Loyalty Posting", true, false, LoyaltyPoints);
+                    LoyaltyPoints.Reset();
+                    LoyaltyPoints.SetRange("PK ID", Rec."PK ID");
+                    if LoyaltyPoints.FindFirst() then
+                        Report.RunModal(Report::"12E Loyalty Posting", true, false, LoyaltyPoints);
                     CurrPage.Update(false);
                 end;
             }

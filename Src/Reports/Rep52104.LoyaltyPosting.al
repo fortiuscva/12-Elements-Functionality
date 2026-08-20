@@ -9,7 +9,7 @@ report 52104 "12E Loyalty Posting"
     {
         dataitem(LoyaltyPoints; "12E Loyalty Points")
         {
-            RequestFilterFields = "PK ID", Portfolio, "Month End Date", Processed, "Document No.";
+            RequestFilterFields = "PK ID";
             DataItemTableView = where(Processed = const(false));
 
             trigger OnAfterGetRecord()

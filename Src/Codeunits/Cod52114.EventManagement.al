@@ -89,10 +89,11 @@ codeunit 52114 "12E Event Management"
         LoyaltyPoints.SetRange("Document No.", GenJnlLine."Document No.");
         LoyaltyPoints.SetRange(Processed, false);
 
-        if LoyaltyPoints.IsEmpty() then
+        if LoyaltyPoints.FindFirst() then
             exit(false);
 
-        LoyaltyPoints.ModifyAll("G/L Register No.", GLReg."No.");
+        LoyaltyPoints."G/L Register No." := GLReg."No.";
+        LoyaltyPoints.Modify(true);
 
         exit(true);
     end;
@@ -109,6 +110,9 @@ codeunit 52114 "12E Event Management"
     begin
         if TryUpdatePayrollReversal(ReversalEntry) then
             exit;
+
+        if TryUpdateLoyaltyReversal(ReversalEntry) then
+            exit;
     end;
 
     local procedure TryUpdatePayrollReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
@@ -121,6 +125,20 @@ codeunit 52114 "12E Event Management"
 
         PostedPayrollHeader.Reversed := true;
         PostedPayrollHeader.Modify(true);
+
+        exit(true);
+    end;
+
+    local procedure TryUpdateLoyaltyReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
+    var
+        LoyaltyPoints: Record "12E Loyalty Points";
+    begin
+        LoyaltyPoints.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+        if not LoyaltyPoints.FindFirst() then
+            exit(false);
+
+        LoyaltyPoints.Reversed := true;
+        LoyaltyPoints.Modify(true);
 
         exit(true);
     end;

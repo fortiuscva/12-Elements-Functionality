@@ -10,42 +10,30 @@ report 52104 "12E Loyalty Posting"
         dataitem(LoyaltyPoints; "12E Loyalty Points")
         {
             RequestFilterFields = "PK ID", Portfolio, "Month End Date", Processed, "Document No.";
+            DataItemTableView = where(Processed = const(false));
 
             trigger OnAfterGetRecord()
-            var
-                LoyaltyPosting: Codeunit "12E Loyalty Posting";
-                PostingError: Text;
             begin
-                Clear(PostingError);
-
-                if not TryPostLoyaltyPoint(LoyaltyPoints, PostingError) then begin
-                    LoyaltyPoints."Posting Error" :=
-                        CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
-
-                    LoyaltyPoints.ERPErrorMsg :=
-                        CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
-
-                    LoyaltyPoints.Modify(true);
-                end;
+                if not TryPostRecord() then
+                    HandlePostingError();
             end;
         }
     }
-
-    local procedure TryPostLoyaltyPoint(var LoyaltyPoints: Record "12E Loyalty Points"; var PostingError: Text): Boolean
+    [TryFunction]
+    local procedure TryPostRecord()
     var
         LoyaltyPosting: Codeunit "12E Loyalty Posting";
     begin
-        if not TryPost(LoyaltyPosting, LoyaltyPoints) then begin
-            PostingError := GetLastErrorText();
-            exit(false);
-        end;
-
-        exit(true);
+        LoyaltyPosting.PostRecord(LoyaltyPoints);
     end;
 
-    [TryFunction]
-    local procedure TryPost(var LoyaltyPosting: Codeunit "12E Loyalty Posting"; var LoyaltyPoints: Record "12E Loyalty Points")
+    local procedure HandlePostingError()
+    var
+        ErrorText: Text;
     begin
-        LoyaltyPosting.PostRecord(LoyaltyPoints);
+        ErrorText := GetLastErrorText();
+        LoyaltyPoints."Posting Error" := CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+        LoyaltyPoints.ERPErrorMsg := CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
+        LoyaltyPoints.Modify(true);
     end;
 }

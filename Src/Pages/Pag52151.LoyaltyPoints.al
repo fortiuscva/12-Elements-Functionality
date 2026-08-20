@@ -64,6 +64,10 @@ page 52151 "12E Loyalty Points"
                 {
                     ToolTip = 'Specifies the value of the Posting Error field.', Comment = '%';
                 }
+                field(Reversed; Rec.Reversed)
+                {
+                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
+                }
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {
                     ToolTip = 'Specifies the value of the DW Export Timestamp field.', Comment = '%';
@@ -93,7 +97,7 @@ page 52151 "12E Loyalty Points"
         {
             action(Post)
             {
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = all;
                 Caption = 'Post';
                 Image = Post;
                 Promoted = true;
@@ -104,6 +108,9 @@ page 52151 "12E Loyalty Points"
                 var
                     LoyaltyPosting: Codeunit "12E Loyalty Posting";
                 begin
+                    if not Confirm('Do you want to post the Loyalty %1?', false, Rec."PK ID") then
+                        exit;
+
                     LoyaltyPosting.PostRecord(Rec);
                     CurrPage.Update(false);
                 end;
@@ -111,7 +118,7 @@ page 52151 "12E Loyalty Points"
 
             action(PreviewPosting)
             {
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = all;
                 Caption = 'Preview Posting';
                 Image = ViewPostedOrder;
                 Promoted = true;
@@ -128,7 +135,7 @@ page 52151 "12E Loyalty Points"
             }
             action(PostBatch)
             {
-                ApplicationArea = Basic, Suite;
+                ApplicationArea = all;
                 Caption = 'Post Batch';
                 Image = PostBatch;
                 Promoted = true;
@@ -144,28 +151,24 @@ page 52151 "12E Loyalty Points"
                     CurrPage.Update(false);
                 end;
             }
-            group(Reverse)
+            action(ReverseRegister)
             {
-                Caption = 'Reverse';
+                ApplicationArea = all;
+                Caption = 'Reverse Register';
+                Ellipsis = true;
                 Image = ReverseRegister;
+                Promoted = true;
+                PromotedCategory = Process;
+                ToolTip = 'Reverses the payroll register and creates a new Payroll Document.';
+                Enabled = not Rec.Reversed;
 
-                action(ReverseRegister)
-                {
-                    ApplicationArea = Basic, Suite;
-                    Caption = 'Reverse Register';
-                    Ellipsis = true;
-                    Image = ReverseRegister;
-                    ToolTip = 'Reverses the payroll register and creates a new Payroll Document.';
-                    Enabled = not Rec.Reversed;
-
-                    trigger OnAction()
-                    var
-                        LoyaltyReverseMgt: Codeunit "12E Loyalty Reverse Mgt.";
-                    begin
-                        LoyaltyReverseMgt.ReverseLoyalty(Rec);
-                        CurrPage.Update();
-                    end;
-                }
+                trigger OnAction()
+                var
+                    LoyaltyReverseMgt: Codeunit "12E Loyalty Reverse Mgt.";
+                begin
+                    LoyaltyReverseMgt.ReverseLoyalty(Rec);
+                    CurrPage.Update();
+                end;
             }
         }
 

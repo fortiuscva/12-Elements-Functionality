@@ -93,7 +93,10 @@ page 52118 "12E CCD Details"
                         QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
                     begin
                         QuestcoPayrollBatch.Reset();
+                        QuestcoPayrollBatch.FilterGroup := 8;
                         QuestcoPayrollBatch.SetRange("Batch ID", Rec."Payroll Batch ID");
+                        QuestcoPayrollBatch.SetRange("Pay Period Start Date", Rec."Period Start Date");
+                        QuestcoPayrollBatch.SetRange("Pay Period End Date", Rec."Period End Date");
                         Page.Run(Page::"12E QPAY Batches", QuestcoPayrollBatch);
                     end;
                 }

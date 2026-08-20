@@ -52,6 +52,7 @@ codeunit 52121 "12E Payroll Batch Post"
             // PayrollBatchHeader."G/L Register No." := GetGLRegisterNo(PayrollBatchHeader);
             // PayrollBatchHeader.Modify(true);
             DeleteJournalLines();
+            PayrollBatchHeader.get(PayrollBatchHeader."No.");
             TransferToPostedPayroll(PayrollBatchHeader);
             Message(PayrollPostedMsg, PayrollBatchNo);
         end;

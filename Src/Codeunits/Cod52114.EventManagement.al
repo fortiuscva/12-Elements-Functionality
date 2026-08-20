@@ -36,7 +36,8 @@ codeunit 52114 "12E Event Management"
         HandleGLRegister(GenJnlLine, GLReg);
     end;
 
-    local procedure OnReverseOnAfterFinishPosting(var ReversalEntry2: Record "Reversal Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; var GLRegister: Record "G/L Register"; GLRegister2: Record "G/L Register")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Reverse", OnReverseOnAfterFinishPosting, '', false, false)]
+    local procedure "Gen. Jnl.-Post Reverse_OnReverseOnAfterFinishPosting"(var ReversalEntry2: Record "Reversal Entry"; var GenJnlPostLine: Codeunit "Gen. Jnl.-Post Line"; var GLRegister: Record "G/L Register"; GLRegister2: Record "G/L Register")
     begin
         HandleReversal(ReversalEntry2);
     end;
@@ -46,6 +47,8 @@ codeunit 52114 "12E Event Management"
         if TryUpdatePayroll(GenJnlLine, GLReg) then
             exit;
 
+        if TryUpdateLoyalty(GenJnlLine, GLReg) then
+            exit;
     end;
 
     local procedure TryUpdatePayroll(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
@@ -75,8 +78,34 @@ codeunit 52114 "12E Event Management"
         exit(true);
     end;
 
-    local procedure HandleReversal(
-    var ReversalEntry: Record "Reversal Entry")
+    local procedure TryUpdateLoyalty(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        LoyaltyPoints: Record "12E Loyalty Points";
+    begin
+        if GenJnlLine."Source Code" <> GetLoyaltySourceCode() then
+            exit(false);
+
+        LoyaltyPoints.Reset();
+        LoyaltyPoints.SetRange("Document No.", GenJnlLine."Document No.");
+        LoyaltyPoints.SetRange(Processed, false);
+
+        if LoyaltyPoints.IsEmpty() then
+            exit(false);
+
+        LoyaltyPoints.ModifyAll("G/L Register No.", Format(GLReg."No."));
+
+        exit(true);
+    end;
+
+    local procedure GetLoyaltySourceCode(): Code[20]
+    var
+        TwelveSetup: Record "12E Setup";
+    begin
+        TwelveSetup.Get();
+        exit(TwelveSetup."Loyalty Source Code");
+    end;
+
+    local procedure HandleReversal(var ReversalEntry: Record "Reversal Entry")
     begin
         if TryUpdatePayrollReversal(ReversalEntry) then
             exit;
@@ -86,8 +115,6 @@ codeunit 52114 "12E Event Management"
     var
         PostedPayrollHeader: Record "12E Posted Payroll Header";
     begin
-        ReversalEntry.Reset();
-
         PostedPayrollHeader.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
         if not PostedPayrollHeader.FindFirst() then
             exit(false);

@@ -6,17 +6,35 @@ codeunit 52122 "12E Loyalty Posting"
         NoJournalLinesToPreviewErr: Label 'There are no General Journal Lines to preview.';
         LoyaltyPostedMsg: Label 'Loyalty Point %1 posted successfully.';
 
-    procedure PostRecord(var LoyaltyPoints: Record "12E Loyalty Points")
+    procedure Post(var LoyaltyPoints: Record "12E Loyalty Points")
+    var
+        PostingError: Text;
     begin
         if LoyaltyPoints.Processed then
             Error('Loyalty Point entry %1 is already processed.', LoyaltyPoints."PK ID");
 
         GetSetup();
+
+        Clear(LoyaltyPoints."Posting Error");
+        Clear(LoyaltyPoints.ERPErrorMsg);
+        LoyaltyPoints.Modify(true);
+
         DeleteJournalLines();
         CreateJournalLines(LoyaltyPoints);
-        PostJournal();
-        DeleteJournalLines();
 
+        if not TryPostJournal() then begin
+            PostingError := GetLastErrorText();
+            LoyaltyPoints.Get(LoyaltyPoints."PK ID");
+            LoyaltyPoints."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+            LoyaltyPoints.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
+            LoyaltyPoints.Modify(true);
+            DeleteJournalLines();
+            if GuiAllowed() then
+                Message(PostingError);
+            exit;
+        end;
+
+        DeleteJournalLines();
         LoyaltyPoints.Get(LoyaltyPoints."PK ID");
         LoyaltyPoints.Processed := true;
         LoyaltyPoints."Posting Error" := '';
@@ -27,7 +45,7 @@ codeunit 52122 "12E Loyalty Posting"
             Message(LoyaltyPostedMsg, LoyaltyPoints."PK ID");
     end;
 
-    procedure PreviewRecord(var LoyaltyPoints: Record "12E Loyalty Points")
+    procedure PreviewPosting(var LoyaltyPoints: Record "12E Loyalty Points")
     begin
         if LoyaltyPoints.Processed then
             Error('Loyalty Point entry %1 is already processed.', LoyaltyPoints."PK ID");
@@ -36,7 +54,7 @@ codeunit 52122 "12E Loyalty Posting"
         DeleteJournalLines();
         CreateJournalLines(LoyaltyPoints);
         Commit();
-        PreviewJournal();
+        PreviewGenJournalLines();
         DeleteJournalLines();
     end;
 
@@ -70,18 +88,14 @@ codeunit 52122 "12E Loyalty Posting"
 
         if LoyaltyPoints."Points Earned" <> 0 then begin
             CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Earned", TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts");
-
             ProvisionAmount := Round(LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
-
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve");
         end;
 
         if LoyaltyPoints."Points Expired" <> 0 then begin
             CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Expired", TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned");
-
             ProvisionAmount := Round(LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
-
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision");
         end;
@@ -94,7 +108,7 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine.Init();
         GenJournalLine."Journal Template Name" := TwelveSetup."Loyalty Jnl. Template";
         GenJournalLine."Journal Batch Name" := TwelveSetup."Loyalty Jnl. Batch";
-        GenJournalLine."Line No." := GetNextJournalLineNo();
+        GenJournalLine."Line No." := GetNextGenJnlLineNo();
         GenJournalLine.Insert(true);
         GenJournalLine.Validate("Posting Date", PostingDate);
         GenJournalLine.Validate("Document No.", DocumentNo);
@@ -106,6 +120,12 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine.Validate("Source Code", TwelveSetup."Loyalty Source Code");
         GenJournalLine.Validate("Reason Code", TwelveSetup."Loyalty Reason Code");
         GenJournalLine.Modify(true);
+    end;
+
+    [TryFunction]
+    local procedure TryPostJournal()
+    begin
+        PostJournal();
     end;
 
     local procedure PostJournal()
@@ -123,7 +143,7 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPostBatch.Run(GenJournalLine);
     end;
 
-    local procedure PreviewJournal()
+    local procedure PreviewGenJournalLines()
     var
         GenJournalLine: Record "Gen. Journal Line";
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
@@ -150,7 +170,7 @@ codeunit 52122 "12E Loyalty Posting"
             GenJournalLine.DeleteAll(true);
     end;
 
-    local procedure GetNextJournalLineNo(): Integer
+    local procedure GetNextGenJnlLineNo(): Integer
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin

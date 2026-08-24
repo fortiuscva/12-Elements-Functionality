@@ -141,7 +141,28 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                 }
             }
+            group(LMS)
+            {
+                Caption = 'LMS';
 
+                field("LMS Jnl. Template"; Rec."LMS Jnl. Template")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
+                }
+
+                field("LMS Jnl. Batch"; Rec."LMS Jnl. Batch")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
+                }
+
+                field("LMS Document Nos."; Rec."LMS Document Nos.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used to generate LMS Batch document numbers.';
+                }
+            }
         }
     }
     actions

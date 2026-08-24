@@ -167,6 +167,24 @@ table 52104 "12E Setup"
             Caption = 'Loyalty Journal Batch';
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Loyalty Jnl. Template"));
         }
+        field(50; "LMS Jnl. Template"; Code[10])
+        {
+            Caption = 'LMS Jnl. Template';
+            TableRelation = "Gen. Journal Template";
+        }
+
+        field(51; "LMS Jnl. Batch"; Code[10])
+        {
+            Caption = 'LMS Jnl. Batch';
+            TableRelation = "Gen. Journal Batch".Name
+        where("Journal Template Name" = field("LMS Jnl. Template"));
+        }
+
+        field(52; "LMS Document Nos."; Code[20])
+        {
+            Caption = 'LMS Document Nos.';
+            TableRelation = "No. Series";
+        }
     }
     keys
     {

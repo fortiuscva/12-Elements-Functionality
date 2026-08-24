@@ -20,6 +20,7 @@ pageextension 52108 "12E User Setup" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Allow Loyalty Reversal field.', Comment = '%';
             }
+
         }
     }
 }

@@ -111,7 +111,7 @@ page 52151 "12E Loyalty Points"
                     if not Confirm('Do you want to post the Loyalty %1?', false, Rec."PK ID") then
                         exit;
 
-                    LoyaltyPosting.PostRecord(Rec);
+                    LoyaltyPosting.Post(Rec);
                     CurrPage.Update(false);
                 end;
             }
@@ -130,7 +130,7 @@ page 52151 "12E Loyalty Points"
                 var
                     LoyaltyPosting: Codeunit "12E Loyalty Posting";
                 begin
-                    LoyaltyPosting.PreviewRecord(Rec);
+                    LoyaltyPosting.PreviewPosting(Rec);
                 end;
             }
             action(PostBatch)

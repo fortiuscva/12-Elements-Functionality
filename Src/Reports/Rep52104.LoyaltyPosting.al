@@ -24,7 +24,7 @@ report 52104 "12E Loyalty Posting"
     var
         LoyaltyPosting: Codeunit "12E Loyalty Posting";
     begin
-        LoyaltyPosting.PostRecord(LoyaltyPoints);
+        LoyaltyPosting.Post(LoyaltyPoints);
     end;
 
     local procedure HandlePostingError()

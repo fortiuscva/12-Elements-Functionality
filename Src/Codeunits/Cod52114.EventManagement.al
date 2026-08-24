@@ -49,6 +49,36 @@ codeunit 52114 "12E Event Management"
 
         if TryUpdateLoyalty(GenJnlLine, GLReg) then
             exit;
+
+        if TryUpdateLMS(GenJnlLine, GLReg) then
+            exit;
+    end;
+
+    local procedure TryUpdateLMS(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        LMSBatch: Record "12E LMS Batch";
+        TwelveSetup: Record "12E Setup";
+    begin
+        TwelveSetup.Get();
+
+        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Jnl. Template" then
+            exit(false);
+
+        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Jnl. Batch" then
+            exit(false);
+
+        if GenJnlLine."Document No." = '' then
+            exit(false);
+
+        LMSBatch.Reset();
+        LMSBatch.SetRange("Document No.", GenJnlLine."Document No.");
+        LMSBatch.SetRange("G/L Register No.", 0);
+        if not LMSBatch.FindFirst() then
+            exit(false);
+
+        LMSBatch."G/L Register No." := GLReg."No.";
+        LMSBatch.Modify(true);
+        exit(true);
     end;
 
     local procedure TryUpdatePayroll(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean

@@ -17,5 +17,10 @@ tableextension 52117 "12E User Setup" extends "User Setup"
             Caption = 'Allow Loyalty Reversal';
             DataClassification = CustomerContent;
         }
+        field(52103; "12E Allow LMS Reversal"; Boolean)
+        {
+            Caption = 'Allow LMS Reversal';
+            DataClassification = CustomerContent;
+        }
     }
 }

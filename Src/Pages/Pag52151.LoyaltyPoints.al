@@ -190,7 +190,10 @@ page 52151 "12E Loyalty Points"
         CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyInformation.Name);
 
-        if CompanyMapping.FindFirst() then
+        if CompanyMapping.FindFirst() then begin
+            Rec.FilterGroup(10);
             Rec.SetRange(Portfolio, CompanyMapping.Portfolio);
+            Rec.FilterGroup(0);
+        end;
     end;
 }

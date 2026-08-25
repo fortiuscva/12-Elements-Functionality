@@ -176,4 +176,12 @@ table 52135 "12E LMS Batch"
             Clustered = true;
         }
     }
+
+    trigger OnModify()
+    begin
+        if xRec.Processed and not xRec.Reversed then
+            Error(
+                'LMS Batch %1 cannot be modified because it has already been processed and has not been reversed.',
+                xRec."Batch ID");
+    end;
 }

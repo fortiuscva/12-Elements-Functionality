@@ -51,6 +51,11 @@ page 52104 "12E Setup"
                 {
                     ToolTip = 'Specifies the value of the Loyalty Document Nos. field.', Comment = '%';
                 }
+                field("LMS Batch Document Nos."; Rec."LMS Batch Document Nos.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used to generate LMS Batch document numbers.';
+                }
             }
             group(CCD)
             {
@@ -145,23 +150,18 @@ page 52104 "12E Setup"
             {
                 Caption = 'LMS';
 
-                field("LMS Jnl. Template"; Rec."LMS Jnl. Template")
+                field("LMS Batch Jnl. Template Name"; Rec."LMS Batch Jnl. Template Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
                 }
 
-                field("LMS Jnl. Batch"; Rec."LMS Jnl. Batch")
+                field("LMS Batch Jnl. Batch Name"; Rec."LMS Batch Jnl. Batch Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
                 }
 
-                field("LMS Document Nos."; Rec."LMS Document Nos.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the number series used to generate LMS Batch document numbers.';
-                }
             }
         }
     }

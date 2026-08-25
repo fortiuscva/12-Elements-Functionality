@@ -61,10 +61,10 @@ codeunit 52114 "12E Event Management"
     begin
         TwelveSetup.Get();
 
-        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Jnl. Template" then
+        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Batch Jnl. Template Name" then
             exit(false);
 
-        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Jnl. Batch" then
+        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Batch Jnl. Batch Name" then
             exit(false);
 
         if GenJnlLine."Document No." = '' then
@@ -77,7 +77,7 @@ codeunit 52114 "12E Event Management"
             exit(false);
 
         LMSBatch."G/L Register No." := GLReg."No.";
-        LMSBatch.Modify(true);
+        LMSBatch.Modify();
         exit(true);
     end;
 
@@ -143,6 +143,9 @@ codeunit 52114 "12E Event Management"
 
         if TryUpdateLoyaltyReversal(ReversalEntry) then
             exit;
+
+        if TryUpdateLMSReversal(ReversalEntry) then
+            exit;
     end;
 
     local procedure TryUpdatePayrollReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
@@ -169,6 +172,21 @@ codeunit 52114 "12E Event Management"
 
         LoyaltyPoints.Reversed := true;
         LoyaltyPoints.Modify(true);
+
+        exit(true);
+    end;
+
+    local procedure TryUpdateLMSReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
+    var
+        LMSBatch: Record "12E LMS Batch";
+    begin
+        LMSBatch.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+
+        if not LMSBatch.FindFirst() then
+            exit(false);
+
+        LMSBatch.Reversed := true;
+        LMSBatch.Modify();
 
         exit(true);
     end;

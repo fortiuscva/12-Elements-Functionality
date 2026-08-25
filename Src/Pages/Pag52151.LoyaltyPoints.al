@@ -91,13 +91,14 @@ page 52151 "12E Loyalty Points"
             }
         }
     }
+
     actions
     {
         area(Processing)
         {
             action(Post)
             {
-                ApplicationArea = all;
+                ApplicationArea = All;
                 Caption = 'Post';
                 Image = Post;
                 Promoted = true;
@@ -112,13 +113,18 @@ page 52151 "12E Loyalty Points"
                         exit;
 
                     LoyaltyPosting.Post(Rec);
+                    Rec.Get(Rec."PK ID");
+
+                    if Rec.Processed then
+                        Message('Loyalty Point(s) posted successfully.');
+
                     CurrPage.Update(false);
                 end;
             }
 
             action(PreviewPosting)
             {
-                ApplicationArea = all;
+                ApplicationArea = All;
                 Caption = 'Preview Posting';
                 Image = ViewPostedOrder;
                 Promoted = true;
@@ -133,9 +139,10 @@ page 52151 "12E Loyalty Points"
                     LoyaltyPosting.PreviewPosting(Rec);
                 end;
             }
+
             action(PostBatch)
             {
-                ApplicationArea = all;
+                ApplicationArea = All;
                 Caption = 'Post Batch';
                 Image = PostBatch;
                 Promoted = true;
@@ -146,22 +153,21 @@ page 52151 "12E Loyalty Points"
                 var
                     LoyaltyPoints: Record "12E Loyalty Points";
                 begin
-                    LoyaltyPoints.Reset();
-                    LoyaltyPoints.SetRange("PK ID", Rec."PK ID");
-                    if LoyaltyPoints.FindFirst() then
-                        Report.RunModal(Report::"12E Loyalty Posting", true, false, LoyaltyPoints);
+                    LoyaltyPoints.CopyFilters(Rec);
+                    Report.RunModal(Report::"12E Loyalty Posting", true, false, LoyaltyPoints);
                     CurrPage.Update(false);
                 end;
             }
+
             action(ReverseRegister)
             {
-                ApplicationArea = all;
+                ApplicationArea = All;
                 Caption = 'Reverse Register';
                 Ellipsis = true;
                 Image = ReverseRegister;
                 Promoted = true;
                 PromotedCategory = Process;
-                ToolTip = 'Reverses the payroll register and creates a new Payroll Document.';
+                ToolTip = 'Reverse the Loyalty Point register.';
                 Enabled = not Rec.Reversed;
 
                 trigger OnAction()
@@ -169,12 +175,12 @@ page 52151 "12E Loyalty Points"
                     LoyaltyReverseMgt: Codeunit "12E Loyalty Reverse Mgt.";
                 begin
                     LoyaltyReverseMgt.ReverseLoyalty(Rec);
-                    CurrPage.Update();
+                    CurrPage.Update(false);
                 end;
             }
         }
-
     }
+
     trigger OnOpenPage()
     var
         CompanyInformation: Record "Company Information";
@@ -183,6 +189,7 @@ page 52151 "12E Loyalty Points"
         CompanyInformation.Get();
         CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyInformation.Name);
+
         if CompanyMapping.FindFirst() then
             Rec.SetRange(Portfolio, CompanyMapping.Portfolio);
     end;

@@ -9,10 +9,8 @@ codeunit 52111 "12E Lead Accrual Release Mgmt"
 
     procedure PerformManualRelease(var LeadAccrual: Record "12E Lead Accrual")
     begin
-        // Validation check before release
         CheckForManualRelease(LeadAccrual);
-
-        // Perform the actual release
+        ValidateAccrualDocument(LeadAccrual);
         PerformManualCheckAndRelease(LeadAccrual);
     end;
 
@@ -20,6 +18,32 @@ codeunit 52111 "12E Lead Accrual Release Mgmt"
     begin
         if LeadAccrual.Status = LeadAccrual.Status::Released then
             Error('Lead Accrual document %1 is already Released.', LeadAccrual."No.");
+    end;
+
+    local procedure ValidateAccrualDocument(var LeadAccrual: Record "12E Lead Accrual")
+    var
+        LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
+    begin
+        LeadAccrual.ValidateAccrualPeriod();
+        LeadAccrualMgmt.ValidateVendorSetup();
+        ValidateAdjustedAccrualAmount(LeadAccrual);
+    end;
+
+    local procedure ValidateAdjustedAccrualAmount(var LeadAccrual: Record "12E Lead Accrual")
+    var
+        LeadAccrualLine: Record "12E Lead Accrual Line";
+    begin
+        LeadAccrualLine.Reset();
+        LeadAccrualLine.SetRange("Lead Accrual No.", LeadAccrual."No.");
+
+        if LeadAccrualLine.IsEmpty() then
+            Error('There are no Lead Accrual lines to release for document %1.', LeadAccrual."No.");
+
+        if LeadAccrualLine.FindSet() then
+            repeat
+                if LeadAccrualLine."Adjust Accrual Amount" = 0 then
+                    Error('Adjust Accrual Amount must be specified for Vendor %1 on document %2.', LeadAccrualLine."Vendor No.", LeadAccrual."No.");
+            until LeadAccrualLine.Next() = 0;
     end;
 
     local procedure PerformManualCheckAndRelease(var LeadAccrual: Record "12E Lead Accrual")
@@ -33,10 +57,7 @@ codeunit 52111 "12E Lead Accrual Release Mgmt"
 
     procedure PerformManualReopen(var LeadAccrual: Record "12E Lead Accrual")
     begin
-        // Validation before reopening
         CheckReopenStatus(LeadAccrual);
-
-        // Perform the actual reopen
         Reopen(LeadAccrual);
     end;
 
@@ -54,6 +75,4 @@ codeunit 52111 "12E Lead Accrual Release Mgmt"
         LeadAccrual.Status := LeadAccrual.Status::Open;
         LeadAccrual.Modify(true);
     end;
-
-
 }

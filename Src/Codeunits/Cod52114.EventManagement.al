@@ -52,6 +52,24 @@ codeunit 52114 "12E Event Management"
 
         if TryUpdateLMS(GenJnlLine, GLReg) then
             exit;
+
+        if TryUpdateLeadAccrual(GenJnlLine, GLReg) then
+            exit;
+    end;
+
+    local procedure TryUpdateLeadAccrual(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        LeadAccrual: Record "12E Lead Accrual";
+    begin
+        LeadAccrual.SetRange("No.", GenJnlLine."Document No.");
+
+        if not LeadAccrual.FindFirst() then
+            exit(false);
+
+        LeadAccrual."G/L Register No." := GLReg."No.";
+        LeadAccrual.Modify(true);
+
+        exit(true);
     end;
 
     local procedure TryUpdateLMS(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
@@ -146,6 +164,9 @@ codeunit 52114 "12E Event Management"
 
         if TryUpdateLMSReversal(ReversalEntry) then
             exit;
+
+        if TryUpdateLeadAccrualReversal(ReversalEntry) then
+            exit;
     end;
 
     local procedure TryUpdatePayrollReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
@@ -187,6 +208,21 @@ codeunit 52114 "12E Event Management"
 
         LMSBatch.Reversed := true;
         LMSBatch.Modify();
+
+        exit(true);
+    end;
+
+    local procedure TryUpdateLeadAccrualReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
+    var
+        PostedLeadAccrual: Record "12E Posted Lead Accrual";
+    begin
+        PostedLeadAccrual.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+
+        if not PostedLeadAccrual.FindFirst() then
+            exit(false);
+
+        PostedLeadAccrual.Reversed := true;
+        PostedLeadAccrual.Modify(true);
 
         exit(true);
     end;

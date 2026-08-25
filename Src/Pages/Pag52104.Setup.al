@@ -12,20 +12,29 @@ page 52104 "12E Setup"
     {
         area(Content)
         {
-            group(General)
+            group(Leads)
             {
-                Caption = 'General';
-                field("Balancing G/L Account"; Rec."Balancing G/L Account")
+                Caption = 'Leads';
+
+                group(Reconciliation)
                 {
-                    ToolTip = 'Specifies the value of the EPIC Balancing G/L Account field.', Comment = '%';
+                    Caption = 'Leads Reconciliation';
+
                 }
-                field("Lead Accrual Jnl. Template"; Rec."Lead Accrual Jnl. Template")
+
+                group(Accruals)
                 {
-                    ApplicationArea = all;
-                }
-                field("Lead Accrual Jnl. Batch"; Rec."Lead Accrual Jnl. Batch")
-                {
-                    ApplicationArea = all;
+                    Caption = 'Accruals';
+
+                    field("Lead Accrual Jnl. Template"; Rec."Lead Accrual Jnl. Template")
+                    {
+                        ApplicationArea = All;
+                    }
+
+                    field("Lead Accrual Jnl. Batch"; Rec."Lead Accrual Jnl. Batch")
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
             group(Numbering)

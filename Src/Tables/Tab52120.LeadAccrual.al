@@ -65,6 +65,16 @@ table 52120 "12E Lead Accrual"
         {
             Caption = 'No. Series';
         }
+        field(8; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Posting Error"; Text[2048])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys
@@ -224,5 +234,11 @@ table 52120 "12E Lead Accrual"
             Enum::"Error Handling Options"::"Show Error",
             NoOfSelected,
             NoOfSkipped);
+    end;
+
+    procedure ValidateAccrualPeriod()
+    begin
+        TestField(Year);
+        TestField(Month);
     end;
 }

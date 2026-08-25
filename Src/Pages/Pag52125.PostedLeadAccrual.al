@@ -15,42 +15,124 @@ page 52125 "12E Posted Lead Accrual"
             {
                 Caption = 'General';
 
-                field("No."; Rec."No.")
+                group(DocumentDetails)
                 {
-                    ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+                    Caption = 'Document Details';
+
+                    field("No."; Rec."No.")
+                    {
+                        ToolTip = 'Specifies the value of the No. field.';
+                    }
+
+                    field(Status; Rec.Status)
+                    {
+                        ToolTip = 'Specifies the status of the lead accrual document.';
+                    }
+
+                    field(SystemCreatedAt; Rec.SystemCreatedAt)
+                    {
+                        Caption = 'Created At';
+                        Editable = false;
+                        ToolTip = 'Specifies when the document was created.';
+                    }
+
+                    field(CreatedBy; CreatedBy)
+                    {
+                        Caption = 'Created By';
+                        Editable = false;
+                        ToolTip = 'Specifies who created the document.';
+                    }
                 }
-                field("From Date"; Rec."From Date")
+
+                group(AccrualPeriod)
                 {
-                    ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
+                    Caption = 'Accrual Period';
+
+                    field(Year; Rec.Year)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the year for the accrual period.';
+                    }
+
+                    field(Month; Rec.Month)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the month for the accrual period.';
+                    }
+
+                    field("From Date"; Rec."From Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the start date of the accrual period.';
+                    }
+
+                    field("To Date"; Rec."To Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the end date of the accrual period.';
+                    }
                 }
-                field("To Date"; Rec."To Date")
+
+                group(PostingDetails)
                 {
-                    ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
-                }
-                // field(Status; Rec.Status)
-                // {
-                //     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
-                // }
-                field(SystemCreatedAt; Rec.SystemCreatedAt)
-                {
-                    Caption = 'Created At';
-                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
-                }
-                field(CreatedBy; CreatedBy)
-                {
-                    Caption = 'Created By';
-                    Editable = false;
-                    ToolTip = 'Specifies the value of the SystemCreatedBy field.', Comment = '%';
+                    Caption = 'Posting Details';
+
+                    field("G/L Register No."; Rec."G/L Register No.")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the G/L Register No. associated with the posted lead accrual.';
+                    }
+
+                    field(Reversed; Rec.Reversed)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies whether the posted lead accrual has been reversed.';
+                    }
                 }
             }
+
             part(Lines; "12E Posted LeadAccrual Subform")
             {
                 Caption = 'Lines';
-                ApplicationArea = all;
+                ApplicationArea = All;
                 SubPageLink = "Lead Accrual No." = field("No.");
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            group(Posting)
+            {
+                Caption = 'Posting';
+                Image = Post;
+
+                action(ReverseRegister)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Reverse Register';
+                    Ellipsis = true;
+                    Image = ReverseRegister;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    Enabled = not Rec.Reversed;
+                    ToolTip = 'Reverse the G/L register associated with this posted Lead Accrual document.';
+
+                    trigger OnAction()
+                    var
+                        LeadAccrualReverseMgt: Codeunit "12E Lead Accrual Reverse Mgt.";
+                    begin
+                        LeadAccrualReverseMgt.ReverseLeadAccrual(Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+            }
+        }
+    }
+
     trigger OnOpenPage()
     var
         UserRec: Record User;

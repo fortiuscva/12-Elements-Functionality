@@ -20,6 +20,11 @@ pageextension 52108 "12E User Setup" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Allow Loyalty Reversal field.', Comment = '%';
             }
+            field("12E Allow Lead Accr. Reversal"; Rec."12E Allow Lead Accr. Reversal")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Allow Lead Accrual Reversal.', Comment = '%';
+            }
 
         }
     }

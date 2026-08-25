@@ -50,6 +50,16 @@ page 52123 "12E Lead Accrual Subform"
                 field("Lead Acq. Cost Vendor"; Rec."Lead Acq. Cost Vendor")
                 {
                     ToolTip = 'Specifies the value of the Lead Acquisition Costs for this Vendor field.', Comment = '%';
+                    trigger OnDrillDown()
+                    var
+                        PurchInvHeader: Record "Purch. Inv. Header";
+                    begin
+                        PurchInvHeader.Reset();
+                        PurchInvHeader.SetRange("Buy-from Vendor No.", Rec."Vendor No.");
+                        PurchInvHeader.SetRange("Posting Date", Rec."From Date", Rec."To Date");
+
+                        Page.RunModal(Page::"Posted Purchase Invoices", PurchInvHeader);
+                    end;
                 }
             }
         }

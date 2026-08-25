@@ -83,7 +83,16 @@ page 52153 "12E Leads Data by Portfolio"
     begin
         CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyName());
+
+        Rec.FilterGroup(10);
+
         if CompanyMapping.FindFirst() then
-            Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");
+            Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID")
+        else
+            Rec.SetRange("Datasource ID", -1);
+
+        Rec.FilterGroup(0);
     end;
+
+
 }

@@ -20,7 +20,11 @@ page 52161 "12E LMS Batches"
                 {
                     ApplicationArea = All;
                 }
-
+                field("Datasource ID"; Rec."Datasource ID")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
                 field("Batch ID"; Rec."Batch ID")
                 {
                     ApplicationArea = All;
@@ -146,13 +150,14 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     Caption = 'Post';
                     Image = Post;
-                    Enabled = not Rec.Processed;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ToolTip = 'Post the LMS Batch.';
 
                     trigger OnAction()
                     var
                         LMSBatchPosting: Codeunit "12E LMS Batch Posting";
                     begin
-                        CurrPage.SetSelectionFilter(Rec);
                         LMSBatchPosting.Post(Rec);
                         CurrPage.Update(false);
                     end;
@@ -163,29 +168,34 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     Caption = 'Preview Posting';
                     Image = ViewPostedOrder;
-                    Enabled = not Rec.Processed;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ShortCutKey = 'Ctrl+Alt+F9';
+                    ToolTip = 'Preview the General Ledger Entries that will be created.';
 
                     trigger OnAction()
                     var
                         LMSBatchPosting: Codeunit "12E LMS Batch Posting";
                     begin
-                        CurrPage.SetSelectionFilter(Rec);
                         LMSBatchPosting.PreviewPosting(Rec);
                     end;
                 }
 
-                action(Reverse)
+                action(ReverseRegister)
                 {
                     ApplicationArea = All;
-                    Caption = 'Reverse';
+                    Caption = 'Reverse Register';
+                    Ellipsis = true;
                     Image = ReverseRegister;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    ToolTip = 'Reverse the LMS Batch register.';
                     Enabled = Rec.Processed and not Rec.Reversed;
 
                     trigger OnAction()
                     var
                         LMSReverseMgt: Codeunit "12E LMS Reverse Mgt.";
                     begin
-                        CurrPage.SetSelectionFilter(Rec);
                         LMSReverseMgt.ReverseLMS(Rec);
                         CurrPage.Update(false);
                     end;
@@ -218,37 +228,6 @@ page 52161 "12E LMS Batches"
                 }
             }
         }
-
-        area(Promoted)
-        {
-            group(Category_Posting)
-            {
-                Caption = 'Posting';
-                ShowAs = SplitButton;
-
-                actionref(Post_Promoted; Post)
-                {
-                }
-
-                actionref(PreviewPosting_Promoted; PreviewPosting)
-                {
-                }
-
-                actionref(Reverse_Promoted; Reverse)
-                {
-                }
-            }
-
-            group(Category_Navigate)
-            {
-                Caption = 'Navigate';
-                ShowAs = Standard;
-
-                actionref(ShowGLEntries_Promoted; ShowGLEntries)
-                {
-                }
-            }
-        }
     }
 
     trigger OnOpenPage()
@@ -262,10 +241,14 @@ page 52161 "12E LMS Batches"
     begin
         DatasourceID := GetCurrentCompanyDatasourceID();
 
+        Rec.FilterGroup(10);
+
         if DatasourceID <> 0 then
             Rec.SetRange("Datasource ID", DatasourceID)
         else
             Rec.SetRange("Datasource ID", -1);
+
+        Rec.FilterGroup(0);
     end;
 
     local procedure GetCurrentCompanyDatasourceID(): Integer

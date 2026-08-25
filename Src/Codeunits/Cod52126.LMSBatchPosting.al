@@ -65,9 +65,9 @@ codeunit 52126 "12E LMS Batch Posting"
     begin
         TwelveSetup.Get();
 
-        TwelveSetup.TestField("LMS Jnl. Template");
-        TwelveSetup.TestField("LMS Jnl. Batch");
-        TwelveSetup.TestField("LMS Document Nos.");
+        TwelveSetup.TestField("LMS Batch Jnl. Template Name");
+        TwelveSetup.TestField("LMS Batch Jnl. Batch Name");
+        TwelveSetup.TestField("LMS Batch Document Nos.");
     end;
 
     local procedure CreateJournalLines(var LMSBatch: Record "12E LMS Batch")
@@ -75,7 +75,7 @@ codeunit 52126 "12E LMS Batch Posting"
         NoSeries: Codeunit "No. Series";
     begin
         if LMSBatch."Document No." = '' then begin
-            LMSBatch."Document No." := NoSeries.GetNextNo(TwelveSetup."LMS Document Nos.", DT2Date(LMSBatch."Transaction Date"), true);
+            LMSBatch."Document No." := NoSeries.GetNextNo(TwelveSetup."LMS Batch Document Nos.", DT2Date(LMSBatch."Transaction Date"), true);
             LMSBatch.Modify(true);
         end;
 
@@ -87,8 +87,8 @@ codeunit 52126 "12E LMS Batch Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := TwelveSetup."LMS Jnl. Template";
-        GenJournalLine."Journal Batch Name" := TwelveSetup."LMS Jnl. Batch";
+        GenJournalLine."Journal Template Name" := TwelveSetup."LMS Batch Jnl. Template Name";
+        GenJournalLine."Journal Batch Name" := TwelveSetup."LMS Batch Jnl. Batch Name";
         GenJournalLine."Line No." := GetNextGenJnlLineNo();
         GenJournalLine.Insert(true);
         GenJournalLine.Validate("Posting Date", DT2Date(LMSBatch."Transaction Date"));
@@ -118,8 +118,8 @@ codeunit 52126 "12E LMS Batch Posting"
         GenJnlPostBatch: Codeunit "Gen. Jnl.-Post Batch";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
@@ -133,8 +133,8 @@ codeunit 52126 "12E LMS Batch Posting"
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
@@ -147,8 +147,8 @@ codeunit 52126 "12E LMS Batch Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
 
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
@@ -158,8 +158,8 @@ codeunit 52126 "12E LMS Batch Posting"
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Jnl. Batch");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
 
         if GenJournalLine.FindLast() then
             exit(GenJournalLine."Line No." + 10000);

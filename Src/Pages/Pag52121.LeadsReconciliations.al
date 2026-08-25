@@ -1,11 +1,12 @@
-page 52121 "12E Lead Validation Details"
+page 52121 "12E Leads Reconciliations"
 {
     PageType = Worksheet;
     SourceTable = "12E Lead Validation Details";
-    Caption = 'Lead Validation Details';
+    Caption = 'Leads Reconciliations';
     ApplicationArea = All;
     UsageCategory = Tasks;
     SourceTableTemporary = true;
+    DeleteAllowed = false;
 
     layout
     {
@@ -28,6 +29,8 @@ page 52121 "12E Lead Validation Details"
 
             repeater(General)
             {
+                Editable = false;
+
                 field("Vendor No."; Rec."Vendor No.")
                 {
                     ApplicationArea = All;
@@ -62,6 +65,30 @@ page 52121 "12E Lead Validation Details"
                 field("Lead Cost Amount"; Rec."Lead Cost Amount")
                 {
                     ApplicationArea = All;
+                    trigger OnDrillDown()
+                    var
+                        LeadSource: Record "12E Lead Source Reconciliation";
+                        CompanyMapping: Record "12E Company Mapping";
+                        StartDate: Date;
+                    begin
+                        CompanyMapping.Reset();
+                        CompanyMapping.SetRange(Company, CompanyName());
+
+                        if not CompanyMapping.FindFirst() then
+                            exit;
+
+                        if Rec."Prior Posting Date" = 0D then
+                            StartDate := DMY2Date(1, 1, 1900)
+                        else
+                            StartDate := CalcDate('<+1D>', Rec."Prior Posting Date");
+
+                        LeadSource.Reset();
+                        LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
+                        LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
+                        LeadSource.SetRange("Lead Original Date", StartDate, Rec."Posting Date");
+
+                        Page.RunModal(Page::"12E Leads Data by Portfolio", LeadSource);
+                    end;
                 }
 
                 field(Difference; Rec.Difference)
@@ -73,6 +100,7 @@ page 52121 "12E Lead Validation Details"
                 field("Difference %"; Rec."Difference %")
                 {
                     ApplicationArea = All;
+                    StyleExpr = DifferenceStyle;
                 }
             }
         }
@@ -87,6 +115,8 @@ page 52121 "12E Lead Validation Details"
                 Caption = 'Get Invoice Data';
                 ApplicationArea = All;
                 Image = GetEntries;
+                Promoted = true;
+                PromotedCategory = Process;
 
                 trigger OnAction()
                 var
@@ -94,6 +124,33 @@ page 52121 "12E Lead Validation Details"
                 begin
                     LeadValidationMgt.BuildValidationData(Rec, StartDate, EndDate);
                     CurrPage.Update(false);
+                end;
+            }
+            action(OpenLeadReconciliationSource)
+            {
+                ApplicationArea = All;
+                Caption = 'Open Lead Reconciliation Source';
+                Image = Navigate;
+                Promoted = true;
+                PromotedCategory = Process;
+
+                trigger OnAction()
+                var
+                    LeadSource: Record "12E Lead Source Reconciliation";
+                    CompanyMapping: Record "12E Company Mapping";
+                begin
+                    CompanyMapping.Reset();
+                    CompanyMapping.SetRange(Company, CompanyName());
+
+                    if not CompanyMapping.FindFirst() then
+                        Error('Data Source ID is not configured for company %1.', CompanyName());
+
+                    LeadSource.Reset();
+                    LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
+                    LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
+                    LeadSource.SetRange("Lead Original Date", GetLeadSourceStartDate(), Rec."Posting Date");
+
+                    Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                 end;
             }
         }
@@ -110,5 +167,13 @@ page 52121 "12E Lead Validation Details"
             DifferenceStyle := 'Unfavorable'
         else
             DifferenceStyle := '';
+    end;
+
+    local procedure GetLeadSourceStartDate(): Date
+    begin
+        if Rec."Prior Posting Date" = 0D then
+            exit(DMY2Date(1, 1, 1900));
+
+        exit(CalcDate('<+1D>', Rec."Prior Posting Date"));
     end;
 }

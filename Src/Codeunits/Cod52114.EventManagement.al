@@ -185,8 +185,10 @@ codeunit 52114 "12E Event Management"
         if not LMSBatch.FindFirst() then
             exit(false);
 
+        LMSBatch.SetHideModifyValidation(true);
         LMSBatch.Reversed := true;
-        LMSBatch.Modify();
+        LMSBatch.Modify(true);
+        LMSBatch.SetHideModifyValidation(false);
 
         exit(true);
     end;

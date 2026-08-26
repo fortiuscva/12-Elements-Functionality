@@ -241,13 +241,11 @@ page 52161 "12E LMS Batches"
     begin
         DatasourceID := GetCurrentCompanyDatasourceID();
 
+        if DatasourceID = 0 then
+            Error('No Data Source mapping has been established for the current company.');
+
         Rec.FilterGroup(10);
-
-        if DatasourceID <> 0 then
-            Rec.SetRange("Datasource ID", DatasourceID)
-        else
-            Rec.SetRange("Datasource ID", -1);
-
+        Rec.SetRange("Datasource ID", DatasourceID);
         Rec.FilterGroup(0);
     end;
 

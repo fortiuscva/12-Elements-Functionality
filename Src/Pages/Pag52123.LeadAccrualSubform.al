@@ -31,6 +31,10 @@ page 52123 "12E Lead Accrual Subform"
                 {
                     ToolTip = 'Specifies the value of the Vendor Name field.', Comment = '%';
                 }
+                field("Last Posted Purch. Invoice No."; Rec."Last Posted Purch. Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Last Posted Purchase Invoice No. field.', Comment = '%';
+                }
                 field("Last PPI Posting Date"; Rec."Last PPI Posting Date")
                 {
                     ToolTip = 'Specifies the value of the Last Posted Purchase Invoice Posting Date field.', Comment = '%';

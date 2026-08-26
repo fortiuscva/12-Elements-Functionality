@@ -7,6 +7,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         LeadAccLineLcl: Record "12E Lead Accrual Line";
         VendorLcl: Record Vendor;
         LastPostingDate: Date;
+        LastPPIInvoiceNo: Code[20];
     begin
         Rec.ValidateAccrualPeriod();
         ValidateVendorSetup();
@@ -29,7 +30,11 @@ codeunit 52115 "12E Lead Accrual Mgmt"
 
                 if PostedPurchaseInvoiceExists(VendorLcl."No.", Rec."From Date", Rec."To Date") then begin
                     Clear(LastPostingDate);
-                    LastPostingDate := GetLastPostingDate(VendorLcl."No.", Rec."From Date", Rec."To Date");
+                    Clear(LastPostingDate);
+                    Clear(LastPPIInvoiceNo);
+                    GetLastPostedPurchaseInvoice(VendorLcl."No.", Rec."From Date", Rec."To Date", LastPostingDate, LastPPIInvoiceNo);
+                    LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
+                    LeadAccLineLcl.Validate("Last Posted Purch. Invoice No.", LastPPIInvoiceNo);
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
@@ -91,17 +96,19 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         exit(10000);
     end;
 
-    local procedure GetLastPostingDate(VendorNo: Code[20]; StartDate: Date; EndDate: Date): Date
+    local procedure GetLastPostedPurchaseInvoice(VendorNo: Code[20]; StartDate: Date; EndDate: Date; var PostingDate: Date; var InvoiceNo: Code[20])
     begin
+        Clear(PostingDate);
+        Clear(InvoiceNo);
         PurchInvHeaderGbl.Reset();
         PurchInvHeaderGbl.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
         PurchInvHeaderGbl.SetRange("Buy-from Vendor No.", VendorNo);
         PurchInvHeaderGbl.SetRange("Posting Date", StartDate, EndDate);
 
-        if PurchInvHeaderGbl.FindLast() then
-            exit(PurchInvHeaderGbl."Posting Date");
-
-        exit(0D);
+        if PurchInvHeaderGbl.FindLast() then begin
+            PostingDate := PurchInvHeaderGbl."Posting Date";
+            InvoiceNo := PurchInvHeaderGbl."No.";
+        end;
     end;
 
     local procedure GetLeadAcqCostsForThisVendor(VendorNo: Code[20]; StartDate: Date; EndDate: Date): Decimal

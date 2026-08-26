@@ -15,33 +15,29 @@ page 52125 "12E Posted Lead Accrual"
             {
                 Caption = 'General';
 
-                group(DocumentDetails)
+
+                field("No."; Rec."No.")
                 {
-                    Caption = 'Document Details';
+                    ToolTip = 'Specifies the value of the No. field.';
+                }
 
-                    field("No."; Rec."No.")
-                    {
-                        ToolTip = 'Specifies the value of the No. field.';
-                    }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the status of the lead accrual document.';
+                }
 
-                    field(Status; Rec.Status)
-                    {
-                        ToolTip = 'Specifies the status of the lead accrual document.';
-                    }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    Caption = 'Created At';
+                    Editable = false;
+                    ToolTip = 'Specifies when the document was created.';
+                }
 
-                    field(SystemCreatedAt; Rec.SystemCreatedAt)
-                    {
-                        Caption = 'Created At';
-                        Editable = false;
-                        ToolTip = 'Specifies when the document was created.';
-                    }
-
-                    field(CreatedBy; CreatedBy)
-                    {
-                        Caption = 'Created By';
-                        Editable = false;
-                        ToolTip = 'Specifies who created the document.';
-                    }
+                field(CreatedBy; CreatedBy)
+                {
+                    Caption = 'Created By';
+                    Editable = false;
+                    ToolTip = 'Specifies who created the document.';
                 }
 
                 group(AccrualPeriod)
@@ -105,6 +101,21 @@ page 52125 "12E Posted Lead Accrual"
     {
         area(Processing)
         {
+            action(ShowGLEntries)
+            {
+                ApplicationArea = All;
+                Caption = 'Show G/L Entries';
+                Ellipsis = true;
+                Image = LedgerEntries;
+                trigger OnAction()
+                var
+                    GLEntry: Record "G/L Entry";
+                begin
+                    GLEntry.Reset();
+                    GLEntry.SetRange("Document No.", Rec."No.");
+                    Page.RunModal(Page::"General Ledger Entries", GLEntry);
+                end;
+            }
             group(Posting)
             {
                 Caption = 'Posting';
@@ -116,8 +127,6 @@ page 52125 "12E Posted Lead Accrual"
                     Caption = 'Reverse Register';
                     Ellipsis = true;
                     Image = ReverseRegister;
-                    Promoted = true;
-                    PromotedCategory = Process;
                     Enabled = not Rec.Reversed;
                     ToolTip = 'Reverse the G/L register associated with this posted Lead Accrual document.';
 
@@ -129,6 +138,18 @@ page 52125 "12E Posted Lead Accrual"
                         CurrPage.Update(false);
                     end;
                 }
+            }
+        }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                actionref(ShowGLEntries_Promoted; ShowGLEntries)
+                {
+
+                }
+                actionref(ReverseRegister_Promoted; ReverseRegister)
+                { }
             }
         }
     }

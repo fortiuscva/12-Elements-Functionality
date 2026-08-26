@@ -1,6 +1,5 @@
 codeunit 52116 "12E Lead Accrual Post Mgmt"
 {
-    TableNo = "12E Lead Accrual";
 
     var
         TwelveSetup: Record "12E Setup";
@@ -12,29 +11,29 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         AdjustAccrualAmountErr: Label 'Adjusted Accrual Amount must be specified for Vendor %1.';
         PostingErrorMsg: Label 'Lead Accrual document %1 could not be posted.';
 
-    trigger OnRun()
+    procedure RunPosting(var LeadAccHeader: Record "12E Lead Accrual")
     var
         FirstLineNo: Integer;
         LastLineNo: Integer;
         PostingError: Text;
     begin
-        ValidateBeforePosting(Rec);
+        ValidateBeforePosting(LeadAccHeader);
         GetSetup();
-        Clear(Rec."Posting Error");
+        Clear(LeadAccHeader."Posting Error");
         DeleteExistingJournalLines();
-        CreateJournalLines(Rec, FirstLineNo, LastLineNo);
+        CreateJournalLines(LeadAccHeader, FirstLineNo, LastLineNo);
 
         if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
-            Rec."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(Rec."Posting Error"));
-            Rec.Modify(true);
+            LeadAccHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LeadAccHeader."Posting Error"));
+            LeadAccHeader.Modify(true);
             DeleteJournalLines(FirstLineNo, LastLineNo);
-            Error(PostingErrorMsg, Rec."No.");
+            Message(PostingErrorMsg, LeadAccHeader."No.");
+        end else begin
+            DeleteJournalLines(FirstLineNo, LastLineNo);
+            LeadAccHeader.Get(LeadAccHeader."No.");
+            TransferToPostedLeadAccrual(LeadAccHeader);
         end;
-
-        DeleteJournalLines(FirstLineNo, LastLineNo);
-        Rec.Get(Rec."No.");
-        TransferToPostedLeadAccrual(Rec);
     end;
 
     procedure PreviewPost(var LeadAccHeader: Record "12E Lead Accrual")

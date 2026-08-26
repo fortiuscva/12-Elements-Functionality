@@ -179,9 +179,18 @@ table 52135 "12E LMS Batch"
 
     trigger OnModify()
     begin
-        if xRec.Processed and not xRec.Reversed then
-            Error(
-                'LMS Batch %1 cannot be modified because it has already been processed and has not been reversed.',
-                xRec."Batch ID");
+        if not HideModifyValidation then
+            if xRec.Processed and not xRec.Reversed then
+                Error(
+                    'LMS Batch %1 cannot be modified because it has already been processed and has not been reversed.',
+                    xRec."Batch ID");
     end;
+
+    procedure SetHideModifyValidation(HideValidation: Boolean)
+    begin
+        HideModifyValidation := HideValidation;
+    end;
+
+    var
+        HideModifyValidation: Boolean;
 }

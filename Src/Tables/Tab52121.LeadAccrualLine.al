@@ -92,6 +92,12 @@ table 52121 "12E Lead Accrual Line"
                     LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
             end;
         }
+        field(15; "Last Posted Purch. Invoice No."; Code[20])
+        {
+            Caption = 'Last Posted Purchase Invoice No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
     }
 
     keys

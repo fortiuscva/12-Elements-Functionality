@@ -83,7 +83,6 @@ page 52121 "12E Leads Reconciliations"
                             StartDate := CalcDate('<+1D>', Rec."Prior Posting Date");
 
                         LeadSource.Reset();
-                        LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
                         LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
                         LeadSource.SetRange("Lead Original Date", StartDate, Rec."Posting Date");
 
@@ -146,7 +145,6 @@ page 52121 "12E Leads Reconciliations"
                         Error('Data Source ID is not configured for company %1.', CompanyName());
 
                     LeadSource.Reset();
-                    LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
                     LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
                     LeadSource.SetRange("Lead Original Date", GetLeadSourceStartDate(), Rec."Posting Date");
 

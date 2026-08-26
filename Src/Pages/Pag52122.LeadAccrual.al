@@ -14,39 +14,35 @@ page 52122 "12E Lead Accrual"
             {
                 Caption = 'General';
 
-                group(DocumentDetails)
+
+                field("No."; Rec."No.")
                 {
-                    Caption = 'Document Details';
+                    ToolTip = 'Specifies the value of the No. field.';
 
-                    field("No."; Rec."No.")
-                    {
-                        ToolTip = 'Specifies the value of the No. field.';
+                    trigger OnAssistEdit()
+                    begin
+                        if Rec.AssistEdit(xRec) then
+                            CurrPage.Update();
+                    end;
+                }
 
-                        trigger OnAssistEdit()
-                        begin
-                            if Rec.AssistEdit(xRec) then
-                                CurrPage.Update();
-                        end;
-                    }
+                field(Status; Rec.Status)
+                {
+                    ToolTip = 'Specifies the status of the lead accrual document.';
+                }
 
-                    field(Status; Rec.Status)
-                    {
-                        ToolTip = 'Specifies the status of the lead accrual document.';
-                    }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    Caption = 'Created At';
+                    Editable = false;
+                    ToolTip = 'Specifies when the document was created.';
+                }
 
-                    field(SystemCreatedAt; Rec.SystemCreatedAt)
-                    {
-                        Caption = 'Created At';
-                        Editable = false;
-                        ToolTip = 'Specifies when the document was created.';
-                    }
-
-                    field(CreatedBy; CreatedBy)
-                    {
-                        Caption = 'Created By';
-                        Editable = false;
-                        ToolTip = 'Specifies who created the document.';
-                    }
+                field(CreatedBy; CreatedBy)
+                {
+                    Caption = 'Created By';
+                    Editable = false;
+                    ToolTip = 'Specifies who created the document.';
                 }
 
                 group(AccrualPeriod)
@@ -185,8 +181,7 @@ page 52122 "12E Lead Accrual"
                         if not Confirm(PostConfirmQst) then
                             exit;
 
-                        LeadAccPostMgmt.Run(Rec);
-                        Message(PostedMsg);
+                        LeadAccPostMgmt.RunPosting(Rec);
                     end;
                 }
                 action(PreviewPosting)

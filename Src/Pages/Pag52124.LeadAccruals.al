@@ -103,8 +103,7 @@ page 52124 "12E Lead Accruals"
                         if not Confirm(PostConfirmQst) then
                             exit;
 
-                        LeadAccPostMgmt.Run(Rec);
-                        Message(PostedMsg);
+                        LeadAccPostMgmt.RunPosting(Rec);
                     end;
                 }
                 action(PreviewPosting)

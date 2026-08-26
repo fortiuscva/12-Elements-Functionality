@@ -31,6 +31,10 @@ page 52126 "12E Posted LeadAccrual Subform"
                 {
                     ToolTip = 'Specifies the value of the Vendor Name field.', Comment = '%';
                 }
+                field("Last Posted Purch. Invoice No."; Rec."Last Posted Purch. Invoice No.")
+                {
+                    ToolTip = 'Specifies the value of the Last Posted Purchase Invoice No. field.', Comment = '%';
+                }
                 field("Last PPI Posting Date"; Rec."Last PPI Posting Date")
                 {
                     ToolTip = 'Specifies the value of the Last Posted Purchase Invoice Posting Date field.', Comment = '%';
@@ -50,6 +54,16 @@ page 52126 "12E Posted LeadAccrual Subform"
                 field("Lead Acq. Cost Vendor"; Rec."Lead Acq. Cost Vendor")
                 {
                     ToolTip = 'Specifies the value of the Lead Acquisition Costs for this Vendor field.', Comment = '%';
+                    trigger OnDrillDown()
+                    var
+                        PurchInvHeader: Record "Purch. Inv. Header";
+                    begin
+                        PurchInvHeader.Reset();
+                        PurchInvHeader.SetRange("Buy-from Vendor No.", Rec."Vendor No.");
+                        PurchInvHeader.SetRange("Posting Date", Rec."From Date", Rec."To Date");
+
+                        Page.RunModal(Page::"Posted Purchase Invoices", PurchInvHeader);
+                    end;
                 }
             }
         }

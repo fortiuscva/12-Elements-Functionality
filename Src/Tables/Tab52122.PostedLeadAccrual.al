@@ -51,6 +51,7 @@ table 52122 "12E Posted Lead Accrual"
         {
             Caption = 'G/L Register No.';
             DataClassification = CustomerContent;
+            TableRelation = "G/L Register";
         }
 
         field(9; Reversed; Boolean)

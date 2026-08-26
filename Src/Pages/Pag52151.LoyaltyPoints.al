@@ -187,13 +187,13 @@ page 52151 "12E Loyalty Points"
         CompanyMapping: Record "12E Company Mapping";
     begin
         CompanyInformation.Get();
-        CompanyMapping.Reset();
         CompanyMapping.SetRange(Company, CompanyInformation.Name);
 
-        if CompanyMapping.FindFirst() then begin
-            Rec.FilterGroup(10);
-            Rec.SetRange(Portfolio, CompanyMapping.Portfolio);
-            Rec.FilterGroup(0);
-        end;
+        if not CompanyMapping.FindFirst() then
+            Error('No company mapping has been established for company %1.', CompanyInformation.Name);
+
+        Rec.FilterGroup(10);
+        Rec.SetRange(Portfolio, CompanyMapping.Portfolio);
+        Rec.FilterGroup(0);
     end;
 }

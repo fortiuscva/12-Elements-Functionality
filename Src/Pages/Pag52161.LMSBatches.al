@@ -231,33 +231,16 @@ page 52161 "12E LMS Batches"
     }
 
     trigger OnOpenPage()
-    begin
-        SetDatasourceFilter();
-    end;
-
-    local procedure SetDatasourceFilter()
     var
-        DatasourceID: Integer;
+        CompanyMapping: Record "12E Company Mapping";
     begin
-        DatasourceID := GetCurrentCompanyDatasourceID();
-
-        if DatasourceID = 0 then
-            Error('No Data Source mapping has been established for the current company.');
+        CompanyMapping.SetRange(Company, CompanyName());
+        CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+        if not CompanyMapping.FindFirst() then
+            Error('%1 is not mapped to any data source id in 12 elements setup.', CompanyName());
 
         Rec.FilterGroup(10);
-        Rec.SetRange("Datasource ID", DatasourceID);
+        Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");
         Rec.FilterGroup(0);
-    end;
-
-    local procedure GetCurrentCompanyDatasourceID(): Integer
-    var
-        EPICDataSource: Record "12E EPIC DataSource";
-    begin
-        EPICDataSource.SetRange(DBA, CompanyName());
-
-        if EPICDataSource.FindFirst() then
-            exit(EPICDataSource."DataSource ID");
-
-        exit(0);
     end;
 }

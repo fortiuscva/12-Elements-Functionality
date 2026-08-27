@@ -251,12 +251,12 @@ page 52161 "12E LMS Batches"
 
     local procedure GetCurrentCompanyDatasourceID(): Integer
     var
-        EPICDataSource: Record "12E EPIC DataSource";
+        CompanyMapping: Record "12E Company Mapping";
     begin
-        EPICDataSource.SetRange(DBA, CompanyName());
+        CompanyMapping.SetRange(Company, CompanyName());
 
-        if EPICDataSource.FindFirst() then
-            exit(EPICDataSource."DataSource ID");
+        if CompanyMapping.FindFirst() then
+            exit(CompanyMapping."DataSource ID");
 
         exit(0);
     end;

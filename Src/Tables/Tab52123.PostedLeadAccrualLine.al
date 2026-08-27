@@ -57,7 +57,7 @@ table 52123 "12E Posted Lead Accrual Line"
             DataClassification = CustomerContent;
         }
 
-        field(9; "Lead Acq. Cost Vendor"; Decimal)
+        field(9; "Total Invoiced Amount (Period)"; Decimal)
         {
             Caption = 'Total Invoiced Amount (Period)';
             DecimalPlaces = 2 : 2;
@@ -86,6 +86,7 @@ table 52123 "12E Posted Lead Accrual Line"
         {
             Caption = 'Last Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
+            TableRelation = "Purch. Inv. Header";
         }
     }
 

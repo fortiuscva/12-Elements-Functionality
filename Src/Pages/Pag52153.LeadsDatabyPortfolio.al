@@ -82,9 +82,9 @@ page 52153 "12E Leads Data by Portfolio"
         CompanyMapping: Record "12E Company Mapping";
     begin
         CompanyMapping.SetRange(Company, CompanyName());
-
+        CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
         if not CompanyMapping.FindFirst() then
-            Error('No company mapping has been established for company %1.', CompanyName());
+            Error('%1 is not mapped to any data source id in 12 elements setup.', CompanyName());
 
         Rec.FilterGroup(10);
         Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");

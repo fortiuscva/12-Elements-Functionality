@@ -174,4 +174,18 @@ page 52121 "12E Leads Reconciliations"
 
         exit(CalcDate('<+1D>', Rec."Prior Posting Date"));
     end;
+
+    trigger OnOpenPage()
+    var
+        CompanyMapping: Record "12E Company Mapping";
+    begin
+        CompanyMapping.SetRange(Company, CompanyName());
+        CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+        if not CompanyMapping.FindFirst() then
+            Error('%1 is not mapped to any data source id in 12 elements setup.', CompanyName());
+
+        Rec.FilterGroup(10);
+        Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");
+        Rec.FilterGroup(0);
+    end;
 }

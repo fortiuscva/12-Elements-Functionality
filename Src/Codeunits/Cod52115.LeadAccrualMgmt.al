@@ -37,7 +37,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     LeadAccLineLcl.Validate("Last Posted Purch. Invoice No.", LastPPIInvoiceNo);
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
-                    LeadAccLineLcl.Validate("Lead Acq. Cost Vendor", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
+                    LeadAccLineLcl.Validate("Total Invoiced Amount (Period)", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
                     RecalculateAccrualAmount(LeadAccLineLcl);
                     LeadAccLineLcl.Validate("Adjust Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end

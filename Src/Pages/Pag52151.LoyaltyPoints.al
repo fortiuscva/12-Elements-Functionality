@@ -183,14 +183,12 @@ page 52151 "12E Loyalty Points"
 
     trigger OnOpenPage()
     var
-        CompanyInformation: Record "Company Information";
         CompanyMapping: Record "12E Company Mapping";
     begin
-        CompanyInformation.Get();
-        CompanyMapping.SetRange(Company, CompanyInformation.Name);
-
+        CompanyMapping.SetRange(Company, CompanyName());
+        CompanyMapping.SetFilter(Portfolio, '<>%1', '');
         if not CompanyMapping.FindFirst() then
-            Error('No company mapping has been established for company %1.', CompanyInformation.Name);
+            Error('%1 is not mapped to any portfolio in 12 elements setup.', CompanyName());
 
         Rec.FilterGroup(10);
         Rec.SetRange(Portfolio, CompanyMapping.Portfolio);

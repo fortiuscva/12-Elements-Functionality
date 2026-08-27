@@ -51,7 +51,7 @@ page 52126 "12E Posted LeadAccrual Subform"
                 {
                     ToolTip = 'Specifies the value of the Adjust Accrual Amount field.', Comment = '%';
                 }
-                field("Lead Acq. Cost Vendor"; Rec."Lead Acq. Cost Vendor")
+                field("Total Invoiced Amount (Period)"; Rec."Total Invoiced Amount (Period)")
                 {
                     ToolTip = 'Specifies the value of the Lead Acquisition Costs for this Vendor field.', Comment = '%';
                     trigger OnDrillDown()

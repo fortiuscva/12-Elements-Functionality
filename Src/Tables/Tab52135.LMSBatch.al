@@ -1,6 +1,9 @@
 table 52135 "12E LMS Batch"
 {
     Caption = 'LMS Batch';
+    DataClassification = CustomerContent;
+    LookupPageId = "12E LMS Batches";
+    DrillDownPageId = "12E LMS Batches";
     DataPerCompany = false;
 
     fields
@@ -8,58 +11,69 @@ table 52135 "12E LMS Batch"
         field(1; "PK ID"; Integer)
         {
             Caption = 'PK ID';
+            DataClassification = CustomerContent;
         }
 
         field(2; DWLoadDate; DateTime)
         {
             Caption = 'DW Load Date';
+            DataClassification = CustomerContent;
         }
 
         field(3; "Datasource ID"; Integer)
         {
             Caption = 'Datasource ID';
+            DataClassification = CustomerContent;
             TableRelation = "12E EPIC DataSource";
         }
 
         field(4; "Batch ID"; Integer)
         {
             Caption = 'Batch ID';
+            DataClassification = CustomerContent;
         }
 
         field(5; "Payment Type"; Text[50])
         {
             Caption = 'Payment Type';
+            DataClassification = CustomerContent;
         }
 
         field(6; Processor; Text[50])
         {
             Caption = 'Processor';
+            DataClassification = CustomerContent;
         }
 
         field(7; "Transaction Code"; Text[50])
         {
             Caption = 'Transaction Code';
+            DataClassification = CustomerContent;
         }
 
         field(8; "Transaction Date"; DateTime)
         {
             Caption = 'Transaction Date';
+            DataClassification = CustomerContent;
         }
 
         field(9; Amount; Decimal)
         {
             Caption = 'Amount';
+            DataClassification = CustomerContent;
         }
 
         field(10; "Debit Account No."; Code[20])
         {
             Caption = 'Debit Account No.';
+            DataClassification = CustomerContent;
             TableRelation = "G/L Account";
         }
 
         field(11; "Credit Account No."; Code[20])
         {
             Caption = 'Credit Account No.';
+            DataClassification = CustomerContent;
             TableRelation = "G/L Account";
         }
 
@@ -71,6 +85,8 @@ table 52135 "12E LMS Batch"
         field(13; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+            TableRelation = "G/L Register";
         }
 
         field(14; "Source Code"; Code[10])
@@ -174,6 +190,15 @@ table 52135 "12E LMS Batch"
         key(PK; "PK ID")
         {
             Clustered = true;
+        }
+    }
+    fieldgroups
+    {
+        fieldgroup(DropDown; "PK ID", "Datasource ID", "Payment Type", "Transaction Code", Amount)
+        {
+        }
+        fieldgroup(Brick; "PK ID", "Datasource ID", "Payment Type", "Transaction Code", Amount)
+        {
         }
     }
 

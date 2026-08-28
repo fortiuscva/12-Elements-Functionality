@@ -1,4 +1,4 @@
-table 52138 "12E LMS Transaction Line"
+table 52139 "12E LMS Transaction Line"
 {
     Caption = 'LMS Transaction Line';
     DataClassification = CustomerContent;

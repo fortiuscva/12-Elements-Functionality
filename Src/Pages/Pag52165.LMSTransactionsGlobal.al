@@ -1,4 +1,4 @@
-page 52162 "12E LMS Transactions Global"
+page 52165 "12E LMS Transactions Global"
 {
     ApplicationArea = All;
     Caption = 'LMS Transactions (Global)';

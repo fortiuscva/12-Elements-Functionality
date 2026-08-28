@@ -1,4 +1,4 @@
-table 52137 "12E LMS Transaction Header"
+table 52138 "12E LMS Transaction Header"
 {
     Caption = 'LMS Transaction Header';
     DataClassification = CustomerContent;

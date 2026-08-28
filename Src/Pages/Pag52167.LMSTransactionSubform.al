@@ -1,4 +1,4 @@
-page 52165 "12E LMS Transaction Subform"
+page 52167 "12E LMS Transaction Subform"
 {
     ApplicationArea = All;
     AutoSplitKey = true;

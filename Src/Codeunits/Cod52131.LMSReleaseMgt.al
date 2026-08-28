@@ -1,4 +1,4 @@
-codeunit 52128 "12E LMS Release Mgt."
+codeunit 52131 "12E LMS Release Mgt."
 {
     TableNo = "12E LMS Transaction Header";
 

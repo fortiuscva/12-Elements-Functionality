@@ -18,12 +18,14 @@ page 52121 "12E Leads Reconciliations"
                 {
                     ApplicationArea = All;
                     Caption = 'Start Date';
+                    ToolTip = 'Specifies the value of the Start Date field.', Comment = '%';
                 }
 
                 field(EndDate; EndDate)
                 {
                     ApplicationArea = All;
                     Caption = 'End Date';
+                    ToolTip = 'Specifies the value of the End Date field.', Comment = '%';
                 }
             }
 
@@ -34,37 +36,45 @@ page 52121 "12E Leads Reconciliations"
                 field("Vendor No."; Rec."Vendor No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Vendor No. field.', Comment = '%';
                 }
 
                 field("Vendor Name"; Rec."Vendor Name")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Vendor Name field.', Comment = '%';
                 }
                 field("Lead Provider"; Rec."Lead Provider")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Provider field.', Comment = '%';
                 }
 
                 field("Posting Date"; Rec."Posting Date")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
                 field("Posted Purchase Invoice No."; Rec."Posted Purchase Invoice No.")
                 {
                     ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
                 }
                 field("Invoice Amount"; Rec."Invoice Amount")
                 {
                     ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Invoice Amount field.', Comment = '%';
                 }
                 field("Prior Posting Date"; Rec."Prior Posting Date")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Prior Posting Date field.', Comment = '%';
                 }
 
                 field("Lead Cost Amount"; Rec."Lead Cost Amount")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Lead Cost Amount field.', Comment = '%';
                     trigger OnDrillDown()
                     var
                         LeadSource: Record "12E Lead Source Reconciliation";
@@ -94,12 +104,14 @@ page 52121 "12E Leads Reconciliations"
                 {
                     ApplicationArea = All;
                     StyleExpr = DifferenceStyle;
+                    ToolTip = 'Specifies the value of the Difference field.', Comment = '%';
                 }
 
                 field("Difference %"; Rec."Difference %")
                 {
                     ApplicationArea = All;
                     StyleExpr = DifferenceStyle;
+                    ToolTip = 'Specifies the value of the Difference % field.', Comment = '%';
                 }
             }
         }

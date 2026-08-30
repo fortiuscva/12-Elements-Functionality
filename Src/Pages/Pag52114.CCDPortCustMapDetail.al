@@ -14,10 +14,12 @@ page 52114 "12E CCDPort. Cust. Map. Detail"
             {
                 field(Portfolio; Rec.Portfolio)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
                 field("Customer No."; Rec."Customer No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer No. field.', Comment = '%';
                 }
             }

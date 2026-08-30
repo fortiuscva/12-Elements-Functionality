@@ -18,38 +18,47 @@ page 52141 "12E Questco Payroll Documents"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("Client ID"; Rec."Client ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Client ID field.', Comment = '%';
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
                 field("Pay Date"; Rec."Pay Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Date field.', Comment = '%';
                 }
                 field("Batch Type"; Rec."Batch Type")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch Type field.', Comment = '%';
                 }
                 field("Pay Period Start Date"; Rec."Pay Period Start Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Period Start Date field.', Comment = '%';
                 }
                 field("Pay Period End Date"; Rec."Pay Period End Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
                 field(Amount; Rec.Amount)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
                 field(Status; Rec."Status")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
                 }
             }
@@ -109,6 +118,8 @@ page 52141 "12E Questco Payroll Documents"
 
                 trigger OnAction()
                 begin
+                    if not Confirm(ConfirmCreateQst) then
+                        exit;
                     Codeunit.Run(Codeunit::"12E Payroll Batch Mgmt");
                 end;
             }
@@ -129,6 +140,8 @@ page 52141 "12E Questco Payroll Documents"
                     var
                         PayrollBatchPost: Codeunit "12E Payroll Batch Post";
                     begin
+                        if not Confirm(ConfirmPostQst) then
+                            exit;
                         PayrollBatchPost.Post(Rec);
                     end;
                 }
@@ -225,4 +238,7 @@ page 52141 "12E Questco Payroll Documents"
             }
         }
     }
+    var
+        ConfirmCreateQst: Label 'Do you want to create payroll documents?';
+        ConfirmPostQst: Label 'Do you want to post the payroll documents?';
 }

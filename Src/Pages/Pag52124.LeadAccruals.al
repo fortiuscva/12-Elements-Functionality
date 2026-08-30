@@ -16,18 +16,22 @@ page 52124 "12E Lead Accruals"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("From Date"; Rec."From Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
                 }
                 field("To Date"; Rec."To Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }

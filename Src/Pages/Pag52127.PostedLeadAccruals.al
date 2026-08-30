@@ -16,22 +16,27 @@ page 52127 "12E Posted Lead Accruals"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("From Date"; Rec."From Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the From Date field.', Comment = '%';
                 }
                 field("To Date"; Rec."To Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the To Date field.', Comment = '%';
                 }
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
                 field(Reversed; Rec.Reversed)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
                 }
             }
@@ -74,6 +79,8 @@ page 52127 "12E Posted Lead Accruals"
                     var
                         LeadAccrualReverseMgt: Codeunit "12E Lead Accrual Reverse Mgt.";
                     begin
+                        if not Confirm(ConfirmReverseRegisterQst) then
+                            exit;
                         LeadAccrualReverseMgt.ReverseLeadAccrual(Rec);
                         CurrPage.Update(false);
                     end;
@@ -93,4 +100,6 @@ page 52127 "12E Posted Lead Accruals"
             }
         }
     }
+    var
+        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this posted Lead Accrual document?';
 }

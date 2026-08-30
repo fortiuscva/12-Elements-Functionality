@@ -16,6 +16,7 @@ page 52116 "12E Call Center Distribution"
 
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                     trigger OnAssistEdit()
                     begin
@@ -25,22 +26,24 @@ page 52116 "12E Call Center Distribution"
                 }
                 field("Location Code"; Rec."Location Code")
                 {
-                    ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
+                    ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 group(Batch)
                 {
                     Caption = 'Batch';
                     field("Payroll Batch ID"; Rec."Payroll Batch ID")
                     {
-                        ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                        ApplicationArea = All;
                         Editable = false;
-
+                        ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                     }
                     field("No. of Hours"; Rec."No. of Hours")
                     {
-                        ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
+                        ApplicationArea = All;
                         Editable = false;
+                        ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                     }
                 }
                 group(Period)
@@ -48,29 +51,34 @@ page 52116 "12E Call Center Distribution"
                     Caption = 'Period';
                     field("Period Start Date"; Rec."Period Start Date")
                     {
-                        ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                        ApplicationArea = All;
                         Editable = false;
+                        ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
                     }
                     field("Period End Date"; Rec."Period End Date")
                     {
-                        ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                        ApplicationArea = All;
                         Editable = false;
+                        ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                     }
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
-                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
+                    ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                     Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
-                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                    ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }
             part(Lines; "12E CCD Subform")
             {
+                ApplicationArea = All;
                 Caption = 'Lines';
                 SubPageLink = "Document No." = field("No.");
                 Editable = false;

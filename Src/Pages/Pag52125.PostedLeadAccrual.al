@@ -18,16 +18,19 @@ page 52125 "12E Posted Lead Accrual"
 
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.';
                 }
 
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the status of the lead accrual document.';
                 }
 
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created At';
                     Editable = false;
                     ToolTip = 'Specifies when the document was created.';
@@ -35,6 +38,7 @@ page 52125 "12E Posted Lead Accrual"
 
                 field(CreatedBy; CreatedBy)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created By';
                     Editable = false;
                     ToolTip = 'Specifies who created the document.';
@@ -134,6 +138,8 @@ page 52125 "12E Posted Lead Accrual"
                     var
                         LeadAccrualReverseMgt: Codeunit "12E Lead Accrual Reverse Mgt.";
                     begin
+                        if not Confirm(ConfirmReverseRegisterQst) then
+                            exit;
                         LeadAccrualReverseMgt.ReverseLeadAccrual(Rec);
                         CurrPage.Update(false);
                     end;
@@ -167,4 +173,5 @@ page 52125 "12E Posted Lead Accrual"
 
     var
         CreatedBy: Code[50];
+        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this posted Lead Accrual document?';
 }

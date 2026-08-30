@@ -29,11 +29,13 @@ page 52104 "12E Setup"
                     field("Lead Accrual Jnl. Template"; Rec."Lead Accrual Jnl. Template")
                     {
                         ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Lead Accrual Journal Template field.', Comment = '%';
                     }
 
                     field("Lead Accrual Jnl. Batch"; Rec."Lead Accrual Jnl. Batch")
                     {
                         ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Lead Accrual Journal Batch field.', Comment = '%';
                     }
                 }
             }
@@ -42,22 +44,27 @@ page 52104 "12E Setup"
                 Caption = 'Numbering';
                 field("EPIC Payment Batch Nos."; Rec."EPIC Payment Batch Nos.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
                 }
                 field("CCD Nos."; Rec."CCD Nos.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Call Center Distribution Nos. field.', Comment = '%';
                 }
                 field("Lead Accrual Nos."; Rec."Lead Accrual Nos.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Accrual Nos. field.', Comment = '%';
                 }
                 field("Payroll Doc. No's."; Rec."Payroll Doc. No's.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payroll Batch Nos. field.', Comment = '%';
                 }
                 field("Loyalty Document Nos."; Rec."Loyalty Document Nos.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Loyalty Document Nos. field.', Comment = '%';
                 }
                 field("LMS Batch Document Nos."; Rec."LMS Batch Document Nos.")
@@ -71,10 +78,12 @@ page 52104 "12E Setup"
                 Caption = 'Contact Center Distribution';
                 field("CCD G/L Account No."; Rec."CCD G/L Account No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the CCD G/L Account No. field.', Comment = '%';
                 }
                 field("Enable CCD Process"; Rec."Enable CCD Process")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Process Enabled field.', Comment = '%';
                 }
                 field("Process Dialer Tone Invoices"; Rec."Process Dialer Tone Invoices")
@@ -89,16 +98,19 @@ page 52104 "12E Setup"
 
                 field("Payroll Jnl. Template"; Rec."Payroll Jnl. Template")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payroll Journal Template field.', Comment = '%';
                 }
 
                 field("Payroll Jnl. Batch"; Rec."Payroll Jnl. Batch")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payroll Journal Batch field.', Comment = '%';
                 }
 
                 field("Payroll Offset Account No."; Rec."Payroll Offset Account No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
                 }
             }
@@ -110,10 +122,12 @@ page 52104 "12E Setup"
                     Caption = 'Earned/Expired';
                     field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
                     }
                     field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
                     }
                 }
@@ -122,36 +136,44 @@ page 52104 "12E Setup"
                     Caption = 'Provision';
                     field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
                     }
                     field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
                     }
                     field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
                     }
                 }
                 field("Loyalty Source Code"; Rec."Loyalty Source Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
                 }
                 field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
                 }
 
                 field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
                 }
                 field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
                 }
                 field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                 }
             }

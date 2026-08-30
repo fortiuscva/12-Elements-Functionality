@@ -18,10 +18,12 @@ page 52153 "12E Leads Data by Portfolio"
             {
                 field("PK ID"; Rec."PK ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
                 }
                 field("DW Load Date"; Rec."DW Load Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
                 }
                 field("Datasource ID"; Rec."Datasource ID")
@@ -60,18 +62,22 @@ page 52153 "12E Leads Data by Portfolio"
                 }
                 field("ERP Import DateTime"; Rec."ERP Import DateTime")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Import DateTime field.', Comment = '%';
                 }
                 field("ERP Status"; Rec."ERP Status")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
                 }
                 field("ERP Error Msg"; Rec."ERP Error Msg")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
             }

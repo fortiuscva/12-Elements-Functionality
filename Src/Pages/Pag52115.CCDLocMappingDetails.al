@@ -14,18 +14,22 @@ page 52115 "12E CCD Loc. Mapping Details"
             {
                 field("Location Code"; Rec."Location Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 field(Blocked; Rec.Blocked)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Blocked field.', Comment = '%';
                 }
                 field("Processing Type"; Rec."Processing Type")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Processing Type field.', Comment = '%';
                 }
                 field("Vendor No."; Rec."Vendor No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Vendor No. field.', Comment = '%';
                 }
             }

@@ -16,42 +16,52 @@ page 52149 "12E Posted Payroll Documents"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("Client ID"; Rec."Client ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Client ID field.', Comment = '%';
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
                 field("Pay Date"; Rec."Pay Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Date field.', Comment = '%';
                 }
                 field("Batch Type"; Rec."Batch Type")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch Type field.', Comment = '%';
                 }
                 field("Pay Period Start Date"; Rec."Pay Period Start Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Period Start Date field.', Comment = '%';
                 }
                 field("Pay Period End Date"; Rec."Pay Period End Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Period End Date field.', Comment = '%';
                 }
                 field(Amount; Rec.Amount)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
                 field(Status; Rec."Status")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch Status field.', Comment = '%';
                     Visible = false;
                 }
@@ -96,6 +106,8 @@ page 52149 "12E Posted Payroll Documents"
                     var
                         PayrollReverseMgt: Codeunit "12E Payroll Reverse Mgt.";
                     begin
+                        if not Confirm(ConfirmReverseRegisterQst) then
+                            exit;
                         PayrollReverseMgt.ReversePayroll(Rec);
                         CurrPage.Update();
                     end;
@@ -151,4 +163,6 @@ page 52149 "12E Posted Payroll Documents"
             }
         }
     }
+    var
+        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this payroll document?';
 }

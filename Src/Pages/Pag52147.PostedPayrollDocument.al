@@ -61,6 +61,7 @@ page 52147 "12E Posted Payroll Document"
                     }
                     field(Amount; Rec.Amount)
                     {
+                        ApplicationArea = All;
                         Editable = false;
                         ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                     }
@@ -137,6 +138,8 @@ page 52147 "12E Posted Payroll Document"
                     var
                         PayrollReverseMgt: Codeunit "12E Payroll Reverse Mgt.";
                     begin
+                        if not Confirm(ConfirmReverseRegisterQst) then
+                            exit;
                         PayrollReverseMgt.ReversePayroll(Rec);
                         CurrPage.Update();
                     end;
@@ -205,4 +208,5 @@ page 52147 "12E Posted Payroll Document"
 
     var
         CreatedBy: Code[50];
+        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this payroll document?';
 }

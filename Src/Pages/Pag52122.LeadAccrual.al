@@ -17,6 +17,7 @@ page 52122 "12E Lead Accrual"
 
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.';
 
                     trigger OnAssistEdit()
@@ -28,11 +29,13 @@ page 52122 "12E Lead Accrual"
 
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the status of the lead accrual document.';
                 }
 
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created At';
                     Editable = false;
                     ToolTip = 'Specifies when the document was created.';
@@ -40,6 +43,7 @@ page 52122 "12E Lead Accrual"
 
                 field(CreatedBy; CreatedBy)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created By';
                     Editable = false;
                     ToolTip = 'Specifies who created the document.';

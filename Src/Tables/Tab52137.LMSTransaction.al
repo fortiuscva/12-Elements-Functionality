@@ -156,6 +156,11 @@ table 52137 "12E LMS Transaction"
             DataClassification = CustomerContent;
             TableRelation = "Reason Code";
         }
+        field(29; "Transaction Posting Date"; Date)
+        {
+            Caption = 'Transaction Posting Date';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

@@ -19,6 +19,7 @@ page 52162 "12E Lead Provider Lookup"
                 field("Lead Provider"; Rec."Lead Provider")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Lead Provider field', Comment = '%';
                 }
             }
         }

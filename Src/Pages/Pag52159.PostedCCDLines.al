@@ -15,50 +15,62 @@ page 52159 "12E Posted CCD Lines"
             {
                 field("Document No."; Rec."Document No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
                 }
                 field("Line No."; Rec."Line No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 field(Portfolio; Rec.Portfolio)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
                 field("Handling Time"; Rec."Handling Time")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Handling Time field.', Comment = '%';
                 }
                 field(Percentage; Rec.Percentage)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Percentage field.', Comment = '%';
                 }
                 field("No. of Hours"; Rec."No. of Hours")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                 }
                 field("Distributed Quantity"; Rec."Distributed Quantity")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Distributed Quantity field.', Comment = '%';
                 }
                 field("Payroll Batch ID"; Rec."Payroll Batch ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Batch ID field.', Comment = '%';
                 }
                 field("Batch Start Date"; Rec."Batch Start Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Batch Start Date field.', Comment = '%';
                 }
                 field("Batch End Date"; Rec."Batch End Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Batch End Date field.', Comment = '%';
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
                 }
                 // field("Invoice Date"; Rec."Invoice Date")
@@ -67,18 +79,24 @@ page 52159 "12E Posted CCD Lines"
                 // }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
+                    ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
                 }
                 field("Pstd. Sales Invoice No."; Rec."Pstd. Sales Invoice No.")
                 {
+                    ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
                 }
                 field("Batch or Inv. Hours"; Rec."Batch or Inv. Hours")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch/Invoice Hours field.', Comment = '%';
                 }
                 field("Batch or Inv. Percentage"; Rec."Batch or Inv. Percentage")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch/Invoice Hours Distribution Percentage field.', Comment = '%';
                 }
             }

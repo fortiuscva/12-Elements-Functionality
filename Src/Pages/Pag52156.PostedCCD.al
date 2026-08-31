@@ -20,10 +20,12 @@ page 52156 "12E Posted CCD"
 
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 group(Batch)
@@ -31,10 +33,12 @@ page 52156 "12E Posted CCD"
                     Caption = 'Batch';
                     field("Payroll Batch ID"; Rec."Payroll Batch ID")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                     }
                     field("No. of Hours"; Rec."No. of Hours")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                     }
                 }
@@ -43,26 +47,31 @@ page 52156 "12E Posted CCD"
                     Caption = 'Period';
                     field("Period Start Date"; Rec."Period Start Date")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
                     }
                     field("Period End Date"; Rec."Period End Date")
                     {
+                        ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                     }
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                     Visible = false;
                 }
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Sales Invoice No. field.', Comment = '%';
                     Editable = false;
                     Visible = false;
                 }
                 field("Posted Sales Invoice No."; Rec."Posted Sales Invoice No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posted Sales Invoice No. field.', Comment = '%';
                     Editable = false;
                     Visible = false;
@@ -70,6 +79,7 @@ page 52156 "12E Posted CCD"
             }
             part(Lines; "12E Posted CCD Subform")
             {
+                ApplicationArea = All;
                 Caption = 'Lines';
                 SubPageLink = "Document No." = field("No.");
             }
@@ -90,7 +100,10 @@ page 52156 "12E Posted CCD"
                 trigger OnAction()
                 var
                     CreateCCDSalesInvoices: Report "12E Create CCD Sales Invoices";
+                    CreateConfirmQst: Label 'Do you want to create sales invoices for this posted contact center distribution document?';
                 begin
+                    if not Confirm(CreateConfirmQst) then
+                        exit;
                     CreateCCDSalesInvoices.RunModal();
                 end;
             }

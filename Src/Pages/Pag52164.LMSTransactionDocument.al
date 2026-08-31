@@ -16,6 +16,7 @@ page 52164 "12E LMS Transaction Document"
 
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                     trigger OnAssistEdit()
                     begin
@@ -25,18 +26,22 @@ page 52164 "12E LMS Transaction Document"
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
                 }
                 field("Transaction Date"; Rec."Transaction Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
                 field("Error Exists"; Rec."Error Exists")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Error Exists field.', Comment = '%';
                 }
             }

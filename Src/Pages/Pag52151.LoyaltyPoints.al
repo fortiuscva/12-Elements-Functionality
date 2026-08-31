@@ -216,5 +216,5 @@ page 52151 "12E Loyalty Points"
     end;
 
     var
-        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this Loyalty Points?'
+        ConfirmReverseRegisterQst: Label 'Do you want to reverse the G/L register associated with this Loyalty Points?';
 }

@@ -19,91 +19,114 @@ page 52161 "12E LMS Batches"
                 field("PK ID"; Rec."PK ID")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
+                }
+                field(DWLoadDate; Rec.DWLoadDate)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
                     ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
                 }
                 field("Batch ID"; Rec."Batch ID")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
 
                 field("Payment Type"; Rec."Payment Type")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Payment Type field.', Comment = '%';
                 }
 
                 field(Processor; Rec.Processor)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Processor field.', Comment = '%';
                 }
 
                 field("Transaction Code"; Rec."Transaction Code")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Transaction Code field.', Comment = '%';
                 }
 
                 field("Transaction Date"; Rec."Transaction Date")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
                 }
 
                 field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                 }
 
                 field("Debit Account No."; Rec."Debit Account No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Debit Account No. field.', Comment = '%';
                 }
 
                 field("Credit Account No."; Rec."Credit Account No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Credit Account No. field.', Comment = '%';
                 }
 
                 field("Document No."; Rec."Document No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
                 }
 
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
 
                 field("Your Reference"; Rec."Your Reference")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Your Reference field.', Comment = '%';
                 }
 
                 field("External Document No."; Rec."External Document No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the External Document No. field.', Comment = '%';
                 }
 
                 field(Correction; Rec.Correction)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Correction field.', Comment = '%';
                 }
 
                 field("Payment Reference"; Rec."Payment Reference")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Payment Reference field.', Comment = '%';
                 }
                 field(Processed; Rec.Processed)
                 {
                     ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
                 }
 
                 field(Reversed; Rec.Reversed)
                 {
                     ApplicationArea = All;
                     Editable = false;
+                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
                 }
 
                 field("Posting Error"; Rec."Posting Error")
@@ -111,26 +134,31 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     Editable = false;
                     Importance = Additional;
+                    ToolTip = 'Specifies the value of the Posting Error field.', Comment = '%';
                 }
 
                 field("DW Export Timestamp"; Rec."DW Export Timestamp")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the DW Export Timestamp field.', Comment = '%';
                 }
 
                 field("ERP Import Timestamp"; Rec."ERP Import Timestamp")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the ERP Import Timestamp field.', Comment = '%';
                 }
 
                 field(ERPStatus; Rec.ERPStatus)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
                 }
 
                 field(ERPErrorMsg; Rec.ERPErrorMsg)
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
                 }
             }
         }

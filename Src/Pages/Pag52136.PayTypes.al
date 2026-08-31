@@ -14,18 +14,22 @@ page 52136 "12E Pay Types"
             {
                 field("Pay Type Code"; Rec."Pay Type Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Pay Type Code field.', Comment = '%';
                 }
                 field(Description; Rec.Description)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
                 }
                 field("Contact Center"; Rec."Contact Center")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Contact Center field.', Comment = '%';
                 }
                 field("Do not process for payroll"; Rec."Do not process for payroll")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Do not process for payroll field.', Comment = '%';
                 }
             }

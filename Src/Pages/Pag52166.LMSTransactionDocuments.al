@@ -15,22 +15,27 @@ page 52166 "12E LMS Transaction Documents"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
                 }
                 field("Transaction Date"; Rec."Transaction Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
                 }
                 field("Error Exists"; Rec."Error Exists")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Error Exists field.', Comment = '%';
                 }
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }

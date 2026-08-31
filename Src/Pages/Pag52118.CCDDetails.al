@@ -17,35 +17,43 @@ page 52118 "12E CCD Details"
             {
                 field("No."; Rec."No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
                 field("Location Code"; Rec."Location Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
                 field("Payroll Batch ID"; Rec."Payroll Batch ID")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                 }
                 field("No. of Hours"; Rec."No. of Hours")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                 }
                 field("Period Start Date"; Rec."Period Start Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
                 }
                 field("Period End Date"; Rec."Period End Date")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                     Visible = false;
                 }
                 field(Status; Rec.Status)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Status field.', Comment = '%';
                 }
             }

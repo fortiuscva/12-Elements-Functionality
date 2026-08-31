@@ -55,11 +55,12 @@ table 52121 "12E Lead Accrual Line"
             Editable = false;
         }
 
-        field(9; "Lead Acq. Cost Vendor"; Decimal)
+        field(9; "Total Invoiced Amount (Period)"; Decimal)
         {
-            Caption = 'Lead Acq. Cost Vendor';
+            Caption = 'Total Invoiced Amount (Period)';
             DecimalPlaces = 2 : 2;
             Editable = false;
+
         }
 
         field(10; "Accrual Amount"; Decimal)
@@ -67,6 +68,11 @@ table 52121 "12E Lead Accrual Line"
             Caption = 'Accrual Amount';
             DecimalPlaces = 2 : 2;
             Editable = false;
+            trigger OnValidate()
+            begin
+                if "Accrual Amount" <> 0 then
+                    "Adjust Accrual Amount" := "Accrual Amount";
+            end;
         }
 
         field(11; "Adjust Accrual Amount"; Decimal)
@@ -85,6 +91,13 @@ table 52121 "12E Lead Accrual Line"
                 if "Override Last PPI Posting Date" <> "Last PPI Posting Date" then
                     LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
             end;
+        }
+        field(15; "Last Posted Purch. Invoice No."; Code[20])
+        {
+            Caption = 'Last Posted Purchase Invoice No.';
+            DataClassification = CustomerContent;
+            Editable = false;
+            TableRelation = "Purch. Inv. Header";
         }
     }
 

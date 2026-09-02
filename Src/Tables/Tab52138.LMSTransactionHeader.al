@@ -48,7 +48,11 @@ table 52138 "12E LMS Transaction Header"
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
-
+        field(13; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+        }
         field(36; "Posting Error"; Text[2048])
         {
             Caption = 'Posting Error';

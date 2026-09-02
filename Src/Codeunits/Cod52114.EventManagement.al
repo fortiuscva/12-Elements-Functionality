@@ -106,29 +106,29 @@ codeunit 52114 "12E Event Management"
 
     local procedure TryUpdateLMSTransaction(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
     var
-        PostedLMSTransaction: Record "12E Posted LMS Trans. Header";
+        LMSTransaction: Record "12E LMS Transaction Header";
         TwelveSetup: Record "12E Setup";
     begin
         TwelveSetup.Get();
 
-        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Batch Jnl. Template Name" then
+        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Transaction Jnl. Template" then
             exit(false);
 
-        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Batch Jnl. Batch Name" then
+        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Transaction Jnl. Batch" then
             exit(false);
 
         if GenJnlLine."Document No." = '' then
             exit(false);
 
-        PostedLMSTransaction.Reset();
-        PostedLMSTransaction.SetRange("No.", GenJnlLine."Document No.");
-        PostedLMSTransaction.SetRange("G/L Register No.", 0);
+        LMSTransaction.Reset();
+        LMSTransaction.SetRange("No.", GenJnlLine."Document No.");
+        LMSTransaction.SetRange("G/L Register No.", 0);
 
-        if not PostedLMSTransaction.FindFirst() then
+        if not LMSTransaction.FindFirst() then
             exit(false);
 
-        PostedLMSTransaction."G/L Register No." := GLReg."No.";
-        PostedLMSTransaction.Modify(true);
+        LMSTransaction."G/L Register No." := GLReg."No.";
+        LMSTransaction.Modify(true);
 
         exit(true);
     end;

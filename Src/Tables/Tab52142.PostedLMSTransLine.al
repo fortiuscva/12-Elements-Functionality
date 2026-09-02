@@ -18,95 +18,69 @@ table 52142 "12E Posted LMS Trans. Line"
             DataClassification = CustomerContent;
         }
 
-        field(3; "Account No."; Code[20])
+        field(3; "Datasource ID"; Integer)
+        {
+            Caption = 'Datasource ID';
+            DataClassification = CustomerContent;
+            TableRelation = "12E EPIC DataSource";
+        }
+        field(4; "Account No."; Code[20])
         {
             Caption = 'Account No.';
             DataClassification = CustomerContent;
-            TableRelation = "G/L Account"."No.";
+            TableRelation = "G/L Account";
         }
 
-        field(4; Amount; Decimal)
+        field(5; Amount; Decimal)
         {
             Caption = 'Amount';
             DataClassification = CustomerContent;
         }
-
-        field(5; "Shortcut Dimension 1 Code"; Code[20])
+        field(6; "Shortcut Dimension 1 Code"; Code[20])
         {
+            CaptionClass = '1,2,1';
             Caption = 'Shortcut Dimension 1 Code';
-            DataClassification = CustomerContent;
+            ToolTip = 'Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1),
+                                                          Blocked = const(false));
         }
-
-        field(6; "Shortcut Dimension 2 Code"; Code[20])
+        field(7; "Shortcut Dimension 2 Code"; Code[20])
         {
+            CaptionClass = '1,2,2';
             Caption = 'Shortcut Dimension 2 Code';
-            DataClassification = CustomerContent;
+            ToolTip = 'Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
+            TableRelation = "Dimension Value".Code where("Global Dimension No." = const(2),
+                                                          Blocked = const(false));
         }
-
-        field(7; "Shortcut Dimension 3 Code"; Code[20])
+        field(8; "Shortcut Dimension 3 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 3 Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
-
-        field(8; "Shortcut Dimension 4 Code"; Code[20])
+        field(9; "Shortcut Dimension 4 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 4 Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
-
-        field(9; "Shortcut Dimension 5 Code"; Code[20])
+        field(10; "Shortcut Dimension 5 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 5 Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
-
-        field(10; "Shortcut Dimension 6 Code"; Code[20])
+        field(11; "Shortcut Dimension 6 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 6 Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
-
-        field(11; "Shortcut Dimension 7 Code"; Code[20])
+        field(12; "Shortcut Dimension 7 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 7 Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
-
-        field(12; "Shortcut Dimension 8 Code"; Code[20])
+        field(13; "Shortcut Dimension 8 Code"; Code[20])
         {
             Caption = 'Shortcut Dimension 8 Code';
-            DataClassification = CustomerContent;
-        }
-
-        field(13; "G/L Register No."; Integer)
-        {
-            Caption = 'G/L Register No.';
-            DataClassification = CustomerContent;
-        }
-
-        field(14; "Document Date"; Date)
-        {
-            Caption = 'Document Date';
-            DataClassification = CustomerContent;
-        }
-
-        field(15; "Posting Date"; Date)
-        {
-            Caption = 'Posting Date';
-            DataClassification = CustomerContent;
-        }
-
-        field(16; "Source Code"; Code[10])
-        {
-            Caption = 'Source Code';
-            DataClassification = CustomerContent;
-        }
-
-        field(17; "Reason Code"; Code[10])
-        {
-            Caption = 'Reason Code';
-            DataClassification = CustomerContent;
+            TableRelation = Dimension;
         }
     }
 
@@ -118,10 +92,6 @@ table 52142 "12E Posted LMS Trans. Line"
         }
 
         key(Account; "Account No.")
-        {
-        }
-
-        key(GLRegister; "G/L Register No.")
         {
         }
     }

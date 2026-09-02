@@ -17,6 +17,7 @@ codeunit 52133 "12E LMS Transaction Posting"
 
         if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
+            LMSHeader.Get(LMSHeader."No.");
             LMSHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSHeader."Posting Error"));
             LMSHeader."Error Exists" := true;
             LMSHeader.Modify(true);

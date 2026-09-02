@@ -7,6 +7,9 @@ page 52169 "12E Posted LMS Transactions"
     Caption = 'Posted LMS Transactions';
     Editable = false;
     CardPageId = "12E Posted LMS Transaction";
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
 
     layout
     {

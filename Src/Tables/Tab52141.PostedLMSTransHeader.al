@@ -25,31 +25,31 @@ table 52141 "12E Posted LMS Trans. Header"
             DataClassification = CustomerContent;
         }
 
-        field(5; "Posting Date"; Date)
+        field(10; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
             DataClassification = CustomerContent;
         }
 
 
-        field(7; "Source Code"; Code[10])
+        field(11; "Source Code"; Code[10])
         {
             Caption = 'Source Code';
             DataClassification = CustomerContent;
         }
 
-        field(8; "Reason Code"; Code[10])
+        field(12; "Reason Code"; Code[10])
         {
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
         }
-        field(36; "G/L Register No."; Integer)
+        field(13; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
             DataClassification = CustomerContent;
         }
 
-        field(37; Reversed; Boolean)
+        field(14; Reversed; Boolean)
         {
             Caption = 'Reversed';
             DataClassification = CustomerContent;

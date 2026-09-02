@@ -72,4 +72,12 @@ page 52152 "12E Loyalty Points API"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        ValidationsCUGbl.CheckPortfolioMapping(Rec.Portfolio);
+        exit(true);
+    end;
+
+    var
+        ValidationsCUGbl: Codeunit "12E Validations";
 }

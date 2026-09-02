@@ -92,4 +92,12 @@ page 52142 "12E Lead Providers Data"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        ValidationsCUGbl.CheckDataSourceID(Rec."Datasource ID");
+        ValidationsCUGbl.CheckPortfolioMapping(Rec."Portfolio Name");
+    end;
+
+    var
+        ValidationsCUGbl: Codeunit "12E Validations";
 }

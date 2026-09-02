@@ -9,19 +9,14 @@ codeunit 52133 "12E LMS Transaction Posting"
     procedure Post(var LMSHeader: Record "12E LMS Transaction Header")
     var
         PostingError: Text;
-        GLRegisterNo: Integer;
     begin
         ValidateForPosting(LMSHeader);
         GetSetup();
-        Clear(LMSHeader."Posting Error");
-        Clear(LMSHeader."Error Exists");
-        LMSHeader.Modify(true);
         DeleteJournalLines();
         CreateJournalLines(LMSHeader);
 
-        if not TryPostJournal(GLRegisterNo) then begin
+        if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
-            LMSHeader.Get(LMSHeader."No.");
             LMSHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSHeader."Posting Error"));
             LMSHeader."Error Exists" := true;
             LMSHeader.Modify(true);
@@ -33,12 +28,9 @@ codeunit 52133 "12E LMS Transaction Posting"
         end;
 
         DeleteJournalLines();
-        LMSHeader.Get(LMSHeader."No.");
-        LMSHeader."G/L Register No." := GLRegisterNo;
-        LMSHeader."Posting Error" := '';
-        LMSHeader."Error Exists" := false;
-        LMSHeader.Modify(true);
-        UpdatePostingResult(LMSHeader, GLRegisterNo);
+        CreatePostedTransaction(LMSHeader);
+        UpdatePostingResult(LMSHeader);
+        DeleteLMSDocument(LMSHeader);
 
         if GuiAllowed() then
             Message(LMSPostedMsg, LMSHeader."No.");
@@ -65,9 +57,6 @@ codeunit 52133 "12E LMS Transaction Posting"
 
         if LMSHeader.Status <> LMSHeader.Status::Released then
             Error('LMS Transaction %1 must be Released before posting.', LMSHeader."No.");
-
-        if LMSHeader."G/L Register No." <> 0 then
-            Error('LMS Transaction %1 is already posted with G/L Register No. %2.', LMSHeader."No.", LMSHeader."G/L Register No.");
 
         if LMSHeader."Error Exists" then
             Error('LMS Transaction %1 contains errors and cannot be posted.', LMSHeader."No.");
@@ -120,20 +109,61 @@ codeunit 52133 "12E LMS Transaction Posting"
         GenJournalLine.Validate("Reason Code", TwelveSetup."LMS Reason Code");
         GenJournalLine.Validate("Shortcut Dimension 1 Code", LMSLine."Shortcut Dimension 1 Code");
         GenJournalLine.Validate("Shortcut Dimension 2 Code", LMSLine."Shortcut Dimension 2 Code");
+        GenJournalLine.Validate("Dimension Set ID", GetDimensionSetID(LMSLine));
         GenJournalLine.Modify(true);
     end;
 
-    [TryFunction]
-    local procedure TryPostJournal(var GLRegisterNo: Integer)
+    local procedure GetDimensionSetID(LMSLine: Record "12E LMS Transaction Line"): Integer
+    var
+        DimensionSetEntry: Record "Dimension Set Entry" temporary;
+        DimensionManagement: Codeunit DimensionManagement;
     begin
-        PostJournal(GLRegisterNo);
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 3 Code");
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 4 Code");
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 5 Code");
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 6 Code");
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 7 Code");
+        AddDimensionSetEntry(DimensionSetEntry, LMSLine."Shortcut Dimension 8 Code");
+
+        if DimensionSetEntry.IsEmpty() then
+            exit(0);
+
+        exit(DimensionManagement.GetDimensionSetID(DimensionSetEntry));
     end;
 
-    local procedure PostJournal(var GLRegisterNo: Integer)
+    local procedure AddDimensionSetEntry(var DimensionSetEntry: Record "Dimension Set Entry" temporary; DimensionValue: Code[20])
+    begin
+        if DimensionValue = '' then
+            exit;
+
+        DimensionSetEntry.Init();
+        DimensionSetEntry."Dimension Code" := GetDimensionCode(DimensionValue);
+        DimensionSetEntry."Dimension Value Code" := DimensionValue;
+        DimensionSetEntry.Insert();
+    end;
+
+    local procedure GetDimensionCode(DimensionValue: Code[20]): Code[20]
+    var
+        DimensionValueRec: Record "Dimension Value";
+    begin
+        DimensionValueRec.SetRange(Code, DimensionValue);
+
+        if DimensionValueRec.FindFirst() then
+            exit(DimensionValueRec."Dimension Code");
+
+        Error('Dimension Value %1 does not exist.', DimensionValue);
+    end;
+
+    [TryFunction]
+    local procedure TryPostJournal()
+    begin
+        PostJournal();
+    end;
+
+    local procedure PostJournal()
     var
         GenJournalLine: Record "Gen. Journal Line";
         GenJnlPostBatch: Codeunit "Gen. Jnl.-Post Batch";
-        LastGLRegisterNo: Integer;
     begin
         GenJournalLine.Reset();
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
@@ -142,12 +172,7 @@ codeunit 52133 "12E LMS Transaction Posting"
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
 
-        LastGLRegisterNo := GetLastGLRegisterNo();
         GenJnlPostBatch.Run(GenJournalLine);
-        GLRegisterNo := GetNewGLRegisterNo(LastGLRegisterNo);
-
-        if GLRegisterNo = 0 then
-            Error('G/L Register No. was not generated for LMS Transaction %1.', GenJournalLine."Document No.");
     end;
 
     local procedure PreviewGenJournalLines()
@@ -190,42 +215,54 @@ codeunit 52133 "12E LMS Transaction Posting"
         exit(10000);
     end;
 
-    local procedure GetLastGLRegisterNo(): Integer
+    local procedure CreatePostedTransaction(LMSHeader: Record "12E LMS Transaction Header")
     var
-        GLRegister: Record "G/L Register";
+        PostedHeader: Record "12E Posted LMS Trans. Header";
+        LMSLine: Record "12E LMS Transaction Line";
     begin
-        if GLRegister.FindLast() then
-            exit(GLRegister."No.");
+        if PostedHeader.Get(LMSHeader."No.") then
+            Error('Posted LMS Transaction %1 already exists.', LMSHeader."No.");
 
-        exit(0);
+        PostedHeader.Init();
+        PostedHeader.TransferFields(LMSHeader);
+        PostedHeader."Posting Date" := LMSHeader."Transaction Date";
+        PostedHeader."Source Code" := TwelveSetup."LMS Source Code";
+        PostedHeader."Reason Code" := TwelveSetup."LMS Reason Code";
+        PostedHeader."Posted DateTime" := CurrentDateTime();
+        PostedHeader."Posted By" := UserId;
+        PostedHeader.Reversed := false;
+        PostedHeader.Insert(true);
+
+        LMSLine.SetRange("Document No.", LMSHeader."No.");
+        LMSLine.SetCurrentKey("Document No.", "Line No.");
+
+        if LMSLine.FindSet() then
+            repeat
+                CreatePostedTransactionLine(LMSLine);
+            until LMSLine.Next() = 0;
     end;
 
-    local procedure GetNewGLRegisterNo(LastGLRegisterNo: Integer): Integer
+    local procedure CreatePostedTransactionLine(LMSLine: Record "12E LMS Transaction Line")
     var
-        GLRegister: Record "G/L Register";
+        PostedLine: Record "12E Posted LMS Trans. Line";
     begin
-        GLRegister.SetFilter("No.", '>%1', LastGLRegisterNo);
-
-        if GLRegister.FindFirst() then
-            exit(GLRegister."No.");
-
-        exit(0);
+        PostedLine.Init();
+        PostedLine.TransferFields(LMSLine);
+        PostedLine.Insert(true);
     end;
 
-    local procedure UpdatePostingResult(var LMSHeader: Record "12E LMS Transaction Header"; GLRegisterNo: Integer)
+    local procedure UpdatePostingResult(var LMSHeader: Record "12E LMS Transaction Header")
     var
         LMSTransaction: Record "12E LMS Transaction";
         LMSDetail: Record "12E LMS Transaction Details";
     begin
         LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
-        LMSDetail.ModifyAll("G/L Register No.", GLRegisterNo);
         LMSDetail.ModifyAll("Source Code", TwelveSetup."LMS Source Code");
         LMSDetail.ModifyAll("Reason Code", TwelveSetup."LMS Reason Code");
         LMSDetail.ModifyAll("ERP Status", 'Posted');
         LMSDetail.ModifyAll("ERP Error Msg", '');
 
         LMSTransaction.SetRange("Document No.", LMSHeader."No.");
-        LMSTransaction.ModifyAll("G/L Register No.", GLRegisterNo);
         LMSTransaction.ModifyAll("Source Code", TwelveSetup."LMS Source Code");
         LMSTransaction.ModifyAll("Reason Code", TwelveSetup."LMS Reason Code");
         LMSTransaction.ModifyAll("ERP Status", 'Posted');
@@ -244,5 +281,10 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSTransaction.SetRange("Document No.", LMSHeader."No.");
         LMSTransaction.ModifyAll("ERP Status", 'Failed');
         LMSTransaction.ModifyAll("ERP Error Message", CopyStr(ErrorMessage, 1, MaxStrLen(LMSTransaction."ERP Error Message")));
+    end;
+
+    local procedure DeleteLMSDocument(var LMSHeader: Record "12E LMS Transaction Header")
+    begin
+        LMSHeader.Delete(true);
     end;
 }

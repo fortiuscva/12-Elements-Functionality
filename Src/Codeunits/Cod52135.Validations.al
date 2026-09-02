@@ -25,8 +25,8 @@ codeunit 52135 "12E Validations"
     var
 
         CompanyMappingRecGbl: Record "12E Company Mapping";
-        PortfolioErrLbl: Label 'Portfolio %1 does not exist in Company Mapping';
-        PortfolioMappingErrLbl: Label 'Company Mapping does not exist for this portfolio %1';
-        DatasourceIdErrLbl: Label 'Datasource ID %1 does not exist in Company Mapping';
-        DatasourceIdMappingErrLbl: Label 'Company mapping does not exist for this Datasource %1';
+        PortfolioErrLbl: Label 'Portfolio %1 does not exist in company mapping';
+        PortfolioMappingErrLbl: Label 'Portfolio %1 is not associated with any company';
+        DatasourceIdErrLbl: Label 'Datasource ID %1 does not exist in company mapping';
+        DatasourceIdMappingErrLbl: Label 'Datasource ID %1 is not associated with any company';
 }

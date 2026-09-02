@@ -27,5 +27,10 @@ tableextension 52117 "12E User Setup" extends "User Setup"
             Caption = 'Allow Lead Accrual Reversal';
             DataClassification = CustomerContent;
         }
+        field(52105; "12E Allow LMS Trans. Reversal"; Boolean)
+        {
+            Caption = 'Allow LMS Transaction Reversal';
+            DataClassification = CustomerContent;
+        }
     }
 }

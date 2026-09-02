@@ -31,24 +31,42 @@ page 52164 "12E LMS Transaction Document"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.';
+                    Editable = false;
                 }
 
                 field("Transaction Date"; Rec."Transaction Date")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Transaction Date field.';
+                    Editable = false;
                 }
 
                 field(Status; Rec.Status)
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Status field.';
+                    Editable = false;
                 }
 
                 field("Error Exists"; Rec."Error Exists")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies whether an error exists for the LMS Transaction document.';
+                    Editable = false;
+                    Visible = false;
+                }
+                group(PostingError)
+                {
+                    Caption = 'Posting Error';
+                    field("Posting Error"; Rec."Posting Error")
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                        MultiLine = true;
+                        ShowCaption = false;
+                        Editable = false;
+                        ToolTip = 'Specifies the value of the Posting Error field.', Comment = '%';
+                    }
                 }
             }
 
@@ -77,6 +95,9 @@ page 52164 "12E LMS Transaction Document"
                 var
                     LMSTransactionCreation: Codeunit "12E LMS Creation Management";
                 begin
+                    if not Confirm('Do you want to create LMS Transactions?', false) then
+                        exit;
+
                     LMSTransactionCreation.CreateLMSTransactions();
                     CurrPage.Update(false);
                 end;

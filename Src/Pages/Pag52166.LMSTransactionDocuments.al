@@ -62,6 +62,9 @@ page 52166 "12E LMS Transaction Documents"
                 var
                     LMSTransactionCreation: Codeunit "12E LMS Creation Management";
                 begin
+                    if not Confirm('Do you want to create LMS Transactions?', false) then
+                        exit;
+
                     LMSTransactionCreation.CreateLMSTransactions();
                     CurrPage.Update(false);
                 end;

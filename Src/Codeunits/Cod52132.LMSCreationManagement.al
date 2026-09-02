@@ -258,11 +258,32 @@ codeunit 52132 "12E LMS Creation Management"
             end;
 
             EntryNo += 1;
+
             LMSDetail.Init();
-            LMSDetail.TransferFields(LMSTransaction);
             LMSDetail."LMS Document No." := DocumentNo;
             LMSDetail."Entry No." := EntryNo;
+            LMSDetail."PK ID" := LMSTransaction."PK ID";
+            LMSDetail."DW Load Date" := LMSTransaction."DW Load Date";
+            LMSDetail."Datasource ID" := LMSTransaction."Datasource ID";
+            LMSDetail."Loan ID" := LMSTransaction."Loan ID";
+            LMSDetail."Payment ID" := LMSTransaction."Payment ID";
+            LMSDetail."Transaction ID" := LMSTransaction."Transaction ID";
+            LMSDetail."Batch ID" := LMSTransaction."Batch ID";
+            LMSDetail."Payment Type" := LMSTransaction."Payment Type";
+            LMSDetail."Payment Agent" := LMSTransaction."Payment Agent";
+            LMSDetail."Loan Status" := LMSTransaction."Loan Status";
+            LMSDetail.State := LMSTransaction.State;
+            LMSDetail.Store := LMSTransaction.Store;
+            LMSDetail.Processor := LMSTransaction.Processor;
+            LMSDetail."Transaction Code" := LMSTransaction."Transaction Code";
+            LMSDetail."Transaction Date" := LMSTransaction."Transaction Date";
+            LMSDetail.Amount := LMSTransaction.Amount;
+            LMSDetail."Debit Account No." := LMSTransaction."Debit Account No.";
+            LMSDetail."Credit Account No." := LMSTransaction."Credit Account No.";
+            LMSDetail."Document No." := LMSTransaction."Document No.";
             LMSDetail."G/L Register No." := 0;
+            LMSDetail."Source Code" := LMSTransaction."Source Code";
+            LMSDetail."Reason Code" := LMSTransaction."Reason Code";
             LMSDetail."ERP Status" := 'Created';
             LMSDetail."ERP Error Msg" := '';
             LMSDetail.Insert(true);

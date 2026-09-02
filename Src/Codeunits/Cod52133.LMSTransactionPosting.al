@@ -70,8 +70,8 @@ codeunit 52133 "12E LMS Transaction Posting"
     local procedure GetSetup()
     begin
         TwelveSetup.Get();
-        TwelveSetup.TestField("LMS Batch Jnl. Template Name");
-        TwelveSetup.TestField("LMS Batch Jnl. Batch Name");
+        TwelveSetup.TestField("LMS Transaction Jnl. Template");
+        TwelveSetup.TestField("LMS Transaction Jnl. Batch");
         TwelveSetup.TestField("LMS Source Code");
         TwelveSetup.TestField("LMS Reason Code");
     end;
@@ -96,8 +96,8 @@ codeunit 52133 "12E LMS Transaction Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := TwelveSetup."LMS Batch Jnl. Template Name";
-        GenJournalLine."Journal Batch Name" := TwelveSetup."LMS Batch Jnl. Batch Name";
+        GenJournalLine."Journal Template Name" := TwelveSetup."LMS Transaction Jnl. Template";
+        GenJournalLine."Journal Batch Name" := TwelveSetup."LMS Transaction Jnl. Batch";
         GenJournalLine."Line No." := GetNextGenJnlLineNo();
         GenJournalLine.Insert(true);
         GenJournalLine.Validate("Posting Date", LMSHeader."Transaction Date");
@@ -166,8 +166,8 @@ codeunit 52133 "12E LMS Transaction Posting"
         GenJnlPostBatch: Codeunit "Gen. Jnl.-Post Batch";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Transaction Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Transaction Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
@@ -181,8 +181,8 @@ codeunit 52133 "12E LMS Transaction Posting"
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Transaction Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Transaction Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
@@ -195,8 +195,8 @@ codeunit 52133 "12E LMS Transaction Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Transaction Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Transaction Jnl. Batch");
 
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
@@ -206,8 +206,8 @@ codeunit 52133 "12E LMS Transaction Posting"
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Batch Jnl. Template Name");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Batch Jnl. Batch Name");
+        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."LMS Transaction Jnl. Template");
+        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."LMS Transaction Jnl. Batch");
 
         if GenJournalLine.FindLast() then
             exit(GenJournalLine."Line No." + 10000);
@@ -228,8 +228,6 @@ codeunit 52133 "12E LMS Transaction Posting"
         PostedHeader."Posting Date" := LMSHeader."Transaction Date";
         PostedHeader."Source Code" := TwelveSetup."LMS Source Code";
         PostedHeader."Reason Code" := TwelveSetup."LMS Reason Code";
-        PostedHeader."Posted DateTime" := CurrentDateTime();
-        PostedHeader."Posted By" := UserId;
         PostedHeader.Reversed := false;
         PostedHeader.Insert(true);
 

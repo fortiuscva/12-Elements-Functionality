@@ -25,23 +25,12 @@ table 52141 "12E Posted LMS Trans. Header"
             DataClassification = CustomerContent;
         }
 
-        field(4; "G/L Register No."; Integer)
-        {
-            Caption = 'G/L Register No.';
-            DataClassification = CustomerContent;
-        }
-
         field(5; "Posting Date"; Date)
         {
             Caption = 'Posting Date';
             DataClassification = CustomerContent;
         }
 
-        field(6; "Document No."; Code[20])
-        {
-            Caption = 'Document No.';
-            DataClassification = CustomerContent;
-        }
 
         field(7; "Source Code"; Code[10])
         {
@@ -54,22 +43,9 @@ table 52141 "12E Posted LMS Trans. Header"
             Caption = 'Reason Code';
             DataClassification = CustomerContent;
         }
-
-        field(9; "Posted DateTime"; DateTime)
+        field(36; "G/L Register No."; Integer)
         {
-            Caption = 'Posted DateTime';
-            DataClassification = CustomerContent;
-        }
-
-        field(10; "Posted By"; Code[50])
-        {
-            Caption = 'Posted By';
-            DataClassification = CustomerContent;
-        }
-
-        field(11; "Error Exists"; Boolean)
-        {
-            Caption = 'Error Exists';
+            Caption = 'G/L Register No.';
             DataClassification = CustomerContent;
         }
 

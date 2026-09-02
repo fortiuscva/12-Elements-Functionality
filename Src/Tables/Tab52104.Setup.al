@@ -182,14 +182,27 @@ table 52104 "12E Setup"
         field(52; "LMS Batch Document Nos."; Code[20])
         {
             Caption = 'LMS Batch Document Nos.';
-            DataClassification = CustomerContent;
             TableRelation = "No. Series";
+            DataClassification = CustomerContent;
         }
+
         field(53; "LMS Transaction Document Nos."; Code[50])
         {
             Caption = 'LMS Transaction Document Nos.';
             DataClassification = CustomerContent;
             TableRelation = "No. Series";
+        }
+
+        field(54; "LMS Source Code"; Code[10])
+        {
+            Caption = 'LMS Source Code';
+            TableRelation = "Source Code".Code;
+        }
+
+        field(55; "LMS Reason Code"; Code[10])
+        {
+            Caption = 'LMS Reason Code';
+            TableRelation = "Reason Code".Code;
         }
     }
     keys

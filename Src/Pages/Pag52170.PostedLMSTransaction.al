@@ -6,6 +6,9 @@ page 52170 "12E Posted LMS Transaction"
     SourceTable = "12E Posted LMS Trans. Header";
     Caption = 'Posted LMS Transaction';
     Editable = false;
+    InsertAllowed = false;
+    DeleteAllowed = false;
+    ModifyAllowed = false;
 
     layout
     {

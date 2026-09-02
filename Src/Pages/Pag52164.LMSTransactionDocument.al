@@ -161,6 +161,9 @@ page 52164 "12E LMS Transaction Document"
                     var
                         LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
                     begin
+                        if not Confirm('Do you want to post LMS Transaction %1?', false, Rec."No.") then
+                            exit;
+
                         LMSTransactionPosting.Post(Rec);
                         CurrPage.Update(false);
                     end;

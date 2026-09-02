@@ -19,6 +19,7 @@ codeunit 52114 "12E Event Management"
         CCDLocationMapping.SetRange("Location Code", PurchaseHeader."Location Code");
         CCDLocationMapping.SetRange("Processing Type", CCDLocationMapping."Processing Type"::Vendor);
         CCDLocationMapping.SetRange("Vendor No.", PurchaseHeader."Buy-from Vendor No.");
+
         if CCDLocationMapping.FindFirst() then begin
             PurchaseHeader.TestField("12E Period Start Date");
             PurchaseHeader.TestField("12E Period End Date");
@@ -27,8 +28,7 @@ codeunit 52114 "12E Event Management"
     end;
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", 'OnBeforeUpdateGLReg', '', false, false)]
-    local procedure OnBeforeUpdateGLReg(IsTransactionConsistent: Boolean; var IsGLRegInserted: Boolean; var GLReg: Record "G/L Register";
-       var IsHandled: Boolean; var GenJnlLine: Record "Gen. Journal Line"; GlobalGLEntry: Record "G/L Entry"; FirstNewVATEntryNo: Integer; NextTaxEntryNo: Integer)
+    local procedure OnBeforeUpdateGLReg(IsTransactionConsistent: Boolean; var IsGLRegInserted: Boolean; var GLReg: Record "G/L Register"; var IsHandled: Boolean; var GenJnlLine: Record "Gen. Journal Line"; GlobalGLEntry: Record "G/L Entry"; FirstNewVATEntryNo: Integer; NextTaxEntryNo: Integer)
     begin
         if IsGLRegInserted then
             exit;
@@ -51,6 +51,9 @@ codeunit 52114 "12E Event Management"
             exit;
 
         if TryUpdateLMS(GenJnlLine, GLReg) then
+            exit;
+
+        if TryUpdateLMSTransaction(GenJnlLine, GLReg) then
             exit;
 
         if TryUpdateLeadAccrual(GenJnlLine, GLReg) then
@@ -91,11 +94,42 @@ codeunit 52114 "12E Event Management"
         LMSBatch.Reset();
         LMSBatch.SetRange("Document No.", GenJnlLine."Document No.");
         LMSBatch.SetRange("G/L Register No.", 0);
+
         if not LMSBatch.FindFirst() then
             exit(false);
 
         LMSBatch."G/L Register No." := GLReg."No.";
         LMSBatch.Modify();
+
+        exit(true);
+    end;
+
+    local procedure TryUpdateLMSTransaction(GenJnlLine: Record "Gen. Journal Line"; GLReg: Record "G/L Register"): Boolean
+    var
+        PostedLMSTransaction: Record "12E Posted LMS Trans. Header";
+        TwelveSetup: Record "12E Setup";
+    begin
+        TwelveSetup.Get();
+
+        if GenJnlLine."Journal Template Name" <> TwelveSetup."LMS Batch Jnl. Template Name" then
+            exit(false);
+
+        if GenJnlLine."Journal Batch Name" <> TwelveSetup."LMS Batch Jnl. Batch Name" then
+            exit(false);
+
+        if GenJnlLine."Document No." = '' then
+            exit(false);
+
+        PostedLMSTransaction.Reset();
+        PostedLMSTransaction.SetRange("No.", GenJnlLine."Document No.");
+        PostedLMSTransaction.SetRange("G/L Register No.", 0);
+
+        if not PostedLMSTransaction.FindFirst() then
+            exit(false);
+
+        PostedLMSTransaction."G/L Register No." := GLReg."No.";
+        PostedLMSTransaction.Modify(true);
+
         exit(true);
     end;
 
@@ -117,6 +151,7 @@ codeunit 52114 "12E Event Management"
 
         PayrollBatchHeader.Reset();
         PayrollBatchHeader.SetRange("No.", GenJnlLine."Document No.");
+
         if not PayrollBatchHeader.FindFirst() then
             exit(false);
 
@@ -165,6 +200,9 @@ codeunit 52114 "12E Event Management"
         if TryUpdateLMSReversal(ReversalEntry) then
             exit;
 
+        if TryUpdateLMSTransactionReversal(ReversalEntry) then
+            exit;
+
         if TryUpdateLeadAccrualReversal(ReversalEntry) then
             exit;
     end;
@@ -174,6 +212,7 @@ codeunit 52114 "12E Event Management"
         PostedPayrollHeader: Record "12E Posted Payroll Header";
     begin
         PostedPayrollHeader.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+
         if not PostedPayrollHeader.FindFirst() then
             exit(false);
 
@@ -188,6 +227,7 @@ codeunit 52114 "12E Event Management"
         LoyaltyPoints: Record "12E Loyalty Points";
     begin
         LoyaltyPoints.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+
         if not LoyaltyPoints.FindFirst() then
             exit(false);
 
@@ -210,6 +250,21 @@ codeunit 52114 "12E Event Management"
         LMSBatch.Reversed := true;
         LMSBatch.Modify(true);
         LMSBatch.SetHideModifyValidation(false);
+
+        exit(true);
+    end;
+
+    local procedure TryUpdateLMSTransactionReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
+    var
+        PostedLMSTransaction: Record "12E Posted LMS Trans. Header";
+    begin
+        PostedLMSTransaction.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+
+        if not PostedLMSTransaction.FindFirst() then
+            exit(false);
+
+        PostedLMSTransaction.Reversed := true;
+        PostedLMSTransaction.Modify(true);
 
         exit(true);
     end;

@@ -157,6 +157,16 @@ table 52138 "12E LMS Transaction Header"
         end;
     end;
 
+    procedure PerformManualReopen()
+    var
+        ReleaseLMSDoc: Codeunit "12E LMS Release Mgt.";
+    begin
+        if Status <> Status::Open then begin
+            ReleaseLMSDoc.PerformManualReopen(Rec);
+            Commit();
+        end;
+    end;
+
     procedure PerformManualReopen(var LMSTransactionHeader: Record "12E LMS Transaction Header")
     var
         BatchProcessingMgt: Codeunit "Batch Processing Mgt.";

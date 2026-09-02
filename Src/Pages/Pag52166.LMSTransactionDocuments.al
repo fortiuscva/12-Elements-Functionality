@@ -6,6 +6,7 @@ page 52166 "12E LMS Transaction Documents"
     PageType = List;
     SourceTable = "12E LMS Transaction Header";
     UsageCategory = Lists;
+    InsertAllowed = false;
 
     layout
     {
@@ -50,49 +51,20 @@ page 52166 "12E LMS Transaction Documents"
     {
         area(Processing)
         {
-            group(Posting)
+            action(CreateLMSDocument)
             {
-                Caption = 'Posting';
-                Image = Post;
+                ApplicationArea = All;
+                Caption = 'Create LMS Document';
+                Image = CreateDocument;
+                ToolTip = 'Create LMS Transaction documents from the available LMS transactions.';
 
-                action(Post)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Post';
-                    Image = Post;
-                    ShortCutKey = 'F9';
-                    ToolTip = 'Post the selected LMS Transaction documents.';
-
-                    trigger OnAction()
-                    var
-                        LMSTransactionHeader: Record "12E LMS Transaction Header";
-                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
-                    begin
-                        CurrPage.SetSelectionFilter(LMSTransactionHeader);
-
-                        LMSTransactionPosting.Post(LMSTransactionHeader);
-
-                        CurrPage.Update(false);
-                    end;
-                }
-
-                action(PreviewPosting)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Preview Posting';
-                    Image = ViewPostedOrder;
-                    ToolTip = 'Preview the posting of the selected LMS Transaction document without posting it.';
-
-                    trigger OnAction()
-                    var
-                        LMSTransactionHeader: Record "12E LMS Transaction Header";
-                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
-                    begin
-                        CurrPage.SetSelectionFilter(LMSTransactionHeader);
-
-                        LMSTransactionPosting.PreviewPosting(LMSTransactionHeader);
-                    end;
-                }
+                trigger OnAction()
+                var
+                    LMSTransactionCreation: Codeunit "12E LMS Creation Management";
+                begin
+                    LMSTransactionCreation.CreateLMSTransactions();
+                    CurrPage.Update(false);
+                end;
             }
 
             group(LMSReleaseGroup)
@@ -110,12 +82,9 @@ page 52166 "12E LMS Transaction Documents"
                     ToolTip = 'Release the document to the next stage of processing. You must reopen the document before you can make changes to it.';
 
                     trigger OnAction()
-                    var
-                        LMSTransactionHeader: Record "12E LMS Transaction Header";
                     begin
-                        CurrPage.SetSelectionFilter(LMSTransactionHeader);
-                        Rec.PerformManualRelease(LMSTransactionHeader);
-                        CurrPage.Update(false);
+                        Rec.PerformManualRelease();
+                        CurrPage.Update();
                     end;
                 }
 
@@ -128,21 +97,68 @@ page 52166 "12E LMS Transaction Documents"
                     ToolTip = 'Reopen the document to change it after it has been released.';
 
                     trigger OnAction()
-                    var
-                        LMSTransactionHeader: Record "12E LMS Transaction Header";
                     begin
-                        CurrPage.SetSelectionFilter(LMSTransactionHeader);
-                        Rec.PerformManualReopen(LMSTransactionHeader);
+                        Rec.PerformManualReopen();
+                        CurrPage.Update();
+                    end;
+                }
+            }
+
+            group("P&osting")
+            {
+                Caption = 'P&osting';
+                Image = Post;
+
+                action(Post)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post';
+                    Ellipsis = true;
+                    Image = Post;
+                    Enabled = Rec.Status = Rec.Status::Released;
+                    ShortCutKey = 'F9';
+                    ToolTip = 'Post the LMS Transaction document.';
+
+                    trigger OnAction()
+                    var
+                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+                    begin
+                        LMSTransactionPosting.Post(Rec);
                         CurrPage.Update(false);
+                    end;
+                }
+
+                action(PreviewPosting)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Posting';
+                    Ellipsis = true;
+                    Image = ViewPostedOrder;
+                    Enabled = Rec.Status = Rec.Status::Released;
+                    ToolTip = 'Preview the posting of the LMS Transaction document without posting it.';
+
+                    trigger OnAction()
+                    var
+                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+                    begin
+                        LMSTransactionPosting.PreviewPosting(Rec);
                     end;
                 }
             }
         }
+
         area(Promoted)
         {
+            group(Category_Process)
+            {
+                actionref(CreateLMSDocument_Promoted; CreateLMSDocument)
+                {
+                }
+            }
+
             group(Category_Category5)
             {
-                Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'Release';
                 ShowAs = SplitButton;
 
                 actionref(Release_Promoted; Release)
@@ -157,6 +173,7 @@ page 52166 "12E LMS Transaction Documents"
             group(Category_Category6)
             {
                 Caption = 'Posting';
+                ShowAs = SplitButton;
 
                 actionref(Post_Promoted; Post)
                 {

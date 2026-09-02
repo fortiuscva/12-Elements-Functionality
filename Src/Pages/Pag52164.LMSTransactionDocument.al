@@ -5,6 +5,7 @@ page 52164 "12E LMS Transaction Document"
     PageType = Document;
     SourceTable = "12E LMS Transaction Header";
     UsageCategory = None;
+    InsertAllowed = false;
 
     layout
     {
@@ -65,42 +66,20 @@ page 52164 "12E LMS Transaction Document"
     {
         area(Processing)
         {
-            group(Posting)
+            action(CreateLMSDocument)
             {
-                Caption = 'Posting';
-                Image = Post;
+                ApplicationArea = All;
+                Caption = 'Create LMS Document';
+                Image = CreateDocument;
+                ToolTip = 'Create the LMS Transaction document.';
 
-                action(Post)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Post';
-                    Image = Post;
-                    ShortCutKey = 'F9';
-                    ToolTip = 'Post the LMS Transaction document.';
-
-                    trigger OnAction()
-                    var
-                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
-                    begin
-                        LMSTransactionPosting.Post(Rec);
-                        CurrPage.Update(false);
-                    end;
-                }
-
-                action(PreviewPosting)
-                {
-                    ApplicationArea = All;
-                    Caption = 'Preview Posting';
-                    Image = ViewPostedOrder;
-                    ToolTip = 'Preview the posting of the LMS Transaction document without posting it.';
-
-                    trigger OnAction()
-                    var
-                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
-                    begin
-                        LMSTransactionPosting.PreviewPosting(Rec);
-                    end;
-                }
+                trigger OnAction()
+                var
+                    LMSTransactionCreation: Codeunit "12E LMS Creation Management";
+                begin
+                    LMSTransactionCreation.CreateLMSTransactions();
+                    CurrPage.Update(false);
+                end;
             }
 
             group(LMSReleaseGroup)
@@ -141,14 +120,88 @@ page 52164 "12E LMS Transaction Document"
                     end;
                 }
             }
+
+            group("P&osting")
+            {
+                Caption = 'P&osting';
+                Image = Post;
+
+                action(Post)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post';
+                    Ellipsis = true;
+                    Image = Post;
+                    Enabled = Rec.Status = Rec.Status::Released;
+                    ShortCutKey = 'F9';
+                    ToolTip = 'Post the LMS Transaction document.';
+
+                    trigger OnAction()
+                    var
+                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+                    begin
+                        LMSTransactionPosting.Post(Rec);
+                        CurrPage.Update(false);
+                    end;
+                }
+
+                action(PreviewPosting)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Preview Posting';
+                    Ellipsis = true;
+                    Image = ViewPostedOrder;
+                    Enabled = Rec.Status = Rec.Status::Released;
+                    ToolTip = 'Preview the posting of the LMS Transaction document without posting it.';
+
+                    trigger OnAction()
+                    var
+                        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+                    begin
+                        LMSTransactionPosting.PreviewPosting(Rec);
+                    end;
+                }
+            }
         }
 
+        area(Navigation)
+        {
+            group(Navigate)
+            {
+                Caption = 'Navigate';
+                Image = Navigate;
+
+                action("Show LMS Transaction Details")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Show LMS Transaction Details';
+                    Image = Entries;
+                    ToolTip = 'Shows the LMS Transaction Details related to this LMS Transaction document.';
+
+                    trigger OnAction()
+                    var
+                        LMSDetail: Record "12E LMS Transaction Details";
+                    begin
+                        LMSDetail.Reset();
+                        LMSDetail.SetRange("LMS Document No.", Rec."No.");
+                        Page.Run(Page::"12E LMS Transaction Details", LMSDetail);
+                    end;
+                }
+            }
+        }
 
         area(Promoted)
         {
+            group(Category_Process)
+            {
+                actionref(CreateLMSDocument_Promoted; CreateLMSDocument)
+                {
+                }
+            }
+
             group(Category_Category5)
             {
-                Caption = 'Release', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'Release';
                 ShowAs = SplitButton;
 
                 actionref(Release_Promoted; Release)
@@ -163,12 +216,23 @@ page 52164 "12E LMS Transaction Document"
             group(Category_Category6)
             {
                 Caption = 'Posting';
+                ShowAs = SplitButton;
 
                 actionref(Post_Promoted; Post)
                 {
                 }
 
                 actionref(PreviewPosting_Promoted; PreviewPosting)
+                {
+                }
+            }
+
+            group(Category_Category7)
+            {
+                Caption = 'Navigate';
+                ShowAs = Standard;
+
+                actionref(ShowLMSTransactionDetails_Promoted; "Show LMS Transaction Details")
                 {
                 }
             }

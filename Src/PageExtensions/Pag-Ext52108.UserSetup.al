@@ -25,6 +25,16 @@ pageextension 52108 "12E User Setup" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Allow Lead Accrual Reversal.', Comment = '%';
             }
+            field("12E Allow LMS Reversal"; Rec."12E Allow LMS Reversal")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Allow LMS Reversal.', Comment = '%';
+            }
+            field("12E Allow LMS Trans. Reversal"; Rec."12E Allow LMS Trans. Reversal")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies the value of the Allow LMS Transaction Reversal.', Comment = '%';
+            }
 
         }
     }

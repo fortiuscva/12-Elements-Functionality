@@ -204,6 +204,19 @@ table 52104 "12E Setup"
             Caption = 'LMS Reason Code';
             TableRelation = "Reason Code".Code;
         }
+        field(56; "LMS Transaction Jnl. Template"; Code[10])
+        {
+            Caption = 'LMS Transaction Jnl. Template';
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Template";
+        }
+
+        field(57; "LMS Transaction Jnl. Batch"; Code[10])
+        {
+            Caption = 'LMS Transaction Jnl. Batch';
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("LMS Transaction Jnl. Template"));
+        }
     }
     keys
     {

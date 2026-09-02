@@ -34,15 +34,6 @@ page 52169 "12E Posted LMS Transactions"
                     ApplicationArea = All;
                 }
 
-                field("Document No."; Rec."Document No.")
-                {
-                    ApplicationArea = All;
-                }
-
-                field("G/L Register No."; Rec."G/L Register No.")
-                {
-                    ApplicationArea = All;
-                }
 
                 field("Source Code"; Rec."Source Code")
                 {
@@ -54,16 +45,10 @@ page 52169 "12E Posted LMS Transactions"
                     ApplicationArea = All;
                 }
 
-                field("Posted DateTime"; Rec."Posted DateTime")
+                field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ApplicationArea = All;
                 }
-
-                field("Posted By"; Rec."Posted By")
-                {
-                    ApplicationArea = All;
-                }
-
                 field(Reversed; Rec.Reversed)
                 {
                     ApplicationArea = All;
@@ -111,7 +96,7 @@ page 52169 "12E Posted LMS Transactions"
                 var
                     GLEntry: Record "G/L Entry";
                 begin
-                    GLEntry.SetRange("Document No.", Rec."Document No.");
+                    GLEntry.SetRange("Document No.", Rec."No.");
                     GLEntry.SetRange("Posting Date", Rec."Posting Date");
 
                     if Rec."Source Code" <> '' then

@@ -88,4 +88,12 @@ page 52146 "12E Questco Payroll Batch API"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        ValidationsCUGbl.CheckQuestcoClientIDMapping(Rec."Client ID");
+        exit(true);
+    end;
+
+    var
+        ValidationsCUGbl: Codeunit "12E Validations";
 }

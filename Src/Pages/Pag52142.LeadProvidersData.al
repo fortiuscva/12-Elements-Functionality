@@ -96,6 +96,7 @@ page 52142 "12E Lead Providers Data"
     begin
         ValidationsCUGbl.CheckDataSourceID(Rec."Datasource ID");
         ValidationsCUGbl.CheckPortfolioMapping(Rec."Portfolio Name");
+        exit(true);
     end;
 
     var

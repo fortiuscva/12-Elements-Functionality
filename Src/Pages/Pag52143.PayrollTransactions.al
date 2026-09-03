@@ -124,4 +124,12 @@ page 52143 "12E Payroll Transactions"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        ValidationsCUGbl.CheckQuestcoClientIDMapping(Rec."Client ID");
+        exit(true);
+    end;
+
+    var
+        ValidationsCUGbl: Codeunit "12E Validations";
 }

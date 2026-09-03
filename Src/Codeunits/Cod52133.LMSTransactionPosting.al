@@ -19,7 +19,6 @@ codeunit 52133 "12E LMS Transaction Posting"
             PostingError := GetLastErrorText();
             LMSHeader.Get(LMSHeader."No.");
             LMSHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSHeader."Posting Error"));
-            LMSHeader."Error Exists" := true;
             LMSHeader.Modify(true);
             UpdatePostingError(LMSHeader, PostingError);
             DeleteJournalLines();
@@ -28,9 +27,11 @@ codeunit 52133 "12E LMS Transaction Posting"
             exit;
         end;
 
+        LMSHeader.Get(LMSHeader."No.");
         DeleteJournalLines();
         CreatePostedTransaction(LMSHeader);
         UpdatePostingResult(LMSHeader);
+        CreatePostedTransactionDetails(LMSHeader);
         DeleteLMSDocument(LMSHeader);
 
         if GuiAllowed() then
@@ -59,8 +60,6 @@ codeunit 52133 "12E LMS Transaction Posting"
         if LMSHeader.Status <> LMSHeader.Status::Released then
             Error('LMS Transaction %1 must be Released before posting.', LMSHeader."No.");
 
-        if LMSHeader."Error Exists" then
-            Error('LMS Transaction %1 contains errors and cannot be posted.', LMSHeader."No.");
 
         LMSLine.SetRange("Document No.", LMSHeader."No.");
 
@@ -226,7 +225,6 @@ codeunit 52133 "12E LMS Transaction Posting"
 
         PostedHeader.Init();
         PostedHeader.TransferFields(LMSHeader);
-        PostedHeader."Posting Date" := LMSHeader."Transaction Date";
         PostedHeader."Source Code" := TwelveSetup."LMS Source Code";
         PostedHeader."Reason Code" := TwelveSetup."LMS Reason Code";
         PostedHeader.Reversed := false;
@@ -248,6 +246,27 @@ codeunit 52133 "12E LMS Transaction Posting"
         PostedLine.Init();
         PostedLine.TransferFields(LMSLine);
         PostedLine.Insert(true);
+    end;
+
+    local procedure CreatePostedTransactionDetails(LMSHeader: Record "12E LMS Transaction Header")
+    var
+        LMSDetail: Record "12E LMS Transaction Details";
+        PostedDetail: Record "12E Posted LMS Trans. Details";
+        PostedHeader: Record "12E Posted LMS Trans. Header";
+    begin
+        PostedHeader.Get(LMSHeader."No.");
+        LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
+
+        if LMSDetail.FindSet() then
+            repeat
+                PostedDetail.Init();
+                PostedDetail.TransferFields(LMSDetail);
+                PostedDetail."LMS Document No." := PostedHeader."No.";
+                PostedDetail."G/L Register No." := PostedHeader."G/L Register No.";
+                PostedDetail."ERP Status" := 'Posted';
+                PostedDetail."ERP Error Msg" := '';
+                PostedDetail.Insert(true);
+            until LMSDetail.Next() = 0;
     end;
 
     local procedure UpdatePostingResult(var LMSHeader: Record "12E LMS Transaction Header")
@@ -283,7 +302,13 @@ codeunit 52133 "12E LMS Transaction Posting"
     end;
 
     local procedure DeleteLMSDocument(var LMSHeader: Record "12E LMS Transaction Header")
+    var
+        LMSDetail: Record "12E LMS Transaction Details";
     begin
+        LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
+        if not LMSDetail.IsEmpty() then
+            LMSDetail.DeleteAll(true);
+
         LMSHeader.Delete(true);
     end;
 }

@@ -1,6 +1,6 @@
-table 52140 "12E LMS Transaction Details"
+table 52143 "12E Posted LMS Trans. Details"
 {
-    Caption = 'LMS Transaction Details';
+    Caption = 'Posted LMS Transaction Details';
     DataClassification = CustomerContent;
     LookupPageId = "12E LMS Transaction Details";
     DrillDownPageId = "12E LMS Transaction Details";

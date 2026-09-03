@@ -32,6 +32,7 @@ page 52164 "12E LMS Transaction Document"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.';
                     Editable = false;
+                    Visible = false;
                 }
 
                 field("Transaction Date"; Rec."Transaction Date")
@@ -48,13 +49,7 @@ page 52164 "12E LMS Transaction Document"
                     Editable = false;
                 }
 
-                field("Error Exists"; Rec."Error Exists")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies whether an error exists for the LMS Transaction document.';
-                    Editable = false;
-                    Visible = false;
-                }
+
                 group(PostingError)
                 {
                     Caption = 'Posting Error';
@@ -100,6 +95,22 @@ page 52164 "12E LMS Transaction Document"
 
                     LMSTransactionCreation.CreateLMSTransactions();
                     CurrPage.Update(false);
+                end;
+            }
+            action("Show LMS Transaction Details")
+            {
+                ApplicationArea = All;
+                Caption = 'Show LMS Transaction Details';
+                Image = Entries;
+                ToolTip = 'Shows the LMS Transaction Details related to this LMS Transaction document.';
+
+                trigger OnAction()
+                var
+                    LMSDetail: Record "12E LMS Transaction Details";
+                begin
+                    LMSDetail.Reset();
+                    LMSDetail.SetRange("LMS Document No.", Rec."No.");
+                    Page.Run(Page::"12E LMS Transaction Details", LMSDetail);
                 end;
             }
 
@@ -185,40 +196,33 @@ page 52164 "12E LMS Transaction Document"
                         LMSTransactionPosting.PreviewPosting(Rec);
                     end;
                 }
-            }
-        }
-
-        area(Navigation)
-        {
-            group(Navigate)
-            {
-                Caption = 'Navigate';
-                Image = Navigate;
-
-                action("Show LMS Transaction Details")
+                action(PostBatch)
                 {
                     ApplicationArea = All;
-                    Caption = 'Show LMS Transaction Details';
-                    Image = Entries;
-                    ToolTip = 'Shows the LMS Transaction Details related to this LMS Transaction document.';
+                    Caption = 'Post Batch';
+                    Image = PostBatch;
+                    ToolTip = 'Post multiple LMS Transaction documents.';
 
                     trigger OnAction()
                     var
-                        LMSDetail: Record "12E LMS Transaction Details";
+                        PostLMSTransactions: Report "12E Post LMS Transactions";
                     begin
-                        LMSDetail.Reset();
-                        LMSDetail.SetRange("LMS Document No.", Rec."No.");
-                        Page.Run(Page::"12E LMS Transaction Details", LMSDetail);
+                        PostLMSTransactions.RunModal();
+                        CurrPage.Update(false);
                     end;
                 }
             }
         }
+
 
         area(Promoted)
         {
             group(Category_Process)
             {
                 actionref(CreateLMSDocument_Promoted; CreateLMSDocument)
+                {
+                }
+                actionref(ShowLMSTransactionDetails_Promoted; "Show LMS Transaction Details")
                 {
                 }
             }
@@ -249,14 +253,7 @@ page 52164 "12E LMS Transaction Document"
                 actionref(PreviewPosting_Promoted; PreviewPosting)
                 {
                 }
-            }
-
-            group(Category_Category7)
-            {
-                Caption = 'Navigate';
-                ShowAs = Standard;
-
-                actionref(ShowLMSTransactionDetails_Promoted; "Show LMS Transaction Details")
+                actionref(PostBatch_Promoted; PostBatch)
                 {
                 }
             }

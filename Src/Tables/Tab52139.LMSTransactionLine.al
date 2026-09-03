@@ -78,6 +78,14 @@ table 52139 "12E LMS Transaction Line"
             Caption = 'Shortcut Dimension 8 Code';
             TableRelation = Dimension;
         }
+        Field(20; "Debit Amount"; Decimal)
+        {
+            Caption = 'Debit Amount';
+        }
+        Field(21; "Credit Amount"; Decimal)
+        {
+            Caption = 'Credit Amount';
+        }
     }
     keys
     {

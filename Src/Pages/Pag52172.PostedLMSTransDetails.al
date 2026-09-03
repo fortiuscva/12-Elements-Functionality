@@ -1,9 +1,9 @@
-page 52168 "12E LMS Transaction Details"
+page 52172 "12E Posted LMS Trans. Details"
 {
     ApplicationArea = All;
-    Caption = 'LMS Transaction Details';
+    Caption = 'Posted LMS Transaction Details';
     PageType = List;
-    SourceTable = "12E LMS Transaction Details";
+    SourceTable = "12E Posted LMS Trans. Details";
     UsageCategory = Lists;
     Editable = false;
 

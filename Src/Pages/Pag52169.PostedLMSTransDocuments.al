@@ -1,11 +1,12 @@
-page 52170 "12E Posted LMS Transaction"
+page 52169 "12E Posted LMS Trans.Documents"
 {
-    PageType = Document;
+    PageType = List;
     ApplicationArea = All;
-    UsageCategory = None;
+    UsageCategory = Lists;
     SourceTable = "12E Posted LMS Trans. Header";
-    Caption = 'Posted LMS Transaction';
+    Caption = 'Posted LMS Transaction Documents';
     Editable = false;
+    CardPageId = "12E Posted LMS Trans. Document";
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
@@ -14,10 +15,8 @@ page 52170 "12E Posted LMS Transaction"
     {
         area(Content)
         {
-            group(General)
+            repeater(General)
             {
-                Caption = 'General';
-
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
@@ -33,10 +32,6 @@ page 52170 "12E Posted LMS Transaction"
                     ApplicationArea = All;
                 }
 
-                field("Posting Date"; Rec."Posting Date")
-                {
-                    ApplicationArea = All;
-                }
 
                 field("Source Code"; Rec."Source Code")
                 {
@@ -52,18 +47,10 @@ page 52170 "12E Posted LMS Transaction"
                 {
                     ApplicationArea = All;
                 }
-
                 field(Reversed; Rec.Reversed)
                 {
                     ApplicationArea = All;
                 }
-            }
-
-            part(Lines; "12E Posted LMS Trans. Subform")
-            {
-                ApplicationArea = All;
-                Caption = 'Lines';
-                SubPageLink = "Document No." = field("No.");
             }
         }
     }
@@ -87,7 +74,7 @@ page 52170 "12E Posted LMS Transaction"
                 var
                     LMSReverseMgt: Codeunit "12E LMS Trans. Reverse Mgt.";
                 begin
-                    LMSReverseMgt.ReverseLMS(Rec);
+                    LMSReverseMgt.ReverseLMS(rec);
                     CurrPage.Update(false);
                 end;
             }
@@ -108,7 +95,7 @@ page 52170 "12E Posted LMS Transaction"
                     GLEntry: Record "G/L Entry";
                 begin
                     GLEntry.SetRange("Document No.", Rec."No.");
-                    GLEntry.SetRange("Posting Date", Rec."Posting Date");
+                    GLEntry.SetRange("Posting Date", Rec."Transaction Date");
 
                     if Rec."Source Code" <> '' then
                         GLEntry.SetRange("Source Code", Rec."Source Code");

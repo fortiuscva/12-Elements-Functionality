@@ -2,8 +2,8 @@ table 52141 "12E Posted LMS Trans. Header"
 {
     Caption = 'Posted LMS Transaction Header';
     DataClassification = CustomerContent;
-    LookupPageId = "12E Posted LMS Transactions";
-    DrillDownPageId = "12E Posted LMS Transactions";
+    LookupPageId = "12E Posted LMS Trans. Document";
+    DrillDownPageId = "12E Posted LMS Trans. Document";
 
     fields
     {
@@ -24,13 +24,6 @@ table 52141 "12E Posted LMS Trans. Header"
             Caption = 'Datasource ID';
             DataClassification = CustomerContent;
         }
-
-        field(10; "Posting Date"; Date)
-        {
-            Caption = 'Posting Date';
-            DataClassification = CustomerContent;
-        }
-
 
         field(11; "Source Code"; Code[10])
         {

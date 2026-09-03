@@ -17,11 +17,13 @@ page 52167 "12E LMS Transaction Subform"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Line No."; Rec."Line No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Line No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
@@ -32,6 +34,16 @@ page 52167 "12E LMS Transaction Subform"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Account No. field.', Comment = '%';
+                }
+                field("Debit Amount"; Rec."Debit Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Debit Amount field.', Comment = '%';
+                }
+                field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
                 }
                 field(Amount; Rec.Amount)
                 {

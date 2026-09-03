@@ -15,13 +15,23 @@ page 52171 "12E Posted LMS Trans. Subform"
                 field("Line No."; Rec."Line No.")
                 {
                     ApplicationArea = All;
+                    Visible = false;
                 }
 
                 field("Account No."; Rec."Account No.")
                 {
                     ApplicationArea = All;
                 }
-
+                field("Debit Amount"; Rec."Debit Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Debit Amount field.', Comment = '%';
+                }
+                field("Credit Amount"; Rec."Credit Amount")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
+                }
                 field(Amount; Rec.Amount)
                 {
                     ApplicationArea = All;

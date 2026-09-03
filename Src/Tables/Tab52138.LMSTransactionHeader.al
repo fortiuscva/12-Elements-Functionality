@@ -32,11 +32,7 @@ table 52138 "12E LMS Transaction Header"
             TableRelation = "12E EPIC DataSource";
             DataClassification = CustomerContent;
         }
-        field(4; "Error Exists"; Boolean)
-        {
-            Caption = 'Error Exists';
-            DataClassification = CustomerContent;
-        }
+
         field(5; Status; Enum "12E LMS Document Status")
         {
             Caption = 'Status';
@@ -68,10 +64,10 @@ table 52138 "12E LMS Transaction Header"
     }
     fieldgroups
     {
-        fieldgroup(DropDown; "No.", "Datasource ID", "Transaction Date", "Error Exists")
+        fieldgroup(DropDown; "No.", "Datasource ID", "Transaction Date")
         {
         }
-        fieldgroup(Brick; "No.", "Datasource ID", "Transaction Date", "Error Exists")
+        fieldgroup(Brick; "No.", "Datasource ID", "Transaction Date")
         {
         }
     }

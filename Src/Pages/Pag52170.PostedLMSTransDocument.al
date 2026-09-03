@@ -1,12 +1,11 @@
-page 52169 "12E Posted LMS Transactions"
+page 52170 "12E Posted LMS Trans. Document"
 {
-    PageType = List;
+    PageType = Document;
     ApplicationArea = All;
-    UsageCategory = Lists;
+    UsageCategory = None;
     SourceTable = "12E Posted LMS Trans. Header";
-    Caption = 'Posted LMS Transactions';
+    Caption = 'Posted LMS Transaction Document';
     Editable = false;
-    CardPageId = "12E Posted LMS Transaction";
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
@@ -15,8 +14,10 @@ page 52169 "12E Posted LMS Transactions"
     {
         area(Content)
         {
-            repeater(General)
+            group(General)
             {
+                Caption = 'General';
+
                 field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
@@ -30,11 +31,7 @@ page 52169 "12E Posted LMS Transactions"
                 field("Datasource ID"; Rec."Datasource ID")
                 {
                     ApplicationArea = All;
-                }
-
-                field("Posting Date"; Rec."Posting Date")
-                {
-                    ApplicationArea = All;
+                    Visible = false;
                 }
 
 
@@ -52,10 +49,18 @@ page 52169 "12E Posted LMS Transactions"
                 {
                     ApplicationArea = All;
                 }
+
                 field(Reversed; Rec.Reversed)
                 {
                     ApplicationArea = All;
                 }
+            }
+
+            part(Lines; "12E Posted LMS Trans. Subform")
+            {
+                ApplicationArea = All;
+                Caption = 'Lines';
+                SubPageLink = "Document No." = field("No.");
             }
         }
     }
@@ -79,7 +84,7 @@ page 52169 "12E Posted LMS Transactions"
                 var
                     LMSReverseMgt: Codeunit "12E LMS Trans. Reverse Mgt.";
                 begin
-                    LMSReverseMgt.ReverseLMS(rec);
+                    LMSReverseMgt.ReverseLMS(Rec);
                     CurrPage.Update(false);
                 end;
             }
@@ -100,12 +105,29 @@ page 52169 "12E Posted LMS Transactions"
                     GLEntry: Record "G/L Entry";
                 begin
                     GLEntry.SetRange("Document No.", Rec."No.");
-                    GLEntry.SetRange("Posting Date", Rec."Posting Date");
+                    GLEntry.SetRange("Posting Date", Rec."Transaction Date");
 
                     if Rec."Source Code" <> '' then
                         GLEntry.SetRange("Source Code", Rec."Source Code");
 
                     Page.Run(Page::"General Ledger Entries", GLEntry);
+                end;
+            }
+            action(ShowLMSTransactionDetails)
+            {
+                ApplicationArea = All;
+                Caption = 'Show LMS Transaction Details';
+                Image = ViewDetails;
+                Promoted = true;
+                PromotedCategory = Process;
+                ToolTip = 'View the LMS Transaction Details for this posted LMS Transaction.';
+
+                trigger OnAction()
+                var
+                    PostedLMSDetail: Record "12E Posted LMS Trans. Details";
+                begin
+                    PostedLMSDetail.SetRange("LMS Document No.", Rec."No.");
+                    Page.Run(Page::"12E Posted LMS Trans. Details", PostedLMSDetail);
                 end;
             }
         }

@@ -7,6 +7,7 @@ page 52166 "12E LMS Transaction Documents"
     SourceTable = "12E LMS Transaction Header";
     UsageCategory = Lists;
     InsertAllowed = false;
+    Editable = false;
 
     layout
     {
@@ -24,6 +25,7 @@ page 52166 "12E LMS Transaction Documents"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.';
+                    Visible = false;
                 }
 
                 field("Transaction Date"; Rec."Transaction Date")
@@ -32,11 +34,6 @@ page 52166 "12E LMS Transaction Documents"
                     ToolTip = 'Specifies the value of the Transaction Date field.';
                 }
 
-                field("Error Exists"; Rec."Error Exists")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies whether an error exists for the LMS Transaction document.';
-                }
 
                 field(Status; Rec.Status)
                 {
@@ -150,6 +147,21 @@ page 52166 "12E LMS Transaction Documents"
                         LMSTransactionPosting.PreviewPosting(Rec);
                     end;
                 }
+                action(PostBatch)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post Batch';
+                    Image = PostBatch;
+                    ToolTip = 'Post multiple LMS Transaction documents.';
+
+                    trigger OnAction()
+                    var
+                        PostLMSTransactions: Report "12E Post LMS Transactions";
+                    begin
+                        PostLMSTransactions.RunModal();
+                        CurrPage.Update(false);
+                    end;
+                }
             }
         }
 
@@ -186,6 +198,9 @@ page 52166 "12E LMS Transaction Documents"
                 }
 
                 actionref(PreviewPosting_Promoted; PreviewPosting)
+                {
+                }
+                actionref(PostBatch_Promoted; PostBatch)
                 {
                 }
             }

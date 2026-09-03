@@ -195,7 +195,6 @@ codeunit 52132 "12E LMS Creation Management"
         LMSHeader.Init();
         LMSHeader."Datasource ID" := DataSourceID;
         LMSHeader."Transaction Date" := TransactionDate;
-        LMSHeader."Error Exists" := false;
         LMSHeader.Status := LMSHeader.Status::Open;
         LMSHeader.Insert(true);
         exit(LMSHeader);
@@ -221,6 +220,15 @@ codeunit 52132 "12E LMS Creation Management"
         LMSLine."Datasource ID" := LMSHeader."Datasource ID";
         LMSLine."Account No." := GetAccountNo(LMSDataQuery);
         LMSLine.Amount := GetPostingAmount(LMSDataQuery);
+
+        if LMSDataQuery.DebitAccountNo <> '' then begin
+            LMSLine."Debit Amount" := LMSDataQuery.Amount;
+            LMSLine."Credit Amount" := 0;
+        end else begin
+            LMSLine."Debit Amount" := 0;
+            LMSLine."Credit Amount" := LMSDataQuery.Amount;
+        end;
+
         LMSLine.Insert(true);
     end;
 

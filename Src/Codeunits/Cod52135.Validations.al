@@ -22,6 +22,17 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(DatasourceIdErrLbl, DatasourceIDPar));
     end;
 
+    procedure CheckQuestcoClientIDMapping(ClientIDPar: Integer)
+    begin
+        CompanyMappingRecGbl.Reset();
+        CompanyMappingRecGbl.SetRange("Client ID", ClientIDPar);
+        if CompanyMappingRecGbl.FindLast() then begin
+            if CompanyMappingRecGbl.Company = '' then
+                Error(StrSubstNo(QuestcoClientIdMappingErrLbl, ClientIDPar));
+        end else
+            Error(StrSubstNo(QuestcoClientIdErrLbl, ClientIDPar));
+    end;
+
     var
 
         CompanyMappingRecGbl: Record "12E Company Mapping";
@@ -29,4 +40,6 @@ codeunit 52135 "12E Validations"
         PortfolioMappingErrLbl: Label 'Portfolio %1 is not associated with any company';
         DatasourceIdErrLbl: Label 'Datasource ID %1 does not exist in company mapping';
         DatasourceIdMappingErrLbl: Label 'Datasource ID %1 is not associated with any company';
+        QuestcoClientIdErrLbl: Label 'Questco Client ID %1 does not exist in company mapping';
+        QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company';
 }

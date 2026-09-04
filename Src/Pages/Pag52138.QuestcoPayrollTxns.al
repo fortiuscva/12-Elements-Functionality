@@ -117,6 +117,12 @@ page 52138 "12E Questco Payroll Txns"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERPErrorMsg field.', Comment = '%';
                 }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Posting Error Message field.', Comment = '%';
+                }
                 field("Export Batch ID"; Rec."Export Batch ID")
                 {
                     ApplicationArea = All;

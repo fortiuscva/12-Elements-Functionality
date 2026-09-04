@@ -120,6 +120,11 @@ page 52145 "12E Questco Payroll Batches"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
                 }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Error Message field.', Comment = '%';
+                }
                 field("ETL Batch ID"; Rec."ETL Batch ID")
                 {
                     ApplicationArea = All;

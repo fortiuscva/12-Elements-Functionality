@@ -81,6 +81,10 @@ page 52146 "12E Questco Payroll Batch API"
                 {
                     Caption = 'ERP Error Message';
                 }
+                field(postingErrorMessage; PostingErrorMessage)
+                {
+                    Caption = 'Posting Error Message';
+                }
                 field(etlBatchID; Rec."ETL Batch ID")
                 {
                     Caption = 'ETL Batch ID';
@@ -90,10 +94,17 @@ page 52146 "12E Questco Payroll Batch API"
     }
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        ValidationsCUGbl.CheckQuestcoClientIDMapping(Rec."Client ID");
+        Validations.CheckQuestcoClientIDMapping(Rec."Client ID");
         exit(true);
     end;
 
+    trigger OnAfterGetRecord()
+    begin
+        PostingErrorMessage := Functions.GetPayrollCompanySpecificPostingError(Rec."Client ID", Rec."Batch ID");
+    end;
+
     var
-        ValidationsCUGbl: Codeunit "12E Validations";
+        Validations: Codeunit "12E Validations";
+        Functions: Codeunit "12E Functions";
+        PostingErrorMessage: Text;
 }

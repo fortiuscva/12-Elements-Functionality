@@ -90,10 +90,10 @@ page 52144 "12E CCD Detailed Data Entries"
     }
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        ValidationsCUGbl.CheckPortfolioMapping(Rec.Portfolio);
+        Validations.CheckPortfolioMapping(Rec.Portfolio);
         exit(true);
     end;
 
     var
-        ValidationsCUGbl: Codeunit "12E Validations";
+        Validations: Codeunit "12E Validations";
 }

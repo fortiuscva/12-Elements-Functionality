@@ -97,6 +97,10 @@ page 52143 "12E Payroll Transactions"
                 {
                     Caption = 'ERPErrorMsg';
                 }
+                field(postingError; Rec."Posting Error")
+                {
+                    Caption = 'Posting Error Message';
+                }
                 field(exportBatchID; Rec."Export Batch ID")
                 {
                     Caption = 'Export Batch ID';
@@ -126,10 +130,18 @@ page 52143 "12E Payroll Transactions"
     }
     trigger OnInsertRecord(BelowxRec: Boolean): Boolean
     begin
-        ValidationsCUGbl.CheckQuestcoClientIDMapping(Rec."Client ID");
+        Validations.CheckQuestcoClientIDMapping(Rec."Client ID");
+        Validations.CheckWhetherPayrollBatchExists(Rec."Client ID", Rec."Batch ID");
         exit(true);
     end;
 
+    trigger OnAfterGetRecord()
+    begin
+        PostingErrorMessage := Functions.GetPayrollCompanySpecificPostingError(Rec."Client ID", Rec."Batch ID");
+    end;
+
     var
-        ValidationsCUGbl: Codeunit "12E Validations";
+        Validations: Codeunit "12E Validations";
+        Functions: Codeunit "12E Functions";
+        PostingErrorMessage: Text;
 }

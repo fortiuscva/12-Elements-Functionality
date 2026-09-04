@@ -121,6 +121,10 @@ page 52154 "12E QPAY Batches"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
                 }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ToolTip = 'Specifies the value of the Posting Error Message field.', Comment = '%';
+                }
                 field("ETL Batch ID"; Rec."ETL Batch ID")
                 {
                     ApplicationArea = All;

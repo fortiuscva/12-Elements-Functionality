@@ -11,7 +11,7 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(PortfolioErrLbl, PortfolioPar));
     end;
 
-    procedure CheckDataSourceID(DatasourceIDPar: Integer)
+    procedure CheckDataSourceIDMapping(DatasourceIDPar: Integer)
     begin
         CompanyMappingRecGbl.Reset();
         CompanyMappingRecGbl.SetRange("DataSource ID", DatasourceIDPar);
@@ -33,13 +33,25 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(QuestcoClientIdErrLbl, ClientIDPar));
     end;
 
+    procedure CheckWhetherPayrollBatchExists(ClientIDPar: Integer; BatchIDPar: Integer)
+    var
+        PayrollBatch: Record "12E Questco Payroll Batch";
+    begin
+        PayrollBatch.Reset();
+        PayrollBatch.SetRange("Client ID", ClientIDPar);
+        PayrollBatch.SetRange("Batch ID", BatchIDPar);
+        if PayrollBatch.IsEmpty() then
+            Error(StrSubstNo(PayrollBatchDoesNotExistErrLbl, ClientIDPar, BatchIDPar));
+    end;
+
     var
 
         CompanyMappingRecGbl: Record "12E Company Mapping";
-        PortfolioErrLbl: Label 'Portfolio %1 does not exist in company mapping';
-        PortfolioMappingErrLbl: Label 'Portfolio %1 is not associated with any company';
-        DatasourceIdErrLbl: Label 'Datasource ID %1 does not exist in company mapping';
-        DatasourceIdMappingErrLbl: Label 'Datasource ID %1 is not associated with any company';
-        QuestcoClientIdErrLbl: Label 'Questco Client ID %1 does not exist in company mapping';
-        QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company';
+        PortfolioErrLbl: Label 'Portfolio %1 does not exist in company mapping.';
+        PortfolioMappingErrLbl: Label 'Portfolio %1 is not associated with any company.';
+        DatasourceIdErrLbl: Label 'Datasource ID %1 does not exist in company mapping.';
+        DatasourceIdMappingErrLbl: Label 'Datasource ID %1 is not associated with any company.';
+        QuestcoClientIdErrLbl: Label 'Questco Client ID %1 does not exist in company mapping.';
+        QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company.';
+        PayrollBatchDoesNotExistErrLbl: Label 'Questco Payroll Batch does not exist with this Client ID  %1 and Batch ID %2.';
 }

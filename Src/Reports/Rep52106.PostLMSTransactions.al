@@ -14,13 +14,17 @@ report 52106 "12E Post LMS Transactions"
             var
                 LMSPosting: Codeunit "12E LMS Transaction Posting";
             begin
+                LMSPosting.SetSuppressSuccessMessage(true);
+
                 if not TryPostTransaction(LMSPosting, LMSHeader) then begin
                     FailedCount += 1;
-                    FailedDocuments += StrSubstNo('%1 - %2', LMSHeader."No.", GetLastErrorText());
                     exit;
                 end;
 
-                PostedCount += 1;
+                if LMSPosting.IsPostingFailed() then
+                    FailedCount += 1
+                else
+                    PostedCount += 1;
             end;
         }
     }
@@ -28,7 +32,7 @@ report 52106 "12E Post LMS Transactions"
     var
         PostedCount: Integer;
         FailedCount: Integer;
-        FailedDocuments: Text;
+        BatchPostingErrorMsg: Label 'One or more LMS transaction documents have issues with posting.';
 
     [TryFunction]
     local procedure TryPostTransaction(var LMSPosting: Codeunit "12E LMS Transaction Posting"; var LMSHeader: Record "12E LMS Transaction Header")
@@ -49,6 +53,6 @@ report 52106 "12E Post LMS Transactions"
             exit;
         end;
 
-        Message('%1 LMS Transaction document(s) posted successfully.\%2 LMS Transaction document(s) failed.\%3', PostedCount, FailedCount, FailedDocuments);
+        Message(BatchPostingErrorMsg);
     end;
 }

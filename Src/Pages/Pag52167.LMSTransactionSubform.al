@@ -35,6 +35,11 @@ page 52167 "12E LMS Transaction Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Account No. field.', Comment = '%';
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                }
                 field("Debit Amount"; Rec."Debit Amount")
                 {
                     ApplicationArea = All;
@@ -45,11 +50,7 @@ page 52167 "12E LMS Transaction Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
                 }
-                field(Amount; Rec.Amount)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
-                }
+
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {
                     ApplicationArea = All;

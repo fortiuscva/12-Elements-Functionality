@@ -111,11 +111,7 @@ table 52143 "12E Posted LMS Trans. Details"
             DataClassification = CustomerContent;
             TableRelation = "G/L Account";
         }
-        field(21; "Document No."; Code[20])
-        {
-            Caption = 'Document No.';
-            DataClassification = CustomerContent;
-        }
+
         field(22; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';

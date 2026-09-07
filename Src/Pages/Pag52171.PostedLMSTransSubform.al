@@ -22,6 +22,10 @@ page 52171 "12E Posted LMS Trans. Subform"
                 {
                     ApplicationArea = All;
                 }
+                field(Amount; Rec.Amount)
+                {
+                    ApplicationArea = All;
+                }
                 field("Debit Amount"; Rec."Debit Amount")
                 {
                     ApplicationArea = All;
@@ -32,10 +36,7 @@ page 52171 "12E Posted LMS Trans. Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Credit Amount field.', Comment = '%';
                 }
-                field(Amount; Rec.Amount)
-                {
-                    ApplicationArea = All;
-                }
+
 
                 field("Shortcut Dimension 1 Code"; Rec."Shortcut Dimension 1 Code")
                 {

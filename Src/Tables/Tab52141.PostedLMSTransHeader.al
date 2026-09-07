@@ -40,6 +40,7 @@ table 52141 "12E Posted LMS Trans. Header"
         {
             Caption = 'G/L Register No.';
             DataClassification = CustomerContent;
+            TableRelation = "G/L Register";
         }
 
         field(14; Reversed; Boolean)

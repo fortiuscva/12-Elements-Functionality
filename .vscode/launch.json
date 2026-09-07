@@ -6,7 +6,7 @@
             "type": "al",
             "request": "launch",
             "environmentType": "Sandbox",
-            "environmentName": "Dev_08242026",
+            "environmentName": "Dev",
             "tenant": "5520bf2a-e65c-4ca4-82c0-6169cccfd425",
             "breakOnError": "All",
             "breakOnRecordWrite": "None",

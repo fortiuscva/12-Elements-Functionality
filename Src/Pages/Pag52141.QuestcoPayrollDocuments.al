@@ -108,8 +108,11 @@ page 52141 "12E Questco Payroll Documents"
                 Image = CreateDocument;
 
                 trigger OnAction()
+                var
+                    CreatePayrollDocs: Report "12E Create Payroll Documents";
                 begin
-                    Codeunit.Run(Codeunit::"12E Payroll Batch Mgmt");
+                    CreatePayrollDocs.RunModal();
+                    CurrPage.Update(false);
                 end;
             }
             group(Posting)

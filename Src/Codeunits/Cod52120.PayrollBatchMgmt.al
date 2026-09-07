@@ -2,30 +2,27 @@ codeunit 52120 "12E Payroll Batch Mgmt"
 {
     trigger OnRun()
     begin
-        CreatePayrollBatches();
+        CreatePayrollBatches(Today(), Today());
     end;
 
-    procedure CreatePayrollBatches()
+    procedure CreatePayrollBatches(StartDate: Date; EndDate: Date)
     var
         QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
         PayrollBatchHeader: Record "12E Payroll Batch Header";
         ClientID: Integer;
-        WorkDate: Date;
     begin
         ClientID := GetClientID();
-        WorkDate := Today();
 
         QuestcoPayrollBatch.Reset();
-        // QuestcoPayrollBatch.SetRange("Payroll Processed", false);
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
         QuestcoPayrollBatch.SetRange("Payroll Doc. No.", '');
         QuestcoPayrollBatch.SetRange("Posted Payroll Doc. No.", '');
+        QuestcoPayrollBatch.SetRange("Pay Date", StartDate, EndDate);
+
         if QuestcoPayrollBatch.FindSet() then
             repeat
-                if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID")
-                then
+                if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID") then
                     CreatePayrollBatchHeader(QuestcoPayrollBatch, PayrollBatchHeader);
-
             until QuestcoPayrollBatch.Next() = 0;
     end;
 

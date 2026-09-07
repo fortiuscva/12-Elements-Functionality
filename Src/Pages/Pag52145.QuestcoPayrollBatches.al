@@ -1,6 +1,6 @@
 page 52145 "12E Questco Payroll Batches"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'Payroll Batches (Global)';
     PageType = List;
     SourceTable = "12E Questco Payroll Batch";
@@ -8,7 +8,7 @@ page 52145 "12E Questco Payroll Batches"
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {
@@ -119,6 +119,11 @@ page 52145 "12E Questco Payroll Batches"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
+                }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Error Message field.', Comment = '%';
                 }
                 field("ETL Batch ID"; Rec."ETL Batch ID")
                 {

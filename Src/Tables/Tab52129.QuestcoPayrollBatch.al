@@ -119,6 +119,13 @@ table 52129 "12E Questco Payroll Batch"
             FieldClass = FlowField;
             CalcFormula = lookup("12E Posted Payroll Header"."No." where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID"), Reversed = const(false)));
         }
+        field(22; "Posting Error"; Text[2048])
+        {
+            CalcFormula = lookup("12E Payroll Batch Header"."Posting Error" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID")));
+            Caption = 'Posting Error Message';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
     keys
     {

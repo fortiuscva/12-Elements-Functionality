@@ -1,6 +1,6 @@
 page 52138 "12E Questco Payroll Txns"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'Payroll Transactions (Global)';
     PageType = List;
     SourceTable = "12E Questco Payroll Txn";
@@ -8,7 +8,7 @@ page 52138 "12E Questco Payroll Txns"
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {
@@ -116,6 +116,12 @@ page 52138 "12E Questco Payroll Txns"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERPErrorMsg field.', Comment = '%';
+                }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Posting Error Message field.', Comment = '%';
                 }
                 field("Export Batch ID"; Rec."Export Batch ID")
                 {

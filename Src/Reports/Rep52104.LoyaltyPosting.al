@@ -3,7 +3,7 @@ report 52104 "12E Loyalty Posting"
     ApplicationArea = All;
     Caption = 'Loyalty Posting';
     ProcessingOnly = true;
-    UsageCategory = Tasks;
+    // UsageCategory = Tasks;
 
     dataset
     {

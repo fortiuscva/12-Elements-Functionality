@@ -114,11 +114,7 @@ page 52172 "12E Posted LMS Trans. Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payment Agent field.', Comment = '%';
                 }
-                field("Document No."; Rec."Document No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
-                }
+
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ApplicationArea = All;

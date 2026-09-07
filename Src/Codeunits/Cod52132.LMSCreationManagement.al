@@ -288,7 +288,6 @@ codeunit 52132 "12E LMS Creation Management"
             LMSDetail.Amount := LMSTransaction.Amount;
             LMSDetail."Debit Account No." := LMSTransaction."Debit Account No.";
             LMSDetail."Credit Account No." := LMSTransaction."Credit Account No.";
-            LMSDetail."Document No." := LMSTransaction."Document No.";
             LMSDetail."G/L Register No." := 0;
             LMSDetail."Source Code" := LMSTransaction."Source Code";
             LMSDetail."Reason Code" := LMSTransaction."Reason Code";

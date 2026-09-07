@@ -40,6 +40,11 @@ page 52166 "12E LMS Transaction Documents"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the status of the LMS Transaction document.';
                 }
+                field("Posting Error"; Rec."Posting Error")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the status of the Posting Error document.';
+                }
             }
         }
     }

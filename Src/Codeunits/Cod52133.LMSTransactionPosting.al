@@ -5,25 +5,29 @@ codeunit 52133 "12E LMS Transaction Posting"
         NoJournalLinesToPostErr: Label 'There are no General Journal Lines to post.';
         NoJournalLinesToPreviewErr: Label 'There are no General Journal Lines to preview.';
         LMSPostedMsg: Label 'LMS Transaction %1 posted successfully.';
+        SuppressSuccessMessage: Boolean;
+        PostingFailed: Boolean;
 
     procedure Post(var LMSHeader: Record "12E LMS Transaction Header")
     var
         PostingError: Text;
     begin
+        PostingFailed := false;
+
         ValidateForPosting(LMSHeader);
         GetSetup();
         DeleteJournalLines();
-        CreateJournalLines(LMSHeader);
 
-        if not TryPostJournal() then begin
+        if not TryCreateAndPostJournal(LMSHeader) then begin
             PostingError := GetLastErrorText();
+            PostingFailed := true;
+
             LMSHeader.Get(LMSHeader."No.");
             LMSHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSHeader."Posting Error"));
             LMSHeader.Modify(true);
+
             UpdatePostingError(LMSHeader, PostingError);
             DeleteJournalLines();
-            if GuiAllowed() then
-                Message(PostingError);
             exit;
         end;
 
@@ -34,8 +38,18 @@ codeunit 52133 "12E LMS Transaction Posting"
         CreatePostedTransactionDetails(LMSHeader);
         DeleteLMSDocument(LMSHeader);
 
-        if GuiAllowed() then
+        if GuiAllowed() and not SuppressSuccessMessage then
             Message(LMSPostedMsg, LMSHeader."No.");
+    end;
+
+    procedure SetSuppressSuccessMessage(Suppress: Boolean)
+    begin
+        SuppressSuccessMessage := Suppress;
+    end;
+
+    procedure IsPostingFailed(): Boolean
+    begin
+        exit(PostingFailed);
     end;
 
     procedure PreviewPosting(var LMSHeader: Record "12E LMS Transaction Header")
@@ -60,7 +74,6 @@ codeunit 52133 "12E LMS Transaction Posting"
         if LMSHeader.Status <> LMSHeader.Status::Released then
             Error('LMS Transaction %1 must be Released before posting.', LMSHeader."No.");
 
-
         LMSLine.SetRange("Document No.", LMSHeader."No.");
 
         if LMSLine.IsEmpty() then
@@ -74,6 +87,13 @@ codeunit 52133 "12E LMS Transaction Posting"
         TwelveSetup.TestField("LMS Transaction Jnl. Batch");
         TwelveSetup.TestField("LMS Source Code");
         TwelveSetup.TestField("LMS Reason Code");
+    end;
+
+    [TryFunction]
+    local procedure TryCreateAndPostJournal(var LMSHeader: Record "12E LMS Transaction Header")
+    begin
+        CreateJournalLines(LMSHeader);
+        TryPostJournal();
     end;
 
     local procedure CreateJournalLines(var LMSHeader: Record "12E LMS Transaction Header")
@@ -306,6 +326,7 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSDetail: Record "12E LMS Transaction Details";
     begin
         LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
+
         if not LMSDetail.IsEmpty() then
             LMSDetail.DeleteAll(true);
 

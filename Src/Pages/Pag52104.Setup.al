@@ -247,6 +247,59 @@ page 52104 "12E Setup"
                     RunObject = page "12E Company Mappings";
                 }
             }
+            group(StagingGlobal)
+            {
+                Caption = 'Staging (Global)';
+                Image = Navigate;
+
+                action(LeadSourceReconciliation)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Lead Source Reconciliation';
+                    Image = Navigate;
+                    RunObject = page "12E Lead Source Reconciliation";
+                }
+
+                action(QuestcoPayrollTransactions)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Questco Payroll Transactions';
+                    Image = Navigate;
+                    RunObject = page "12E Questco Payroll Txns";
+                }
+
+                action(QuestcoPayrollBatches)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Questco Payroll Batches';
+                    Image = Navigate;
+                    RunObject = page "12E Questco Payroll Batches";
+                }
+
+                action(LoyaltyPointsGlobal)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Loyalty Points Global';
+                    Image = Navigate;
+                    RunObject = page "12E Loyalty Points Global";
+                }
+
+                action(LMSBatchesGlobal)
+                {
+                    ApplicationArea = All;
+                    Caption = 'LMS Batches Global';
+                    Image = Navigate;
+                    RunObject = page "12E LMS Batches (Global)";
+                }
+
+                action(LMSTransactionsGlobal)
+                {
+                    ApplicationArea = All;
+                    Caption = 'LMS Transactions Global';
+                    Image = Navigate;
+                    RunObject = page "12E LMS Transactions Global";
+                }
+            }
             group(CCDistribution)
             {
                 Caption = 'Contact Center Distribution';
@@ -303,6 +356,34 @@ page 52104 "12E Setup"
                 {
                 }
                 actionref(PayTypes_Promoted; PayTypes)
+                {
+                }
+            }
+            group(Category_Staging)
+            {
+                Caption = 'Staging (Global)';
+
+                actionref(LeadSourceReconciliation_Promoted; LeadSourceReconciliation)
+                {
+                }
+
+                actionref(QuestcoPayrollTransactions_Promoted; QuestcoPayrollTransactions)
+                {
+                }
+
+                actionref(QuestcoPayrollBatches_Promoted; QuestcoPayrollBatches)
+                {
+                }
+
+                actionref(LoyaltyPointsGlobal_Promoted; LoyaltyPointsGlobal)
+                {
+                }
+
+                actionref(LMSBatchesGlobal_Promoted; LMSBatchesGlobal)
+                {
+                }
+
+                actionref(LMSTransactionsGlobal_Promoted; LMSTransactionsGlobal)
                 {
                 }
             }

@@ -1,6 +1,6 @@
 page 52150 "12E Loyalty Points Global"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'Loyalty Points (Global)';
     PageType = List;
     SourceTable = "12E Loyalty Points";
@@ -8,7 +8,7 @@ page 52150 "12E Loyalty Points Global"
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {

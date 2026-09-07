@@ -1,4 +1,4 @@
-report 52105 "12E Clear Errors in Loyalty"
+report 52107 "12E Clear Errors in Loyalty"
 {
     Caption = 'Clear Errors in Loyalty';
     ProcessingOnly = true;

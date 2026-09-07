@@ -1,10 +1,10 @@
 page 52168 "12E LMS Transaction Details"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'LMS Transaction Details';
     PageType = List;
     SourceTable = "12E LMS Transaction Details";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
     Editable = false;
 
     layout

@@ -1,10 +1,10 @@
 page 52160 "12E LMS Batches (Global)"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'LMS Batches (Global)';
     PageType = List;
     SourceTable = "12E LMS Batch";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
     InsertAllowed = false;
     DeleteAllowed = false;
     ModifyAllowed = false;

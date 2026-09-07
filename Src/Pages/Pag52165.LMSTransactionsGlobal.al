@@ -1,6 +1,6 @@
 page 52165 "12E LMS Transactions Global"
 {
-    ApplicationArea = All;
+    // ApplicationArea = All;
     Caption = 'LMS Transactions (Global)';
     DeleteAllowed = false;
     Editable = false;
@@ -8,7 +8,7 @@ page 52165 "12E LMS Transactions Global"
     ModifyAllowed = false;
     PageType = List;
     SourceTable = "12E LMS Transaction";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {

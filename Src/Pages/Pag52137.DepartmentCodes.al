@@ -14,14 +14,17 @@ page 52137 "12E Department Codes"
             {
                 field("Code"; Rec."Code")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Code field.', Comment = '%';
                 }
                 field(Description; Rec.Description)
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Description field.', Comment = '%';
                 }
                 field("Contact Center"; Rec."Contact Center")
                 {
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Contact Center field.', Comment = '%';
                 }
             }

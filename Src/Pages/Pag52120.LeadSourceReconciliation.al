@@ -10,6 +10,7 @@ page 52120 "12E Lead Source Reconciliation"
     UsageCategory = Lists;
     ApplicationArea = All;
 
+
     layout
     {
         area(Content)
@@ -84,4 +85,5 @@ page 52120 "12E Lead Source Reconciliation"
             }
         }
     }
+
 }

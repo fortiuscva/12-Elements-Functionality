@@ -12,5 +12,25 @@ tableextension 52117 "12E User Setup" extends "User Setup"
             Caption = 'Allow Payroll Document Reversal';
             DataClassification = CustomerContent;
         }
+        field(52102; "12E Allow Loyalty Reversal"; Boolean)
+        {
+            Caption = 'Allow Loyalty Reversal';
+            DataClassification = CustomerContent;
+        }
+        field(52103; "12E Allow LMS Reversal"; Boolean)
+        {
+            Caption = 'Allow LMS Reversal';
+            DataClassification = CustomerContent;
+        }
+        field(52104; "12E Allow Lead Accr. Reversal"; Boolean)
+        {
+            Caption = 'Allow Lead Accrual Reversal';
+            DataClassification = CustomerContent;
+        }
+        field(52105; "12E Allow LMS Trans. Reversal"; Boolean)
+        {
+            Caption = 'Allow LMS Transaction Reversal';
+            DataClassification = CustomerContent;
+        }
     }
 }

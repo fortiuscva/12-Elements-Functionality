@@ -2,8 +2,8 @@ table 52119 "12E Lead Validation Details"
 {
     Caption = 'Lead Validation Details';
     DataClassification = CustomerContent;
-    LookupPageId = "12E Lead Validation Details";
-    DrillDownPageId = "12E Lead Validation Details";
+    LookupPageId = "12E Leads Reconciliations";
+    DrillDownPageId = "12E Leads Reconciliations";
 
     fields
     {

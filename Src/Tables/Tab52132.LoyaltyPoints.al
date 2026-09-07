@@ -52,9 +52,10 @@ table 52132 "12E Loyalty Points"
             Caption = 'Document No.';
             DataClassification = CustomerContent;
         }
-        field(10; "G/L Register No."; Code[10])
+        field(10; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
+            TableRelation = "G/L Register";
             DataClassification = CustomerContent;
         }
         field(11; "DW Export Timestamp"; DateTime)
@@ -85,6 +86,16 @@ table 52132 "12E Loyalty Points"
         field(16; Processed; Boolean)
         {
             Caption = 'Processed';
+            DataClassification = CustomerContent;
+        }
+        field(17; "Posting Error"; Text[2048])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
+        }
+        field(18; Reversed; Boolean)
+        {
+            Caption = 'Reversed';
             DataClassification = CustomerContent;
         }
     }

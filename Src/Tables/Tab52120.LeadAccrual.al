@@ -29,6 +29,9 @@ table 52120 "12E Lead Accrual"
 
             trigger OnValidate()
             begin
+                if Year <> xRec.Year then
+                    CheckLinesBeforePeriodChange();
+
                 UpdatePeriodDates();
             end;
         }
@@ -39,6 +42,9 @@ table 52120 "12E Lead Accrual"
 
             trigger OnValidate()
             begin
+                if Year <> xRec.Year then
+                    CheckLinesBeforePeriodChange();
+
                 UpdatePeriodDates();
             end;
         }
@@ -64,6 +70,16 @@ table 52120 "12E Lead Accrual"
         field(7; "No. Series"; Code[20])
         {
             Caption = 'No. Series';
+        }
+        field(8; "G/L Register No."; Integer)
+        {
+            Caption = 'G/L Register No.';
+            DataClassification = CustomerContent;
+        }
+        field(10; "Posting Error"; Text[2048])
+        {
+            Caption = 'Posting Error';
+            DataClassification = CustomerContent;
         }
     }
 
@@ -224,5 +240,20 @@ table 52120 "12E Lead Accrual"
             Enum::"Error Handling Options"::"Show Error",
             NoOfSelected,
             NoOfSkipped);
+    end;
+
+    procedure ValidateAccrualPeriod()
+    begin
+        TestField(Year);
+        TestField(Month);
+    end;
+
+    local procedure CheckLinesBeforePeriodChange()
+    var
+        LeadAccrualLine: Record "12E Lead Accrual Line";
+    begin
+        LeadAccrualLine.SetRange("Lead Accrual No.", "No.");
+        if not LeadAccrualLine.IsEmpty() then
+            Error('You cannot change the Year or Month when Lead Accrual lines exist. Delete the lines first.');
     end;
 }

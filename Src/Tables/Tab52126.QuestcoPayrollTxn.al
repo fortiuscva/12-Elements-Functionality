@@ -113,6 +113,13 @@ table 52126 "12E Questco Payroll Txn"
         {
             Caption = 'Export Batch ID';
         }
+        field(22; "Posting Error"; Text[2048])
+        {
+            CalcFormula = lookup("12E Payroll Batch Header"."Posting Error" where("Client ID" = field("Client ID"), "Batch ID" = field("Batch ID")));
+            Caption = 'Posting Error Message';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
     keys
     {

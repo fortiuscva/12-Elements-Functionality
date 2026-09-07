@@ -14,60 +14,92 @@ page 52122 "12E Lead Accrual"
             {
                 Caption = 'General';
 
+
                 field("No."; Rec."No.")
                 {
-                    ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the No. field.';
+
                     trigger OnAssistEdit()
                     begin
                         if Rec.AssistEdit(xRec) then
                             CurrPage.Update();
                     end;
                 }
-                field(Year; Rec.Year)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the year for the accrual period.';
-                }
 
-                field(Month; Rec.Month)
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the month for the accrual period.';
-                }
-
-                field("From Date"; Rec."From Date")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    ToolTip = 'Calculated from the selected month and year.';
-                }
-
-                field("To Date"; Rec."To Date")
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    ToolTip = 'Calculated from the selected month and year.';
-                }
                 field(Status; Rec.Status)
                 {
-                    ToolTip = 'Specifies the value of the Status field.', Comment = '%';
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the status of the lead accrual document.';
                 }
+
                 field(SystemCreatedAt; Rec.SystemCreatedAt)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created At';
-                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                    Editable = false;
+                    ToolTip = 'Specifies when the document was created.';
                 }
+
                 field(CreatedBy; CreatedBy)
                 {
+                    ApplicationArea = All;
                     Caption = 'Created By';
                     Editable = false;
-                    ToolTip = 'Specifies the value of the SystemCreatedBy field.', Comment = '%';
+                    ToolTip = 'Specifies who created the document.';
+                }
+
+                group(AccrualPeriod)
+                {
+                    Caption = 'Accrual Period';
+
+                    field(Year; Rec.Year)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the year for the accrual period.';
+                    }
+
+                    field(Month; Rec.Month)
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the month for the accrual period.';
+                    }
+
+                    field("From Date"; Rec."From Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the start date of the accrual period.';
+                    }
+
+                    field("To Date"; Rec."To Date")
+                    {
+                        ApplicationArea = All;
+                        Editable = false;
+                        ToolTip = 'Specifies the end date of the accrual period.';
+                    }
+                }
+
+                group(PostingError)
+                {
+                    Caption = 'Posting Error';
+
+                    field("Posting Error"; Rec."Posting Error")
+                    {
+                        ApplicationArea = All;
+                        Importance = Additional;
+                        MultiLine = true;
+                        ShowCaption = false;
+                        Editable = false;
+                        ToolTip = 'Specifies the value of the Posting Error field.';
+                    }
                 }
             }
+
             part(Lines; "12E Lead Accrual Subform")
             {
                 Caption = 'Lines';
-                ApplicationArea = all;
+                ApplicationArea = All;
                 SubPageLink = "Lead Accrual No." = field("No.");
             }
         }
@@ -153,8 +185,7 @@ page 52122 "12E Lead Accrual"
                         if not Confirm(PostConfirmQst) then
                             exit;
 
-                        LeadAccPostMgmt.Run(Rec);
-                        Message(PostedMsg);
+                        LeadAccPostMgmt.RunPosting(Rec);
                     end;
                 }
                 action(PreviewPosting)

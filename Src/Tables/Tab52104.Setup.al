@@ -167,6 +167,56 @@ table 52104 "12E Setup"
             Caption = 'Loyalty Journal Batch';
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Loyalty Jnl. Template"));
         }
+        field(50; "LMS Batch Jnl. Template Name"; Code[10])
+        {
+            Caption = 'LMS Batch Jnl. Template Name';
+            TableRelation = "Gen. Journal Template";
+        }
+
+        field(51; "LMS Batch Jnl. Batch Name"; Code[10])
+        {
+            Caption = 'LMS Batch Jnl. Batch Name';
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("LMS Batch Jnl. Template Name"));
+        }
+
+        field(52; "LMS Batch Document Nos."; Code[20])
+        {
+            Caption = 'LMS Batch Document Nos.';
+            TableRelation = "No. Series";
+            DataClassification = CustomerContent;
+        }
+
+        field(53; "LMS Transaction Document Nos."; Code[50])
+        {
+            Caption = 'LMS Transaction Document Nos.';
+            DataClassification = CustomerContent;
+            TableRelation = "No. Series";
+        }
+
+        field(54; "LMS Source Code"; Code[10])
+        {
+            Caption = 'LMS Source Code';
+            TableRelation = "Source Code".Code;
+        }
+
+        field(55; "LMS Reason Code"; Code[10])
+        {
+            Caption = 'LMS Reason Code';
+            TableRelation = "Reason Code".Code;
+        }
+        field(56; "LMS Transaction Jnl. Template"; Code[10])
+        {
+            Caption = 'LMS Transaction Jnl. Template';
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Template";
+        }
+
+        field(57; "LMS Transaction Jnl. Batch"; Code[10])
+        {
+            Caption = 'LMS Transaction Jnl. Batch';
+            DataClassification = CustomerContent;
+            TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("LMS Transaction Jnl. Template"));
+        }
     }
     keys
     {

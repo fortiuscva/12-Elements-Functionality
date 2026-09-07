@@ -28,7 +28,9 @@ table 52123 "12E Posted Lead Accrual Line"
         field(4; "Vendor Name"; Text[100])
         {
             Caption = 'Vendor Name';
-            DataClassification = CustomerContent;
+            FieldClass = FlowField;
+            Editable = false;
+            CalcFormula = lookup(Vendor.Name where("No." = field("Vendor No.")));
         }
 
         field(5; "Lead Provider"; Text[100])
@@ -55,9 +57,9 @@ table 52123 "12E Posted Lead Accrual Line"
             DataClassification = CustomerContent;
         }
 
-        field(9; "Lead Acq. Cost Vendor"; Decimal)
+        field(9; "Total Invoiced Amount (Period)"; Decimal)
         {
-            Caption = 'Lead Acquisition Costs for this Vendor';
+            Caption = 'Total Invoiced Amount (Period)';
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
@@ -79,6 +81,12 @@ table 52123 "12E Posted Lead Accrual Line"
         {
             Caption = 'Override Last PPI Posting Date';
             DataClassification = CustomerContent;
+        }
+        field(15; "Last Posted Purch. Invoice No."; Code[20])
+        {
+            Caption = 'Last Posted Purchase Invoice No.';
+            DataClassification = CustomerContent;
+            TableRelation = "Purch. Inv. Header";
         }
     }
 

@@ -72,4 +72,20 @@ page 52152 "12E Loyalty Points API"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        Validations.CheckPortfolioMapping(Rec.Portfolio);
+        exit(true);
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        if Rec.Processed and not Rec.Reversed then
+            Error(StrSubstNo(AlreadyProcessedNotReversedErrLbl, Rec."PK ID"));
+        exit(true);
+    end;
+
+    var
+        Validations: Codeunit "12E Validations";
+        AlreadyProcessedNotReversedErrLbl: Label 'Loyalty Points %1 cannot be modified because it has already been processed and has not been reversed.';
 }

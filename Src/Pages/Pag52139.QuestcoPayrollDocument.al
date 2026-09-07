@@ -70,8 +70,9 @@ page 52139 "12E Questco Payroll Document"
                     }
                     field(Amount; Rec.Amount)
                     {
-                        ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
+                        ApplicationArea = All;
                         Editable = false;
+                        ToolTip = 'Specifies the value of the Amount field.', Comment = '%';
                     }
                 }
 
@@ -102,8 +103,8 @@ page 52139 "12E Questco Payroll Document"
             }
             part(Lines; "12E Payroll Document Subform")
             {
-                Caption = 'Lines';
                 ApplicationArea = All;
+                Caption = 'Lines';
                 SubPageLink = "Document No." = field("No.");
                 Editable = false;
             }

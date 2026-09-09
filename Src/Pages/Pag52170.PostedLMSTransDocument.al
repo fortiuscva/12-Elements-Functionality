@@ -45,14 +45,17 @@ page 52170 "12E Posted LMS Trans. Document"
                     ApplicationArea = All;
                 }
 
-                field("G/L Register No."; Rec."G/L Register No.")
+                group(Posting)
                 {
-                    ApplicationArea = All;
-                }
+                    field("G/L Register No."; Rec."G/L Register No.")
+                    {
+                        ApplicationArea = All;
+                    }
 
-                field(Reversed; Rec.Reversed)
-                {
-                    ApplicationArea = All;
+                    field(Reversed; Rec.Reversed)
+                    {
+                        ApplicationArea = All;
+                    }
                 }
             }
 

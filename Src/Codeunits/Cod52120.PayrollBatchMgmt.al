@@ -24,6 +24,9 @@ codeunit 52120 "12E Payroll Batch Mgmt"
                 if not PayrollBatchExists(ClientID, QuestcoPayrollBatch."Batch ID") then
                     CreatePayrollBatchHeader(QuestcoPayrollBatch, PayrollBatchHeader);
             until QuestcoPayrollBatch.Next() = 0;
+
+        if GuiAllowed() then
+            Message('Payroll Documents created successfully.');
     end;
 
 
@@ -93,8 +96,7 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         end;
 
         PayrollBatchQuery.Close();
-        if GuiAllowed() then
-            Message('Payroll Documents created successfully.');
+
     end;
 
 

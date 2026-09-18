@@ -2,8 +2,8 @@ report 52109 "12E Create Payroll Documents"
 {
     Caption = 'Create Payroll Documents';
     ProcessingOnly = true;
-    ApplicationArea = All;
-    UsageCategory = Tasks;
+    // ApplicationArea = All;
+    // UsageCategory = Tasks;
 
     requestpage
     {

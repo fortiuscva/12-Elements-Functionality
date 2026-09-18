@@ -192,8 +192,6 @@ page 52151 "12E Loyalty Points"
                 var
                     LoyaltyReverseMgt: Codeunit "12E Loyalty Reverse Mgt.";
                 begin
-                    if not Confirm(ConfirmReverseRegisterQst) then
-                        exit;
                     LoyaltyReverseMgt.ReverseLoyalty(Rec);
                     CurrPage.Update(false);
                 end;

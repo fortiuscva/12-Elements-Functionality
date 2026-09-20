@@ -186,51 +186,51 @@ page 52104 "12E Setup"
                         ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                     }
                 }
-                group(LMS)
+            }
+            group(LMS)
+            {
+                Caption = 'LMS';
+
+                group(LMSBatch)
                 {
-                    Caption = 'LMS';
+                    Caption = 'LMS Batch';
 
-                    group(LMSBatch)
+                    field("LMS Batch Jnl. Template Name"; Rec."LMS Batch Jnl. Template Name")
                     {
-                        Caption = 'LMS Batch';
-
-                        field("LMS Batch Jnl. Template Name"; Rec."LMS Batch Jnl. Template Name")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
-                        }
-
-                        field("LMS Batch Jnl. Batch Name"; Rec."LMS Batch Jnl. Batch Name")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
-                        }
-
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
                     }
 
-                    group(LMSTransactions)
+                    field("LMS Batch Jnl. Batch Name"; Rec."LMS Batch Jnl. Batch Name")
                     {
-                        Caption = 'LMS Transactions';
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
+                    }
 
-                        field("LMS Transaction Jnl. Template"; Rec."LMS Transaction Jnl. Template")
-                        {
-                            ApplicationArea = All;
-                        }
+                }
 
-                        field("LMS Transaction Jnl. Batch"; Rec."LMS Transaction Jnl. Batch")
-                        {
-                            ApplicationArea = All;
-                        }
+                group(LMSTransactions)
+                {
+                    Caption = 'LMS Transactions';
 
-                        field("LMS Source Code"; Rec."LMS Source Code")
-                        {
-                            ApplicationArea = All;
-                        }
+                    field("LMS Transaction Jnl. Template"; Rec."LMS Transaction Jnl. Template")
+                    {
+                        ApplicationArea = All;
+                    }
 
-                        field("LMS Reason Code"; Rec."LMS Reason Code")
-                        {
-                            ApplicationArea = All;
-                        }
+                    field("LMS Transaction Jnl. Batch"; Rec."LMS Transaction Jnl. Batch")
+                    {
+                        ApplicationArea = All;
+                    }
+
+                    field("LMS Source Code"; Rec."LMS Source Code")
+                    {
+                        ApplicationArea = All;
+                    }
+
+                    field("LMS Reason Code"; Rec."LMS Reason Code")
+                    {
+                        ApplicationArea = All;
                     }
                 }
             }

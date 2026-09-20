@@ -122,6 +122,11 @@ page 52104 "12E Setup"
             group(LoyaltyPoints)
             {
                 Caption = 'Loyalty Points';
+                field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
+                }
                 group("Earned/Expired")
                 {
                     Caption = 'Earned/Expired';
@@ -159,31 +164,30 @@ page 52104 "12E Setup"
                             ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
                         }
                     }
-                    field("Loyalty Source Code"; Rec."Loyalty Source Code")
+                    group(Posting)
                     {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
-                    }
-                    field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
-                    }
+                        Caption = 'Posting';
+                        field("Loyalty Source Code"; Rec."Loyalty Source Code")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
+                        }
+                        field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
+                        }
 
-                    field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
-                    }
-                    field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
-                    }
-                    field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
+                        field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
+                        }
+                        field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
+                        }
                     }
                 }
             }

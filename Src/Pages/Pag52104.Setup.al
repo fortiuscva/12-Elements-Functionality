@@ -96,11 +96,16 @@ page 52104 "12E Setup"
                     Caption = 'Earned/Expired';
                     field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
                     {
-                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Loyalty Points Earned field.', Comment = '%';
                     }
                     field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
                     {
-                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the  field Deferred Rev Loyalty Pts.', Comment = '%';
+                    }
+                    field("Loyalty Point Value"; Rec."Loyalty Point Value")
+                    {
+                        ToolTip = 'Specifies the value of the Loyalty Point Value field.', Comment = '%';
+                        ApplicationArea = All;
                     }
                 }
                 group(Provision)

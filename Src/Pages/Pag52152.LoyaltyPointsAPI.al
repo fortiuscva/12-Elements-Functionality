@@ -72,4 +72,24 @@ page 52152 "12E Loyalty Points API"
             }
         }
     }
+    trigger OnInsertRecord(BelowxRec: Boolean): Boolean
+    begin
+        Rec.TestField("Month End Date");
+        if Rec."Points Earned" < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, Rec.FieldCaption("Points Earned")));
+        if Rec."Points Expired" < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, Rec.FieldCaption("Points Expired")));
+    end;
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        Rec.TestField("Month End Date");
+        if Rec."Points Earned" < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, Rec.FieldCaption("Points Earned")));
+        if Rec."Points Expired" < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, Rec.FieldCaption("Points Expired")));
+    end;
+
+    var
+        ValueCannotBeLessThanZeroErrMsg: Label '%1 cannot be less than zero.';
 }

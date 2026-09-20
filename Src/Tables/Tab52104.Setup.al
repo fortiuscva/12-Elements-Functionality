@@ -167,6 +167,11 @@ table 52104 "12E Setup"
             Caption = 'Loyalty Journal Batch';
             TableRelation = "Gen. Journal Batch".Name where("Journal Template Name" = field("Loyalty Jnl. Template"));
         }
+        field(45; "Loyalty Point Value"; Decimal)
+        {
+            Caption = 'Loyalty Point Value';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

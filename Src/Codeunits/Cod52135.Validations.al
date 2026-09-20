@@ -1,5 +1,6 @@
 codeunit 52135 "12E Validations"
 {
+
     procedure CheckPortfolioMapping(PortfolioPar: Text[30])
     begin
         CompanyMappingRecGbl.Reset();
@@ -44,6 +45,18 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(PayrollBatchDoesNotExistErrLbl, ClientIDPar, BatchIDPar));
     end;
 
+    procedure CheckLoyaltyPointsEarnedisLessThanZero(PointsEarned: Decimal)
+    begin
+        if PointsEarned < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Earned'));
+    end;
+
+    procedure CheckLoyaltyPointsExpiredisLessThanZero(PointsExpired: Decimal)
+    begin
+        if PointsExpired < 0 then
+            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Expired'));
+    end;
+
     var
 
         CompanyMappingRecGbl: Record "12E Company Mapping";
@@ -54,4 +67,5 @@ codeunit 52135 "12E Validations"
         QuestcoClientIdErrLbl: Label 'Questco Client ID %1 does not exist in company mapping.';
         QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company.';
         PayrollBatchDoesNotExistErrLbl: Label 'Questco Payroll Batch does not exist with this Client ID  %1 and Batch ID %2.';
+        ValueCannotBeLessThanZeroErrMsg: Label '%1 cannot be less than zero.';
 }

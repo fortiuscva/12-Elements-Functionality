@@ -128,104 +128,109 @@ page 52104 "12E Setup"
                     field("Loyalty Points Earned"; Rec."Loyalty Points Earned")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the Loyalty Points Earned field.', Comment = '%';
                     }
                     field("Deferred Rev Loyalty Pts"; Rec."Deferred Rev Loyalty Pts")
                     {
                         ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the EPIC Payment Batch Nos. field.', Comment = '%';
+                        ToolTip = 'Specifies the value of the  field Deferred Rev Loyalty Pts.', Comment = '%';
+                    }
+                    field("Loyalty Point Value"; Rec."Loyalty Point Value")
+                    {
+                        ToolTip = 'Specifies the value of the Loyalty Point Value field.', Comment = '%';
+                        ApplicationArea = All;
+                    }
+                    group(Provision)
+                    {
+                        Caption = 'Provision';
+                        field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
+                        }
+                        field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
+                        }
+                        field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
+                        }
+                    }
+                    field("Loyalty Source Code"; Rec."Loyalty Source Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
+                    }
+                    field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
+                    }
+
+                    field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
+                    }
+                    field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
+                    }
+                    field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
                     }
                 }
-                group(Provision)
+                group(LMS)
                 {
-                    Caption = 'Provision';
-                    field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
-                    }
-                    field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
-                    }
-                    field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
-                    {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
-                    }
-                }
-                field("Loyalty Source Code"; Rec."Loyalty Source Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
-                }
-                field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
-                }
+                    Caption = 'LMS';
 
-                field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
-                }
-                field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
-                }
-                field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
-                }
-            }
-            group(LMS)
-            {
-                Caption = 'LMS';
-
-                group(LMSBatch)
-                {
-                    Caption = 'LMS Batch';
-
-                    field("LMS Batch Jnl. Template Name"; Rec."LMS Batch Jnl. Template Name")
+                    group(LMSBatch)
                     {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
+                        Caption = 'LMS Batch';
+
+                        field("LMS Batch Jnl. Template Name"; Rec."LMS Batch Jnl. Template Name")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the General Journal Template used for LMS Batch posting.';
+                        }
+
+                        field("LMS Batch Jnl. Batch Name"; Rec."LMS Batch Jnl. Batch Name")
+                        {
+                            ApplicationArea = All;
+                            ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
+                        }
+
                     }
 
-                    field("LMS Batch Jnl. Batch Name"; Rec."LMS Batch Jnl. Batch Name")
+                    group(LMSTransactions)
                     {
-                        ApplicationArea = All;
-                        ToolTip = 'Specifies the General Journal Batch used for LMS Batch posting.';
-                    }
+                        Caption = 'LMS Transactions';
 
-                }
+                        field("LMS Transaction Jnl. Template"; Rec."LMS Transaction Jnl. Template")
+                        {
+                            ApplicationArea = All;
+                        }
 
-                group(LMSTransactions)
-                {
-                    Caption = 'LMS Transactions';
+                        field("LMS Transaction Jnl. Batch"; Rec."LMS Transaction Jnl. Batch")
+                        {
+                            ApplicationArea = All;
+                        }
 
-                    field("LMS Transaction Jnl. Template"; Rec."LMS Transaction Jnl. Template")
-                    {
-                        ApplicationArea = All;
-                    }
+                        field("LMS Source Code"; Rec."LMS Source Code")
+                        {
+                            ApplicationArea = All;
+                        }
 
-                    field("LMS Transaction Jnl. Batch"; Rec."LMS Transaction Jnl. Batch")
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field("LMS Source Code"; Rec."LMS Source Code")
-                    {
-                        ApplicationArea = All;
-                    }
-
-                    field("LMS Reason Code"; Rec."LMS Reason Code")
-                    {
-                        ApplicationArea = All;
+                        field("LMS Reason Code"; Rec."LMS Reason Code")
+                        {
+                            ApplicationArea = All;
+                        }
                     }
                 }
             }

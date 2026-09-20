@@ -66,6 +66,7 @@ codeunit 52122 "12E Loyalty Posting"
         TwelveSetup.TestField("Loyalty Jnl. Batch");
         TwelveSetup.TestField("Loyalty Points Earned");
         TwelveSetup.TestField("Deferred Rev Loyalty Pts");
+        TwelveSetup.TestField("Loyalty Point Value");
         TwelveSetup.TestField("Loyalty Points Provision");
         TwelveSetup.TestField("Loyalty Points Reserve");
         TwelveSetup.TestField("Loyalty Source Code");
@@ -77,6 +78,8 @@ codeunit 52122 "12E Loyalty Posting"
     var
         NoSeries: Codeunit "No. Series";
         ProvisionAmount: Decimal;
+        PointsEarnedValue: Decimal;
+        PointsExpiredValue: Decimal;
     begin
         if LoyaltyPoints."Document No." = '' then begin
             LoyaltyPoints."Document No." := NoSeries.GetNextNo(TwelveSetup."Loyalty Document Nos.", WorkDate(), true);
@@ -84,18 +87,20 @@ codeunit 52122 "12E Loyalty Posting"
         end;
 
         if LoyaltyPoints."Points Earned" <> 0 then begin
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Earned", TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts");
+            PointsEarnedValue := LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Point Value";
+            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsEarnedValue, TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts");
 
-            ProvisionAmount := Round(LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
+            ProvisionAmount := Round(PointsEarnedValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve");
         end;
 
         if LoyaltyPoints."Points Expired" <> 0 then begin
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", LoyaltyPoints."Points Expired", TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned");
+            PointsExpiredValue := LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Point Value";
+            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsExpiredValue, TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned");
 
-            ProvisionAmount := Round(LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
+            ProvisionAmount := Round(PointsExpiredValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision");

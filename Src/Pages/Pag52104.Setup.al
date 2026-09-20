@@ -122,11 +122,6 @@ page 52104 "12E Setup"
             group(LoyaltyPoints)
             {
                 Caption = 'Loyalty Points';
-                field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
-                }
                 group("Earned/Expired")
                 {
                     Caption = 'Earned/Expired';
@@ -145,51 +140,57 @@ page 52104 "12E Setup"
                         ToolTip = 'Specifies the value of the Loyalty Point Value field.', Comment = '%';
                         ApplicationArea = All;
                     }
-                    group(Provision)
+                }
+                group(Provision)
+                {
+                    Caption = 'Provision';
+                    field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
                     {
-                        Caption = 'Provision';
-                        field("Loyalty Pts. Provision %"; Rec."Loyalty Pts. Provision %")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
-                        }
-                        field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
-                        }
-                        field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
-                        }
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Points Provision % field.', Comment = '%';
                     }
-                    group(Posting)
+                    field("Loyalty Points Provision"; Rec."Loyalty Points Provision")
                     {
-                        Caption = 'Posting';
-                        field("Loyalty Source Code"; Rec."Loyalty Source Code")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
-                        }
-                        field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
-                        }
-
-                        field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
-                        }
-                        field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
-                        {
-                            ApplicationArea = All;
-                            ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
-                        }
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Provision for Loyalty Points field.', Comment = '%';
+                    }
+                    field("Loyalty Points Reserve"; Rec."Loyalty Points Reserve")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Points Reserve field.', Comment = '%';
                     }
                 }
+                group(Posting)
+                {
+                    Caption = 'Posting';
+                    field("Loyalty Source Code"; Rec."Loyalty Source Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Source Code field.', Comment = '%';
+                    }
+                    field("Loyalty Reason Code"; Rec."Loyalty Reason Code")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Reason Code field.', Comment = '%';
+                    }
+
+                    field("Loyalty Jnl. Template"; Rec."Loyalty Jnl. Template")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Journal Template field.', Comment = '%';
+                    }
+                    field("Loyalty Jnl. Batch"; Rec."Loyalty Jnl. Batch")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Loyalty Journal Batch field.', Comment = '%';
+                    }
+                }
+                field("Enable Loyalty Process"; Rec."Enable Loyalty Process")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Enable Loyalty Process field.', Comment = '%';
+                }
+
             }
             group(LMS)
             {

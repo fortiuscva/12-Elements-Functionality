@@ -95,6 +95,6 @@ page 52152 "12E Loyalty Points API"
     begin
         Validations.CheckPortfolioMapping(Rec.Portfolio);
         Validations.CheckLoyaltyPointsEarnedisLessThanZero(Rec."Points Earned");
-        Validations.CheckLoyaltyPointsEarnedisLessThanZero(Rec."Points Expired");
+        Validations.CheckLoyaltyPointsExpiredisLessThanZero(Rec."Points Expired");
     end;
 }

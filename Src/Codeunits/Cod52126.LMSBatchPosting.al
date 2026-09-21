@@ -42,7 +42,7 @@ codeunit 52126 "12E LMS Batch Posting"
         LMSBatch.Processed := true;
         LMSBatch."Posting Error" := '';
         LMSBatch.ERPErrorMsg := '';
-        LMSBatch.Modify(true);
+        LMSBatch.Modify();
 
         if GuiAllowed() then
             Message(LMSPostedMsg, LMSBatch."PK ID");
@@ -98,7 +98,7 @@ codeunit 52126 "12E LMS Batch Posting"
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", LMSBatch."Credit Account No.");
         GenJournalLine.Validate(Amount, LMSBatch.Amount);
-        GenJournalLine.Validate("Source Code", 'EPIC');
+        GenJournalLine.Validate("Source Code", 'LMSBATCH');
         GenJournalLine.Validate("Your Reference", LMSBatch."Your Reference");
         GenJournalLine.Validate("External Document No.", LMSBatch."External Document No.");
         GenJournalLine.Validate("Reason Code", LMSBatch."Reason Code");

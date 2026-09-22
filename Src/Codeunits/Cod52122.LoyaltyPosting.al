@@ -19,9 +19,10 @@ codeunit 52122 "12E Loyalty Posting"
         LoyaltyPoints.Modify(true);
 
         DeleteJournalLines();
-        CreateJournalLines(LoyaltyPoints);
 
-        if not TryPostJournal() then begin
+
+        if not TryPostJournal(LoyaltyPoints) then begin
+
             PostingError := GetLastErrorText();
 
             LoyaltyPoints.Get(LoyaltyPoints."PK ID");
@@ -88,26 +89,26 @@ codeunit 52122 "12E Loyalty Posting"
 
         if LoyaltyPoints."Points Earned" <> 0 then begin
             PointsEarnedValue := LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Point Value";
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsEarnedValue, TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts");
+            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsEarnedValue, TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts", LoyaltyPoints.State, LoyaltyPoints."Store Name");
 
             ProvisionAmount := Round(PointsEarnedValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
-                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve");
+                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve", LoyaltyPoints.State, LoyaltyPoints."Store Name");
         end;
 
         if LoyaltyPoints."Points Expired" <> 0 then begin
             PointsExpiredValue := LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Point Value";
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsExpiredValue, TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned");
+            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsExpiredValue, TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned", LoyaltyPoints.State, LoyaltyPoints."Store Name");
 
             ProvisionAmount := Round(PointsExpiredValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
-                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision");
+                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision", LoyaltyPoints.State, LoyaltyPoints."Store Name");
         end;
     end;
 
-    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; Amount: Decimal; AccountNo: Code[20]; BalAccountNo: Code[20])
+    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; Amount: Decimal; AccountNo: Code[20]; BalAccountNo: Code[20]; StateCode: Code[20]; StoreCode: Code[20])
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
@@ -123,14 +124,17 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
         GenJournalLine.Validate(Amount, Amount);
+        GenJournalLine.Validate("Shortcut Dimension 1 Code", StateCode);
+        GenJournalLine.Validate("Shortcut Dimension 2 Code", StoreCode);
         GenJournalLine.Validate("Source Code", TwelveSetup."Loyalty Source Code");
         GenJournalLine.Validate("Reason Code", TwelveSetup."Loyalty Reason Code");
         GenJournalLine.Modify(true);
     end;
 
     [TryFunction]
-    local procedure TryPostJournal()
+    local procedure TryPostJournal(LoyaltyPoints: Record "12E Loyalty Points")
     begin
+        CreateJournalLines(LoyaltyPoints);
         PostJournal();
     end;
 

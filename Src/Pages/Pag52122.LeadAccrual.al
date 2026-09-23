@@ -249,8 +249,17 @@ page 52122 "12E Lead Accrual"
             CreatedBy := UserRec."User Name";
     end;
 
+
+    trigger OnModifyRecord(): Boolean
+    begin
+        Rec.CheckDocumentEditable();
+    end;
+
+
     var
         CreatedBy: Code[50];
         PostConfirmQst: Label 'Do you want to post the lead accrual journal lines for this document?';
         PostedMsg: Label 'The lead accrual document has been posted.';
+
+
 }

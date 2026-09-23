@@ -55,10 +55,10 @@ page 52123 "12E Lead Accrual Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Accrual Amount field.', Comment = '%';
                 }
-                field("Adjust Accrual Amount"; Rec."Adjust Accrual Amount")
+                field("Adjusted Accrual Amount"; Rec."Adjusted Accrual Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Adjust Accrual Amount field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Adjusted Accrual Amount field.', Comment = '%';
                 }
                 field("Total Invoiced Amount (Period)"; Rec."Total Invoiced Amount (Period)")
                 {
@@ -78,4 +78,43 @@ page 52123 "12E Lead Accrual Subform"
             }
         }
     }
+    actions
+    {
+        area(Processing)
+        {
+            action(OpenLeadSourceReconciliation)
+            {
+                ApplicationArea = All;
+                Caption = 'Open Lead Source Reconciliation';
+                Image = Navigate;
+
+                trigger OnAction()
+                var
+                    LeadAccrual: Record "12E Lead Accrual";
+                    LeadSource: Record "12E Lead Source Reconciliation";
+                    Vendor: Record Vendor;
+                begin
+                    LeadAccrual.Get(Rec."Lead Accrual No.");
+
+                    Vendor.Get(Rec."Vendor No.");
+                    Vendor.TestField("12E Lead Vendor");
+                    Rec.TestField("Override Last PPI Posting Date");
+                    LeadAccrual.TestField("To Date");
+
+                    LeadSource.Reset();
+                    LeadSource.SetRange("Lead Provider", Vendor."12E Lead Vendor");
+                    LeadSource.SetRange("Lead Original Date", Rec."Override Last PPI Posting Date", LeadAccrual."To Date");
+
+                    Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
+                end;
+            }
+        }
+    }
+    trigger OnModifyRecord(): Boolean
+    var
+        LeadAccrual: Record "12E Lead Accrual";
+    begin
+        LeadAccrual.Get(Rec."Lead Accrual No.");
+        LeadAccrual.CheckDocumentEditable();
+    end;
 }

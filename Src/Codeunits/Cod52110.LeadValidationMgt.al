@@ -15,7 +15,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         LeadValidationPar.DeleteAll(true);
 
         Vendor.Reset();
-        Vendor.SetRange("12E Lead Acquisition", true);
+        Vendor.SetRange("12E Lead Reconciliation", true);
 
         if Vendor.FindSet() then begin
             repeat
@@ -36,14 +36,14 @@ codeunit 52110 "12E Lead Validation Mgt"
                         if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
                             LeadValidationPar."Vendor Name" := Vendor2.Name;
 
-                        LeadValidationPar."Lead Provider" := Vendor."12E Lead Acq. Vendor No.";
+                        LeadValidationPar."Lead Provider" := Vendor."12E Lead Vendor";
 
                         PriorDate := GetPreviousPostingDate(
                             Vendor."No.",
                             PurchInvHeader."Posting Date");
 
                         LeadCost := GetLeadCostAmount(
-                            Vendor."12E Lead Acq. Vendor No.",
+                            Vendor."12E Lead Vendor",
                             PriorDate,
                             PurchInvHeader."Posting Date");
 

@@ -133,6 +133,15 @@ page 52121 "12E Leads Reconciliations"
                 var
                     LeadValidationMgt: Codeunit "12E Lead Validation Mgt";
                 begin
+                    if StartDate = 0D then
+                        Error('Start Date must be entered.');
+
+                    if EndDate = 0D then
+                        Error('End Date must be entered.');
+
+                    if EndDate < StartDate then
+                        Error('End Date cannot be earlier than Start Date.');
+
                     LeadValidationMgt.BuildValidationData(Rec, StartDate, EndDate);
                     CurrPage.Update(false);
                 end;

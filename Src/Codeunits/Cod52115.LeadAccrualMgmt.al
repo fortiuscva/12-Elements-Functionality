@@ -16,7 +16,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         DeleteAllExistingLeadAccrualLines(Rec);
 
         VendorLcl.Reset();
-        VendorLcl.SetRange("12E Lead Accrual Vendor", true);
+        VendorLcl.SetRange("12E Lead Accrual", true);
         if VendorLcl.FindSet() then begin
             repeat
                 LeadAccLineLcl.Init();
@@ -24,7 +24,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
                 LeadAccLineLcl."From Date" := Rec."From Date";
                 LeadAccLineLcl."To Date" := Rec."To Date";
-                LeadAccLineLcl."Lead Provider" := VendorLcl."12E Lead Acq. Vendor No.";
+                LeadAccLineLcl."Lead Provider" := VendorLcl."12E Lead Vendor";
                 LeadAccLineLcl.Insert(true);
                 LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
 
@@ -39,11 +39,11 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Total Invoiced Amount (Period)", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
                     RecalculateAccrualAmount(LeadAccLineLcl);
-                    LeadAccLineLcl.Validate("Adjust Accrual Amount", LeadAccLineLcl."Accrual Amount");
+                    LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end
                 else begin
-                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Acq. Vendor No.", Rec."From Date", Rec."To Date"));
-                    LeadAccLineLcl.Validate("Adjust Accrual Amount", LeadAccLineLcl."Accrual Amount");
+                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Vendor", Rec."From Date", Rec."To Date"));
+                    LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end;
 
                 LeadAccLineLcl.Modify(true);
@@ -56,14 +56,14 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         VendorLcl: Record Vendor;
     begin
         VendorLcl.Reset();
-        VendorLcl.SetRange("12E Lead Accrual Vendor", true);
+        VendorLcl.SetRange("12E Lead Accrual", true);
 
         if VendorLcl.IsEmpty() then
             Error('No vendors are configured as Lead Accrual Vendors.');
 
         if VendorLcl.FindSet() then
             repeat
-                VendorLcl.TestField("12E Lead Acq. Vendor No.");
+                VendorLcl.TestField("12E Lead Vendor");
                 VendorLcl.TestField("12E Lead Credit Account No.");
                 VendorLcl.TestField("12E Lead Debit Account No.");
             until VendorLcl.Next() = 0;
@@ -163,7 +163,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
             EndDate := LeadAccLine."To Date";
         end;
 
-        LeadAccLine.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(Vendor."12E Lead Acq. Vendor No.", StartDate, EndDate));
+        LeadAccLine.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(Vendor."12E Lead Vendor", StartDate, EndDate));
     end;
 
     procedure GetDataSourceID(): Integer

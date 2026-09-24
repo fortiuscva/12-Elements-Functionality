@@ -55,10 +55,10 @@ page 52126 "12E Posted LeadAccrual Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Accrual Amount field.', Comment = '%';
                 }
-                field("Adjust Accrual Amount"; Rec."Adjust Accrual Amount")
+                field("Adjusted Accrual Amount"; Rec."Adjusted Accrual Amount")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Adjust Accrual Amount field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Adjusted Accrual Amount field.', Comment = '%';
                 }
                 field("Total Invoiced Amount (Period)"; Rec."Total Invoiced Amount (Period)")
                 {

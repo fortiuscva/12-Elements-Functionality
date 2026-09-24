@@ -71,16 +71,16 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             LeadAccLine.TestField("Vendor No.");
             LeadAccLine.TestField("Lead Provider");
 
-            if LeadAccLine."Adjust Accrual Amount" = 0 then
+            if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");
 
             if not Vendor.Get(LeadAccLine."Vendor No.") then
                 Error(VendorSetupErr, LeadAccLine."Vendor No.");
 
-            if not Vendor."12E Lead Accrual Vendor" then
+            if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Acq. Vendor No." = '' then
+            if Vendor."12E Lead Vendor" = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
             if Vendor."12E Lead Credit Account No." = '' then
@@ -109,16 +109,16 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             LeadAccLine.TestField("Vendor No.");
             LeadAccLine.TestField("Lead Provider");
 
-            if LeadAccLine."Adjust Accrual Amount" = 0 then
+            if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");
 
             if not Vendor.Get(LeadAccLine."Vendor No.") then
                 Error(VendorSetupErr, LeadAccLine."Vendor No.");
 
-            if not Vendor."12E Lead Accrual Vendor" then
+            if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Acq. Vendor No." = '' then
+            if Vendor."12E Lead Vendor" = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
             if Vendor."12E Lead Credit Account No." = '' then
@@ -160,14 +160,14 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2...%3]', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(MonthEndDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjust Accrual Amount");
+                CreateGenJournalLine(MonthEndDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2-%3]-Reversal', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(NextMonthStartDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjust Accrual Amount");
+                CreateGenJournalLine(NextMonthStartDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;

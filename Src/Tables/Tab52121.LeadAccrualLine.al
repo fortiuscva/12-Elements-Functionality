@@ -71,13 +71,13 @@ table 52121 "12E Lead Accrual Line"
             trigger OnValidate()
             begin
                 if "Accrual Amount" <> 0 then
-                    "Adjust Accrual Amount" := "Accrual Amount";
+                    "Adjusted Accrual Amount" := "Accrual Amount";
             end;
         }
 
-        field(11; "Adjust Accrual Amount"; Decimal)
+        field(11; "Adjusted Accrual Amount"; Decimal)
         {
-            Caption = 'Adjust Accrual Amount';
+            Caption = 'Adjusted Accrual Amount';
             DecimalPlaces = 2 : 2;
         }
         field(12; "Override Last PPI Posting Date"; Date)
@@ -97,7 +97,7 @@ table 52121 "12E Lead Accrual Line"
             Caption = 'Last Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
             Editable = false;
-            TableRelation = "Purch. Inv. Header";
+            TableRelation = "Purch. Inv. Header"."No.";
         }
     }
 

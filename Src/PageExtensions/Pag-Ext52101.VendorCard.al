@@ -12,12 +12,12 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                 {
                     Caption = 'Lead Reconciliation';
 
-                    field("12E Lead Acquisition"; Rec."12E Lead Acquisition")
+                    field("12E Lead Reconciliation"; Rec."12E Lead Reconciliation")
                     {
                         ApplicationArea = All;
                     }
 
-                    field("12E Lead Acquisition Vendor No."; Rec."12E Lead Acq. Vendor No.")
+                    field("12E Lead Acquisition Vendor No."; Rec."12E Lead Vendor")
                     {
                         ApplicationArea = All;
                         Caption = 'Lead Provider';
@@ -36,10 +36,10 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                                 CompanyMapping."DataSource ID");
 
                             if LeadProviderLookup.RunModal() = Action::LookupOK then begin
-                                Rec."12E Lead Acq. Vendor No." :=
+                                Rec."12E Lead Vendor" :=
                                     LeadProviderLookup.GetSelectedProvider();
 
-                                Text := Rec."12E Lead Acq. Vendor No.";
+                                Text := Rec."12E Lead Vendor";
                                 exit(true);
                             end;
 
@@ -57,7 +57,7 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                 {
                     Caption = 'Lead Accrual';
 
-                    field("12E Lead Accrual Vendor"; Rec."12E Lead Accrual Vendor")
+                    field("12E Lead Accrual"; Rec."12E Lead Accrual")
                     {
                         ApplicationArea = All;
                     }
@@ -96,11 +96,11 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                         LeadSource: Record "12E Lead Source Reconciliation";
                         CompanyMapping: Record "12E Company Mapping";
                     begin
-                        if Rec."12E Lead Acq. Vendor No." = '' then Error('Lead Provider must be specified for vendor %1.', Rec."No.");
+                        if Rec."12E Lead Vendor" = '' then Error('Lead Provider must be specified for vendor %1.', Rec."No.");
                         CompanyMapping.SetRange(Company, CompanyName());
                         if not CompanyMapping.FindFirst() then Error('Data Source ID is not configured for company %1.', CompanyName());
                         LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
-                        LeadSource.SetRange("Lead Provider", Rec."12E Lead Acq. Vendor No.");
+                        LeadSource.SetRange("Lead Provider", Rec."12E Lead Vendor");
                         Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                     end;
                 }

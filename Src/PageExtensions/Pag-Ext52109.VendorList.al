@@ -20,11 +20,11 @@ pageextension 52109 "12E Vendor List" extends "Vendor List"
                         LeadSource: Record "12E Lead Source Reconciliation";
                         CompanyMapping: Record "12E Company Mapping";
                     begin
-                        if Rec."12E Lead Acq. Vendor No." = '' then Error('Lead Provider must be specified for vendor %1.', Rec."No.");
+                        if Rec."12E Lead Vendor" = '' then Error('Lead Provider must be specified for vendor %1.', Rec."No.");
                         CompanyMapping.SetRange(Company, CompanyName());
                         if not CompanyMapping.FindFirst() then Error('Data Source ID is not configured for company %1.', CompanyName());
                         LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
-                        LeadSource.SetRange("Lead Provider", Rec."12E Lead Acq. Vendor No.");
+                        LeadSource.SetRange("Lead Provider", Rec."12E Lead Vendor");
                         Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                     end;
                 }

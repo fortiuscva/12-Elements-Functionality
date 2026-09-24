@@ -256,4 +256,10 @@ table 52120 "12E Lead Accrual"
         if not LeadAccrualLine.IsEmpty() then
             Error('You cannot change the Year or Month when Lead Accrual lines exist. Delete the lines first.');
     end;
+
+    procedure CheckDocumentEditable()
+    begin
+        if Rec.Status = Rec.Status::Released then
+            Error('Lead Accrual document %1 is released and cannot be modified.', Rec."No.");
+    end;
 }

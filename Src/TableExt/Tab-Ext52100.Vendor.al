@@ -2,15 +2,15 @@ tableextension 52100 "12E Vendor" extends Vendor
 {
     fields
     {
-        field(50100; "12E Lead Acquisition"; Boolean)
+        field(50100; "12E Lead Reconciliation"; Boolean)
         {
-            Caption = 'Lead Acquisition';
+            Caption = 'Lead Reconciliation ';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             begin
-                if "12E Lead Acquisition" then
-                    TestField("12E Lead Acq. Vendor No.");
+                if "12E Lead Reconciliation" then
+                    TestField("12E Lead Vendor");
             end;
         }
 
@@ -20,29 +20,29 @@ tableextension 52100 "12E Vendor" extends Vendor
             DataClassification = CustomerContent;
         }
 
-        field(50102; "12E Lead Accrual Vendor"; Boolean)
+        field(50102; "12E Lead Accrual"; Boolean)
         {
-            Caption = 'Lead Accrual Vendor';
+            Caption = 'Lead Accrual';
             DataClassification = CustomerContent;
             trigger OnValidate()
             begin
-                if "12E Lead Accrual Vendor" then begin
-                    TestField("12E Lead Acq. Vendor No.");
+                if "12E Lead Accrual" then begin
+                    TestField("12E Lead Vendor");
                     TestField("12E Lead Credit Account No.");
                     TestField("12E Lead Debit Account No.");
                 end;
             end;
         }
 
-        field(50103; "12E Lead Acq. Vendor No."; Text[100])
+        field(50103; "12E Lead Vendor"; Text[100])
         {
-            Caption = 'Lead Provider';
+            Caption = 'Lead Vendor';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
             begin
-                if "12E Lead Acquisition" or "12E Lead Accrual Vendor" then
-                    TestField("12E Lead Acq. Vendor No.");
+                if "12E Lead Reconciliation" or "12E Lead Accrual" then
+                    TestField("12E Lead Vendor");
             end;
         }
         field(50104; "12E Lead Credit Account No."; Code[20])
@@ -53,7 +53,7 @@ tableextension 52100 "12E Vendor" extends Vendor
 
             trigger OnValidate()
             begin
-                if "12E Lead Accrual Vendor" then
+                if "12E Lead Accrual" then
                     TestField("12E Lead Credit Account No.");
             end;
         }
@@ -65,7 +65,7 @@ tableextension 52100 "12E Vendor" extends Vendor
 
             trigger OnValidate()
             begin
-                if "12E Lead Accrual Vendor" then
+                if "12E Lead Accrual" then
                     TestField("12E Lead Debit Account No.");
             end;
         }

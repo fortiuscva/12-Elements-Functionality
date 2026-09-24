@@ -41,8 +41,8 @@ codeunit 52111 "12E Lead Accrual Release Mgmt"
 
         if LeadAccrualLine.FindSet() then
             repeat
-                if LeadAccrualLine."Adjust Accrual Amount" = 0 then
-                    Error('Adjust Accrual Amount must be specified for Vendor %1 on document %2.', LeadAccrualLine."Vendor No.", LeadAccrual."No.");
+                if LeadAccrualLine."Adjusted Accrual Amount" = 0 then
+                    Error('Adjusted Accrual Amount must be specified for Vendor %1 on document %2.', LeadAccrualLine."Vendor No.", LeadAccrual."No.");
             until LeadAccrualLine.Next() = 0;
     end;
 

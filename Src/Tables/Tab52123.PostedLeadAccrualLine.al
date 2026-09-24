@@ -71,9 +71,9 @@ table 52123 "12E Posted Lead Accrual Line"
             DataClassification = CustomerContent;
         }
 
-        field(11; "Adjust Accrual Amount"; Decimal)
+        field(11; "Adjusted Accrual Amount"; Decimal)
         {
-            Caption = 'Adjust Accrual Amount';
+            Caption = 'Adjusted Accrual Amount';
             DecimalPlaces = 2 : 2;
             DataClassification = CustomerContent;
         }
@@ -86,7 +86,7 @@ table 52123 "12E Posted Lead Accrual Line"
         {
             Caption = 'Last Posted Purchase Invoice No.';
             DataClassification = CustomerContent;
-            TableRelation = "Purch. Inv. Header";
+            TableRelation = "Purch. Inv. Header"."No.";
         }
     }
 

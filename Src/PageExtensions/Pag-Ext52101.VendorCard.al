@@ -20,12 +20,12 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                     field("12E Lead Acquisition Vendor No."; Rec."12E Lead Vendor")
                     {
                         ApplicationArea = All;
-                        Caption = 'Lead Provider';
+                        Caption = 'Lead Vendor';
 
                         trigger OnLookup(var Text: Text): Boolean
                         var
                             CompanyMapping: Record "12E Company Mapping";
-                            LeadProviderLookup: Page "12E Lead Provider Lookup";
+                            LeadProviderLookup: Page "12E Lead Vendor Lookup";
                         begin
                             CompanyMapping.SetRange(Company, CompanyName());
 
@@ -96,11 +96,11 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                         LeadSource: Record "12E Lead Source Reconciliation";
                         CompanyMapping: Record "12E Company Mapping";
                     begin
-                        if Rec."12E Lead Vendor" = '' then Error('Lead Provider must be specified for vendor %1.', Rec."No.");
+                        if Rec."12E Lead Vendor" = '' then Error('Lead Vendor must be specified for vendor %1.', Rec."No.");
                         CompanyMapping.SetRange(Company, CompanyName());
                         if not CompanyMapping.FindFirst() then Error('Data Source ID is not configured for company %1.', CompanyName());
                         LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
-                        LeadSource.SetRange("Lead Provider", Rec."12E Lead Vendor");
+                        LeadSource.SetRange("Lead Vendor", Rec."12E Lead Vendor");
                         Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                     end;
                 }

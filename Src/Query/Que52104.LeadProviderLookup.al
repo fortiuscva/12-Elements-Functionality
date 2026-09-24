@@ -1,6 +1,6 @@
-query 52104 "12E Lead Provider Lookup"
+query 52104 "12E Lead Vendor Lookup"
 {
-    Caption = 'Lead Provider Lookup';
+    Caption = 'Lead Vendor Lookup';
 
     QueryType = Normal;
 
@@ -12,7 +12,7 @@ query 52104 "12E Lead Provider Lookup"
             {
             }
 
-            column(LeadProvider; "Lead Provider")
+            column(LeadProvider; "Lead Vendor")
             {
             }
 

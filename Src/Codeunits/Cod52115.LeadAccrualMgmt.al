@@ -24,7 +24,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
                 LeadAccLineLcl."From Date" := Rec."From Date";
                 LeadAccLineLcl."To Date" := Rec."To Date";
-                LeadAccLineLcl."Lead Provider" := VendorLcl."12E Lead Vendor";
+                LeadAccLineLcl."Lead Vendor" := VendorLcl."12E Lead Vendor";
                 LeadAccLineLcl.Insert(true);
                 LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
 
@@ -138,7 +138,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         Clear(AccrualAmount);
         LeadSourceRecon.Reset();
         LeadSourceRecon.SetRange("Datasource ID", GetDataSourceID());
-        LeadSourceRecon.SetRange("Lead Provider", LeadProvider);
+        LeadSourceRecon.SetRange("Lead Vendor", LeadProvider);
         LeadSourceRecon.SetRange("Lead Original Date", StartDate, EndDate);
         LeadSourceRecon.CalcSums("Lead Sold Cost");
 

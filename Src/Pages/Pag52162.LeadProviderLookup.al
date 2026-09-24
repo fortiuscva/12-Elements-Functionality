@@ -1,9 +1,9 @@
-page 52162 "12E Lead Provider Lookup"
+page 52162 "12E Lead Vendor Lookup"
 {
     ApplicationArea = All;
-    Caption = 'Lead Provider Lookup';
+    Caption = 'Lead Vendor Lookup';
     PageType = List;
-    SourceTable = "12E Lead Provider Lookup";
+    SourceTable = "12E Lead Vendor Lookup";
     SourceTableTemporary = true;
     Editable = false;
     InsertAllowed = false;
@@ -16,10 +16,10 @@ page 52162 "12E Lead Provider Lookup"
         {
             repeater(General)
             {
-                field("Lead Provider"; Rec."Lead Provider")
+                field("Lead Vendor"; Rec."Lead Vendor")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Lead Provider field', Comment = '%';
+                    ToolTip = 'Specifies the value of the Lead Vendor field', Comment = '%';
                 }
             }
         }
@@ -28,7 +28,7 @@ page 52162 "12E Lead Provider Lookup"
     procedure LoadProviders(DataSourceID: Integer)
     var
         LeadSource: Record "12E Lead Source Reconciliation";
-        ProviderLookup: Record "12E Lead Provider Lookup";
+        ProviderLookup: Record "12E Lead Vendor Lookup";
     begin
         Rec.Reset();
         Rec.DeleteAll();
@@ -38,13 +38,13 @@ page 52162 "12E Lead Provider Lookup"
 
         if LeadSource.FindSet() then
             repeat
-                if LeadSource."Lead Provider" <> '' then begin
+                if LeadSource."Lead Vendor" <> '' then begin
                     ProviderLookup.Reset();
-                    ProviderLookup.SetRange("Lead Provider", LeadSource."Lead Provider");
+                    ProviderLookup.SetRange("Lead Vendor", LeadSource."Lead Vendor");
 
                     if not ProviderLookup.FindFirst() then begin
                         Rec.Init();
-                        Rec."Lead Provider" := LeadSource."Lead Provider";
+                        Rec."Lead Vendor" := LeadSource."Lead Vendor";
                         if Rec.Insert() then;
                     end;
                 end;
@@ -55,6 +55,6 @@ page 52162 "12E Lead Provider Lookup"
 
     procedure GetSelectedProvider(): Text[100]
     begin
-        exit(Rec."Lead Provider");
+        exit(Rec."Lead Vendor");
     end;
 }

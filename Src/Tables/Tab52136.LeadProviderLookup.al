@@ -1,20 +1,20 @@
-table 52136 "12E Lead Provider Lookup"
+table 52136 "12E Lead Vendor Lookup"
 {
-    Caption = 'Lead Provider Lookup';
+    Caption = 'Lead Vendor Lookup';
     DataClassification = CustomerContent;
 
     fields
     {
-        field(1; "Lead Provider"; Text[100])
+        field(1; "Lead Vendor"; Text[100])
         {
-            Caption = 'Lead Provider';
+            Caption = 'Lead Vendor';
             DataClassification = CustomerContent;
         }
     }
 
     keys
     {
-        key(PK; "Lead Provider")
+        key(PK; "Lead Vendor")
         {
             Clustered = true;
         }

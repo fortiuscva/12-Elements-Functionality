@@ -44,10 +44,10 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Vendor Name field.', Comment = '%';
                 }
-                field("Lead Provider"; Rec."Lead Provider")
+                field("Lead Vendor"; Rec."Lead Vendor")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Lead Provider field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Lead Vendor field.', Comment = '%';
                 }
 
                 field("Posting Date"; Rec."Posting Date")
@@ -93,7 +93,7 @@ page 52121 "12E Leads Reconciliations"
                             StartDate := CalcDate('<+1D>', Rec."Prior Posting Date");
 
                         LeadSource.Reset();
-                        LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
+                        LeadSource.SetRange("Lead Vendor", Rec."Lead Vendor");
                         LeadSource.SetRange("Lead Original Date", StartDate, Rec."Posting Date");
 
                         Page.RunModal(Page::"12E Leads Data by Portfolio", LeadSource);
@@ -166,7 +166,7 @@ page 52121 "12E Leads Reconciliations"
                         Error('Data Source ID is not configured for company %1.', CompanyName());
 
                     LeadSource.Reset();
-                    LeadSource.SetRange("Lead Provider", Rec."Lead Provider");
+                    LeadSource.SetRange("Lead Vendor", Rec."Lead Vendor");
                     LeadSource.SetRange("Lead Original Date", GetLeadSourceStartDate(), Rec."Posting Date");
 
                     Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);

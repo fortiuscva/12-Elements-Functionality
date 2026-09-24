@@ -1,10 +1,10 @@
-page 52142 "12E Lead Providers Data"
+page 52142 "12E Lead Vendors Data"
 {
     APIGroup = '12Elements';
     APIPublisher = '12Elements';
     APIVersion = 'v2.0';
     ApplicationArea = All;
-    Caption = 'Lead Providers Data';
+    Caption = 'Lead Vendors Data';
     DelayedInsert = true;
     EntityName = 'leadProvider';
     EntitySetName = 'leadProviders';
@@ -37,9 +37,9 @@ page 52142 "12E Lead Providers Data"
                 {
                     Caption = 'Lead Original Date';
                 }
-                field(leadProvider; Rec."Lead Provider")
+                field(leadProvider; Rec."Lead Vendor")
                 {
-                    Caption = 'Lead Provider';
+                    Caption = 'Lead Vendor';
                 }
                 field(purchasedLeads; Rec."Purchased Leads")
                 {

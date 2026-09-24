@@ -35,9 +35,9 @@ table 52119 "12E Lead Validation Details"
             CalcFormula = lookup(Vendor.Name where("No." = field("Vendor No.")));
         }
 
-        field(5; "Lead Provider"; Text[100])
+        field(5; "Lead Vendor"; Text[100])
         {
-            Caption = 'Lead Provider';
+            Caption = 'Lead Vendor';
             DataClassification = CustomerContent;
         }
 

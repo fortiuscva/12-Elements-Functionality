@@ -42,10 +42,10 @@ page 52120 "12E Lead Source Reconciliation"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Original Date field.', Comment = '%';
                 }
-                field("Lead Provider"; Rec."Lead Provider")
+                field("Lead Vendor"; Rec."Lead Vendor")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Lead Provider field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Lead Vendor field.', Comment = '%';
                 }
                 field("Purchased Leads"; Rec."Purchased Leads")
                 {

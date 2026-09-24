@@ -36,9 +36,9 @@ table 52118 "12E Lead Source Reconciliation"
             DataClassification = CustomerContent;
         }
 
-        field(6; "Lead Provider"; Text[100])
+        field(6; "Lead Vendor"; Text[100])
         {
-            Caption = 'Lead Provider';
+            Caption = 'Lead Vendor';
             DataClassification = CustomerContent;
         }
 

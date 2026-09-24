@@ -283,4 +283,25 @@ codeunit 52114 "12E Event Management"
 
         exit(true);
     end;
+
+    [EventSubscriber(ObjectType::Page, Page::"Posted Purch. Invoice - Update", OnAfterRecordChanged, '', false, false)]
+    local procedure "Posted Purch. Invoice - Update_OnAfterRecordChanged"(var PurchInvHeader: Record "Purch. Inv. Header"; xPurchInvHeader: Record "Purch. Inv. Header"; var IsChanged: Boolean; xPurchInvHeaderGlobal: Record "Purch. Inv. Header")
+    begin
+        IsChanged :=
+         (PurchInvHeader."Payment Reference" <> xPurchInvHeader."Payment Reference") or
+         (PurchInvHeader."Payment Method Code" <> xPurchInvHeader."Payment Method Code") or
+         (PurchInvHeader."Creditor No." <> xPurchInvHeader."Creditor No.") or
+         (PurchInvHeader."Ship-to Code" <> xPurchInvHeader."Ship-to Code") or
+         (PurchInvHeader."Posting Description" <> xPurchInvHeader."Posting Description") or
+         (PurchInvHeader."12E Lead Period Start Date" <> xPurchInvHeader."12E Lead Period Start Date") or
+         (PurchInvHeader."12E Lead Period End Date" <> xPurchInvHeader."12E Lead Period End Date");
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Purch. Inv. Header - Edit", OnBeforePurchInvHeaderModify, '', false, false)]
+    local procedure "Purch. Inv. Header - Edit_OnBeforePurchInvHeaderModify"(var PurchInvHeader: Record "Purch. Inv. Header"; PurchInvHeaderRec: Record "Purch. Inv. Header")
+    begin
+        PurchInvHeader."12E Lead Period Start Date" := PurchInvHeaderRec."12E Lead Period Start Date";
+        PurchInvHeader."12E Lead Period Start Date" := PurchInvHeaderRec."12E Lead Period End Date";
+    end;
+
 }

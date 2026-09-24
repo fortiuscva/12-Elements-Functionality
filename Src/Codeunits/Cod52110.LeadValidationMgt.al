@@ -5,7 +5,6 @@ codeunit 52110 "12E Lead Validation Mgt"
         PurchInvHeader: Record "Purch. Inv. Header";
         Vendor: Record Vendor;
         Vendor2: Record Vendor;
-        PriorDate: Date;
         LeadCost: Decimal;
         EntryNo: Integer;
     begin
@@ -22,90 +21,76 @@ codeunit 52110 "12E Lead Validation Mgt"
                 PurchInvHeader.Reset();
                 PurchInvHeader.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
                 PurchInvHeader.SetRange("Buy-from Vendor No.", Vendor."No.");
-                PurchInvHeader.SetRange("Posting Date", StartDate, EndDate);
+                PurchInvHeader.SetRange("12E Lead Period Start Date", StartDate);
+                PurchInvHeader.SetRange("12E Lead Period End Date", EndDate);
 
                 if PurchInvHeader.FindSet() then begin
                     repeat
-                        LeadValidationPar.Init();
+                        if (PurchInvHeader."12E Lead Period Start Date" <> 0D) and
+                           (PurchInvHeader."12E Lead Period End Date" <> 0D) then begin
 
-                        LeadValidationPar."Entry No." := EntryNo;
-                        LeadValidationPar."Datasource ID" := GetDataSourceID();
-                        LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
+                            LeadValidationPar.Init();
+                            LeadValidationPar."Entry No." := EntryNo;
+                            LeadValidationPar."Datasource ID" := GetDataSourceID();
+                            LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
 
-                        Vendor2.Reset();
-                        if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
-                            LeadValidationPar."Vendor Name" := Vendor2.Name;
+                            Vendor2.Reset();
+                            if Vendor2.Get(PurchInvHeader."Buy-from Vendor No.") then
+                                LeadValidationPar."Vendor Name" := Vendor2.Name;
 
-                        LeadValidationPar."Lead Provider" := Vendor."12E Lead Vendor";
+                            LeadValidationPar."Lead Vendor" := Vendor."12E Lead Vendor";
 
-                        PriorDate := GetPreviousPostingDate(
-                            Vendor."No.",
-                            PurchInvHeader."Posting Date");
+                            LeadCost := GetLeadCostAmount(
+                                Vendor."12E Lead Vendor",
+                                PurchInvHeader."12E Lead Period Start Date",
+                                PurchInvHeader."12E Lead Period End Date");
 
-                        LeadCost := GetLeadCostAmount(
-                            Vendor."12E Lead Vendor",
-                            PriorDate,
-                            PurchInvHeader."Posting Date");
+                            LeadValidationPar."Posting Date" := PurchInvHeader."Posting Date";
+                            LeadValidationPar."Posted Purchase Invoice No." := PurchInvHeader."No.";
 
-                        LeadValidationPar."Posting Date" := PurchInvHeader."Posting Date";
-                        LeadValidationPar."Posted Purchase Invoice No." := PurchInvHeader."No.";
+                            PurchInvHeader.CalcFields(Amount);
+                            LeadValidationPar."Invoice Amount" := PurchInvHeader.Amount;
 
-                        PurchInvHeader.CalcFields(Amount);
-                        LeadValidationPar."Invoice Amount" := PurchInvHeader.Amount;
+                            Clear(LeadValidationPar."Prior Posting Date");
 
-                        LeadValidationPar."Prior Posting Date" := PriorDate;
-                        LeadValidationPar."Lead Cost Amount" := LeadCost;
+                            LeadValidationPar."Lead Cost Amount" := LeadCost;
 
-                        LeadValidationPar.Difference :=
-                            Abs(
-                                LeadValidationPar."Invoice Amount" -
-                                LeadValidationPar."Lead Cost Amount");
+                            LeadValidationPar.Difference :=
+                                Abs(
+                                    LeadValidationPar."Invoice Amount" -
+                                    LeadValidationPar."Lead Cost Amount");
 
-                        if LeadValidationPar."Invoice Amount" <> 0 then
-                            LeadValidationPar."Difference %" :=
-                                Round(
-                                    (LeadValidationPar.Difference /
-                                    LeadValidationPar."Invoice Amount") * 100,
-                                    0.01);
+                            if LeadValidationPar."Invoice Amount" <> 0 then
+                                LeadValidationPar."Difference %" :=
+                                    Round(
+                                        (LeadValidationPar.Difference /
+                                        LeadValidationPar."Invoice Amount") * 100,
+                                        0.01);
 
-                        LeadValidationPar.Insert(true);
+                            LeadValidationPar.Insert(true);
 
-                        EntryNo += 1;
+                            EntryNo += 1;
+                        end;
                     until PurchInvHeader.Next() = 0;
                 end;
             until Vendor.Next() = 0;
         end;
     end;
 
-    local procedure GetPreviousPostingDate(VendorNo: Code[20]; CurrentPostingDate: Date): Date
-    var
-        PurchInvHeader: Record "Purch. Inv. Header";
-    begin
-        PurchInvHeader.Reset();
-        PurchInvHeader.SetCurrentKey("Buy-from Vendor No.", "Posting Date");
-        PurchInvHeader.SetRange("Buy-from Vendor No.", VendorNo);
-        PurchInvHeader.SetFilter("Posting Date", '..%1', CalcDate('<-1D>', CurrentPostingDate));
-
-        if PurchInvHeader.FindLast() then
-            exit(PurchInvHeader."Posting Date");
-
-        exit(0D);
-    end;
-
-    local procedure GetLeadCostAmount(LeadProvider: Text[100]; PriorPostingDate: Date; CurrentPostingDate: Date): Decimal
+    local procedure GetLeadCostAmount(LeadProvider: Text[100]; LeadPeriodStartDate: Date; LeadPeriodEndDate: Date): Decimal
     var
         LeadRecon: Record "12E Lead Source Reconciliation";
-        StartDate: Date;
     begin
-        if PriorPostingDate = 0D then
-            StartDate := DMY2Date(1, 1, 1900)
-        else
-            StartDate := CalcDate('<+1D>', PriorPostingDate);
+        if (LeadPeriodStartDate = 0D) or (LeadPeriodEndDate = 0D) then
+            exit(0);
+
+        if LeadPeriodStartDate > LeadPeriodEndDate then
+            Error('Lead Period Start Date cannot be later than Lead Period End Date.');
 
         LeadRecon.Reset();
         LeadRecon.SetRange("Datasource ID", GetDataSourceID());
-        LeadRecon.SetRange("Lead Provider", LeadProvider);
-        LeadRecon.SetRange("Lead Original Date", StartDate, CurrentPostingDate);
+        LeadRecon.SetRange("Lead Vendor", LeadProvider);
+        LeadRecon.SetRange("Lead Original Date", LeadPeriodStartDate, LeadPeriodEndDate);
         LeadRecon.CalcSums("Lead Sold Cost");
 
         exit(LeadRecon."Lead Sold Cost");

@@ -102,7 +102,7 @@ page 52123 "12E Lead Accrual Subform"
                     LeadAccrual.TestField("To Date");
 
                     LeadSource.Reset();
-                    LeadSource.SetRange("Lead Provider", Vendor."12E Lead Vendor");
+                    LeadSource.SetRange("Lead Vendor", Vendor."12E Lead Vendor");
                     LeadSource.SetRange("Lead Original Date", Rec."Override Last PPI Posting Date", LeadAccrual."To Date");
 
                     Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);

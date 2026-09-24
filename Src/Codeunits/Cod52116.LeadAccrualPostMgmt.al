@@ -69,7 +69,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         repeat
             LeadAccLine.TestField("Vendor No.");
-            LeadAccLine.TestField("Lead Provider");
+            LeadAccLine.TestField("Lead Vendor");
 
             if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");
@@ -107,7 +107,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         repeat
             LeadAccLine.TestField("Vendor No.");
-            LeadAccLine.TestField("Lead Provider");
+            LeadAccLine.TestField("Lead Vendor");
 
             if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");

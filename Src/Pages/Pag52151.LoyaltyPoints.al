@@ -176,7 +176,6 @@ page 52151 "12E Loyalty Points"
                     CurrPage.Update(false);
                 end;
             }
-
             action(ReverseRegister)
             {
                 ApplicationArea = All;
@@ -194,6 +193,26 @@ page 52151 "12E Loyalty Points"
                 begin
                     LoyaltyReverseMgt.ReverseLoyalty(Rec);
                     CurrPage.Update(false);
+                end;
+            }
+        }
+        area(Navigation)
+        {
+            action(ShowGLEntries)
+            {
+                ApplicationArea = All;
+                Caption = 'Show G/L Entries';
+                Ellipsis = true;
+                Promoted = true;
+                PromotedCategory = Process;
+                Image = LedgerEntries;
+                trigger OnAction()
+                var
+                    GLEntry: Record "G/L Entry";
+                begin
+                    GLEntry.Reset();
+                    GLEntry.SetRange("Document No.", Rec."Document No.");
+                    Page.RunModal(Page::"General Ledger Entries", GLEntry);
                 end;
             }
         }

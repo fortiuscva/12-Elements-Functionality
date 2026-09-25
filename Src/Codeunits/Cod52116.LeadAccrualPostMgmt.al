@@ -1,6 +1,5 @@
 codeunit 52116 "12E Lead Accrual Post Mgmt"
 {
-
     var
         TwelveSetup: Record "12E Setup";
         NoJournalLinesToPostErr: Label 'There are no General Journal Lines to post.';
@@ -160,14 +159,14 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2...%3]', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(MonthEndDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount");
+                CreateGenJournalLine(MonthEndDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount", LeadAccLine."Vendor No.");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2-%3]-Reversal', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(NextMonthStartDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount");
+                CreateGenJournalLine(NextMonthStartDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount", LeadAccLine."Vendor No.");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
@@ -175,7 +174,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         end;
     end;
 
-    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; DescriptionTxt: Text[100]; AccountNo: Code[20]; BalAccountNo: Code[20]; Amount: Decimal)
+    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; DescriptionTxt: Text[100]; AccountNo: Code[20]; BalAccountNo: Code[20]; Amount: Decimal; VendorNo: Code[20])
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
@@ -188,11 +187,35 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.Validate("Document No.", DocumentNo);
         GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
         GenJournalLine.Validate("Account No.", AccountNo);
+        ApplyVendorDimensions(GenJournalLine, VendorNo);
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
         GenJournalLine.Validate(Amount, Amount);
         GenJournalLine.Description := DescriptionTxt;
         GenJournalLine.Modify(true);
+    end;
+
+    local procedure ApplyVendorDimensions(var GenJournalLine: Record "Gen. Journal Line"; VendorNo: Code[20])
+    var
+        Vendor: Record Vendor;
+        DimensionManagement: Codeunit DimensionManagement;
+        DefaultDimSource: List of [Dictionary of [Integer, Code[20]]];
+        VendorDimSetID: Integer;
+        DimensionSetIDs: array[10] of Integer;
+        GlobalDim1Code: Code[20];
+        GlobalDim2Code: Code[20];
+    begin
+        if not Vendor.Get(VendorNo) then
+            exit;
+
+        DimensionManagement.AddDimSource(DefaultDimSource, Database::Vendor, Vendor."No.", false);
+        VendorDimSetID := DimensionManagement.GetDefaultDimID(DefaultDimSource, GenJournalLine."Source Code", GlobalDim1Code, GlobalDim2Code, 0, 0);
+
+        DimensionSetIDs[1] := GenJournalLine."Dimension Set ID";
+        DimensionSetIDs[2] := VendorDimSetID;
+
+        GenJournalLine."Dimension Set ID" := DimensionManagement.GetCombinedDimensionSetID(DimensionSetIDs, GlobalDim1Code, GlobalDim2Code);
+        DimensionManagement.UpdateGlobalDimFromDimSetID(GenJournalLine."Dimension Set ID", GenJournalLine."Shortcut Dimension 1 Code", GenJournalLine."Shortcut Dimension 2 Code");
     end;
 
     [TryFunction]

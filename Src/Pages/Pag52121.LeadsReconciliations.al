@@ -55,6 +55,11 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
+                field("Invoice No."; Rec."Invoice No.")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Posted Invoice No. field.', Comment = '%';
+                }
                 field("Posted Purchase Invoice No."; Rec."Posted Purchase Invoice No.")
                 {
                     ApplicationArea = all;
@@ -65,12 +70,16 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = all;
                     ToolTip = 'Specifies the value of the Invoice Amount field.', Comment = '%';
                 }
-                field("Prior Posting Date"; Rec."Prior Posting Date")
+                field("Lead Period Start Date"; Rec."Lead Period Start Date")
                 {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Prior Posting Date field.', Comment = '%';
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Lead Period Start Date field.', Comment = '%';
                 }
-
+                field("Lead Period End Date"; Rec."Lead Period End Date")
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Lead Period End Date field.', Comment = '%';
+                }
                 field("Lead Cost Amount"; Rec."Lead Cost Amount")
                 {
                     ApplicationArea = All;
@@ -79,7 +88,6 @@ page 52121 "12E Leads Reconciliations"
                     var
                         LeadSource: Record "12E Lead Source Reconciliation";
                         CompanyMapping: Record "12E Company Mapping";
-                        StartDate: Date;
                     begin
                         CompanyMapping.Reset();
                         CompanyMapping.SetRange(Company, CompanyName());
@@ -87,14 +95,12 @@ page 52121 "12E Leads Reconciliations"
                         if not CompanyMapping.FindFirst() then
                             exit;
 
-                        if Rec."Prior Posting Date" = 0D then
-                            StartDate := DMY2Date(1, 1, 1900)
-                        else
-                            StartDate := CalcDate('<+1D>', Rec."Prior Posting Date");
-
                         LeadSource.Reset();
                         LeadSource.SetRange("Lead Vendor", Rec."Lead Vendor");
-                        LeadSource.SetRange("Lead Original Date", StartDate, Rec."Posting Date");
+                        LeadSource.SetRange(
+                            "Lead Original Date",
+                            Rec."Lead Period Start Date",
+                            Rec."Lead Period End Date");
 
                         Page.RunModal(Page::"12E Leads Data by Portfolio", LeadSource);
                     end;
@@ -131,18 +137,10 @@ page 52121 "12E Leads Reconciliations"
 
                 trigger OnAction()
                 var
-                    LeadValidationMgt: Codeunit "12E Lead Validation Mgt";
+                    LeadsReconciliation: Report "12E Leads Reconciliation";
                 begin
-                    if StartDate = 0D then
-                        Error('Start Date must be entered.');
-
-                    if EndDate = 0D then
-                        Error('End Date must be entered.');
-
-                    if EndDate < StartDate then
-                        Error('End Date cannot be earlier than Start Date.');
-
-                    LeadValidationMgt.BuildValidationData(Rec, StartDate, EndDate);
+                    LeadsReconciliation.SetDateFilters(StartDate, EndDate);
+                    LeadsReconciliation.RunModal();
                     CurrPage.Update(false);
                 end;
             }
@@ -167,7 +165,10 @@ page 52121 "12E Leads Reconciliations"
 
                     LeadSource.Reset();
                     LeadSource.SetRange("Lead Vendor", Rec."Lead Vendor");
-                    LeadSource.SetRange("Lead Original Date", GetLeadSourceStartDate(), Rec."Posting Date");
+                    LeadSource.SetRange(
+                        "Lead Original Date",
+                        Rec."Lead Period Start Date",
+                        Rec."Lead Period End Date");
 
                     Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                 end;
@@ -186,14 +187,6 @@ page 52121 "12E Leads Reconciliations"
             DifferenceStyle := 'Unfavorable'
         else
             DifferenceStyle := '';
-    end;
-
-    local procedure GetLeadSourceStartDate(): Date
-    begin
-        if Rec."Prior Posting Date" = 0D then
-            exit(DMY2Date(1, 1, 1900));
-
-        exit(CalcDate('<+1D>', Rec."Prior Posting Date"));
     end;
 
     trigger OnOpenPage()

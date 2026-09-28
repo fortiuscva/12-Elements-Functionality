@@ -19,6 +19,23 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     Caption = 'Start Date';
                     ToolTip = 'Specifies the value of the Start Date field.', Comment = '%';
+
+                    trigger OnValidate()
+                    begin
+                        if StartDate = PreviousStartDate then
+                            exit;
+
+                        if not Rec.IsEmpty() then begin
+                            if not Confirm(DateChangeConfirmQst, false) then begin
+                                StartDate := PreviousStartDate;
+                                exit;
+                            end;
+
+                            Rec.DeleteAll();
+                        end;
+
+                        PreviousStartDate := StartDate;
+                    end;
                 }
 
                 field(EndDate; EndDate)
@@ -26,6 +43,23 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     Caption = 'End Date';
                     ToolTip = 'Specifies the value of the End Date field.', Comment = '%';
+
+                    trigger OnValidate()
+                    begin
+                        if EndDate = PreviousEndDate then
+                            exit;
+
+                        if not Rec.IsEmpty() then begin
+                            if not Confirm(DateChangeConfirmQst, false) then begin
+                                EndDate := PreviousEndDate;
+                                exit;
+                            end;
+
+                            Rec.DeleteAll();
+                        end;
+
+                        PreviousEndDate := EndDate;
+                    end;
                 }
             }
 
@@ -44,6 +78,7 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Vendor Name field.', Comment = '%';
                 }
+
                 field("Lead Vendor"; Rec."Lead Vendor")
                 {
                     ApplicationArea = All;
@@ -55,35 +90,42 @@ page 52121 "12E Leads Reconciliations"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
+
                 field("Invoice No."; Rec."Invoice No.")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posted Invoice No. field.', Comment = '%';
                 }
+
                 field("Posted Purchase Invoice No."; Rec."Posted Purchase Invoice No.")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Posted Purchase Invoice No. field.', Comment = '%';
                 }
+
                 field("Invoice Amount"; Rec."Invoice Amount")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Invoice Amount field.', Comment = '%';
                 }
+
                 field("Lead Period Start Date"; Rec."Lead Period Start Date")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Period Start Date field.', Comment = '%';
                 }
+
                 field("Lead Period End Date"; Rec."Lead Period End Date")
                 {
-                    ApplicationArea = all;
+                    ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Period End Date field.', Comment = '%';
                 }
+
                 field("Lead Cost Amount"; Rec."Lead Cost Amount")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Lead Cost Amount field.', Comment = '%';
+
                     trigger OnDrillDown()
                     var
                         LeadSource: Record "12E Lead Source Reconciliation";
@@ -154,9 +196,13 @@ page 52121 "12E Leads Reconciliations"
                     Rec.DeleteAll();
                     LeadsReconciliation.GetValidationData(Rec);
 
+                    PreviousStartDate := StartDate;
+                    PreviousEndDate := EndDate;
+
                     CurrPage.Update(false);
                 end;
             }
+
             action(OpenLeadReconciliationSource)
             {
                 ApplicationArea = All;
@@ -192,7 +238,10 @@ page 52121 "12E Leads Reconciliations"
     var
         StartDate: Date;
         EndDate: Date;
+        PreviousStartDate: Date;
+        PreviousEndDate: Date;
         DifferenceStyle: Text;
+        DateChangeConfirmQst: Label 'Changing the reconciliation period will delete the existing reconciliation lines. Do you want to continue?';
 
     trigger OnAfterGetRecord()
     begin
@@ -208,11 +257,15 @@ page 52121 "12E Leads Reconciliations"
     begin
         CompanyMapping.SetRange(Company, CompanyName());
         CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+
         if not CompanyMapping.FindFirst() then
             Error('%1 is not mapped to any data source id in 12 elements setup.', CompanyName());
 
         Rec.FilterGroup(10);
         Rec.SetRange("Datasource ID", CompanyMapping."DataSource ID");
         Rec.FilterGroup(0);
+
+        PreviousStartDate := StartDate;
+        PreviousEndDate := EndDate;
     end;
 }

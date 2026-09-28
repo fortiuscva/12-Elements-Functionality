@@ -37,12 +37,14 @@ report 52110 "12E Leads Reconciliation"
                     {
                         ApplicationArea = All;
                         Caption = 'Start Date';
+                        Editable = false;
                     }
 
                     field(EndDate; EndDate)
                     {
                         ApplicationArea = All;
                         Caption = 'End Date';
+                        Editable = false;
                     }
                 }
             }

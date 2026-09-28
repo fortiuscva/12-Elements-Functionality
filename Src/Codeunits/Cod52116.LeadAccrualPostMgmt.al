@@ -159,14 +159,28 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2...%3]', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(MonthEndDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount", LeadAccLine."Vendor No.");
+                CreateGenJournalLine(
+                    MonthEndDate,
+                    LeadAccHeader."No.",
+                    DescriptionTxt,
+                    GetVendorLeadCreditAccount(LeadAccLine."Vendor No."),
+                    GetVendorLeadDebitAccount(LeadAccLine."Vendor No."),
+                    LeadAccLine."Adjusted Accrual Amount",
+                    LeadAccLine."Vendor No.");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
 
                 DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2-%3]-Reversal', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
 
-                CreateGenJournalLine(NextMonthStartDate, LeadAccHeader."No.", DescriptionTxt, GetVendorLeadDebitAccount(LeadAccLine."Vendor No."), GetVendorLeadCreditAccount(LeadAccLine."Vendor No."), LeadAccLine."Adjusted Accrual Amount", LeadAccLine."Vendor No.");
+                CreateGenJournalLine(
+                    NextMonthStartDate,
+                    LeadAccHeader."No.",
+                    DescriptionTxt,
+                    GetVendorLeadDebitAccount(LeadAccLine."Vendor No."),
+                    GetVendorLeadCreditAccount(LeadAccLine."Vendor No."),
+                    LeadAccLine."Adjusted Accrual Amount",
+                    LeadAccLine."Vendor No.");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
@@ -187,9 +201,9 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.Validate("Document No.", DocumentNo);
         GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
         GenJournalLine.Validate("Account No.", AccountNo);
-        ApplyVendorDimensions(GenJournalLine, VendorNo);
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
+        ApplyVendorDimensions(GenJournalLine, VendorNo);
         GenJournalLine.Validate(Amount, Amount);
         GenJournalLine.Description := DescriptionTxt;
         GenJournalLine.Modify(true);

@@ -139,8 +139,21 @@ page 52121 "12E Leads Reconciliations"
                 var
                     LeadsReconciliation: Report "12E Leads Reconciliation";
                 begin
+                    if StartDate = 0D then
+                        Error('Start Date must be entered.');
+
+                    if EndDate = 0D then
+                        Error('End Date must be entered.');
+
+                    if EndDate < StartDate then
+                        Error('End Date cannot be earlier than Start Date.');
+
                     LeadsReconciliation.SetDateFilters(StartDate, EndDate);
                     LeadsReconciliation.RunModal();
+
+                    Rec.DeleteAll();
+                    LeadsReconciliation.GetValidationData(Rec);
+
                     CurrPage.Update(false);
                 end;
             }

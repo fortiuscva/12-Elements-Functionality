@@ -96,6 +96,7 @@ page 52142 "12E Lead Vendors Data"
     begin
         Validations.CheckDataSourceIDMapping(Rec."Datasource ID");
         Validations.CheckPortfolioMapping(Rec."Portfolio Name");
+        Validations.CheckWhetherLeadVendorMappingExists(Rec."Datasource ID", Rec."Lead Vendor");
         exit(true);
     end;
 

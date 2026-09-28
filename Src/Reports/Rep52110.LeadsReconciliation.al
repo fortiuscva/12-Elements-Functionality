@@ -2,7 +2,7 @@ report 52110 "12E Leads Reconciliation"
 {
     Caption = 'Leads Reconciliation';
     UsageCategory = Tasks;
-    ApplicationArea = All;
+    ProcessingOnly = true;
 
     dataset
     {
@@ -13,6 +13,7 @@ report 52110 "12E Leads Reconciliation"
             trigger OnPreDataItem()
             begin
                 Vendor.SetRange("12E Lead Reconciliation", true);
+                LeadValidationPar.DeleteAll();
             end;
 
             trigger OnAfterGetRecord()
@@ -66,7 +67,7 @@ report 52110 "12E Leads Reconciliation"
 
     var
         LeadValidationMgt: Codeunit "12E Lead Validation Mgt";
-        LeadValidationPar: Record "12E Lead Validation Details";
+        LeadValidationPar: Record "12E Lead Validation Details" temporary;
         StartDate: Date;
         EndDate: Date;
 
@@ -74,5 +75,16 @@ report 52110 "12E Leads Reconciliation"
     begin
         StartDate := NewStartDate;
         EndDate := NewEndDate;
+    end;
+
+    procedure GetValidationData(var TempLeadValidationDetails: Record "12E Lead Validation Details" temporary)
+    begin
+        TempLeadValidationDetails.DeleteAll();
+
+        if LeadValidationPar.FindSet() then
+            repeat
+                TempLeadValidationDetails := LeadValidationPar;
+                TempLeadValidationDetails.Insert();
+            until LeadValidationPar.Next() = 0;
     end;
 }

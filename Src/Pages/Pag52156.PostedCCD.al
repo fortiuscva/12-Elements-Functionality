@@ -23,45 +23,54 @@ page 52156 "12E Posted CCD"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
                 }
+
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
                 }
+
                 group(Batch)
                 {
                     Caption = 'Batch';
+
                     field("Payroll Batch ID"; Rec."Payroll Batch ID")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
                     }
+
                     field("No. of Hours"; Rec."No. of Hours")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
                     }
                 }
+
                 group(Period)
                 {
                     Caption = 'Period';
+
                     field("Period Start Date"; Rec."Period Start Date")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
                     }
+
                     field("Period End Date"; Rec."Period End Date")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                     }
                 }
+
                 field("Invoice No."; Rec."Invoice No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Invoice No. field.', Comment = '%';
                     Visible = false;
                 }
+
                 field("Sales Invoice No."; Rec."Sales Invoice No.")
                 {
                     ApplicationArea = All;
@@ -69,6 +78,7 @@ page 52156 "12E Posted CCD"
                     Editable = false;
                     Visible = false;
                 }
+
                 field("Posted Sales Invoice No."; Rec."Posted Sales Invoice No.")
                 {
                     ApplicationArea = All;
@@ -76,7 +86,24 @@ page 52156 "12E Posted CCD"
                     Editable = false;
                     Visible = false;
                 }
+
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Created At';
+                    Editable = false;
+                    ToolTip = 'Specifies when the document was created.';
+                }
+
+                field(CreatedBy; CreatedBy)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Created By';
+                    Editable = false;
+                    ToolTip = 'Specifies who created the document.';
+                }
             }
+
             part(Lines; "12E Posted CCD Subform")
             {
                 ApplicationArea = All;
@@ -85,11 +112,11 @@ page 52156 "12E Posted CCD"
             }
         }
     }
+
     actions
     {
         area(Processing)
         {
-
             action(CreateSalesInvoices)
             {
                 ApplicationArea = All;
@@ -104,10 +131,12 @@ page 52156 "12E Posted CCD"
                 begin
                     if not Confirm(CreateConfirmQst) then
                         exit;
+
                     CreateCCDSalesInvoices.RunModal();
                 end;
             }
         }
+
         area(Navigation)
         {
             group(Navigate)
@@ -154,29 +183,44 @@ page 52156 "12E Posted CCD"
                 }
             }
         }
+
         area(Promoted)
         {
             group(Category_Process)
             {
-
                 Caption = 'Process';
+
                 actionref(CreateSalesInvoices_Promoted; CreateSalesInvoices)
                 {
-
                 }
             }
 
             group(Category_Category7)
             {
-                Caption = 'Navigate', Comment = 'Generated from the PromotedActionCategories property index 5.';
+                Caption = 'Navigate';
                 ShowAs = Standard;
+
                 actionref(ShowContactCenterDetailedData_Promoted; "Show Contact Center Detailed Data")
                 {
                 }
+
                 actionref(ShowPayrollBatch_Promoted; "Show Payroll Batch")
                 {
                 }
             }
         }
     }
+
+    var
+        CreatedBy: Code[50];
+
+    trigger OnAfterGetRecord()
+    var
+        UserRec: Record User;
+    begin
+        Clear(CreatedBy);
+
+        if UserRec.Get(Rec.SystemCreatedBy) then
+            CreatedBy := UserRec."User Name";
+    end;
 }

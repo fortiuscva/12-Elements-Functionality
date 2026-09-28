@@ -115,6 +115,6 @@ page 52123 "12E Lead Accrual Subform"
         LeadAccrual: Record "12E Lead Accrual";
     begin
         LeadAccrual.Get(Rec."Lead Accrual No.");
-        LeadAccrual.CheckDocumentEditable();
+        LeadAccrual.TestStatusOpen();
     end;
 }

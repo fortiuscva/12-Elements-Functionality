@@ -2,12 +2,12 @@ codeunit 52121 "12E Payroll Batch Post"
 {
     var
         TwelveSetup: Record "12E Setup";
-
         NoLinesToPostErr: Label 'There are no Payroll Batch Lines to post.';
         NoLinesToPreviewErr: Label 'There are no Payroll Batch Lines to preview.';
         NoJournalLinesToPostErr: Label 'There are no General Journal Lines to post.';
         NoJournalLinesToPreviewErr: Label 'There are no General Journal Lines to preview.';
         PayrollPostedMsg: Label 'Payroll Batch %1 posted successfully.';
+        DepartmentDimensionCode: Label 'DEPARTMENT', Locked = true;
 
     procedure Post(var PayrollBatchHeader: Record "12E Payroll Batch Header")
     var
@@ -48,11 +48,8 @@ codeunit 52121 "12E Payroll Batch Post"
             DeleteJournalLines();
             Message(PostingError);
         end else begin
-
-            // PayrollBatchHeader."G/L Register No." := GetGLRegisterNo(PayrollBatchHeader);
-            // PayrollBatchHeader.Modify(true);
             DeleteJournalLines();
-            PayrollBatchHeader.get(PayrollBatchHeader."No.");
+            PayrollBatchHeader.Get(PayrollBatchHeader."No.");
             TransferToPostedPayroll(PayrollBatchHeader);
             Message(PayrollPostedMsg, PayrollBatchNo);
         end;
@@ -73,8 +70,8 @@ codeunit 52121 "12E Payroll Batch Post"
         DeleteJournalLines();
 
         CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
-
         CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
+
         Commit();
         PreviewGenJournalLines();
 
@@ -84,7 +81,6 @@ codeunit 52121 "12E Payroll Batch Post"
     local procedure GetSetup()
     begin
         TwelveSetup.Get();
-
         TwelveSetup.TestField("Payroll Jnl. Template");
         TwelveSetup.TestField("Payroll Jnl. Batch");
         TwelveSetup.TestField("Payroll Offset Account No.");
@@ -93,10 +89,10 @@ codeunit 52121 "12E Payroll Batch Post"
     local procedure CreateJournalLines(PayrollBatchHeader: Record "12E Payroll Batch Header"; var PayrollBatchLine: Record "12E Payroll Batch Line"; var BatchTotal: Decimal)
     var
         GenJournalLine: Record "Gen. Journal Line";
+        DimensionManagement: Codeunit DimensionManagement;
         NextLineNo: Integer;
     begin
         BatchTotal := 0;
-
         NextLineNo := GetNextGenJnlLineNo();
 
         if PayrollBatchLine.FindSet() then
@@ -111,8 +107,17 @@ codeunit 52121 "12E Payroll Batch Post"
                 GenJournalLine.Validate("Document No.", PayrollBatchHeader."No.");
                 GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
                 GenJournalLine.Validate("Account No.", PayrollBatchLine."G/L Account No.");
-                GenJournalLine.Validate(Amount, PayrollBatchLine.Amount);
 
+                if PayrollBatchLine."Department Code" <> '' then
+                    GenJournalLine."Dimension Set ID" :=
+                        DimensionManagement.SetDimensionValue(
+                            GenJournalLine."Dimension Set ID",
+                            DepartmentDimensionCode,
+                            PayrollBatchLine."Department Code",
+                            '',
+                            '');
+
+                GenJournalLine.Validate(Amount, PayrollBatchLine.Amount);
                 GenJournalLine.Modify(true);
 
                 BatchTotal += PayrollBatchLine.Amount;
@@ -126,9 +131,6 @@ codeunit 52121 "12E Payroll Batch Post"
         NextLineNo: Integer;
         BalanceAmount: Decimal;
     begin
-        // if BatchTotal = 0 then
-        //     exit;
-
         BalanceAmount := BatchTotal * -1;
 
         NextLineNo := GetNextGenJnlLineNo();
@@ -228,10 +230,6 @@ codeunit 52121 "12E Payroll Batch Post"
                 PostedPayrollBatchLine.TransferFields(PayrollBatchLine, true);
                 PostedPayrollBatchLine.Insert(true);
             until PayrollBatchLine.Next() = 0;
-
-        // PayrollBatchLine.Reset();
-        // PayrollBatchLine.SetRange("Document No.", PayrollBatchHeader."No.");
-        // PayrollBatchLine.DeleteAll(true);
 
         PayrollBatchHeader.Delete(true);
 

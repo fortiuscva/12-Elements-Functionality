@@ -250,10 +250,10 @@ page 52122 "12E Lead Accrual"
     end;
 
 
-    trigger OnModifyRecord(): Boolean
-    begin
-        Rec.CheckDocumentEditable();
-    end;
+    // trigger OnModifyRecord(): Boolean
+    // begin
+    //     Rec.CheckDocumentEditable();
+    // end;
 
 
     var

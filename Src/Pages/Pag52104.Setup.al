@@ -312,7 +312,7 @@ page 52104 "12E Setup"
             }
             group(CCDistribution)
             {
-                Caption = 'Contact Center Distribution';
+                Caption = 'Contact Center Distribution & Payroll';
                 Image = Setup;
                 action(CCDLocationMapping)
                 {

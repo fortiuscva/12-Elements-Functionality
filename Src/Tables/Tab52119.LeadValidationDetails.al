@@ -96,7 +96,7 @@ table 52119 "12E Lead Validation Details"
         {
             Caption = 'Invoice No.';
             DataClassification = CustomerContent;
-            TableRelation = "Purchase Header" where("Document Type" = const(Invoice));
+            TableRelation = "Purchase Header"."No." where("Document Type" = const(Invoice));
         }
     }
 

@@ -29,6 +29,8 @@ table 52120 "12E Lead Accrual"
 
             trigger OnValidate()
             begin
+                TestStatusOpen();
+
                 if Year <> xRec.Year then
                     CheckLinesBeforePeriodChange();
 
@@ -42,7 +44,9 @@ table 52120 "12E Lead Accrual"
 
             trigger OnValidate()
             begin
-                if Year <> xRec.Year then
+                TestStatusOpen();
+
+                if Month <> xRec.Month then
                     CheckLinesBeforePeriodChange();
 
                 UpdatePeriodDates();
@@ -251,15 +255,28 @@ table 52120 "12E Lead Accrual"
     local procedure CheckLinesBeforePeriodChange()
     var
         LeadAccrualLine: Record "12E Lead Accrual Line";
+        ConfirmDeleteLinesQst: Label 'Lead Accrual lines exist. Changing the Year or Month will delete all lines. Do you want to continue?';
     begin
         LeadAccrualLine.SetRange("Lead Accrual No.", "No.");
-        if not LeadAccrualLine.IsEmpty() then
-            Error('You cannot change the Year or Month when Lead Accrual lines exist. Delete the lines first.');
+
+        if LeadAccrualLine.IsEmpty() then
+            exit;
+
+        if not Confirm(ConfirmDeleteLinesQst) then
+            Error('Year or Month was not changed.');
+
+        LeadAccrualLine.DeleteAll(true);
     end;
 
-    procedure CheckDocumentEditable()
+    // procedure CheckDocumentEditable()
+    // begin
+    //     if Rec.Status = Rec.Status::Released then
+    //         Error('Lead Accrual document %1 is released and cannot be modified.', Rec."No.");
+    // end;
+
+    procedure TestStatusOpen()
     begin
-        if Rec.Status = Rec.Status::Released then
-            Error('Lead Accrual document %1 is released and cannot be modified.', Rec."No.");
+        if Status <> Status::Open then
+            Error('Lead Accrual document %1 must be Open to modify.', "No.");
     end;
 }

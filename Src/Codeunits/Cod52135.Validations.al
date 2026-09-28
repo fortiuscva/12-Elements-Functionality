@@ -57,6 +57,20 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Expired'));
     end;
 
+    procedure CheckWhetherLeadVendorMappingExists(DatasourceID: Integer; LeadVendor: Text[100])
+    var
+        VendorLcl: Record Vendor;
+    begin
+        CompanyMappingRecGbl.Reset();
+        CompanyMappingRecGbl.SetRange("DataSource ID");
+        CompanyMappingRecGbl.FindLast();
+        VendorLcl.Reset();
+        VendorLcl.ChangeCompany(CompanyMappingRecGbl.Company);
+        VendorLcl.SetRange("12E Lead Vendor", LeadVendor);
+        if VendorLcl.IsEmpty then
+            Error(StrSubstNo(LeadVendorMappingErrLbl, LeadVendor, CompanyMappingRecGbl.Company));
+    end;
+
     var
 
         CompanyMappingRecGbl: Record "12E Company Mapping";
@@ -68,4 +82,5 @@ codeunit 52135 "12E Validations"
         QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company.';
         PayrollBatchDoesNotExistErrLbl: Label 'Questco Payroll Batch does not exist with this Client ID  %1 and Batch ID %2.';
         ValueCannotBeLessThanZeroErrMsg: Label '%1 cannot be less than zero.';
+        LeadVendorMappingErrLbl: Label 'Lead provider %1 is not associated with any business central lead vendor in %2 company.';
 }

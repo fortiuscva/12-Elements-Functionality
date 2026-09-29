@@ -91,6 +91,19 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
+                field(Processed; Rec.Processed)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
+                }
+
+                field(Reversed; Rec.Reversed)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
+                }
 
                 field("Your Reference"; Rec."Your Reference")
                 {
@@ -115,19 +128,7 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payment Reference field.', Comment = '%';
                 }
-                field(Processed; Rec.Processed)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    ToolTip = 'Specifies the value of the Processed field.', Comment = '%';
-                }
 
-                field(Reversed; Rec.Reversed)
-                {
-                    ApplicationArea = All;
-                    Editable = false;
-                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
-                }
 
                 field("Posting Error"; Rec."Posting Error")
                 {
@@ -228,16 +229,6 @@ page 52161 "12E LMS Batches"
                         CurrPage.Update(false);
                     end;
                 }
-            }
-        }
-
-        area(Navigation)
-        {
-            group(Navigate)
-            {
-                Caption = 'Navigate';
-                Image = Navigate;
-
                 action(ShowGLEntries)
                 {
                     ApplicationArea = All;

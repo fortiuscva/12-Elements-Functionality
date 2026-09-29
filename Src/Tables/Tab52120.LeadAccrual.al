@@ -276,7 +276,6 @@ table 52120 "12E Lead Accrual"
 
     procedure TestStatusOpen()
     begin
-        if Status <> Status::Open then
-            Error('Lead Accrual document %1 must be Open to modify.', "No.");
+        TestField(Status, Status::Open);
     end;
 }

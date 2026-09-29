@@ -2,10 +2,10 @@ page 52163 "12E LMS Transactions"
 {
     ApplicationArea = All;
     Caption = 'LMS Transactions';
-    DeleteAllowed = false;
-    Editable = false;
-    InsertAllowed = false;
-    ModifyAllowed = false;
+    // DeleteAllowed = false;
+    // Editable = false;
+    // InsertAllowed = false;
+    // ModifyAllowed = false;
     PageType = List;
     SourceTable = "12E LMS Transaction";
     UsageCategory = Lists;

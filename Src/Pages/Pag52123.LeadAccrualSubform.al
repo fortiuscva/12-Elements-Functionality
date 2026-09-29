@@ -117,4 +117,12 @@ page 52123 "12E Lead Accrual Subform"
         LeadAccrual.Get(Rec."Lead Accrual No.");
         LeadAccrual.TestStatusOpen();
     end;
+
+    trigger OnDeleteRecord(): Boolean
+    var
+        LeadAccrual: Record "12E Lead Accrual";
+    begin
+        LeadAccrual.Get(Rec."Lead Accrual No.");
+        LeadAccrual.TestStatusOpen();
+    end;
 }

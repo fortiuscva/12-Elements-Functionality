@@ -41,22 +41,22 @@ report 52105 "12E LMS Transaction Test Data"
                     field(StartingDate; StartingDate)
                     {
                         ApplicationArea = All;
-                        Caption = 'Starting Date';
-                        ToolTip = 'Specifies the starting Transaction Posting Date.';
+                        Caption = 'Transaction Date';
+                        ToolTip = 'Specifies the Transaction Date for the test transactions.';
                     }
 
                     field(NumberOfRecords; NumberOfRecords)
                     {
                         ApplicationArea = All;
                         Caption = 'Number of Records';
-                        ToolTip = 'Specifies the total number of LMS Transaction records to create.';
+                        ToolTip = 'Specifies the number of LMS Transaction records to create. Maximum is 10.';
                     }
 
                     field(DeleteExistingTestData; DeleteExistingTestData)
                     {
                         ApplicationArea = All;
                         Caption = 'Delete Existing Test Data';
-                        ToolTip = 'Specifies whether previously generated test records should be deleted before creating new records.';
+                        ToolTip = 'Specifies whether all previously generated test records should be deleted before creating new records.';
                     }
                 }
             }
@@ -66,7 +66,7 @@ report 52105 "12E LMS Transaction Test Data"
         begin
             DatasourceID := 4;
             StartingDate := DMY2Date(1, 8, 2026);
-            NumberOfRecords := 50;
+            NumberOfRecords := 10;
             DeleteExistingTestData := false;
         end;
     }
@@ -79,7 +79,7 @@ report 52105 "12E LMS Transaction Test Data"
 
     local procedure CreateTestData()
     var
-        PostingDate: Date;
+        TransactionDateTime: DateTime;
         TransactionID: Integer;
         PKID: Integer;
         RecordNo: Integer;
@@ -88,35 +88,59 @@ report 52105 "12E LMS Transaction Test Data"
         CreditAccountNo: Code[20];
     begin
         ValidateOptions();
+
         PKID := GetNextPKID();
         TransactionID := GetNextTransactionID();
-        PostingDate := StartingDate;
+        TransactionDateTime := CreateDateTime(StartingDate, 120000T);
 
-        for RecordNo := 1 to NumberOfRecords div 2 do begin
+        for RecordNo := 1 to NumberOfRecords / 2 do begin
             TransactionAmount := GetTestAmount(RecordNo);
             DebitAccountNo := GetPostingGLAccount((RecordNo - 1) * 2 + 1);
             CreditAccountNo := GetPostingGLAccount((RecordNo - 1) * 2 + 2);
 
-            InsertLMSTransaction(PKID, TransactionID, PostingDate, TransactionAmount, DebitAccountNo, '');
+            InsertLMSTransaction(
+                PKID,
+                TransactionID,
+                TransactionDateTime,
+                TransactionAmount,
+                DebitAccountNo,
+                '');
             PKID += 1;
 
-            InsertLMSTransaction(PKID, TransactionID, PostingDate, TransactionAmount, '', CreditAccountNo);
-            PKID += 1;
+            if RecordNo = NumberOfRecords / 2 then
+                TransactionAmount -= 50;
 
-            TransactionID += 1;
-            PostingDate += 1;
+            InsertLMSTransaction(
+                PKID,
+                TransactionID,
+                TransactionDateTime,
+                TransactionAmount,
+                '',
+                CreditAccountNo);
+            PKID += 1;
         end;
 
-        Message('%1 LMS Transaction test records were created for Datasource ID %2.', NumberOfRecords, DatasourceID);
+        Message(
+            '%1 LMS Transaction test records were created for Transaction ID %2 and Datasource ID %3. The final debit/credit pair has a %4 imbalance.',
+            NumberOfRecords,
+            TransactionID,
+            DatasourceID,
+            50);
     end;
 
-    local procedure InsertLMSTransaction(PKID: Integer; TransactionID: Integer; PostingDate: Date; TransactionAmount: Decimal; DebitAccountNo: Code[20]; CreditAccountNo: Code[20])
+    local procedure InsertLMSTransaction(
+        PKID: Integer;
+        TransactionID: Integer;
+        TransactionDateTime: DateTime;
+        TransactionAmount: Decimal;
+        DebitAccountNo: Code[20];
+        CreditAccountNo: Code[20])
     var
         LMSTransaction: Record "12E LMS Transaction";
     begin
         LMSTransaction.Init();
         LMSTransaction."PK ID" := PKID;
-        LMSTransaction."DW Load Date" := CreateDateTime(PostingDate, 120000T);
+        LMSTransaction."DW Load Date" := TransactionDateTime;
         LMSTransaction."Datasource ID" := DatasourceID;
         LMSTransaction."Loan ID" := 100000 + TransactionID;
         LMSTransaction."Payment ID" := 200000 + TransactionID;
@@ -129,37 +153,28 @@ report 52105 "12E LMS Transaction Test Data"
         LMSTransaction.Store := GetStore(TransactionID);
         LMSTransaction.Processor := GetProcessor(TransactionID);
         LMSTransaction."Transaction Code" := GetTransactionCode(TransactionID);
-        LMSTransaction."Transaction Date" := CreateDateTime(PostingDate, 120000T);
+        LMSTransaction."Transaction Date" := TransactionDateTime;
         LMSTransaction.Amount := TransactionAmount;
         LMSTransaction."Debit Account No." := DebitAccountNo;
         LMSTransaction."Credit Account No." := CreditAccountNo;
-        LMSTransaction."Transaction Posting Date" := PostingDate;
+        LMSTransaction."Transaction Posting Date" := StartingDate;
         LMSTransaction.Insert();
     end;
 
     local procedure DeleteTestData()
     var
         LMSTransaction: Record "12E LMS Transaction";
-        FromDate: Date;
-        ToDate: Date;
         DeletedCount: Integer;
     begin
-        FromDate := StartingDate;
-        ToDate := CalcDate('<1M>', StartingDate) - 1;
-
         LMSTransaction.Reset();
-        LMSTransaction.SetRange("Datasource ID", DatasourceID);
-        LMSTransaction.SetRange("Transaction Posting Date", FromDate, ToDate);
         LMSTransaction.SetRange("Payment Agent", 'TEST AGENT');
-        LMSTransaction.SetRange("ERP Status", 'Failed');
 
         DeletedCount := LMSTransaction.Count();
 
-        if DeletedCount > 0 then
+        if DeletedCount > 0 then begin
             LMSTransaction.DeleteAll();
-
-        if DeletedCount > 0 then
-            Message('%1 existing failed test records were deleted.', DeletedCount);
+            Message('%1 existing LMS Transaction test records were deleted.', DeletedCount);
+        end;
     end;
 
     local procedure ValidateOptions()
@@ -168,13 +183,16 @@ report 52105 "12E LMS Transaction Test Data"
             Error('Datasource ID must be specified.');
 
         if StartingDate = 0D then
-            Error('Starting Date must be specified.');
+            Error('Transaction Date must be specified.');
 
         if NumberOfRecords <= 0 then
             Error('Number of Records must be greater than zero.');
 
+        if NumberOfRecords > 10 then
+            Error('Number of Records cannot be greater than 10.');
+
         if NumberOfRecords mod 2 <> 0 then
-            Error('Number of Records must be an even number because each Transaction ID requires a debit and credit record.');
+            Error('Number of Records must be an even number because each transaction requires a debit and credit record.');
     end;
 
     local procedure GetNextPKID(): Integer
@@ -182,6 +200,7 @@ report 52105 "12E LMS Transaction Test Data"
         LMSTransaction: Record "12E LMS Transaction";
     begin
         LMSTransaction.Reset();
+
         if LMSTransaction.FindLast() then
             exit(LMSTransaction."PK ID" + 1);
 
@@ -194,6 +213,7 @@ report 52105 "12E LMS Transaction Test Data"
         HighestTransactionID: Integer;
     begin
         LMSTransaction.Reset();
+
         if LMSTransaction.FindSet() then
             repeat
                 if LMSTransaction."Transaction ID" > HighestTransactionID then
@@ -229,9 +249,9 @@ report 52105 "12E LMS Transaction Test Data"
         Error('At least %1 unblocked Posting G/L Accounts are required.', TargetIndex);
     end;
 
-    local procedure GetTestAmount(TransactionID: Integer): Decimal
+    local procedure GetTestAmount(RecordNo: Integer): Decimal
     begin
-        exit(100 + ((TransactionID * 37) mod 900) + 0.50);
+        exit(100 + ((RecordNo * 37) mod 900) + 0.50);
     end;
 
     local procedure GetPaymentType(TransactionID: Integer): Text[50]

@@ -29,6 +29,7 @@ page 52167 "12E LMS Transaction Subform"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Account No."; Rec."Account No.")
                 {

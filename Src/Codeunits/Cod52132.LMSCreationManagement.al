@@ -40,7 +40,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
         LMSTransaction.SetRange("ERP Status", '');
-        LMSTransaction.SetRange("LMS Transaction Details No.", '');
+        LMSTransaction.SetRange("LMS Transaction Document No.", '');
         if LMSTransaction.FindSet() then
             repeat
                 ValidateTransaction(LMSTransaction);
@@ -93,7 +93,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
         LMSTransaction.SetRange("ERP Status", '');
-        LMSTransaction.SetRange("LMS Transaction Details No.", '');
+        LMSTransaction.SetRange("LMS Transaction Document No.", '');
         LMSTransaction.SetCurrentKey("Datasource ID", "Transaction ID", "PK ID");
 
         if not LMSTransaction.FindSet() then
@@ -134,7 +134,7 @@ codeunit 52132 "12E LMS Creation Management"
         SourceTransaction.SetRange("Transaction ID", LMSTransaction."Transaction ID");
         SourceTransaction.SetRange("Payment ID", LMSTransaction."Payment ID");
         SourceTransaction.SetRange("ERP Status", '');
-        SourceTransaction.SetRange("LMS Transaction Details No.", '');
+        SourceTransaction.SetRange("LMS Transaction Document No.", '');
         SourceTransaction.ModifyAll("ERP Status", 'Failed');
         SourceTransaction.ModifyAll("ERP Error Message", CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message")));
     end;
@@ -146,7 +146,7 @@ codeunit 52132 "12E LMS Creation Management"
         SourceTransaction.SetRange("Datasource ID", DataSourceID);
         SourceTransaction.SetRange("Transaction ID", TransactionID);
         SourceTransaction.SetRange("ERP Status", '');
-        SourceTransaction.SetRange("LMS Transaction Details No.", '');
+        SourceTransaction.SetRange("LMS Transaction Document No.", '');
         SourceTransaction.ModifyAll("ERP Status", 'Failed');
         SourceTransaction.ModifyAll("ERP Error Message", CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message")));
     end;
@@ -243,7 +243,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
         LMSTransaction.SetRange("ERP Status", '');
-        LMSTransaction.SetRange("LMS Transaction Details No.", '');
+        LMSTransaction.SetRange("LMS Transaction Document No.", '');
         LMSTransaction.SetCurrentKey("Datasource ID", "Transaction Posting Date", "PK ID");
 
         if not LMSTransaction.FindSet(true) then
@@ -295,12 +295,7 @@ codeunit 52132 "12E LMS Creation Management"
             LMSDetail."ERP Error Msg" := '';
             LMSDetail.Insert(true);
 
-            LMSTransaction."Document No." := DocumentNo;
-            LMSTransaction."LMS Transaction Details No." := DocumentNo;
-            LMSTransaction."ERP Status" := 'Created';
-            LMSTransaction."ERP Error Message" := '';
-            LMSTransaction."ERP Import Timestamp" := CurrentDateTime();
-            LMSTransaction.Modify(true);
+
         until LMSTransaction.Next() = 0;
     end;
 

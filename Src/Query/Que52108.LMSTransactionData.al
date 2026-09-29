@@ -11,11 +11,6 @@ query 52108 "12E LMS Transaction Data"
                 ColumnFilter = ERPStatus = const('');
             }
 
-            filter(LMS_Transaction_Details_No_; "LMS Transaction Details No.")
-            {
-                ColumnFilter = LMS_Transaction_Details_No_ = const('');
-            }
-
             column(DatasourceID; "Datasource ID")
             {
             }
@@ -47,7 +42,8 @@ query 52108 "12E LMS Transaction Data"
 
             dataitem(CompanyMapping; "12E Company Mapping")
             {
-                DataItemLink = "DataSource ID" = LMSTransaction."Datasource ID";
+                DataItemLink =
+                    "DataSource ID" = LMSTransaction."Datasource ID";
 
                 filter(Company; Company)
                 {

@@ -8,7 +8,7 @@ page 52153 "12E Leads Data by Portfolio"
     ModifyAllowed = false;
     SourceTable = "12E Lead Source Reconciliation";
     SourceTableView = sorting("PK ID") order(descending);
-    UsageCategory = Lists;
+    //UsageCategory = Lists;
 
     layout
     {

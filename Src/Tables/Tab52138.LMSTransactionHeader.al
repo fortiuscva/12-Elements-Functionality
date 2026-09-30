@@ -95,6 +95,7 @@ table 52138 "12E LMS Transaction Header"
     trigger OnDelete()
     begin
         DeleteAllLMSTransactionLines();
+        DeleteAllLMSTransactionDetails();
     end;
 
     trigger OnRename()
@@ -195,5 +196,14 @@ table 52138 "12E LMS Transaction Header"
         LMSTransactionLine.Reset();
         LMSTransactionLine.SetRange("Document No.", "No.");
         LMSTransactionLine.DeleteAll(true);
+    end;
+
+    local procedure DeleteAllLMSTransactionDetails()
+    var
+        LMSTransactionDetails: Record "12E LMS Transaction Details";
+    begin
+        LMSTransactionDetails.Reset();
+        LMSTransactionDetails.SetRange("LMS Document No.", "No.");
+        LMSTransactionDetails.DeleteAll(true);
     end;
 }

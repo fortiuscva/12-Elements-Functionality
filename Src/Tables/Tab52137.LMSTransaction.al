@@ -104,8 +104,9 @@ table 52137 "12E LMS Transaction"
         field(20; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
-            DataClassification = CustomerContent;
-            TableRelation = "G/L Register";
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Posted LMS Trans. Details"."G/L Register No." where("PK ID" = field("PK ID")));
+            Editable = false;
         }
         field(21; "DW Export Timestamp"; DateTime)
         {
@@ -155,6 +156,13 @@ table 52137 "12E LMS Transaction"
         {
             Caption = 'Transaction Posting Date';
             DataClassification = CustomerContent;
+        }
+        field(30; "Posted LMS Trans. Document No."; Code[20])
+        {
+            Caption = 'Posted LMS Transaction Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E Posted LMS Trans. Details"."LMS Document No." where("PK ID" = field("PK ID")));
+            Editable = false;
         }
     }
     keys

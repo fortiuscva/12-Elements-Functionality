@@ -4,7 +4,7 @@ page 52137 "12E Department Codes"
     Caption = 'Departments';
     PageType = List;
     SourceTable = "12E Department Code";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {

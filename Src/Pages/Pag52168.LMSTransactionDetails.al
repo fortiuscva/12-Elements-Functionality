@@ -5,7 +5,7 @@ page 52168 "12E LMS Transaction Details"
     PageType = List;
     SourceTable = "12E LMS Transaction Details";
     // UsageCategory = Lists;
-    Editable = false;
+    // Editable = false;
 
     layout
     {

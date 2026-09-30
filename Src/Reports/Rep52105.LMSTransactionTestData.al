@@ -292,7 +292,7 @@ report 52105 "12E LMS Transaction Test Data"
 
     local procedure GetStore(TransactionID: Integer): Code[20]
     begin
-        exit('STORE' + Format(((TransactionID - 1) mod 10) + 1));
+        exit('ST01');
     end;
 
     local procedure GetProcessor(TransactionID: Integer): Text[50]

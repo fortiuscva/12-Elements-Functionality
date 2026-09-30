@@ -6,11 +6,6 @@ query 52108 "12E LMS Transaction Data"
     {
         dataitem(LMSTransaction; "12E LMS Transaction")
         {
-            filter(ERPStatus; "ERP Status")
-            {
-                ColumnFilter = ERPStatus = const('');
-            }
-
             column(DatasourceID; "Datasource ID")
             {
             }

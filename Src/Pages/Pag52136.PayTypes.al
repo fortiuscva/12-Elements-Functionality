@@ -4,7 +4,7 @@ page 52136 "12E Pay Types"
     Caption = 'Pay Types';
     PageType = List;
     SourceTable = "12E Pay Type";
-    UsageCategory = Lists;
+    //UsageCategory = Lists;
 
     layout
     {

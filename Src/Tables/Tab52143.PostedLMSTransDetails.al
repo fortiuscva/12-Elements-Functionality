@@ -2,8 +2,8 @@ table 52143 "12E Posted LMS Trans. Details"
 {
     Caption = 'Posted LMS Transaction Details';
     DataClassification = CustomerContent;
-    LookupPageId = "12E LMS Transaction Details";
-    DrillDownPageId = "12E LMS Transaction Details";
+    LookupPageId = "12E Posted LMS Trans. Details";
+    DrillDownPageId = "12E Posted LMS Trans. Details";
 
     fields
     {

@@ -283,7 +283,7 @@ codeunit 52133 "12E LMS Transaction Posting"
                 PostedDetail.TransferFields(LMSDetail);
                 PostedDetail."LMS Document No." := PostedHeader."No.";
                 PostedDetail."G/L Register No." := PostedHeader."G/L Register No.";
-                PostedDetail."ERP Status" := 'Posted';
+                PostedDetail."ERP Status" := 'PASSED';
                 PostedDetail."ERP Error Msg" := '';
                 PostedDetail.Insert(true);
             until LMSDetail.Next() = 0;
@@ -297,13 +297,13 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
         LMSDetail.ModifyAll("Source Code", TwelveSetup."LMS Source Code");
         LMSDetail.ModifyAll("Reason Code", TwelveSetup."LMS Reason Code");
-        LMSDetail.ModifyAll("ERP Status", 'Posted');
+        LMSDetail.ModifyAll("ERP Status", 'PASSED');
         LMSDetail.ModifyAll("ERP Error Msg", '');
 
         LMSTransaction.SetRange("LMS Transaction Document No.", LMSHeader."No.");
         LMSTransaction.ModifyAll("Source Code", TwelveSetup."LMS Source Code");
         LMSTransaction.ModifyAll("Reason Code", TwelveSetup."LMS Reason Code");
-        LMSTransaction.ModifyAll("ERP Status", 'Posted');
+        LMSTransaction.ModifyAll("ERP Status", 'PASSED');
         LMSTransaction.ModifyAll("ERP Error Message", '');
     end;
 
@@ -313,12 +313,12 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSDetail: Record "12E LMS Transaction Details";
     begin
         LMSDetail.SetRange("LMS Document No.", LMSHeader."No.");
-        LMSDetail.ModifyAll("ERP Status", 'Failed');
+        LMSDetail.ModifyAll("ERP Status", 'FAILED');
         LMSDetail.ModifyAll("ERP Error Msg", CopyStr(ErrorMessage, 1, MaxStrLen(LMSDetail."ERP Error Msg")));
 
         LMSTransaction.SetRange("LMS Transaction Document No.", LMSHeader."No.");
-        LMSTransaction.ModifyAll("ERP Status", 'Failed');
         LMSTransaction.ModifyAll("ERP Error Message", CopyStr(ErrorMessage, 1, MaxStrLen(LMSTransaction."ERP Error Message")));
+        LMSTransaction.ModifyAll("ERP Status", 'FAILED');
     end;
 
     local procedure DeleteLMSDocument(var LMSHeader: Record "12E LMS Transaction Header")

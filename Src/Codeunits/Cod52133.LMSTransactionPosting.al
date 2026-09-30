@@ -300,7 +300,7 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSDetail.ModifyAll("ERP Status", 'Posted');
         LMSDetail.ModifyAll("ERP Error Msg", '');
 
-        LMSTransaction.SetRange("Document No.", LMSHeader."No.");
+        LMSTransaction.SetRange("LMS Transaction Document No.", LMSHeader."No.");
         LMSTransaction.ModifyAll("Source Code", TwelveSetup."LMS Source Code");
         LMSTransaction.ModifyAll("Reason Code", TwelveSetup."LMS Reason Code");
         LMSTransaction.ModifyAll("ERP Status", 'Posted');
@@ -316,7 +316,7 @@ codeunit 52133 "12E LMS Transaction Posting"
         LMSDetail.ModifyAll("ERP Status", 'Failed');
         LMSDetail.ModifyAll("ERP Error Msg", CopyStr(ErrorMessage, 1, MaxStrLen(LMSDetail."ERP Error Msg")));
 
-        LMSTransaction.SetRange("Document No.", LMSHeader."No.");
+        LMSTransaction.SetRange("LMS Transaction Document No.", LMSHeader."No.");
         LMSTransaction.ModifyAll("ERP Status", 'Failed');
         LMSTransaction.ModifyAll("ERP Error Message", CopyStr(ErrorMessage, 1, MaxStrLen(LMSTransaction."ERP Error Message")));
     end;

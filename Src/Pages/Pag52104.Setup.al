@@ -355,7 +355,7 @@ page 52104 "12E Setup"
             }
             group(Category_Category5)
             {
-                Caption = 'Contact Center Distribution', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'Contact Center Distribution & Payroll', Comment = 'Generated from the PromotedActionCategories property index 4.';
                 actionref(CCDLocationMapping_Promoted; CCDLocationMapping)
                 {
                 }

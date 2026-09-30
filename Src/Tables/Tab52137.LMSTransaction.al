@@ -101,12 +101,6 @@ table 52137 "12E LMS Transaction"
             DataClassification = CustomerContent;
             TableRelation = "G/L Account";
         }
-        field(19; "Document No."; Code[20])
-        {
-            Caption = 'Document No.';
-            DataClassification = CustomerContent;
-            TableRelation = "12E LMS Transaction Header";
-        }
         field(20; "G/L Register No."; Integer)
         {
             Caption = 'G/L Register No.';
@@ -138,11 +132,12 @@ table 52137 "12E LMS Transaction"
             Caption = 'Export Batch ID';
             DataClassification = CustomerContent;
         }
-        field(26; "LMS Transaction Details No."; Code[20])
+        field(26; "LMS Transaction Document No."; Code[20])
         {
-            Caption = 'LMS Transaction Details No.';
-            DataClassification = CustomerContent;
-            TableRelation = "12E LMS Transaction Details"."LMS Document No.";
+            Caption = 'LMS Transaction Document No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("12E LMS Transaction Details"."LMS Document No." where("PK ID" = field("PK ID")));
+            Editable = false;
         }
         field(27; "Source Code"; Code[10])
         {

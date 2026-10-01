@@ -17,6 +17,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         CompanyMapping.SetRange(Company, CompanyName());
         CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+
         if not CompanyMapping.FindFirst() then
             Error('Company %1 is not mapped to a Data Source.', CompanyName());
 
@@ -29,6 +30,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         CompanyMapping.SetRange(Company, CompanyName());
         CompanyMapping.SetRange("DataSource ID", DataSourceID);
+
         if not CompanyMapping.FindFirst() then
             Error('Data Source %1 is not mapped to company %2.', DataSourceID, CompanyName());
 
@@ -55,13 +57,20 @@ codeunit 52132 "12E LMS Creation Management"
         GLAccount: Record "G/L Account";
         AccountNo: Code[20];
     begin
+        if not IsUnprocessedTransaction(LMSTransaction) then
+            exit;
+
         if LMSTransaction."Transaction Posting Date" = 0D then begin
-            MarkTransactionGroupFailed(LMSTransaction, 'Transaction Posting Date is blank.');
+            MarkTransactionGroupFailed(
+                LMSTransaction,
+                'Transaction Posting Date is blank.');
             exit;
         end;
 
         if LMSTransaction.Amount = 0 then begin
-            MarkTransactionGroupFailed(LMSTransaction, 'Amount must not be zero.');
+            MarkTransactionGroupFailed(
+                LMSTransaction,
+                'Amount must not be zero.');
             exit;
         end;
 
@@ -107,8 +116,12 @@ codeunit 52132 "12E LMS Creation Management"
         HasTransactions: Boolean;
     begin
         LMSTransaction.Reset();
+        LMSTransaction.SetCurrentKey(
+            "Datasource ID",
+            "Transaction Posting Date",
+            "Transaction ID",
+            "PK ID");
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
-        LMSTransaction.SetCurrentKey("Datasource ID", "Transaction Posting Date", "Transaction ID", "PK ID");
 
         if not LMSTransaction.FindSet() then
             exit;
@@ -131,8 +144,7 @@ codeunit 52132 "12E LMS Creation Management"
                                 DataSourceID,
                                 TransactionDate,
                                 TransactionID,
-                                TransactionAmount,
-                                HasTransactions);
+                                TransactionAmount);
 
                         TransactionDate := LMSTransaction."Transaction Posting Date";
                         TransactionID := LMSTransaction."Transaction ID";
@@ -151,8 +163,7 @@ codeunit 52132 "12E LMS Creation Management"
                 DataSourceID,
                 TransactionDate,
                 TransactionID,
-                TransactionAmount,
-                HasTransactions);
+                TransactionAmount);
     end;
 
     local procedure CheckDuplicatePaymentBatch(LMSTransaction: Record "12E LMS Transaction")
@@ -162,6 +173,9 @@ codeunit 52132 "12E LMS Creation Management"
         BatchID: Integer;
         ErrorMessage: Text;
     begin
+        if not IsUnprocessedTransaction(LMSTransaction) then
+            exit;
+
         PaymentID := LMSTransaction."Payment ID";
         BatchID := LMSTransaction."Batch ID";
 
@@ -169,7 +183,9 @@ codeunit 52132 "12E LMS Creation Management"
             exit;
 
         OtherTransaction.Reset();
-        OtherTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
+        OtherTransaction.SetRange(
+            "Datasource ID",
+            LMSTransaction."Datasource ID");
         OtherTransaction.SetRange("Payment ID", PaymentID);
         OtherTransaction.SetFilter("Batch ID", '<>%1', BatchID);
 
@@ -187,13 +203,15 @@ codeunit 52132 "12E LMS Creation Management"
                         LMSTransaction."Datasource ID",
                         PaymentID,
                         ErrorMessage);
-
                     exit;
                 end;
             until OtherTransaction.Next() = 0;
     end;
 
-    local procedure MarkPaymentIDFailed(DataSourceID: Integer; PaymentID: Integer; ErrorMessage: Text)
+    local procedure MarkPaymentIDFailed(
+        DataSourceID: Integer;
+        PaymentID: Integer;
+        ErrorMessage: Text)
     var
         SourceTransaction: Record "12E LMS Transaction";
     begin
@@ -210,7 +228,7 @@ codeunit 52132 "12E LMS Creation Management"
                             ErrorMessage,
                             1,
                             MaxStrLen(SourceTransaction."ERP Error Message"));
-                    SourceTransaction.Modify();
+                    SourceTransaction.Modify(true);
                 end;
             until SourceTransaction.Next() = 0;
     end;
@@ -219,12 +237,8 @@ codeunit 52132 "12E LMS Creation Management"
         DataSourceID: Integer;
         TransactionDate: Date;
         TransactionID: Integer;
-        TransactionAmount: Decimal;
-        HasTransactions: Boolean)
+        TransactionAmount: Decimal)
     begin
-        if not HasTransactions then
-            exit;
-
         if Round(TransactionAmount, 0.01) = 0 then
             exit;
 
@@ -233,8 +247,7 @@ codeunit 52132 "12E LMS Creation Management"
             TransactionDate,
             TransactionID,
             StrSubstNo(
-                'Transaction ID %1 is out of balance.',
-                TransactionID));
+                'Transaction ID %1 is out of balance'));
     end;
 
     local procedure MarkTransactionGroupFailed(
@@ -244,10 +257,18 @@ codeunit 52132 "12E LMS Creation Management"
         SourceTransaction: Record "12E LMS Transaction";
     begin
         SourceTransaction.Reset();
-        SourceTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
-        SourceTransaction.SetRange("Transaction Posting Date", LMSTransaction."Transaction Posting Date");
-        SourceTransaction.SetRange("Transaction ID", LMSTransaction."Transaction ID");
-        SourceTransaction.SetRange("Payment ID", LMSTransaction."Payment ID");
+        SourceTransaction.SetRange(
+            "Datasource ID",
+            LMSTransaction."Datasource ID");
+        SourceTransaction.SetRange(
+            "Transaction Posting Date",
+            LMSTransaction."Transaction Posting Date");
+        SourceTransaction.SetRange(
+            "Transaction ID",
+            LMSTransaction."Transaction ID");
+        SourceTransaction.SetRange(
+            "Payment ID",
+            LMSTransaction."Payment ID");
 
         if SourceTransaction.FindSet(true) then
             repeat
@@ -258,7 +279,7 @@ codeunit 52132 "12E LMS Creation Management"
                             ErrorMessage,
                             1,
                             MaxStrLen(SourceTransaction."ERP Error Message"));
-                    SourceTransaction.Modify();
+                    SourceTransaction.Modify(true);
                 end;
             until SourceTransaction.Next() = 0;
     end;
@@ -273,8 +294,12 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         SourceTransaction.Reset();
         SourceTransaction.SetRange("Datasource ID", DataSourceID);
-        SourceTransaction.SetRange("Transaction Posting Date", TransactionDate);
-        SourceTransaction.SetRange("Transaction ID", TransactionID);
+        SourceTransaction.SetRange(
+            "Transaction Posting Date",
+            TransactionDate);
+        SourceTransaction.SetRange(
+            "Transaction ID",
+            TransactionID);
 
         if SourceTransaction.FindSet(true) then
             repeat
@@ -285,7 +310,7 @@ codeunit 52132 "12E LMS Creation Management"
                             ErrorMessage,
                             1,
                             MaxStrLen(SourceTransaction."ERP Error Message"));
-                    SourceTransaction.Modify();
+                    SourceTransaction.Modify(true);
                 end;
             until SourceTransaction.Next() = 0;
     end;
@@ -312,49 +337,57 @@ codeunit 52132 "12E LMS Creation Management"
                 LMSDataQuery.State,
                 LMSDataQuery.Store,
                 LMSDataQuery.DebitAccountNo,
-                LMSDataQuery.CreditAccountNo,
-                LMSDataQuery.Amount)
-            then
+                LMSDataQuery.CreditAccountNo) then
                 continue;
 
             if (not HeaderCreated) or
                (TransactionDate <> LMSDataQuery.TransactionPostingDate) then begin
                 TransactionDate := LMSDataQuery.TransactionPostingDate;
-                LMSHeader := GetOrCreateHeader(DataSourceID, TransactionDate);
+
+                LMSHeader := GetOrCreateHeader(
+                    DataSourceID,
+                    TransactionDate);
+
                 LineNo := GetLastLineNo(LMSHeader);
                 HeaderCreated := true;
             end;
 
             LineNo += 10000;
-            CreateLine(LMSHeader, LMSDataQuery, LineNo);
+
+            CreateLine(
+                LMSHeader,
+                LMSDataQuery,
+                LineNo);
         end;
 
         LMSDataQuery.Close();
-        CreateTransactionDetails(DataSourceID);
     end;
 
     local procedure HasEligibleTransactionsForDocument(
         DataSourceID: Integer;
         TransactionDate: Date;
-        State: Code[20];
-        Store: Code[20];
+        StateCode: Code[20];
+        StoreCode: Code[20];
         DebitAccountNo: Code[20];
-        CreditAccountNo: Code[20];
-        Amount: Decimal): Boolean
+        CreditAccountNo: Code[20]): Boolean
     var
         LMSTransaction: Record "12E LMS Transaction";
     begin
         LMSTransaction.Reset();
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
-        LMSTransaction.SetRange("Transaction Posting Date", TransactionDate);
-        LMSTransaction.SetRange(State, State);
-        LMSTransaction.SetRange(Store, Store);
-        LMSTransaction.SetRange("Debit Account No.", DebitAccountNo);
-        LMSTransaction.SetRange("Credit Account No.", CreditAccountNo);
-        LMSTransaction.SetRange(Amount, Amount);
-        LMSTransaction.SetRange("ERP Status", '');
+        LMSTransaction.SetRange(
+            "Transaction Posting Date",
+            TransactionDate);
+        LMSTransaction.SetRange(State, StateCode);
+        LMSTransaction.SetRange(Store, StoreCode);
+        LMSTransaction.SetRange(
+            "Debit Account No.",
+            DebitAccountNo);
+        LMSTransaction.SetRange(
+            "Credit Account No.",
+            CreditAccountNo);
 
-        if not LMSTransaction.FindFirst() then
+        if not LMSTransaction.FindSet() then
             exit(false);
 
         repeat
@@ -371,6 +404,7 @@ codeunit 52132 "12E LMS Creation Management"
     var
         LMSHeader: Record "12E LMS Transaction Header";
     begin
+        LMSHeader.Reset();
         LMSHeader.SetRange("Datasource ID", DataSourceID);
         LMSHeader.SetRange("Transaction Date", TransactionDate);
 
@@ -386,10 +420,12 @@ codeunit 52132 "12E LMS Creation Management"
         exit(LMSHeader);
     end;
 
-    local procedure GetLastLineNo(LMSHeader: Record "12E LMS Transaction Header"): Integer
+    local procedure GetLastLineNo(
+        LMSHeader: Record "12E LMS Transaction Header"): Integer
     var
         LMSLine: Record "12E LMS Transaction Line";
     begin
+        LMSLine.Reset();
         LMSLine.SetRange("Document No.", LMSHeader."No.");
 
         if LMSLine.FindLast() then
@@ -423,80 +459,100 @@ codeunit 52132 "12E LMS Creation Management"
         end;
 
         LMSLine.Insert(true);
+
+        CreateTransactionDetails(
+            LMSHeader."No.",
+            LMSHeader."Datasource ID",
+            LMSDataQuery.TransactionPostingDate,
+            LMSDataQuery.State,
+            LMSDataQuery.Store,
+            LMSDataQuery.DebitAccountNo,
+            LMSDataQuery.CreditAccountNo);
     end;
 
-    local procedure CreateTransactionDetails(DataSourceID: Integer)
+    local procedure CreateTransactionDetails(
+        DocumentNo: Code[20];
+        DataSourceID: Integer;
+        TransactionDate: Date;
+        StateCode: Code[20];
+        StoreCode: Code[20];
+        DebitAccountNo: Code[20];
+        CreditAccountNo: Code[20])
     var
         LMSTransaction: Record "12E LMS Transaction";
         LMSDetail: Record "12E LMS Transaction Details";
-        LMSHeader: Record "12E LMS Transaction Header";
-        TransactionDate: Date;
-        DocumentNo: Code[20];
         EntryNo: Integer;
     begin
+        if DocumentNo = '' then
+            exit;
+
         LMSTransaction.Reset();
         LMSTransaction.SetRange("Datasource ID", DataSourceID);
-        LMSTransaction.SetCurrentKey("Datasource ID", "Transaction Posting Date", "PK ID");
+        LMSTransaction.SetRange(
+            "Transaction Posting Date",
+            TransactionDate);
+        LMSTransaction.SetRange(State, StateCode);
+        LMSTransaction.SetRange(Store, StoreCode);
+        LMSTransaction.SetRange(
+            "Debit Account No.",
+            DebitAccountNo);
+        LMSTransaction.SetRange(
+            "Credit Account No.",
+            CreditAccountNo);
 
         if not LMSTransaction.FindSet(true) then
             exit;
 
-        TransactionDate := 0D;
-        DocumentNo := '';
-        EntryNo := 0;
+        EntryNo := GetLastDetailEntryNo(DocumentNo);
 
         repeat
             if IsUnprocessedTransaction(LMSTransaction) then begin
-                if TransactionDate <> LMSTransaction."Transaction Posting Date" then begin
-                    TransactionDate := LMSTransaction."Transaction Posting Date";
+                EntryNo += 1;
 
-                    LMSHeader.Reset();
-                    LMSHeader.SetRange("Datasource ID", DataSourceID);
-                    LMSHeader.SetRange("Transaction Date", TransactionDate);
-
-                    if LMSHeader.FindFirst() then begin
-                        DocumentNo := LMSHeader."No.";
-                        EntryNo := 0;
-                    end else
-                        DocumentNo := '';
-                end;
-
-                if DocumentNo <> '' then begin
-                    EntryNo += 1;
-
-                    LMSDetail.Init();
-                    LMSDetail."LMS Document No." := DocumentNo;
-                    LMSDetail."Entry No." := EntryNo;
-                    LMSDetail."PK ID" := LMSTransaction."PK ID";
-                    LMSDetail."DW Load Date" := LMSTransaction."DW Load Date";
-                    LMSDetail."Datasource ID" := LMSTransaction."Datasource ID";
-                    LMSDetail."Loan ID" := LMSTransaction."Loan ID";
-                    LMSDetail."Payment ID" := LMSTransaction."Payment ID";
-                    LMSDetail."Transaction ID" := LMSTransaction."Transaction ID";
-                    LMSDetail."Batch ID" := LMSTransaction."Batch ID";
-                    LMSDetail."Payment Type" := LMSTransaction."Payment Type";
-                    LMSDetail."Payment Agent" := LMSTransaction."Payment Agent";
-                    LMSDetail."Loan Status" := LMSTransaction."Loan Status";
-                    LMSDetail.State := LMSTransaction.State;
-                    LMSDetail.Store := LMSTransaction.Store;
-                    LMSDetail.Processor := LMSTransaction.Processor;
-                    LMSDetail."Transaction Code" := LMSTransaction."Transaction Code";
-                    LMSDetail."Transaction Date" := LMSTransaction."Transaction Date";
-                    LMSDetail.Amount := LMSTransaction.Amount;
-                    LMSDetail."Debit Account No." := LMSTransaction."Debit Account No.";
-                    LMSDetail."Credit Account No." := LMSTransaction."Credit Account No.";
-                    LMSDetail."G/L Register No." := 0;
-                    LMSDetail."Source Code" := LMSTransaction."Source Code";
-                    LMSDetail."Reason Code" := LMSTransaction."Reason Code";
-                    LMSDetail."ERP Status" := 'Created';
-                    LMSDetail."ERP Error Msg" := '';
-                    LMSDetail.Insert(true);
-                end;
+                LMSDetail.Init();
+                LMSDetail."LMS Document No." := DocumentNo;
+                LMSDetail."Entry No." := EntryNo;
+                LMSDetail."PK ID" := LMSTransaction."PK ID";
+                LMSDetail."DW Load Date" := LMSTransaction."DW Load Date";
+                LMSDetail."Datasource ID" := LMSTransaction."Datasource ID";
+                LMSDetail."Loan ID" := LMSTransaction."Loan ID";
+                LMSDetail."Payment ID" := LMSTransaction."Payment ID";
+                LMSDetail."Transaction ID" := LMSTransaction."Transaction ID";
+                LMSDetail."Batch ID" := LMSTransaction."Batch ID";
+                LMSDetail."Payment Type" := LMSTransaction."Payment Type";
+                LMSDetail."Payment Agent" := LMSTransaction."Payment Agent";
+                LMSDetail."Loan Status" := LMSTransaction."Loan Status";
+                LMSDetail.State := LMSTransaction.State;
+                LMSDetail.Store := LMSTransaction.Store;
+                LMSDetail.Processor := LMSTransaction.Processor;
+                LMSDetail."Transaction Code" := LMSTransaction."Transaction Code";
+                LMSDetail."Transaction Date" := LMSTransaction."Transaction Date";
+                LMSDetail.Amount := LMSTransaction.Amount;
+                LMSDetail."Debit Account No." := LMSTransaction."Debit Account No.";
+                LMSDetail."Credit Account No." := LMSTransaction."Credit Account No.";
+                LMSDetail."G/L Register No." := 0;
+                LMSDetail."Source Code" := LMSTransaction."Source Code";
+                LMSDetail."Reason Code" := LMSTransaction."Reason Code";
+                LMSDetail.Insert(true);
             end;
         until LMSTransaction.Next() = 0;
     end;
 
-    local procedure IsUnprocessedTransaction(var LMSTransaction: Record "12E LMS Transaction"): Boolean
+    local procedure GetLastDetailEntryNo(DocumentNo: Code[20]): Integer
+    var
+        LMSDetail: Record "12E LMS Transaction Details";
+    begin
+        LMSDetail.Reset();
+        LMSDetail.SetRange("LMS Document No.", DocumentNo);
+
+        if LMSDetail.FindLast() then
+            exit(LMSDetail."Entry No.");
+
+        exit(0);
+    end;
+
+    local procedure IsUnprocessedTransaction(
+        var LMSTransaction: Record "12E LMS Transaction"): Boolean
     begin
         LMSTransaction.CalcFields(
             "LMS Transaction Document No.",
@@ -504,10 +560,12 @@ codeunit 52132 "12E LMS Creation Management"
 
         exit(
             (LMSTransaction."LMS Transaction Document No." = '') and
-            (LMSTransaction."Posted LMS Trans. Document No." = ''));
+            (LMSTransaction."Posted LMS Trans. Document No." = '') and
+            (UpperCase(DelChr(LMSTransaction."ERP Status", '<>', ' ')) = ''));
     end;
 
-    local procedure GetAccountNo(LMSTransaction: Record "12E LMS Transaction"): Code[20]
+    local procedure GetAccountNo(
+        LMSTransaction: Record "12E LMS Transaction"): Code[20]
     begin
         if LMSTransaction."Debit Account No." <> '' then
             exit(LMSTransaction."Debit Account No.");
@@ -515,7 +573,8 @@ codeunit 52132 "12E LMS Creation Management"
         exit(LMSTransaction."Credit Account No.");
     end;
 
-    local procedure GetAccountNo(LMSDataQuery: Query "12E LMS Transaction Data"): Code[20]
+    local procedure GetAccountNo(
+        LMSDataQuery: Query "12E LMS Transaction Data"): Code[20]
     begin
         if LMSDataQuery.DebitAccountNo <> '' then
             exit(LMSDataQuery.DebitAccountNo);
@@ -523,7 +582,8 @@ codeunit 52132 "12E LMS Creation Management"
         exit(LMSDataQuery.CreditAccountNo);
     end;
 
-    local procedure GetPostingAmount(LMSTransaction: Record "12E LMS Transaction"): Decimal
+    local procedure GetPostingAmount(
+        LMSTransaction: Record "12E LMS Transaction"): Decimal
     begin
         if LMSTransaction."Debit Account No." <> '' then
             exit(LMSTransaction.Amount);
@@ -534,7 +594,8 @@ codeunit 52132 "12E LMS Creation Management"
         exit(0);
     end;
 
-    local procedure GetPostingAmount(LMSDataQuery: Query "12E LMS Transaction Data"): Decimal
+    local procedure GetPostingAmount(
+        LMSDataQuery: Query "12E LMS Transaction Data"): Decimal
     begin
         if LMSDataQuery.DebitAccountNo <> '' then
             exit(LMSDataQuery.Amount);

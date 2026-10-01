@@ -4,11 +4,11 @@ page 52156 "12E Posted CCD"
     Caption = 'Posted Contact Center Distribution';
     PageType = Document;
     InsertAllowed = false;
-    ModifyAllowed = false;
+    // ModifyAllowed = false;
     DeleteAllowed = false;
     SourceTable = "12E Posted CCD Header";
     UsageCategory = None;
-    Editable = false;
+
 
     layout
     {
@@ -22,12 +22,14 @@ page 52156 "12E Posted CCD"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the No. field.', Comment = '%';
+                    Editable = false;
                 }
 
                 field("Location Code"; Rec."Location Code")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
+                    Editable = false;
                 }
 
                 group(Batch)
@@ -38,12 +40,14 @@ page 52156 "12E Posted CCD"
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
+                        Editable = false;
                     }
 
                     field("No. of Hours"; Rec."No. of Hours")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the No. of Hours field.', Comment = '%';
+                        Editable = false;
                     }
                 }
 
@@ -55,12 +59,14 @@ page 52156 "12E Posted CCD"
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period Start Date field.', Comment = '%';
+                        Editable = false;
                     }
 
                     field("Period End Date"; Rec."Period End Date")
                     {
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                        Editable = false;
                     }
                 }
 

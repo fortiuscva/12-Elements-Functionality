@@ -3,7 +3,8 @@ table 52127 "12E Payroll Batch Header"
     Caption = '12E Payroll Batch Header';
     DataPerCompany = true;
     DataClassification = CustomerContent;
-
+    LookupPageId = "12E Questco Payroll Documents";
+    DrillDownPageId = "12E Questco Payroll Documents";
     fields
     {
         field(1; "No."; Code[20])

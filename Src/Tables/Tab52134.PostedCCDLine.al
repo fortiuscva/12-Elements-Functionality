@@ -110,6 +110,11 @@ table 52134 "12E Posted CCD Line"
             CalcFormula = lookup("Sales Invoice Line"."Document No." where("12E CCD No." = field("Document No."), "12E CCD Line No." = field("Line No.")));
             Editable = false;
         }
+        field(36; "Billed By Partner"; Boolean)
+        {
+            Caption = 'Billed By Partner';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

@@ -17,7 +17,8 @@ codeunit 52120 "12E Payroll Batch Mgmt"
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
         QuestcoPayrollBatch.SetRange("Payroll Doc. No.", '');
         QuestcoPayrollBatch.SetRange("Posted Payroll Doc. No.", '');
-        QuestcoPayrollBatch.SetRange("Pay Date", StartDate, EndDate);
+        if (StartDate <> 0D) or (EndDate <> 0D) then
+            QuestcoPayrollBatch.SetRange("Pay Date", StartDate, EndDate);
 
         if QuestcoPayrollBatch.FindSet() then
             repeat

@@ -3,6 +3,8 @@ table 52130 "12E Posted Payroll Header"
     Caption = 'Posted Payroll Header';
     DataPerCompany = true;
     DataClassification = CustomerContent;
+    LookupPageId = "12E Posted Payroll Documents";
+    DrillDownPageId = "12E Posted Payroll Documents";
 
     fields
     {

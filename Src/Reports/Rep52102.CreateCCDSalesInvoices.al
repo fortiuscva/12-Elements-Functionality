@@ -116,7 +116,7 @@ report 52102 "12E Create CCD Sales Invoices"
             exit;
 
         repeat
-            if PostedCCDLine."Distributed Quantity" <> 0 then begin
+            if (not PostedCCDLine."Billed By Partner") and (PostedCCDLine."Distributed Quantity" <> 0) then begin
                 SalesInvoiceNo := GetSalesInvoiceForPortfolio(PostedCCDLine.Portfolio);
 
                 if SalesInvoiceNo = '' then

@@ -69,4 +69,18 @@ table 52141 "12E Posted LMS Trans. Header"
         {
         }
     }
+
+    trigger OnDelete()
+    begin
+        DeleteAllLMSTransactionDetails();
+    end;
+
+    local procedure DeleteAllLMSTransactionDetails()
+    var
+        LMSTransactionDetails: Record "12E Posted LMS Trans. Details";
+    begin
+        LMSTransactionDetails.Reset();
+        LMSTransactionDetails.SetRange("LMS Document No.", "No.");
+        LMSTransactionDetails.DeleteAll(true);
+    end;
 }

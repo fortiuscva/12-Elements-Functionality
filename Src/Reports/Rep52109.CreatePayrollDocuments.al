@@ -46,6 +46,10 @@ report 52109 "12E Create Payroll Documents"
     var
         PayrollBatchMgmt: Codeunit "12E Payroll Batch Mgmt";
     begin
+        if (StartDate <> 0D) or (EndDate <> 0D) then
+            if (StartDate = 0D) or (EndDate = 0D) then
+                Error('Start Date and End Date cannot be blank.');
+
         PayrollBatchMgmt.CreatePayrollBatches(StartDate, EndDate);
     end;
 

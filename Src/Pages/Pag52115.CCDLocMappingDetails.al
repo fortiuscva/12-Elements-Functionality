@@ -4,7 +4,7 @@ page 52115 "12E CCD Loc. Mapping Details"
     Caption = 'CCD Location Mapping Details';
     PageType = List;
     SourceTable = "12E CCD Location Mapping";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
 
     layout
     {

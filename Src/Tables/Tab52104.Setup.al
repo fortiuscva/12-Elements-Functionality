@@ -142,7 +142,7 @@ table 52104 "12E Setup"
         }
         field(41; "Process Dialer Tone Invoices"; Boolean)
         {
-            Caption = 'Process Dialer Tone Invoices';
+            Caption = 'Process Call Center Invoices';
             DataClassification = CustomerContent;
         }
         field(42; "Enable Loyalty Process"; Boolean)

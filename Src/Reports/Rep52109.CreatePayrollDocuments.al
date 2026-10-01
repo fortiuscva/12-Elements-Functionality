@@ -2,8 +2,6 @@ report 52109 "12E Create Payroll Documents"
 {
     Caption = 'Create Payroll Documents';
     ProcessingOnly = true;
-    // ApplicationArea = All;
-    // UsageCategory = Tasks;
 
     requestpage
     {
@@ -33,13 +31,10 @@ report 52109 "12E Create Payroll Documents"
         trigger OnQueryClosePage(CloseAction: Action): Boolean
         begin
             if CloseAction = Action::OK then begin
-                if StartDate = 0D then
-                    Error('Start Date must be specified.');
-
-                if EndDate = 0D then
-                    Error('End Date must be specified.');
-
-                if EndDate < StartDate then
+                if (StartDate <> 0D) and
+                   (EndDate <> 0D) and
+                   (EndDate < StartDate)
+                then
                     Error('End Date cannot be earlier than Start Date.');
             end;
 

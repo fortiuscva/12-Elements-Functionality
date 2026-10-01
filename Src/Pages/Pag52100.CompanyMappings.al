@@ -4,7 +4,7 @@ page 52100 "12E Company Mappings"
     Caption = 'Company Mappings';
     PageType = List;
     SourceTable = "12E Company Mapping";
-    UsageCategory = Lists;
+    // UsageCategory = Lists;
     Editable = true;
 
     layout

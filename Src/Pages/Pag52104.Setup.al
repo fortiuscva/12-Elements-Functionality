@@ -265,7 +265,7 @@ page 52104 "12E Setup"
                 action(LeadSourceReconciliation)
                 {
                     ApplicationArea = All;
-                    Caption = 'Lead Source Reconciliation';
+                    Caption = 'Lead Source Reconciliation Global';
                     Image = Navigate;
                     RunObject = page "12E Lead Source Reconciliation";
                 }
@@ -273,7 +273,7 @@ page 52104 "12E Setup"
                 action(QuestcoPayrollTransactions)
                 {
                     ApplicationArea = All;
-                    Caption = 'Questco Payroll Transactions';
+                    Caption = 'Questco Payroll Transactions Global';
                     Image = Navigate;
                     RunObject = page "12E Questco Payroll Txns";
                 }
@@ -281,7 +281,7 @@ page 52104 "12E Setup"
                 action(QuestcoPayrollBatches)
                 {
                     ApplicationArea = All;
-                    Caption = 'Questco Payroll Batches';
+                    Caption = 'Questco Payroll Batches Global';
                     Image = Navigate;
                     RunObject = page "12E Questco Payroll Batches";
                 }

@@ -233,6 +233,8 @@ page 52161 "12E LMS Batches"
                 {
                     ApplicationArea = All;
                     Caption = 'Show G/L Entries';
+                    Promoted = true;
+                    PromotedCategory = Process;
                     Ellipsis = true;
                     Image = LedgerEntries;
                     trigger OnAction()

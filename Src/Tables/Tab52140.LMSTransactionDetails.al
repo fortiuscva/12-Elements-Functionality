@@ -140,6 +140,11 @@ table 52140 "12E LMS Transaction Details"
             Caption = 'ERP Error Msg';
             DataClassification = CustomerContent;
         }
+        field(29; "Transaction Posting Date"; Date)
+        {
+            Caption = 'Transaction Posting Date';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

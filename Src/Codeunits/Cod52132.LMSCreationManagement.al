@@ -23,6 +23,7 @@ codeunit 52132 "12E LMS Creation Management"
     begin
         CompanyMapping.SetRange(Company, CompanyName());
         CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+
         if not CompanyMapping.FindFirst() then
             Error('Company %1 is not mapped to a Data Source.', CompanyName());
 
@@ -149,9 +150,11 @@ codeunit 52132 "12E LMS Creation Management"
         OtherTransaction: Record "12E LMS Transaction";
         PaymentID: Integer;
         BatchID: Integer;
+        FirstBatchID: Integer;
         ErrorMessage: Text;
+        HasDifferentBatchID: Boolean;
     begin
-        if not IsUnprocessedTransaction(LMSTransaction) or IsCurrentRunFailed(LMSTransaction) then
+        if not IsUnprocessedTransaction(LMSTransaction) then
             exit;
 
         PaymentID := LMSTransaction."Payment ID";
@@ -160,19 +163,78 @@ codeunit 52132 "12E LMS Creation Management"
         if PaymentID = 0 then
             exit;
 
+        FirstBatchID := BatchID;
+
         OtherTransaction.Reset();
         OtherTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
         OtherTransaction.SetRange("Payment ID", PaymentID);
-        OtherTransaction.SetFilter("Batch ID", '<>%1', BatchID);
 
         if OtherTransaction.FindSet() then
             repeat
-                if IsUnprocessedTransaction(OtherTransaction) and not IsCurrentRunFailed(OtherTransaction) then begin
-                    ErrorMessage := StrSubstNo('Payment ID %1 has another unposted transaction with a different Batch ID. Batch ID %2 and Batch ID %3 cannot be processed together.', PaymentID, BatchID, OtherTransaction."Batch ID");
-                    MarkPaymentIDFailed(LMSTransaction."Datasource ID", PaymentID, ErrorMessage);
-                    exit;
+                if IsUnprocessedTransaction(OtherTransaction) then
+                    if OtherTransaction."Batch ID" <> FirstBatchID then begin
+                        HasDifferentBatchID := true;
+                        ErrorMessage := StrSubstNo('Payment ID %1 has another unposted transaction with a different Batch ID. Batch ID %2 and Batch ID %3 cannot be processed together.', PaymentID, FirstBatchID, OtherTransaction."Batch ID");
+                        break;
+                    end;
+            until OtherTransaction.Next() = 0;
+
+        if HasDifferentBatchID then begin
+            MarkPaymentIDFailed(LMSTransaction."Datasource ID", PaymentID, ErrorMessage);
+            exit;
+        end;
+
+        CheckBatchIDMultiplePayments(LMSTransaction);
+    end;
+
+    local procedure CheckBatchIDMultiplePayments(LMSTransaction: Record "12E LMS Transaction")
+    var
+        OtherTransaction: Record "12E LMS Transaction";
+        PaymentID: Integer;
+        BatchID: Integer;
+        ErrorMessage: Text;
+        HasDifferentPaymentID: Boolean;
+    begin
+        BatchID := LMSTransaction."Batch ID";
+        PaymentID := LMSTransaction."Payment ID";
+
+        if BatchID = 0 then
+            exit;
+
+        OtherTransaction.Reset();
+        OtherTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
+        OtherTransaction.SetRange("Batch ID", BatchID);
+
+        if OtherTransaction.FindSet() then
+            repeat
+                if IsUnprocessedTransaction(OtherTransaction) and (OtherTransaction."Payment ID" <> PaymentID) then begin
+                    HasDifferentPaymentID := true;
+                    ErrorMessage := StrSubstNo('Batch ID %1 is associated with multiple Payment IDs and cannot be processed.', BatchID);
+                    break;
                 end;
             until OtherTransaction.Next() = 0;
+
+        if HasDifferentPaymentID then
+            MarkBatchIDFailed(LMSTransaction."Datasource ID", BatchID, ErrorMessage);
+    end;
+
+    local procedure MarkBatchIDFailed(DataSourceID: Integer; BatchID: Integer; ErrorMessage: Text)
+    var
+        SourceTransaction: Record "12E LMS Transaction";
+    begin
+        SourceTransaction.Reset();
+        SourceTransaction.SetRange("Datasource ID", DataSourceID);
+        SourceTransaction.SetRange("Batch ID", BatchID);
+
+        if SourceTransaction.FindSet(true) then
+            repeat
+                if IsUnprocessedTransaction(SourceTransaction) then begin
+                    SourceTransaction."ERP Status" := 'FAILED';
+                    SourceTransaction."ERP Error Message" := CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message"));
+                    SourceTransaction.Modify();
+                    AddCurrentRunFailed(SourceTransaction);
+                end;
+            until SourceTransaction.Next() = 0;
     end;
 
     local procedure MarkPaymentIDFailed(DataSourceID: Integer; PaymentID: Integer; ErrorMessage: Text)
@@ -433,8 +495,8 @@ codeunit 52132 "12E LMS Creation Management"
                 LMSDetail."G/L Register No." := LMSTransaction."G/L Register No.";
                 LMSDetail."Source Code" := LMSTransaction."Source Code";
                 LMSDetail."Reason Code" := LMSTransaction."Reason Code";
+                LMSDetail."Transaction Posting Date" := LMSTransaction."Transaction Posting Date";
                 LMSDetail.Insert(true);
-
                 LMSTransaction."ERP Status" := 'PASSED';
                 LMSTransaction."ERP Error Message" := '';
                 LMSTransaction."ERP Import Timestamp" := CurrentDateTime();

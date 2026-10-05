@@ -94,8 +94,10 @@ table 52138 "12E LMS Transaction Header"
 
     trigger OnDelete()
     begin
+        ClearLMSTransactionStatusAndError();
         DeleteAllLMSTransactionLines();
         DeleteAllLMSTransactionDetails();
+
     end;
 
     trigger OnRename()
@@ -187,6 +189,16 @@ table 52138 "12E LMS Transaction Header"
             Enum::"Error Handling Options"::"Show Error",
             NoOfSelected,
             NoOfSkipped);
+    end;
+
+    local procedure ClearLMSTransactionStatusAndError()
+    var
+        LMSTransaction: Record "12E LMS Transaction";
+    begin
+        LMSTransaction.Reset();
+        LMSTransaction.SetRange("LMS Transaction Document No.", "No.");
+        LMSTransaction.ModifyAll("ERP Status", '');
+        LMSTransaction.ModifyAll("ERP Error Message", '');
     end;
 
     local procedure DeleteAllLMSTransactionLines()

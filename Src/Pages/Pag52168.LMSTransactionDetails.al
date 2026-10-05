@@ -1,11 +1,11 @@
 page 52168 "12E LMS Transaction Details"
 {
-    // ApplicationArea = All;
+    ApplicationArea = All;
     Caption = 'LMS Transaction Details';
     PageType = List;
     SourceTable = "12E LMS Transaction Details";
     // UsageCategory = Lists;
-    // Editable = false;
+    Editable = false;
 
     layout
     {
@@ -29,10 +29,21 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the PK ID field.', Comment = '%';
                 }
-                field("DW Load Date"; Rec."DW Load Date")
+                field("Transaction Posting Date"; Rec."Transaction Posting Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Transaction Posting Date field.', Comment = '%';
+                }
+                field("Transaction ID"; Rec."Transaction ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Transaction ID field.', Comment = '%';
+                }
+                field("Transaction Date"; Rec."Transaction Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Transaction Date Time';
+                    ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {
@@ -49,25 +60,10 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payment ID field.', Comment = '%';
                 }
-                field("Transaction ID"; Rec."Transaction ID")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Transaction ID field.', Comment = '%';
-                }
                 field("Batch ID"; Rec."Batch ID")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Batch ID field.', Comment = '%';
-                }
-                field("Payment Type"; Rec."Payment Type")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Payment Type field.', Comment = '%';
-                }
-                field("Loan Status"; Rec."Loan Status")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Loan Status field.', Comment = '%';
                 }
                 field(State; Rec.State)
                 {
@@ -89,10 +85,20 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Transaction Code field.', Comment = '%';
                 }
-                field("Transaction Date"; Rec."Transaction Date")
+                field("Payment Type"; Rec."Payment Type")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Payment Type field.', Comment = '%';
+                }
+                field("Payment Agent"; Rec."Payment Agent")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Payment Agent field.', Comment = '%';
+                }
+                field("Loan Status"; Rec."Loan Status")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Loan Status field.', Comment = '%';
                 }
                 field(Amount; Rec.Amount)
                 {
@@ -109,12 +115,16 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Credit Account No. field.', Comment = '%';
                 }
-                field("Payment Agent"; Rec."Payment Agent")
+                field("ERP Status"; Rec."ERP Status")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the Payment Agent field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
                 }
-
+                field("ERP Error Msg"; Rec."ERP Error Msg")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
+                }
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ApplicationArea = All;
@@ -130,15 +140,10 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Reason Code field.', Comment = '%';
                 }
-                field("ERP Status"; Rec."ERP Status")
+                field("DW Load Date"; Rec."DW Load Date")
                 {
                     ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the ERP Status field.', Comment = '%';
-                }
-                field("ERP Error Msg"; Rec."ERP Error Msg")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the ERP Error Msg field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the DW Load Date field.', Comment = '%';
                 }
             }
         }

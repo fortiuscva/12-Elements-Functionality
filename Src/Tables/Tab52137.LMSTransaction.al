@@ -83,6 +83,11 @@ table 52137 "12E LMS Transaction"
         {
             Caption = 'Transaction Date';
             DataClassification = CustomerContent;
+
+            trigger OnValidate()
+            begin
+                Rec."Transaction Posting Date" := DT2Date(Rec."Transaction Date");
+            end;
         }
         field(16; Amount; Decimal)
         {

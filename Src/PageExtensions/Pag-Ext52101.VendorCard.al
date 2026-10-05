@@ -32,13 +32,11 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                             if not CompanyMapping.FindFirst() then
                                 exit(false);
 
-                            LeadProviderLookup.LoadProviders(
-                                CompanyMapping."DataSource ID");
+                            LeadProviderLookup.LoadProviders(CompanyMapping."DataSource ID");
+                            LeadProviderLookup.LookupMode(true);
 
                             if LeadProviderLookup.RunModal() = Action::LookupOK then begin
-                                Rec."12E Lead Vendor" :=
-                                    LeadProviderLookup.GetSelectedProvider();
-
+                                Rec."12E Lead Vendor" := LeadProviderLookup.GetSelectedProvider();
                                 Text := Rec."12E Lead Vendor";
                                 exit(true);
                             end;

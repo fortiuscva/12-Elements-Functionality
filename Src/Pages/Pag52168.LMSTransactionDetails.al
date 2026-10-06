@@ -44,6 +44,7 @@ page 52168 "12E LMS Transaction Details"
                     ApplicationArea = All;
                     Caption = 'Transaction Date Time';
                     ToolTip = 'Specifies the value of the Transaction Date field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Datasource ID"; Rec."Datasource ID")
                 {

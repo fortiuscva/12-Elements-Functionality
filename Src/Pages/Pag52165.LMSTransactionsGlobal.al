@@ -137,23 +137,7 @@ page 52165 "12E LMS Transactions Global"
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
                 }
 
-                field("G/L Register No."; Rec."G/L Register No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
-                }
 
-                field("LMS Transaction Document No."; Rec."LMS Transaction Document No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the LMS Transaction Document No.';
-                }
-
-                field("Posted LMS Trans. Document No."; Rec."Posted LMS Trans. Document No.")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the Posted LMS Transaction Document No.';
-                }
 
                 field("DW Load Date"; Rec."DW Load Date")
                 {

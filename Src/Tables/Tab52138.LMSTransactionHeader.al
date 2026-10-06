@@ -197,7 +197,7 @@ table 52138 "12E LMS Transaction Header"
     begin
         LMSTransaction.Reset();
         LMSTransaction.SetRange("LMS Transaction Document No.", "No.");
-        LMSTransaction.ModifyAll("ERP Status", '');
+        LMSTransaction.ModifyAll("ERP Status", 'PASSED');
         LMSTransaction.ModifyAll("ERP Error Message", '');
     end;
 

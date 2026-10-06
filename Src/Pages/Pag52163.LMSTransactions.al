@@ -31,12 +31,14 @@ page 52163 "12E LMS Transactions"
                     ToolTip = 'Specifies the Transaction ID.';
                 }
 
-                // field("Transaction Date"; Rec."Transaction Date")
-                // {
-                //     ApplicationArea = All;
-                //     Caption = 'Transaction Date Time';
-                //     ToolTip = 'Specifies the date and time of the transaction.';
-                // }
+                field("Transaction Date"; Rec."Transaction Date")
+                {
+                    ApplicationArea = All;
+                    Caption = 'Transaction Date Time';
+                    ToolTip = 'Specifies the date and time of the transaction.';
+                    Visible = false;
+
+                }
 
                 field("Datasource ID"; Rec."Datasource ID")
                 {

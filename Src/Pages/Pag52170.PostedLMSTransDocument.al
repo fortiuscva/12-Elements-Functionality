@@ -5,7 +5,7 @@ page 52170 "12E Posted LMS Trans. Document"
     UsageCategory = None;
     SourceTable = "12E Posted LMS Trans. Header";
     Caption = 'Posted LMS Transaction Document';
-    Editable = false;
+    //Editable = false;
     // InsertAllowed = false;
     // DeleteAllowed = false;
     // ModifyAllowed = false;

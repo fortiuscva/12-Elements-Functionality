@@ -13,6 +13,7 @@ codeunit 52132 "12E LMS Creation Management"
         DataSourceID := GetDataSourceID();
         ValidateCompanyMapping(DataSourceID);
         ValidateTransactions(DataSourceID);
+        ValidatePaymentBatchConflicts(DataSourceID);
         ValidateTransactionBalances(DataSourceID);
         CreateDocuments(DataSourceID);
     end;
@@ -98,6 +99,70 @@ codeunit 52132 "12E LMS Creation Management"
         end;
     end;
 
+    local procedure ValidatePaymentBatchConflicts(DataSourceID: Integer)
+    var
+        PaymentGroupQuery: Query "12E LMS Payment Group";
+        PaymentBatchGroupQuery: Query "12E LMS Payment Batch Group";
+        FirstBatchID: Integer;
+        HasBatchID: Boolean;
+        HasDifferentBatchID: Boolean;
+    begin
+        PaymentGroupQuery.SetRange(DatasourceID, DataSourceID);
+        PaymentGroupQuery.Open();
+
+        while PaymentGroupQuery.Read() do begin
+            if PaymentGroupQuery.PaymentID = 0 then
+                continue;
+
+            Clear(FirstBatchID);
+            Clear(HasBatchID);
+            Clear(HasDifferentBatchID);
+
+            PaymentBatchGroupQuery.SetRange(DatasourceID, DataSourceID);
+            PaymentBatchGroupQuery.SetRange(PaymentID, PaymentGroupQuery.PaymentID);
+            PaymentBatchGroupQuery.Open();
+
+            while PaymentBatchGroupQuery.Read() do begin
+                if not HasBatchID then begin
+                    FirstBatchID := PaymentBatchGroupQuery.BatchID;
+                    HasBatchID := true;
+                end else
+                    if PaymentBatchGroupQuery.BatchID <> FirstBatchID then begin
+                        HasDifferentBatchID := true;
+                        break;
+                    end;
+            end;
+
+            PaymentBatchGroupQuery.Close();
+
+            if HasDifferentBatchID then
+                MarkPaymentBatchConflict(DataSourceID, PaymentGroupQuery.PaymentID);
+        end;
+
+        PaymentGroupQuery.Close();
+    end;
+
+    local procedure MarkPaymentBatchConflict(DataSourceID: Integer; PaymentID: Integer)
+    var
+        SourceTransaction: Record "12E LMS Transaction";
+        ErrorMessage: Text;
+    begin
+        ErrorMessage := StrSubstNo('Payment ID %1 is associated with more than one batch.', PaymentID);
+
+        SourceTransaction.Reset();
+        SourceTransaction.SetRange("Datasource ID", DataSourceID);
+        SourceTransaction.SetRange("Payment ID", PaymentID);
+        SourceTransaction.SetRange("Posted LMS Trans. Document No.", '');
+
+        if SourceTransaction.FindSet(true) then
+            repeat
+                SourceTransaction."ERP Status" := 'FAILED';
+                SourceTransaction."ERP Error Message" := CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message"));
+                SourceTransaction.Modify();
+                AddCurrentRunFailed(SourceTransaction);
+            until SourceTransaction.Next() = 0;
+    end;
+
     local procedure ValidateTransactionBalances(DataSourceID: Integer)
     var
         LMSTransaction: Record "12E LMS Transaction";
@@ -122,138 +187,23 @@ codeunit 52132 "12E LMS Creation Management"
 
         repeat
             if IsUnprocessedTransaction(LMSTransaction) and not IsCurrentRunFailed(LMSTransaction) then begin
-                CheckDuplicatePaymentBatch(LMSTransaction);
+                if (TransactionDate <> LMSTransaction."Transaction Posting Date") or (TransactionID <> LMSTransaction."Transaction ID") then begin
+                    if HasTransactions then
+                        CheckTransactionBalance(DataSourceID, TransactionDate, TransactionID, TransactionAmount, HasTransactions);
 
-                if IsUnprocessedTransaction(LMSTransaction) and not IsCurrentRunFailed(LMSTransaction) then begin
-                    if (TransactionDate <> LMSTransaction."Transaction Posting Date") or (TransactionID <> LMSTransaction."Transaction ID") then begin
-                        if HasTransactions then
-                            CheckTransactionBalance(DataSourceID, TransactionDate, TransactionID, TransactionAmount, HasTransactions);
-
-                        TransactionDate := LMSTransaction."Transaction Posting Date";
-                        TransactionID := LMSTransaction."Transaction ID";
-                        TransactionAmount := 0;
-                        HasTransactions := false;
-                    end;
-
-                    TransactionAmount += GetPostingAmount(LMSTransaction);
-                    HasTransactions := true;
+                    TransactionDate := LMSTransaction."Transaction Posting Date";
+                    TransactionID := LMSTransaction."Transaction ID";
+                    TransactionAmount := 0;
+                    HasTransactions := false;
                 end;
+
+                TransactionAmount += GetPostingAmount(LMSTransaction);
+                HasTransactions := true;
             end;
         until LMSTransaction.Next() = 0;
 
         if HasTransactions then
             CheckTransactionBalance(DataSourceID, TransactionDate, TransactionID, TransactionAmount, HasTransactions);
-    end;
-
-    local procedure CheckDuplicatePaymentBatch(LMSTransaction: Record "12E LMS Transaction")
-    var
-        OtherTransaction: Record "12E LMS Transaction";
-        PaymentID: Integer;
-        BatchID: Integer;
-        FirstBatchID: Integer;
-        ErrorMessage: Text;
-        HasDifferentBatchID: Boolean;
-    begin
-        if not IsUnprocessedTransaction(LMSTransaction) then
-            exit;
-
-        PaymentID := LMSTransaction."Payment ID";
-        BatchID := LMSTransaction."Batch ID";
-
-        if PaymentID = 0 then
-            exit;
-
-        FirstBatchID := BatchID;
-
-        OtherTransaction.Reset();
-        OtherTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
-        OtherTransaction.SetRange("Payment ID", PaymentID);
-
-        if OtherTransaction.FindSet() then
-            repeat
-                if IsUnprocessedTransaction(OtherTransaction) then
-                    if OtherTransaction."Batch ID" <> FirstBatchID then begin
-                        HasDifferentBatchID := true;
-                        ErrorMessage := StrSubstNo('Payment ID %1 has another unposted transaction with a different Batch ID. Batch ID %2 and Batch ID %3 cannot be processed together.', PaymentID, FirstBatchID, OtherTransaction."Batch ID");
-                        break;
-                    end;
-            until OtherTransaction.Next() = 0;
-
-        if HasDifferentBatchID then begin
-            MarkPaymentIDFailed(LMSTransaction."Datasource ID", PaymentID, ErrorMessage);
-            exit;
-        end;
-
-        CheckBatchIDMultiplePayments(LMSTransaction);
-    end;
-
-    local procedure CheckBatchIDMultiplePayments(LMSTransaction: Record "12E LMS Transaction")
-    var
-        OtherTransaction: Record "12E LMS Transaction";
-        PaymentID: Integer;
-        BatchID: Integer;
-        ErrorMessage: Text;
-        HasDifferentPaymentID: Boolean;
-    begin
-        BatchID := LMSTransaction."Batch ID";
-        PaymentID := LMSTransaction."Payment ID";
-
-        if BatchID = 0 then
-            exit;
-
-        OtherTransaction.Reset();
-        OtherTransaction.SetRange("Datasource ID", LMSTransaction."Datasource ID");
-        OtherTransaction.SetRange("Batch ID", BatchID);
-
-        if OtherTransaction.FindSet() then
-            repeat
-                if IsUnprocessedTransaction(OtherTransaction) and (OtherTransaction."Payment ID" <> PaymentID) then begin
-                    HasDifferentPaymentID := true;
-                    ErrorMessage := StrSubstNo('Batch ID %1 is associated with multiple Payment IDs and cannot be processed.', BatchID);
-                    break;
-                end;
-            until OtherTransaction.Next() = 0;
-
-        if HasDifferentPaymentID then
-            MarkBatchIDFailed(LMSTransaction."Datasource ID", BatchID, ErrorMessage);
-    end;
-
-    local procedure MarkBatchIDFailed(DataSourceID: Integer; BatchID: Integer; ErrorMessage: Text)
-    var
-        SourceTransaction: Record "12E LMS Transaction";
-    begin
-        SourceTransaction.Reset();
-        SourceTransaction.SetRange("Datasource ID", DataSourceID);
-        SourceTransaction.SetRange("Batch ID", BatchID);
-
-        if SourceTransaction.FindSet(true) then
-            repeat
-                if IsUnprocessedTransaction(SourceTransaction) then begin
-                    SourceTransaction."ERP Status" := 'FAILED';
-                    SourceTransaction."ERP Error Message" := CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message"));
-                    SourceTransaction.Modify();
-                    AddCurrentRunFailed(SourceTransaction);
-                end;
-            until SourceTransaction.Next() = 0;
-    end;
-
-    local procedure MarkPaymentIDFailed(DataSourceID: Integer; PaymentID: Integer; ErrorMessage: Text)
-    var
-        SourceTransaction: Record "12E LMS Transaction";
-    begin
-        SourceTransaction.Reset();
-        SourceTransaction.SetRange("Datasource ID", DataSourceID);
-        SourceTransaction.SetRange("Payment ID", PaymentID);
-
-        if SourceTransaction.FindSet(true) then
-            repeat
-                if IsUnprocessedTransaction(SourceTransaction) then begin
-                    SourceTransaction."ERP Status" := 'FAILED';
-                    SourceTransaction."ERP Error Message" := CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message"));
-                    SourceTransaction.Modify();
-                    AddCurrentRunFailed(SourceTransaction);
-                end;
-            until SourceTransaction.Next() = 0;
     end;
 
     local procedure CheckTransactionBalance(DataSourceID: Integer; TransactionDate: Date; TransactionID: Integer; TransactionAmount: Decimal; HasTransactions: Boolean)
@@ -497,6 +447,7 @@ codeunit 52132 "12E LMS Creation Management"
                 LMSDetail."Reason Code" := LMSTransaction."Reason Code";
                 LMSDetail."Transaction Posting Date" := LMSTransaction."Transaction Posting Date";
                 LMSDetail.Insert(true);
+
                 LMSTransaction."ERP Status" := 'PASSED';
                 LMSTransaction."ERP Error Message" := '';
                 LMSTransaction."ERP Import Timestamp" := CurrentDateTime();

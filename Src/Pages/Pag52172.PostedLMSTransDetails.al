@@ -131,6 +131,11 @@ page 52172 "12E Posted LMS Trans. Details"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
                 }
+                field(Reversed; Rec.Reversed)
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Reversed field.', Comment = '%';
+                }
                 field("Source Code"; Rec."Source Code")
                 {
                     ApplicationArea = All;

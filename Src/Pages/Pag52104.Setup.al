@@ -1,7 +1,7 @@
 page 52104 "12E Setup"
 {
     ApplicationArea = All;
-    Caption = '12 Elements Setup';
+    Caption = '12 Elements Consulting Setup';
     DeleteAllowed = false;
     InsertAllowed = false;
     PageType = Card;

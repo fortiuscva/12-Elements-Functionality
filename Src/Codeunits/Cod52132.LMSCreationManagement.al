@@ -159,6 +159,7 @@ codeunit 52132 "12E LMS Creation Management"
                 SourceTransaction."ERP Status" := 'FAILED';
                 SourceTransaction."ERP Error Message" := CopyStr(ErrorMessage, 1, MaxStrLen(SourceTransaction."ERP Error Message"));
                 SourceTransaction.Modify();
+                DeleteLMSDocument(SourceTransaction);
                 AddCurrentRunFailed(SourceTransaction);
             until SourceTransaction.Next() = 0;
     end;
@@ -467,6 +468,19 @@ codeunit 52132 "12E LMS Creation Management"
             exit(LMSDetail."Entry No.");
 
         exit(0);
+    end;
+
+    local procedure DeleteLMSDocument(LMSTransaction: Record "12E LMS Transaction")
+    var
+        LMSHeader: Record "12E LMS Transaction Header";
+    begin
+        LMSTransaction.CalcFields("LMS Transaction Document No.");
+        if LMSTransaction."LMS Transaction Document No." = '' then
+            exit;
+
+        LMSHeader.SetRange("No.", LMSTransaction."LMS Transaction Document No.");
+        if LMSHeader.FindFirst() then
+            LMSHeader.Delete(true);
     end;
 
     local procedure AddCurrentRunFailed(LMSTransaction: Record "12E LMS Transaction")

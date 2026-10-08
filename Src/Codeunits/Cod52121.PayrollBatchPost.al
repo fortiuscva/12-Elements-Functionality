@@ -51,6 +51,7 @@ codeunit 52121 "12E Payroll Batch Post"
             DeleteJournalLines();
             PayrollBatchHeader.Get(PayrollBatchHeader."No.");
             TransferToPostedPayroll(PayrollBatchHeader);
+            UpdatePayrollBatchAsPassed(PayrollBatchHeader);
             Message(PayrollPostedMsg, PayrollBatchNo);
         end;
     end;
@@ -268,5 +269,14 @@ codeunit 52121 "12E Payroll Batch Post"
             exit(GLRegister."No.");
 
         exit(0);
+    end;
+
+    local procedure UpdatePayrollBatchAsPassed(var PayrollBatchHeader: Record "12E Payroll Batch Header")
+    var
+        PayrollBatch: Record "12E Questco Payroll Batch";
+    begin
+        PayrollBatch.SetRange("Payroll Doc. No.", PayrollBatchHeader."No.");
+        PayrollBatch.ModifyAll("ERP Status", 'PASSED');
+        PayrollBatch.ModifyAll("ERP Error Message", '');
     end;
 }

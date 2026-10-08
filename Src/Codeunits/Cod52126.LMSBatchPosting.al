@@ -26,6 +26,7 @@ codeunit 52126 "12E LMS Batch Posting"
             PostingError := GetLastErrorText();
             LMSBatch.Get(LMSBatch."PK ID");
             LMSBatch."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSBatch."Posting Error"));
+            LMSBatch.ERPStatus := 'FAILED';
             LMSBatch.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LMSBatch.ERPErrorMsg));
             LMSBatch.Modify(true);
             DeleteJournalLines();
@@ -40,7 +41,7 @@ codeunit 52126 "12E LMS Batch Posting"
 
         LMSBatch.Get(LMSBatch."PK ID");
         LMSBatch.Processed := true;
-        LMSBatch."Posting Error" := '';
+        LMSBatch.ERPStatus := 'PASSED';
         LMSBatch.ERPErrorMsg := '';
         LMSBatch.Modify();
 

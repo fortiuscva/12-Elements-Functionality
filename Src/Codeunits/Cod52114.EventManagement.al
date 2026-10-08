@@ -257,6 +257,7 @@ codeunit 52114 "12E Event Management"
     local procedure TryUpdateLMSTransactionReversal(var ReversalEntry: Record "Reversal Entry"): Boolean
     var
         PostedLMSTransaction: Record "12E Posted LMS Trans. Header";
+        PostedLMSTransactionDetails: Record "12E Posted LMS Trans. Details";
     begin
         PostedLMSTransaction.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
 
@@ -265,6 +266,9 @@ codeunit 52114 "12E Event Management"
 
         PostedLMSTransaction.Reversed := true;
         PostedLMSTransaction.Modify(true);
+
+        PostedLMSTransactionDetails.SetRange("G/L Register No.", ReversalEntry."G/L Register No.");
+        PostedLMSTransactionDetails.ModifyAll(Reversed, true);
 
         exit(true);
     end;

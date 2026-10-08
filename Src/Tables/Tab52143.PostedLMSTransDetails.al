@@ -145,6 +145,11 @@ table 52143 "12E Posted LMS Trans. Details"
             Caption = 'Transaction Posting Date';
             DataClassification = CustomerContent;
         }
+        field(30; Reversed; Boolean)
+        {
+            Caption = 'Reversed';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

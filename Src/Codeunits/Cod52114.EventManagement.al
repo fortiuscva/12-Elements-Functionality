@@ -316,4 +316,12 @@ codeunit 52114 "12E Event Management"
         PurchInvHeader."12E Period Quantity" := PurchInvHeaderRec."12E Period Quantity";
     end;
 
+    [EventSubscriber(ObjectType::Table, Database::"Job Queue Entry", 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnJobQueueAfterModify(var Rec: Record "Job Queue Entry"; var xRec: Record "Job Queue Entry")
+    var
+        TweleveFunctions: Codeunit "12E Functions";
+    begin
+        if Rec.Status = Rec.Status::Error then
+            TweleveFunctions.HandleFailedJob(Rec);
+    end;
 }

@@ -1,4 +1,4 @@
-pageextension 52109 "12E Job Queue Entry Card" extends "Job Queue Entry Card"
+pageextension 52113 "12E Job Queue Entry Card" extends "Job Queue Entry Card"
 {
     layout
     {

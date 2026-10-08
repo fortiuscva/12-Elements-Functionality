@@ -1,4 +1,4 @@
-tableextension 52118 "12E Job Queue Entry" extends "Job Queue Entry"
+tableextension 52120 "12E Job Queue Entry" extends "Job Queue Entry"
 {
     fields
     {

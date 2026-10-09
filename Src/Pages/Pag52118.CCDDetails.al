@@ -165,9 +165,10 @@ page 52118 "12E CCD Details"
                     Caption = 'Create CCD Documents';
                     Image = Document;
                     trigger OnAction()
+                    var
+                        CreateCCDDocumentRep: Report "12E Create CCD Documents";
                     begin
-                        Codeunit.Run(Codeunit::"12E CCD Mgmt");
-                        CurrPage.Update();
+                        CreateCCDDocumentRep.RunModal();
                     end;
                 }
             }

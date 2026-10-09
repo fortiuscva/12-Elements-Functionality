@@ -2,10 +2,10 @@ codeunit 52108 "12E CCD Mgmt"
 {
     trigger OnRun()
     begin
-        CreateCCDDocuments();
+        CreateCCDDocuments(0D, 0D);
     end;
 
-    procedure CreateCCDDocuments()
+    procedure CreateCCDDocuments(StartDate: Date; EndDate: Date)
     var
         QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
         PurchInvHeader: Record "Purch. Inv. Header";
@@ -24,7 +24,8 @@ codeunit 52108 "12E CCD Mgmt"
         QuestcoPayrollBatch.SetRange("Client ID", ClientID);
         QuestcoPayrollBatch.SetRange("CCD No.", '');
         QuestcoPayrollBatch.SetRange("Posted CCD No.", '');
-
+        if (StartDate <> 0D) or (EndDate <> 0D) then
+            QuestcoPayrollBatch.SetRange("Pay Date", StartDate, EndDate);
         if QuestcoPayrollBatch.FindSet(true) then
             repeat
                 ProcessQuestcoPayrollBatch(QuestcoPayrollBatch);

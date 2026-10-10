@@ -36,10 +36,8 @@ codeunit 52121 "12E Payroll Batch Post"
 
         DeleteJournalLines();
 
-        CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
-        CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
 
-        if not TryPostJournal() then begin
+        if not TryPostJournal(PayrollBatchHeader, PayrollBatchLine, BatchTotal) then begin
             PostingError := GetLastErrorText();
 
             PayrollBatchHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(PayrollBatchHeader."Posting Error"));
@@ -110,13 +108,14 @@ codeunit 52121 "12E Payroll Batch Post"
                 GenJournalLine.Validate("Account No.", PayrollBatchLine."G/L Account No.");
 
                 if PayrollBatchLine."Department Code" <> '' then
-                    GenJournalLine."Dimension Set ID" :=
-                        DimensionManagement.SetDimensionValue(
-                            GenJournalLine."Dimension Set ID",
-                            DepartmentDimensionCode,
-                            PayrollBatchLine."Department Code",
-                            '',
-                            '');
+                    PayrollBatchLine.CalcFields("Shortcut Dimension 1 Code");
+                PayrollBatchLine.TestField("Shortcut Dimension 1 Code");
+                GenJournalLine."Dimension Set ID" := DimensionManagement.SetDimensionValue(
+                        GenJournalLine."Dimension Set ID",
+                        DepartmentDimensionCode,
+                        PayrollBatchLine."Shortcut Dimension 1 Code",
+                        '',
+                        '');
 
                 GenJournalLine.Validate(Amount, PayrollBatchLine.Amount);
                 GenJournalLine.Modify(true);
@@ -152,8 +151,10 @@ codeunit 52121 "12E Payroll Batch Post"
     end;
 
     [TryFunction]
-    local procedure TryPostJournal()
+    local procedure TryPostJournal(PayrollBatchHeader: Record "12E Payroll Batch Header"; var PayrollBatchLine: Record "12E Payroll Batch Line"; var BatchTotal: Decimal)
     begin
+        CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
+        CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
         PostJournal();
     end;
 

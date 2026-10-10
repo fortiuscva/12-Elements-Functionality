@@ -64,6 +64,15 @@ table 52131 "12E Posted Payroll Line"
             FieldClass = FlowField;
             ToolTip = 'Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
         }
+        field(16; "Shortcut Dimension 2 Code"; Code[20])
+        {
+            CalcFormula = lookup("12E Department Code"."Shortcut Dimension 2 Code" where(Code = field("Department Code")));
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            Editable = false;
+            FieldClass = FlowField;
+            ToolTip = 'Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
+        }
     }
     keys
     {

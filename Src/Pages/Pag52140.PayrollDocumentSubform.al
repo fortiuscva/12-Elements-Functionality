@@ -46,6 +46,12 @@ page 52140 "12E Payroll Document Subform"
                     Editable = false;
                     ToolTip = 'Specifies the value of the Shortcut Dimension 1 Code field.', Comment = '%';
                 }
+                field("Shortcut Dimension 2 Code"; Rec."Shortcut Dimension 2 Code")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Shortcut Dimension 2 Code field.', Comment = '%';
+                }
                 field("G/L Account No."; Rec."G/L Account No.")
                 {
                     ApplicationArea = All;

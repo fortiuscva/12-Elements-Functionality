@@ -28,7 +28,7 @@ table 52125 "12E Department Code"
             Caption = 'Shortcut Dimension 1 Code';
             ToolTip = 'Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
             TableRelation = "Dimension Value".Code where("Global Dimension No." = const(1),
-                                                          Blocked = const(false));
+                                                          Blocked = const(false), "Dimension Value Type" = filter(Standard));
         }
     }
     keys

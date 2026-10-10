@@ -1,6 +1,5 @@
 codeunit 52135 "12E Validations"
 {
-
     procedure CheckPortfolioMapping(PortfolioPar: Text[30])
     begin
         CompanyMappingRecGbl.Reset();
@@ -83,5 +82,5 @@ codeunit 52135 "12E Validations"
         QuestcoClientIdMappingErrLbl: Label 'Questco Client ID %1 is not associated with any company.';
         PayrollBatchDoesNotExistErrLbl: Label 'Questco Payroll Batch does not exist with this Client ID  %1 and Batch ID %2.';
         ValueCannotBeLessThanZeroErrMsg: Label '%1 cannot be less than zero.';
-        LeadVendorMappingErrLbl: Label 'Lead provider %1 is not associated with any business central lead vendor in %2 company.';
+        LeadVendorMappingErrLbl: Label 'Lead Provider %1 is not associated with any BC Lead Vendor in %2 company.';
 }

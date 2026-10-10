@@ -107,15 +107,9 @@ codeunit 52121 "12E Payroll Batch Post"
                 GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
                 GenJournalLine.Validate("Account No.", PayrollBatchLine."G/L Account No.");
 
-                if PayrollBatchLine."Department Code" <> '' then
-                    PayrollBatchLine.CalcFields("Shortcut Dimension 1 Code");
+                PayrollBatchLine.CalcFields("Shortcut Dimension 1 Code");
                 PayrollBatchLine.TestField("Shortcut Dimension 1 Code");
-                GenJournalLine."Dimension Set ID" := DimensionManagement.SetDimensionValue(
-                        GenJournalLine."Dimension Set ID",
-                        DepartmentDimensionCode,
-                        PayrollBatchLine."Shortcut Dimension 1 Code",
-                        '',
-                        '');
+                GenJournalLine.Validate("Shortcut Dimension 1 Code", PayrollBatchLine."Shortcut Dimension 1 Code");
 
                 GenJournalLine.Validate(Amount, PayrollBatchLine.Amount);
                 GenJournalLine.Modify(true);

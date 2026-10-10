@@ -25,7 +25,7 @@ table 52128 "12E Payroll Batch Line"
         }
         field(5; "Department Code"; Code[20])
         {
-            Caption = 'Department Code';
+            Caption = 'Payroll Department Code';
             DataClassification = CustomerContent;
         }
         field(6; "G/L Account No."; Code[20])
@@ -85,6 +85,15 @@ table 52128 "12E Payroll Batch Line"
             Editable = false;
             FieldClass = FlowField;
             ToolTip = 'Specifies the code for Shortcut Dimension 1, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
+        }
+        field(16; "Shortcut Dimension 2 Code"; Code[20])
+        {
+            CalcFormula = lookup("12E Department Code"."Shortcut Dimension 2 Code" where(Code = field("Department Code")));
+            CaptionClass = '1,2,2';
+            Caption = 'Shortcut Dimension 2 Code';
+            Editable = false;
+            FieldClass = FlowField;
+            ToolTip = 'Specifies the code for Shortcut Dimension 2, which is one of two global dimension codes that you set up in the General Ledger Setup window.';
         }
     }
     keys

@@ -1,7 +1,7 @@
 page 52137 "12E Department Codes"
 {
     ApplicationArea = All;
-    Caption = 'Departments';
+    Caption = 'Payroll Departments';
     PageType = List;
     SourceTable = "12E Department Code";
     // UsageCategory = Lists;

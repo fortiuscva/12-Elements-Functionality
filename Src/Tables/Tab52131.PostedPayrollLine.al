@@ -19,7 +19,7 @@ table 52131 "12E Posted Payroll Line"
         }
         field(5; "Department Code"; Code[20])
         {
-            Caption = 'Department Code';
+            Caption = 'Payroll Department Code';
             DataClassification = CustomerContent;
         }
         field(6; "G/L Account No."; Code[20])

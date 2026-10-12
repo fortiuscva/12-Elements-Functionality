@@ -55,7 +55,7 @@ table 52126 "12E Questco Payroll Txn"
         }
         field(10; "Department Code"; Code[20])
         {
-            Caption = 'Department Code';
+            Caption = 'Payroll Department Code';
             DataClassification = CustomerContent;
         }
         field(11; "G/L Account No."; Code[20])

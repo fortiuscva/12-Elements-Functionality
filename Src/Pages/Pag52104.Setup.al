@@ -331,7 +331,7 @@ page 52104 "12E Setup"
                 action(Departments)
                 {
                     ApplicationArea = all;
-                    Caption = 'Departments';
+                    Caption = 'Payroll Departments';
                     Image = Departments;
                     RunObject = page "12E Department Codes";
                 }

@@ -1,3 +1,4 @@
+
 report 52102 "12E Create CCD Sales Invoices"
 {
     Caption = 'Create CCD Sales Invoices';
@@ -105,9 +106,23 @@ report 52102 "12E Create CCD Sales Invoices"
     local procedure ProcessPostedCCD(PostedCCDHeader: Record "12E Posted CCD Header")
     var
         PostedCCDLine: Record "12E Posted CCD Line";
+        QuestcoPayrollBatch: Record "12E Questco Payroll Batch";
+        PayDate: Date;
         SalesInvoiceNo: Code[20];
         NextLineNo: Integer;
     begin
+        if PostedCCDHeader."Payroll Batch ID" <> 0 then begin
+            QuestcoPayrollBatch.SetRange("Batch ID", PostedCCDHeader."Payroll Batch ID");
+            QuestcoPayrollBatch.SetRange("Pay Period Start Date", PostedCCDHeader."Period Start Date");
+            QuestcoPayrollBatch.SetRange("Pay Period End Date", PostedCCDHeader."Period End Date");
+
+            if not QuestcoPayrollBatch.FindFirst() then
+                Error('Payroll Batch %1 was not found.', PostedCCDHeader."Payroll Batch ID");
+
+            QuestcoPayrollBatch.TestField("Pay Date");
+            PayDate := QuestcoPayrollBatch."Pay Date";
+        end;
+
         PostedCCDLine.Reset();
         PostedCCDLine.SetCurrentKey("Document No.", Portfolio, "Location Code");
         PostedCCDLine.SetRange("Document No.", PostedCCDHeader."No.");
@@ -120,7 +135,7 @@ report 52102 "12E Create CCD Sales Invoices"
                 SalesInvoiceNo := GetSalesInvoiceForPortfolio(PostedCCDLine.Portfolio);
 
                 if SalesInvoiceNo = '' then
-                    SalesInvoiceNo := CreateSalesInvoice(PostedCCDLine.Portfolio);
+                    SalesInvoiceNo := CreateSalesInvoice(PostedCCDLine.Portfolio, PayDate);
 
                 NextLineNo := GetNextSalesLineNo(SalesInvoiceNo);
 
@@ -141,7 +156,7 @@ report 52102 "12E Create CCD Sales Invoices"
         exit('');
     end;
 
-    local procedure CreateSalesInvoice(PortfolioCode: Text[30]): Code[20]
+    local procedure CreateSalesInvoice(PortfolioCode: Text[30]; PayDate: Date): Code[20]
     var
         CustomerNo: Code[20];
         SalesInvoiceNo: Code[20];
@@ -161,6 +176,7 @@ report 52102 "12E Create CCD Sales Invoices"
         SalesHeader.Insert(true);
 
         SalesHeader.Validate("Sell-to Customer No.", CustomerNo);
+        SalesHeader.Validate("Posting Date", PayDate);
         SalesHeader.Modify(true);
 
         SalesInvoiceNo := SalesHeader."No.";

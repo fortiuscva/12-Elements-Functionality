@@ -60,11 +60,13 @@ page 52151 "12E Loyalty Points"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Document No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("G/L Register No."; Rec."G/L Register No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the G/L Register No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field(Processed; Rec.Processed)
                 {

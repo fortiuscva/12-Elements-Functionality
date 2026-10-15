@@ -72,7 +72,7 @@ page 52154 "12E QPAY Batches"
                     ToolTip = 'Specifies the value of the Weeks Worked field.', Comment = '%';
                     Visible = false;
                 }
-                field(CCHours; Functions.GetContactCenterHours(Rec."Client ID", Rec."Batch ID", GetDepartmentCode()))
+                field(CCHours; CCDMgmt.GetPayrollBatchHours(Rec."Client ID", Rec."Batch ID"))
                 {
                     ApplicationArea = All;
                     Caption = 'Contact Center Hours';
@@ -180,10 +180,13 @@ page 52154 "12E QPAY Batches"
                 var
                     PayrollTxn: Record "12E Questco Payroll Txn";
                 begin
+                    DepartmentCodeFilter := '';
+                    GetDepartmentCode();
+                    DepartmentCodeFilter := DepartmentCodeFilter.TrimEnd('|');
                     PayrollTxn.Reset();
                     PayrollTxn.SetRange("Client ID", Rec."Client ID");
                     PayrollTxn.SetRange("Batch ID", Rec."Batch ID");
-                    PayrollTxn.SetRange("Department Code", GetDepartmentCode());
+                    PayrollTxn.SetFilter("Department Code", DepartmentCodeFilter);
                     PayrollTxn.SetFilter("Hours Worked", '>%1', 0);
                     Page.Run(Page::"12E QPAY Transactions", PayrollTxn);
                 end;
@@ -216,18 +219,22 @@ page 52154 "12E QPAY Batches"
         end;
     end;
 
-    local procedure GetDepartmentCode(): Code[20]
+    local procedure GetDepartmentCode()
     var
         DepartmentCode: Record "12E Department Code";
     begin
         DepartmentCode.Reset();
         DepartmentCode.SetRange("Contact Center", true);
 
-        if DepartmentCode.FindFirst() then
-            exit(DepartmentCode.Code);
+        if DepartmentCode.Findset() then begin
+            repeat
+                DepartmentCodeFilter += DepartmentCode.Code + '|';
+            until DepartmentCode.Next() = 0;
+        end;
     end;
 
 
     var
-        Functions: Codeunit "12E Functions";
+        CCDMgmt: Codeunit "12E CCD Mgmt";
+        DepartmentCodeFilter: Text;
 }

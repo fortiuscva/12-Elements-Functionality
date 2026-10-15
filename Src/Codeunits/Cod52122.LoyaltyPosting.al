@@ -124,8 +124,8 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
         GenJournalLine.Validate(Amount, Amount);
-        GenJournalLine.Validate("Shortcut Dimension 1 Code", StateCode);
-        GenJournalLine.Validate("Shortcut Dimension 2 Code", StoreCode);
+        SetJnlLineDimension(GenJournalLine, 'STATE', StateCode);
+        SetJnlLineDimension(GenJournalLine, 'STORES', StoreCode);
         GenJournalLine.Validate("Source Code", TwelveSetup."Loyalty Source Code");
         GenJournalLine.Validate("Reason Code", TwelveSetup."Loyalty Reason Code");
         GenJournalLine.Modify(true);
@@ -192,4 +192,59 @@ codeunit 52122 "12E Loyalty Posting"
 
         exit(10000);
     end;
+
+    procedure SetJnlLineDimension(var GenJnlLine: Record "Gen. Journal Line"; DimCode: Code[20]; DimValueCode: Code[20])
+
+    var
+
+        TempDimSetEntry: Record "Dimension Set Entry" temporary;
+
+        DimMgt: Codeunit DimensionManagement;
+
+    begin
+
+        // 1. Load whatever dimensions the line already has (from defaults, account, etc.)
+
+        DimMgt.GetDimensionSet(TempDimSetEntry, GenJnlLine."Dimension Set ID");
+
+        // 2. Remove the existing value for this dimension, if any
+
+        TempDimSetEntry.SetRange("Dimension Code", DimCode);
+
+        TempDimSetEntry.DeleteAll();
+
+        TempDimSetEntry.Reset();
+
+        // 3. Add the new value. Blank DimValueCode = remove the dimension.
+
+        if DimValueCode <> '' then begin
+
+            TempDimSetEntry.Init();
+
+            TempDimSetEntry."Dimension Set ID" := GenJnlLine."Dimension Set ID";
+
+            TempDimSetEntry.Validate("Dimension Code", DimCode);
+
+            TempDimSetEntry.Validate("Dimension Value Code", DimValueCode); // fills "Dimension Value ID"
+
+            TempDimSetEntry.Insert();
+
+        end;
+
+        // 4. Get (or create) the matching Dimension Set ID and assign it
+
+        GenJnlLine."Dimension Set ID" := DimMgt.GetDimensionSetID(TempDimSetEntry);
+
+        // 5. Keep the global dimension fields on the line in sync
+
+        DimMgt.UpdateGlobalDimFromDimSetID(
+
+            GenJnlLine."Dimension Set ID",
+
+            GenJnlLine."Shortcut Dimension 1 Code",
+
+            GenJnlLine."Shortcut Dimension 2 Code");
+
+    end;
+
 }

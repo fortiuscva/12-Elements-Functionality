@@ -316,7 +316,7 @@ codeunit 52108 "12E CCD Mgmt"
         exit(InvoiceHours);
     end;
 
-    local procedure GetPayrollBatchHours(ClientID: Integer; BatchID: Integer): Decimal
+    procedure GetPayrollBatchHours(ClientID: Integer; BatchID: Integer): Decimal
     var
         CCDPayrollQuery: Query "12E CCD Payroll Data";
         DepartmentCode: Record "12E Department Code";

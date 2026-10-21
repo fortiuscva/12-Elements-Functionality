@@ -260,7 +260,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDQuery.Open();
 
         while CCDQuery.Read() do begin
-            if CCDQuery.LocationCode = LocationCode then begin
+            if (CCDQuery.LocationCode = LocationCode) and (not IsPortfolioBlocked(CCDQuery.Portfolio)) then begin
                 PortfolioHandleTime := CCDQuery.TotalHandleTime;
 
                 TotalLocationHandleTime := GetLocationTotal(
@@ -433,5 +433,15 @@ codeunit 52108 "12E CCD Mgmt"
             Error('Multiple active Company Mappings exist for company %1.', CompanyName);
 
         exit(ClientID);
+    end;
+
+    local procedure IsPortfolioBlocked(PortfolioCode: Text[30]): Boolean
+    var
+        CCDPortfolioMapping: Record "12E CCD Port. Cust. Mapping";
+    begin
+        CCDPortfolioMapping.SetRange(Portfolio, PortfolioCode);
+        CCDPortfolioMapping.SetRange(Blocked, true);
+
+        exit(not CCDPortfolioMapping.IsEmpty());
     end;
 }

@@ -30,13 +30,12 @@ report 52113 "12E Create CCD Documents"
 
         trigger OnQueryClosePage(CloseAction: Action): Boolean
         begin
-            if CloseAction = Action::OK then begin
-                if (StartDate <> 0D) and
-                   (EndDate <> 0D) and
-                   (EndDate < StartDate)
-                then
-                    Error('End Date cannot be earlier than Start Date.');
-            end;
+            if (CloseAction = Action::OK) and
+               (StartDate <> 0D) and
+               (EndDate <> 0D) and
+               (EndDate < StartDate)
+            then
+                Error('End Date cannot be earlier than Start Date.');
 
             exit(true);
         end;
@@ -46,9 +45,14 @@ report 52113 "12E Create CCD Documents"
     var
         CCDMgt: Codeunit "12E CCD Mgmt";
     begin
-        if (StartDate <> 0D) or (EndDate <> 0D) then
-            if (StartDate = 0D) or (EndDate = 0D) then
-                Error('Start Date and End Date cannot be blank.');
+        if StartDate = 0D then
+            StartDate := 00000101D;
+
+        if EndDate = 0D then
+            EndDate := 99991231D;
+
+        if EndDate < StartDate then
+            Error('End Date cannot be earlier than Start Date.');
 
         CCDMgt.CreateCCDDocuments(StartDate, EndDate);
     end;

@@ -21,4 +21,8 @@ enum 52105 "12E Type of Company"
     {
         Caption = 'Consulting';
     }
+    value(5; TLE)
+    {
+        Caption = 'TLE';
+    }
 }

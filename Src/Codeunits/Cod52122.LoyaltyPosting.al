@@ -12,6 +12,16 @@ codeunit 52122 "12E Loyalty Posting"
         if LoyaltyPoints.Processed then
             Error('Loyalty Point entry %1 is already processed.', LoyaltyPoints."PK ID");
 
+        if (LoyaltyPoints."Points Earned" = 0) and
+           (LoyaltyPoints."Points Expired" = 0)
+        then begin
+            LoyaltyPoints.Processed := true;
+            LoyaltyPoints."Posting Error" := '';
+            LoyaltyPoints.ERPErrorMsg := '';
+            LoyaltyPoints.Modify(true);
+            exit;
+        end;
+
         GetSetup();
 
         Clear(LoyaltyPoints."Posting Error");
@@ -20,9 +30,7 @@ codeunit 52122 "12E Loyalty Posting"
 
         DeleteJournalLines();
 
-
         if not TryPostJournal(LoyaltyPoints) then begin
-
             PostingError := GetLastErrorText();
 
             LoyaltyPoints.Get(LoyaltyPoints."PK ID");
@@ -49,6 +57,12 @@ codeunit 52122 "12E Loyalty Posting"
             Error('Loyalty Point entry %1 is already processed.', LoyaltyPoints."PK ID");
 
         GetSetup();
+
+        if (LoyaltyPoints."Points Earned" = 0) and
+           (LoyaltyPoints."Points Expired" = 0)
+        then
+            exit;
+
         DeleteJournalLines();
         CreateJournalLines(LoyaltyPoints);
         Commit();
@@ -89,26 +103,66 @@ codeunit 52122 "12E Loyalty Posting"
 
         if LoyaltyPoints."Points Earned" <> 0 then begin
             PointsEarnedValue := LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Point Value";
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsEarnedValue, TwelveSetup."Loyalty Points Earned", TwelveSetup."Deferred Rev Loyalty Pts", LoyaltyPoints.State, LoyaltyPoints."Store Name");
+
+            CreateGenJournalLine(
+                LoyaltyPoints."Month End Date",
+                LoyaltyPoints."Document No.",
+                PointsEarnedValue,
+                TwelveSetup."Loyalty Points Earned",
+                TwelveSetup."Deferred Rev Loyalty Pts",
+                LoyaltyPoints.State,
+                LoyaltyPoints."Store Name");
 
             ProvisionAmount := Round(PointsEarnedValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
-                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Provision", TwelveSetup."Loyalty Points Reserve", LoyaltyPoints.State, LoyaltyPoints."Store Name");
+                CreateGenJournalLine(
+                    LoyaltyPoints."Month End Date",
+                    LoyaltyPoints."Document No.",
+                    ProvisionAmount,
+                    TwelveSetup."Loyalty Points Provision",
+                    TwelveSetup."Loyalty Points Reserve",
+                    LoyaltyPoints.State,
+                    LoyaltyPoints."Store Name",
+                    StrSubstNo('Loyalty Points Provision %1%', TwelveSetup."Loyalty Pts. Provision %"));
         end;
 
         if LoyaltyPoints."Points Expired" <> 0 then begin
             PointsExpiredValue := LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Point Value";
-            CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", PointsExpiredValue, TwelveSetup."Deferred Rev Loyalty Pts", TwelveSetup."Loyalty Points Earned", LoyaltyPoints.State, LoyaltyPoints."Store Name");
+
+            CreateGenJournalLine(
+                LoyaltyPoints."Month End Date",
+                LoyaltyPoints."Document No.",
+                PointsExpiredValue,
+                TwelveSetup."Deferred Rev Loyalty Pts",
+                TwelveSetup."Loyalty Points Earned",
+                LoyaltyPoints.State,
+                LoyaltyPoints."Store Name");
 
             ProvisionAmount := Round(PointsExpiredValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
 
             if ProvisionAmount <> 0 then
-                CreateGenJournalLine(LoyaltyPoints."Month End Date", LoyaltyPoints."Document No.", ProvisionAmount, TwelveSetup."Loyalty Points Reserve", TwelveSetup."Loyalty Points Provision", LoyaltyPoints.State, LoyaltyPoints."Store Name");
+                CreateGenJournalLine(
+                    LoyaltyPoints."Month End Date",
+                    LoyaltyPoints."Document No.",
+                    ProvisionAmount,
+                    TwelveSetup."Loyalty Points Reserve",
+                    TwelveSetup."Loyalty Points Provision",
+                    LoyaltyPoints.State,
+                    LoyaltyPoints."Store Name",
+                    StrSubstNo('Loyalty Points Provision %1%', TwelveSetup."Loyalty Pts. Provision %"));
         end;
     end;
 
-    local procedure CreateGenJournalLine(PostingDate: Date; DocumentNo: Code[20]; Amount: Decimal; AccountNo: Code[20]; BalAccountNo: Code[20]; StateCode: Code[20]; StoreCode: Code[20])
+    local procedure CreateGenJournalLine(
+        PostingDate: Date;
+        DocumentNo: Code[20];
+        Amount: Decimal;
+        AccountNo: Code[20];
+        BalAccountNo: Code[20];
+        StateCode: Code[20];
+        StoreCode: Code[20];
+        LineDescription: Text[100])
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
@@ -124,11 +178,35 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
         GenJournalLine.Validate(Amount, Amount);
+
+        if LineDescription <> '' then
+            GenJournalLine.Description := CopyStr(LineDescription, 1, MaxStrLen(GenJournalLine.Description));
+
         SetJnlLineDimension(GenJournalLine, 'STATE', StateCode);
         SetJnlLineDimension(GenJournalLine, 'STORES', StoreCode);
         GenJournalLine.Validate("Source Code", TwelveSetup."Loyalty Source Code");
         GenJournalLine.Validate("Reason Code", TwelveSetup."Loyalty Reason Code");
         GenJournalLine.Modify(true);
+    end;
+
+    local procedure CreateGenJournalLine(
+        PostingDate: Date;
+        DocumentNo: Code[20];
+        Amount: Decimal;
+        AccountNo: Code[20];
+        BalAccountNo: Code[20];
+        StateCode: Code[20];
+        StoreCode: Code[20])
+    begin
+        CreateGenJournalLine(
+            PostingDate,
+            DocumentNo,
+            Amount,
+            AccountNo,
+            BalAccountNo,
+            StateCode,
+            StoreCode,
+            '');
     end;
 
     [TryFunction]
@@ -194,57 +272,29 @@ codeunit 52122 "12E Loyalty Posting"
     end;
 
     procedure SetJnlLineDimension(var GenJnlLine: Record "Gen. Journal Line"; DimCode: Code[20]; DimValueCode: Code[20])
-
     var
-
         TempDimSetEntry: Record "Dimension Set Entry" temporary;
-
         DimMgt: Codeunit DimensionManagement;
-
     begin
-
-        // 1. Load whatever dimensions the line already has (from defaults, account, etc.)
-
         DimMgt.GetDimensionSet(TempDimSetEntry, GenJnlLine."Dimension Set ID");
 
-        // 2. Remove the existing value for this dimension, if any
-
         TempDimSetEntry.SetRange("Dimension Code", DimCode);
-
         TempDimSetEntry.DeleteAll();
-
         TempDimSetEntry.Reset();
 
-        // 3. Add the new value. Blank DimValueCode = remove the dimension.
-
         if DimValueCode <> '' then begin
-
             TempDimSetEntry.Init();
-
             TempDimSetEntry."Dimension Set ID" := GenJnlLine."Dimension Set ID";
-
             TempDimSetEntry.Validate("Dimension Code", DimCode);
-
-            TempDimSetEntry.Validate("Dimension Value Code", DimValueCode); // fills "Dimension Value ID"
-
+            TempDimSetEntry.Validate("Dimension Value Code", DimValueCode);
             TempDimSetEntry.Insert();
-
         end;
-
-        // 4. Get (or create) the matching Dimension Set ID and assign it
 
         GenJnlLine."Dimension Set ID" := DimMgt.GetDimensionSetID(TempDimSetEntry);
 
-        // 5. Keep the global dimension fields on the line in sync
-
         DimMgt.UpdateGlobalDimFromDimSetID(
-
             GenJnlLine."Dimension Set ID",
-
             GenJnlLine."Shortcut Dimension 1 Code",
-
             GenJnlLine."Shortcut Dimension 2 Code");
-
     end;
-
 }

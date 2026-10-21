@@ -22,6 +22,11 @@ page 52114 "12E CCDPort. Cust. Map. Detail"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Customer No. field.', Comment = '%';
                 }
+                field(Blocked; Rec.Blocked)
+                {
+                    ApplicationArea = all;
+                    ToolTip = 'Specifies the value of the Blocked field.', Comment = '%';
+                }
             }
         }
     }

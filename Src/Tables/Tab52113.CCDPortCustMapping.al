@@ -19,6 +19,12 @@ table 52113 "12E CCD Port. Cust. Mapping"
             TableRelation = Customer;
             DataClassification = CustomerContent;
         }
+        field(8; Blocked; Boolean)
+        {
+            Caption = 'Blocked';
+            TableRelation = Customer;
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

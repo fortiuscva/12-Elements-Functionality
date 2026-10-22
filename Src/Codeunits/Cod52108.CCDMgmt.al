@@ -71,6 +71,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Payroll Batch ID" := QuestcoPayrollBatch."Batch ID";
         CCDHeader."Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         CCDHeader."Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
+        CCDHeader."Posting Date" := QuestcoPayrollBatch."Pay Date";
         CCDHeader."No. of Hours" := PayrollTotalHours;
         CCDHeader."Location Code" := 'PFCC';
 
@@ -151,39 +152,41 @@ codeunit 52108 "12E CCD Mgmt"
         CCDQuery.Open();
 
         while CCDQuery.Read() do begin
-            PortfolioHandleTime := CCDQuery.TotalHandleTime;
+            if (not IsPortfolioBlocked(CCDQuery.Portfolio)) then begin
+                PortfolioHandleTime := CCDQuery.TotalHandleTime;
 
-            TotalLocationHandleTime := GetLocationTotal(
-                QuestcoPayrollBatch."Pay Period Start Date",
-                QuestcoPayrollBatch."Pay Period End Date",
-                CCDQuery.LocationCode);
-
-            if TotalLocationHandleTime = 0 then
-                Error(
-                    'Total Handling Time is zero for Location %1 for payroll period %2 to %3.',
-                    CCDQuery.LocationCode,
+                TotalLocationHandleTime := GetLocationTotal(
                     QuestcoPayrollBatch."Pay Period Start Date",
-                    QuestcoPayrollBatch."Pay Period End Date");
+                    QuestcoPayrollBatch."Pay Period End Date",
+                    CCDQuery.LocationCode);
 
-            AllocationPercentage := Round((PortfolioHandleTime / TotalLocationHandleTime) * 100, 0.00001);
+                if TotalLocationHandleTime = 0 then
+                    Error(
+                        'Total Handling Time is zero for Location %1 for payroll period %2 to %3.',
+                        CCDQuery.LocationCode,
+                        QuestcoPayrollBatch."Pay Period Start Date",
+                        QuestcoPayrollBatch."Pay Period End Date");
 
-            if not CCDLocationMapping.Get(CCDQuery.LocationCode) then
-                Error('CCD Location Mapping does not exist for Location %1.', CCDQuery.LocationCode);
+                AllocationPercentage := Round((PortfolioHandleTime / TotalLocationHandleTime) * 100, 0.00001);
 
-            if CCDLocationMapping.Blocked then
-                Error('CCD Location Mapping for Location %1 is blocked.', CCDQuery.LocationCode);
+                if not CCDLocationMapping.Get(CCDQuery.LocationCode) then
+                    Error('CCD Location Mapping does not exist for Location %1.', CCDQuery.LocationCode);
 
-            if CCDLocationMapping."Processing Type" = CCDLocationMapping."Processing Type"::Payroll then begin
-                CreatePayrollCCDLine(
-                    CCDHeader,
-                    QuestcoPayrollBatch,
-                    CCDQuery.LocationCode,
-                    CCDQuery.Portfolio,
-                    PortfolioHandleTime,
-                    AllocationPercentage,
-                    PayrollTotalHours);
+                if CCDLocationMapping.Blocked then
+                    Error('CCD Location Mapping for Location %1 is blocked.', CCDQuery.LocationCode);
 
-                LinesCreated := true;
+                if CCDLocationMapping."Processing Type" = CCDLocationMapping."Processing Type"::Payroll then begin
+                    CreatePayrollCCDLine(
+                        CCDHeader,
+                        QuestcoPayrollBatch,
+                        CCDQuery.LocationCode,
+                        CCDQuery.Portfolio,
+                        PortfolioHandleTime,
+                        AllocationPercentage,
+                        PayrollTotalHours);
+
+                    LinesCreated := true;
+                end;
             end;
         end;
 
@@ -439,7 +442,7 @@ codeunit 52108 "12E CCD Mgmt"
     var
         CCDPortfolioMapping: Record "12E CCD Port. Cust. Mapping";
     begin
-        CCDPortfolioMapping.SetRange(Portfolio, PortfolioCode);
+        CCDPortfolioMapping.SetRange(Portfolio, UpperCase(PortfolioCode));
         CCDPortfolioMapping.SetRange(Blocked, true);
 
         exit(not CCDPortfolioMapping.IsEmpty());

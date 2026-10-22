@@ -4,7 +4,7 @@ table 52133 "12E Posted CCD Header"
     LookupPageId = "12E Posted CCD Details";
     DrillDownPageId = "12E Posted CCD Details";
     DataClassification = CustomerContent;
-    DataPerCompany = false;
+    DataPerCompany = true;
 
     fields
     {

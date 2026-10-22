@@ -21,11 +21,6 @@ report 52102 "12E Create CCD Sales Invoices"
 
             trigger OnAfterGetRecord()
             begin
-                CalcFields("Sales Invoice No.", "Posted Sales Invoice No.");
-
-                if ("Sales Invoice No." <> '') or ("Posted Sales Invoice No." <> '') then
-                    CurrReport.Skip();
-
                 ProcessPostedCCD(PostedCCDHeader);
             end;
         }
@@ -126,21 +121,28 @@ report 52102 "12E Create CCD Sales Invoices"
         PostedCCDLine.Reset();
         PostedCCDLine.SetCurrentKey("Document No.", Portfolio, "Location Code");
         PostedCCDLine.SetRange("Document No.", PostedCCDHeader."No.");
+        PostedCCDLine.SetRange("Billed By Partner", false);
 
         if not PostedCCDLine.FindSet() then
             exit;
 
         repeat
-            if (not PostedCCDLine."Billed By Partner") and (PostedCCDLine."Distributed Quantity" <> 0) then begin
-                SalesInvoiceNo := GetSalesInvoiceForPortfolio(PostedCCDLine.Portfolio);
+            if PostedCCDLine."Distributed Quantity" <> 0 then begin
+                PostedCCDLine.CalcFields("Sales Invoice No.", "Pstd. Sales Invoice No.");
 
-                if SalesInvoiceNo = '' then
-                    SalesInvoiceNo := CreateSalesInvoice(PostedCCDLine.Portfolio, PayDate);
+                if (PostedCCDLine."Sales Invoice No." = '') and
+                   (PostedCCDLine."Pstd. Sales Invoice No." = '')
+                then begin
+                    SalesInvoiceNo := GetSalesInvoiceForPortfolio(PostedCCDLine.Portfolio);
 
-                NextLineNo := GetNextSalesLineNo(SalesInvoiceNo);
+                    if SalesInvoiceNo = '' then
+                        SalesInvoiceNo := CreateSalesInvoice(PostedCCDLine.Portfolio, PayDate);
 
-                CreateSalesInvoiceLine(PostedCCDHeader, PostedCCDLine, SalesInvoiceNo, NextLineNo);
-                SalesLinesCreated += 1;
+                    NextLineNo := GetNextSalesLineNo(SalesInvoiceNo);
+
+                    CreateSalesInvoiceLine(PostedCCDHeader, PostedCCDLine, SalesInvoiceNo, NextLineNo);
+                    SalesLinesCreated += 1;
+                end;
             end;
         until PostedCCDLine.Next() = 0;
     end;

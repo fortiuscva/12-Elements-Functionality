@@ -80,7 +80,7 @@ page 52104 "12E Setup"
             }
             group(CCD)
             {
-                Caption = 'Contact Center Distribution';
+                Caption = 'CCD';
                 field("CCD G/L Account No."; Rec."CCD G/L Account No.")
                 {
                     ApplicationArea = All;
@@ -312,7 +312,7 @@ page 52104 "12E Setup"
             }
             group(CCDistribution)
             {
-                Caption = 'Contact Center Distribution & Payroll';
+                Caption = 'CCD & Payroll';
                 Image = Setup;
                 action(CCDLocationMapping)
                 {

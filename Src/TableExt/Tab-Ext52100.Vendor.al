@@ -36,7 +36,7 @@ tableextension 52100 "12E Vendor" extends Vendor
 
         field(50103; "12E Lead Vendor"; Text[100])
         {
-            Caption = 'Lead Vendor';
+            Caption = 'Lead Vendor Name';
             DataClassification = CustomerContent;
 
             trigger OnValidate()
@@ -47,7 +47,7 @@ tableextension 52100 "12E Vendor" extends Vendor
         }
         field(50104; "12E Lead Credit Account No."; Code[20])
         {
-            Caption = 'Lead Credit Account No.';
+            Caption = 'Leads Accrual Account No.';
             DataClassification = CustomerContent;
             TableRelation = "G/L Account";
 
@@ -59,7 +59,7 @@ tableextension 52100 "12E Vendor" extends Vendor
         }
         field(50105; "12E Lead Debit Account No."; Code[20])
         {
-            Caption = 'Lead Debit Account No.';
+            Caption = 'Leads Expense Account No.';
             DataClassification = CustomerContent;
             TableRelation = "G/L Account";
 

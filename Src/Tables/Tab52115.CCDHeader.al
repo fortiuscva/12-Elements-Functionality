@@ -67,6 +67,11 @@ table 52115 "12E CCD Header"
             Caption = 'Batch/Invoice Hours';
             DataClassification = CustomerContent;
         }
+        field(18; "Posting Date"; Date)
+        {
+            Caption = 'Posting Date';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

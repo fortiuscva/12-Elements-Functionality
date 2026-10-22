@@ -1,7 +1,7 @@
 page 52118 "12E CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'Contact Center Distributions';
+    Caption = 'CCD Documents';
     PageType = List;
     SourceTable = "12E CCD Header";
     CardPageId = "12E Call Center Distribution";
@@ -44,6 +44,11 @@ page 52118 "12E CCD Details"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {

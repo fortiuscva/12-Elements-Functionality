@@ -1,7 +1,7 @@
 page 52156 "12E Posted CCD"
 {
     ApplicationArea = All;
-    Caption = 'Posted Contact Center Distribution';
+    Caption = 'Posted CCD Document';
     PageType = Document;
     InsertAllowed = false;
     // ModifyAllowed = false;
@@ -67,6 +67,11 @@ page 52156 "12E Posted CCD"
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
                         Editable = false;
+                    }
+                    field("Posting Date"; Rec."Posting Date")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                     }
                 }
 

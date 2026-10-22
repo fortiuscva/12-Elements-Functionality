@@ -1,7 +1,7 @@
 page 52158 "12E Posted CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'Posted Contact Center Distributions';
+    Caption = 'Posted CCD Documents';
     PageType = List;
     SourceTable = "12E Posted CCD Header";
     CardPageId = "12E Posted CCD";
@@ -46,6 +46,11 @@ page 52158 "12E Posted CCD Details"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Period End Date field.', Comment = '%';
+                }
+                field("Posting Date"; Rec."Posting Date")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                 }
                 field("Invoice No."; Rec."Invoice No.")
                 {

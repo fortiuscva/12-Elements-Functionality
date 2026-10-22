@@ -71,6 +71,7 @@ codeunit 52108 "12E CCD Mgmt"
         CCDHeader."Payroll Batch ID" := QuestcoPayrollBatch."Batch ID";
         CCDHeader."Period Start Date" := QuestcoPayrollBatch."Pay Period Start Date";
         CCDHeader."Period End Date" := QuestcoPayrollBatch."Pay Period End Date";
+        CCDHeader."Posting Date" := QuestcoPayrollBatch."Pay Date";
         CCDHeader."No. of Hours" := PayrollTotalHours;
         CCDHeader."Location Code" := 'PFCC';
 

@@ -64,6 +64,7 @@ page 52116 "12E Call Center Distribution"
                     field("Posting Date"; Rec."Posting Date")
                     {
                         ApplicationArea = All;
+                        Editable = false;
                         ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                     }
                 }

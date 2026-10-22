@@ -71,6 +71,7 @@ page 52156 "12E Posted CCD"
                     field("Posting Date"; Rec."Posting Date")
                     {
                         ApplicationArea = All;
+                        Editable = false;
                         ToolTip = 'Specifies the value of the Posting Date field.', Comment = '%';
                     }
                 }

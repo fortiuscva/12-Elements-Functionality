@@ -8,7 +8,7 @@ codeunit 52109 "12E CCD Post"
         CCDNo: Code[20];
     begin
         if not Confirm(
-            'Do you want to post Contact Center Distribution document %1?',
+            'Do you want to post the CCD Document %1?',
             false,
             CCDHeader."No.")
         then
@@ -34,7 +34,7 @@ codeunit 52109 "12E CCD Post"
         // CCDLine.DeleteAll(true);
         CCDHeader.Delete(true);
 
-        if Confirm('Contact Center Distribution document %1 posted successfully. Do you want to open the posted document?', true, CCDNo) then
+        if Confirm('CCD Document %1 Posted Successfully. Do you want to open the Posted CCD Document?', true, CCDNo) then
             Page.Run(Page::"12E Posted CCD", PostedCCDHeader);
     end;
 

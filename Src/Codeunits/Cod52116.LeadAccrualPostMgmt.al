@@ -79,11 +79,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
                 Error(VendorSetupErr, Vendor."No.");
 
             if Vendor."12E Leads Expense Account No." = '' then
-            if Vendor."12E Lead Vendor" = '' then
-                Error(VendorSetupErr, Vendor."No.");
-            if Vendor."12E Lead Credit Account No." = '' then
-                Error(VendorSetupErr, Vendor."No.");
-            if Vendor."12E Lead Debit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
     end;
@@ -117,11 +112,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
                 Error(VendorSetupErr, Vendor."No.");
 
             if Vendor."12E Leads Expense Account No." = '' then
-            if Vendor."12E Lead Vendor" = '' then
-                Error(VendorSetupErr, Vendor."No.");
-            if Vendor."12E Lead Credit Account No." = '' then
-                Error(VendorSetupErr, Vendor."No.");
-            if Vendor."12E Lead Debit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
     end;

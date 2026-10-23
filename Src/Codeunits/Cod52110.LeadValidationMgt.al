@@ -55,7 +55,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         LeadValidationPar."Datasource ID" := GetDataSourceID();
         LeadValidationPar."Vendor No." := PurchInvHeader."Buy-from Vendor No.";
         LeadValidationPar."Vendor Name" := Vendor.Name;
-        LeadValidationPar."Lead Vendor" := Vendor."12E Lead Vendor";
+        LeadValidationPar."Lead Vendor" := Vendor."12E Lead Vendor Name";
         LeadValidationPar."Posting Date" := PurchInvHeader."Posting Date";
         LeadValidationPar."Posted Purchase Invoice No." := PurchInvHeader."No.";
         LeadValidationPar."Lead Period Start Date" := PurchInvHeader."12E Lead Period Start Date";
@@ -68,7 +68,7 @@ codeunit 52110 "12E Lead Validation Mgt"
            (PurchInvHeader."12E Lead Period End Date" <> 0D) then begin
 
             LeadCost := GetLeadCostAmount(
-                Vendor."12E Lead Vendor",
+                Vendor."12E Lead Vendor Name",
                 PurchInvHeader."12E Lead Period Start Date",
                 PurchInvHeader."12E Lead Period End Date");
 
@@ -99,7 +99,7 @@ codeunit 52110 "12E Lead Validation Mgt"
         LeadValidationPar."Datasource ID" := GetDataSourceID();
         LeadValidationPar."Vendor No." := PurchHeader."Buy-from Vendor No.";
         LeadValidationPar."Vendor Name" := Vendor.Name;
-        LeadValidationPar."Lead Vendor" := Vendor."12E Lead Vendor";
+        LeadValidationPar."Lead Vendor" := Vendor."12E Lead Vendor Name";
         LeadValidationPar."Posting Date" := PurchHeader."Posting Date";
         LeadValidationPar."Invoice No." := PurchHeader."No.";
         LeadValidationPar."Lead Period Start Date" := PurchHeader."12E Lead Period Start Date";
@@ -112,7 +112,7 @@ codeunit 52110 "12E Lead Validation Mgt"
            (PurchHeader."12E Lead Period End Date" <> 0D) then begin
 
             LeadCost := GetLeadCostAmount(
-                Vendor."12E Lead Vendor",
+                Vendor."12E Lead Vendor Name",
                 PurchHeader."12E Lead Period Start Date",
                 PurchHeader."12E Lead Period End Date");
 

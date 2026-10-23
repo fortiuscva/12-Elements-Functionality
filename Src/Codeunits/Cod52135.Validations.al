@@ -65,7 +65,7 @@ codeunit 52135 "12E Validations"
         if CompanyMappingRecGbl.FindLast() then begin
             VendorLcl.Reset();
             VendorLcl.ChangeCompany(CompanyMappingRecGbl.Company);
-            VendorLcl.SetRange("12E Lead Vendor", LeadVendor);
+            VendorLcl.SetRange("12E Lead Vendor Name", LeadVendor);
             if VendorLcl.IsEmpty then
                 Error(StrSubstNo(LeadVendorMappingErrLbl, LeadVendor, CompanyMappingRecGbl.Company));
         end;

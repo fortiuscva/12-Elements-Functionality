@@ -24,7 +24,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                 LeadAccLineLcl."Line No." := GetNextLineNo(Rec);
                 LeadAccLineLcl."From Date" := Rec."From Date";
                 LeadAccLineLcl."To Date" := Rec."To Date";
-                LeadAccLineLcl."Lead Vendor" := VendorLcl."12E Lead Vendor";
+                LeadAccLineLcl."Lead Vendor" := VendorLcl."12E Lead Vendor Name";
                 LeadAccLineLcl.Insert(true);
                 LeadAccLineLcl.Validate("Vendor No.", VendorLcl."No.");
 
@@ -42,7 +42,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end
                 else begin
-                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Vendor", Rec."From Date", Rec."To Date"));
+                    LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Vendor Name", Rec."From Date", Rec."To Date"));
                     LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end;
 
@@ -63,9 +63,9 @@ codeunit 52115 "12E Lead Accrual Mgmt"
 
         if VendorLcl.FindSet() then
             repeat
-                VendorLcl.TestField("12E Lead Vendor");
-                VendorLcl.TestField("12E Lead Credit Account No.");
-                VendorLcl.TestField("12E Lead Debit Account No.");
+                VendorLcl.TestField("12E Lead Vendor Name");
+                VendorLcl.TestField("12E Leads Accrual Account No.");
+                VendorLcl.TestField("12E Leads Expense Account No.");
             until VendorLcl.Next() = 0;
     end;
 
@@ -163,7 +163,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
             EndDate := LeadAccLine."To Date";
         end;
 
-        LeadAccLine.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(Vendor."12E Lead Vendor", StartDate, EndDate));
+        LeadAccLine.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(Vendor."12E Lead Vendor Name", StartDate, EndDate));
     end;
 
     procedure GetDataSourceID(): Integer

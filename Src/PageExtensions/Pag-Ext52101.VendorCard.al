@@ -17,10 +17,10 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                         ApplicationArea = All;
                     }
 
-                    field("12E Lead Acquisition Vendor No."; Rec."12E Lead Vendor")
+                    field("12E Lead Acquisition Vendor No."; Rec."12E Lead Vendor Name")
                     {
                         ApplicationArea = All;
-                        Caption = 'Lead Vendor';
+                        Caption = 'Lead Vendor Name';
 
                         trigger OnLookup(var Text: Text): Boolean
                         var
@@ -36,8 +36,8 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                             LeadProviderLookup.LookupMode(true);
 
                             if LeadProviderLookup.RunModal() = Action::LookupOK then begin
-                                Rec."12E Lead Vendor" := LeadProviderLookup.GetSelectedProvider();
-                                Text := Rec."12E Lead Vendor";
+                                Rec."12E Lead Vendor Name" := LeadProviderLookup.GetSelectedProvider();
+                                Text := Rec."12E Lead Vendor Name";
                                 exit(true);
                             end;
 
@@ -60,12 +60,12 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                         ApplicationArea = All;
                     }
 
-                    field("12E Lead Credit Account No."; Rec."12E Lead Credit Account No.")
+                    field("12E Leads Accrual Account No."; Rec."12E Leads Accrual Account No.")
                     {
                         ApplicationArea = All;
                     }
 
-                    field("12E Lead Debit Account No."; Rec."12E Lead Debit Account No.")
+                    field("12E Leads Expense Account No."; Rec."12E Leads Expense Account No.")
                     {
                         ApplicationArea = All;
                     }
@@ -94,11 +94,11 @@ pageextension 52101 "12E Vendor Card" extends "Vendor Card"
                         LeadSource: Record "12E Lead Source Reconciliation";
                         CompanyMapping: Record "12E Company Mapping";
                     begin
-                        if Rec."12E Lead Vendor" = '' then Error('Lead Vendor must be specified for vendor %1.', Rec."No.");
+                        if Rec."12E Lead Vendor Name" = '' then Error('Lead Vendor Name must be specified for vendor %1.', Rec."No.");
                         CompanyMapping.SetRange(Company, CompanyName());
                         if not CompanyMapping.FindFirst() then Error('Data Source ID is not configured for company %1.', CompanyName());
                         LeadSource.SetRange("Datasource ID", CompanyMapping."DataSource ID");
-                        LeadSource.SetRange("Lead Vendor", Rec."12E Lead Vendor");
+                        LeadSource.SetRange("Lead Vendor", Rec."12E Lead Vendor Name");
                         Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                     end;
                 }

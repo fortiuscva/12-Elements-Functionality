@@ -97,12 +97,12 @@ page 52123 "12E Lead Accrual Subform"
                     LeadAccrual.Get(Rec."Lead Accrual No.");
 
                     Vendor.Get(Rec."Vendor No.");
-                    Vendor.TestField("12E Lead Vendor");
+                    Vendor.TestField("12E Lead Vendor Name");
                     Rec.TestField("Override Last PPI Posting Date");
                     LeadAccrual.TestField("To Date");
 
                     LeadSource.Reset();
-                    LeadSource.SetRange("Lead Vendor", Vendor."12E Lead Vendor");
+                    LeadSource.SetRange("Lead Vendor", Vendor."12E Lead Vendor Name");
                     LeadSource.SetRange("Lead Original Date", Rec."Override Last PPI Posting Date", LeadAccrual."To Date");
 
                     Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);

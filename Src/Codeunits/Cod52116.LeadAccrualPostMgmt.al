@@ -79,13 +79,13 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Vendor" = '' then
+            if Vendor."12E Lead Vendor Name" = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Credit Account No." = '' then
+            if Vendor."12E Leads Accrual Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Debit Account No." = '' then
+            if Vendor."12E Leads Expense Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
     end;
@@ -117,13 +117,13 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Vendor" = '' then
+            if Vendor."12E Lead Vendor Name" = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Credit Account No." = '' then
+            if Vendor."12E Leads Accrual Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
 
-            if Vendor."12E Lead Debit Account No." = '' then
+            if Vendor."12E Leads Expense Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
     end;
@@ -314,7 +314,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         Vendor: Record Vendor;
     begin
         if Vendor.Get(VendorNo) then
-            exit(Vendor."12E Lead Credit Account No.");
+            exit(Vendor."12E Leads Accrual Account No.");
 
         exit('');
     end;
@@ -324,7 +324,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         Vendor: Record Vendor;
     begin
         if Vendor.Get(VendorNo) then
-            exit(Vendor."12E Lead Debit Account No.");
+            exit(Vendor."12E Leads Expense Account No.");
 
         exit('');
     end;

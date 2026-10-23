@@ -21,7 +21,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         Clear(LeadAccHeader."Posting Error");
         DeleteExistingJournalLines();
         CreateJournalLines(LeadAccHeader, FirstLineNo, LastLineNo);
-
         if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
             LeadAccHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LeadAccHeader."Posting Error"));
@@ -56,35 +55,26 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
     begin
         LeadAccHeader.TestField(Year);
         LeadAccHeader.TestField(Month);
-
         if LeadAccHeader.Status <> LeadAccHeader.Status::Released then
             Error(DocumentMustBeReleasedErr, LeadAccHeader."No.");
 
         LeadAccLine.Reset();
         LeadAccLine.SetRange("Lead Accrual No.", LeadAccHeader."No.");
-
         if not LeadAccLine.FindSet() then
             Error(NoAccrualLinesErr, LeadAccHeader."No.");
-
         repeat
             LeadAccLine.TestField("Vendor No.");
             LeadAccLine.TestField("Lead Vendor");
-
             if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");
-
             if not Vendor.Get(LeadAccLine."Vendor No.") then
                 Error(VendorSetupErr, LeadAccLine."Vendor No.");
-
             if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Vendor" = '' then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Credit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Debit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
@@ -100,29 +90,21 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         LeadAccLine.Reset();
         LeadAccLine.SetRange("Lead Accrual No.", LeadAccHeader."No.");
-
         if not LeadAccLine.FindSet() then
             Error(NoAccrualLinesErr, LeadAccHeader."No.");
-
         repeat
             LeadAccLine.TestField("Vendor No.");
             LeadAccLine.TestField("Lead Vendor");
-
             if LeadAccLine."Adjusted Accrual Amount" = 0 then
                 Error(AdjustAccrualAmountErr, LeadAccLine."Vendor No.");
-
             if not Vendor.Get(LeadAccLine."Vendor No.") then
                 Error(VendorSetupErr, LeadAccLine."Vendor No.");
-
             if not Vendor."12E Lead Accrual" then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Vendor" = '' then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Credit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
-
             if Vendor."12E Lead Debit Account No." = '' then
                 Error(VendorSetupErr, Vendor."No.");
         until LeadAccLine.Next() = 0;
@@ -148,16 +130,14 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         LeadAccLine.Reset();
         LeadAccLine.SetRange("Lead Accrual No.", LeadAccHeader."No.");
-
         if LeadAccLine.FindSet() then begin
             NextLineNo := GetNextGenJnlLineNo();
             FirstLineNo := NextLineNo;
-
             repeat
                 MonthEndDate := CalcDate('<CM>', LeadAccLine."To Date");
                 NextMonthStartDate := CalcDate('<CM+1D>', LeadAccLine."To Date");
 
-                DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2...%3]', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
+                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual(%1...%2)-%3', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Vendor Name"), 1, MaxStrLen(DescriptionTxt));
 
                 CreateGenJournalLine(
                     MonthEndDate,
@@ -246,7 +226,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.Reset();
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Lead Accrual Jnl. Template");
         GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Lead Accrual Jnl. Batch");
-
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
 
@@ -261,7 +240,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.Reset();
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Lead Accrual Jnl. Template");
         GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Lead Accrual Jnl. Batch");
-
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
 
@@ -279,7 +257,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Lead Accrual Jnl. Template");
         GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Lead Accrual Jnl. Batch");
         GenJournalLine.SetRange("Line No.", FirstLineNo, LastLineNo);
-
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
     end;
@@ -291,7 +268,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
         GenJournalLine.Reset();
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Lead Accrual Jnl. Template");
         GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Lead Accrual Jnl. Batch");
-
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
     end;
@@ -302,7 +278,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
     begin
         GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Lead Accrual Jnl. Template");
         GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Lead Accrual Jnl. Batch");
-
         if GenJournalLine.FindLast() then
             exit(GenJournalLine."Line No." + 10000);
 
@@ -341,7 +316,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         LeadAccLine.Reset();
         LeadAccLine.SetRange("Lead Accrual No.", LeadAccHeader."No.");
-
         if LeadAccLine.FindSet() then
             repeat
                 PostedLeadAccLine.Init();
@@ -351,7 +325,6 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
 
         LeadAccLine.Reset();
         LeadAccLine.SetRange("Lead Accrual No.", LeadAccHeader."No.");
-
         if not LeadAccLine.IsEmpty() then
             LeadAccLine.DeleteAll(true);
 

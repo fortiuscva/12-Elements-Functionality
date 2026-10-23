@@ -78,6 +78,22 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies the number series used to generate LMS Transaction document numbers.';
                 }
             }
+            group(Dimensions)
+            {
+                Caption = 'Dimensions';
+
+                field("State Dimension"; Rec."State Dimension")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the dimension used for State values.';
+                }
+
+                field("Store Dimension"; Rec."Store Dimension")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the dimension used for Store values.';
+                }
+            }
             group(CCD)
             {
                 Caption = 'CCD';

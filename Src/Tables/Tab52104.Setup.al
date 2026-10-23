@@ -222,6 +222,19 @@ table 52104 "12E Setup"
             Caption = 'Loyalty Point Value';
             DataClassification = CustomerContent;
         }
+        field(59; "State Dimension"; Code[20])
+        {
+            Caption = 'State Dimension';
+            TableRelation = Dimension.Code;
+            DataClassification = CustomerContent;
+        }
+
+        field(60; "Store Dimension"; Code[20])
+        {
+            Caption = 'Store Dimension';
+            TableRelation = Dimension.Code;
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

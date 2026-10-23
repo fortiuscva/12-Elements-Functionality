@@ -1,3 +1,4 @@
+
 codeunit 52122 "12E Loyalty Posting"
 {
     var
@@ -34,8 +35,10 @@ codeunit 52122 "12E Loyalty Posting"
             PostingError := GetLastErrorText();
 
             LoyaltyPoints.Get(LoyaltyPoints."PK ID");
-            LoyaltyPoints."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
-            LoyaltyPoints.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
+            LoyaltyPoints."Posting Error" :=
+                CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+            LoyaltyPoints.ERPErrorMsg :=
+                CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
             LoyaltyPoints.Modify(true);
 
             DeleteJournalLines();
@@ -87,6 +90,32 @@ codeunit 52122 "12E Loyalty Posting"
         TwelveSetup.TestField("Loyalty Source Code");
         TwelveSetup.TestField("Loyalty Reason Code");
         TwelveSetup.TestField("Loyalty Document Nos.");
+        TwelveSetup.TestField("State Dimension");
+        TwelveSetup.TestField("Store Dimension");
+
+        ValidateConfiguredDimension(
+            TwelveSetup."State Dimension");
+
+        ValidateConfiguredDimension(
+            TwelveSetup."Store Dimension");
+
+        if TwelveSetup."State Dimension" =
+           TwelveSetup."Store Dimension"
+        then
+            Error(
+                'State Dimension and Store Dimension must be different.');
+    end;
+
+    local procedure ValidateConfiguredDimension(DimensionCode: Code[20])
+    var
+        Dimension: Record Dimension;
+    begin
+        if not Dimension.Get(DimensionCode) then
+            Error(
+                'Dimension %1 does not exist.',
+                DimensionCode);
+
+        Dimension.TestField(Blocked, false);
     end;
 
     local procedure CreateJournalLines(var LoyaltyPoints: Record "12E Loyalty Points")
@@ -97,12 +126,18 @@ codeunit 52122 "12E Loyalty Posting"
         PointsExpiredValue: Decimal;
     begin
         if LoyaltyPoints."Document No." = '' then begin
-            LoyaltyPoints."Document No." := NoSeries.GetNextNo(TwelveSetup."Loyalty Document Nos.", WorkDate(), true);
+            LoyaltyPoints."Document No." :=
+                NoSeries.GetNextNo(
+                    TwelveSetup."Loyalty Document Nos.",
+                    WorkDate(),
+                    true);
             LoyaltyPoints.Modify(true);
         end;
 
         if LoyaltyPoints."Points Earned" <> 0 then begin
-            PointsEarnedValue := LoyaltyPoints."Points Earned" * TwelveSetup."Loyalty Point Value";
+            PointsEarnedValue :=
+                LoyaltyPoints."Points Earned" *
+                TwelveSetup."Loyalty Point Value";
 
             CreateGenJournalLine(
                 LoyaltyPoints."Month End Date",
@@ -113,7 +148,11 @@ codeunit 52122 "12E Loyalty Posting"
                 LoyaltyPoints.State,
                 LoyaltyPoints."Store Name");
 
-            ProvisionAmount := Round(PointsEarnedValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
+            ProvisionAmount :=
+                Round(
+                    PointsEarnedValue *
+                    TwelveSetup."Loyalty Pts. Provision %" / 100,
+                    0.01);
 
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(
@@ -124,11 +163,15 @@ codeunit 52122 "12E Loyalty Posting"
                     TwelveSetup."Loyalty Points Reserve",
                     LoyaltyPoints.State,
                     LoyaltyPoints."Store Name",
-                    StrSubstNo('Loyalty Points Provision %1%', TwelveSetup."Loyalty Pts. Provision %"));
+                    StrSubstNo(
+                        'Loyalty Points Provision %1%',
+                        TwelveSetup."Loyalty Pts. Provision %"));
         end;
 
         if LoyaltyPoints."Points Expired" <> 0 then begin
-            PointsExpiredValue := LoyaltyPoints."Points Expired" * TwelveSetup."Loyalty Point Value";
+            PointsExpiredValue :=
+                LoyaltyPoints."Points Expired" *
+                TwelveSetup."Loyalty Point Value";
 
             CreateGenJournalLine(
                 LoyaltyPoints."Month End Date",
@@ -139,7 +182,11 @@ codeunit 52122 "12E Loyalty Posting"
                 LoyaltyPoints.State,
                 LoyaltyPoints."Store Name");
 
-            ProvisionAmount := Round(PointsExpiredValue * TwelveSetup."Loyalty Pts. Provision %" / 100, 0.01);
+            ProvisionAmount :=
+                Round(
+                    PointsExpiredValue *
+                    TwelveSetup."Loyalty Pts. Provision %" / 100,
+                    0.01);
 
             if ProvisionAmount <> 0 then
                 CreateGenJournalLine(
@@ -150,7 +197,9 @@ codeunit 52122 "12E Loyalty Posting"
                     TwelveSetup."Loyalty Points Provision",
                     LoyaltyPoints.State,
                     LoyaltyPoints."Store Name",
-                    StrSubstNo('Loyalty Points Provision %1%', TwelveSetup."Loyalty Pts. Provision %"));
+                    StrSubstNo(
+                        'Loyalty Points Provision %1%',
+                        TwelveSetup."Loyalty Pts. Provision %"));
         end;
     end;
 
@@ -167,25 +216,48 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Init();
-        GenJournalLine."Journal Template Name" := TwelveSetup."Loyalty Jnl. Template";
-        GenJournalLine."Journal Batch Name" := TwelveSetup."Loyalty Jnl. Batch";
+        GenJournalLine."Journal Template Name" :=
+            TwelveSetup."Loyalty Jnl. Template";
+        GenJournalLine."Journal Batch Name" :=
+            TwelveSetup."Loyalty Jnl. Batch";
         GenJournalLine."Line No." := GetNextGenJnlLineNo();
         GenJournalLine.Insert(true);
+
         GenJournalLine.Validate("Posting Date", PostingDate);
         GenJournalLine.Validate("Document No.", DocumentNo);
-        GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
+        GenJournalLine.Validate(
+            "Account Type",
+            GenJournalLine."Account Type"::"G/L Account");
         GenJournalLine.Validate("Account No.", AccountNo);
-        GenJournalLine.Validate("Bal. Account Type", GenJournalLine."Bal. Account Type"::"G/L Account");
+        GenJournalLine.Validate(
+            "Bal. Account Type",
+            GenJournalLine."Bal. Account Type"::"G/L Account");
         GenJournalLine.Validate("Bal. Account No.", BalAccountNo);
         GenJournalLine.Validate(Amount, Amount);
 
         if LineDescription <> '' then
-            GenJournalLine.Description := CopyStr(LineDescription, 1, MaxStrLen(GenJournalLine.Description));
+            GenJournalLine.Description :=
+                CopyStr(
+                    LineDescription,
+                    1,
+                    MaxStrLen(GenJournalLine.Description));
 
-        SetJnlLineDimension(GenJournalLine, 'STATE', StateCode);
-        SetJnlLineDimension(GenJournalLine, 'STORES', StoreCode);
-        GenJournalLine.Validate("Source Code", TwelveSetup."Loyalty Source Code");
-        GenJournalLine.Validate("Reason Code", TwelveSetup."Loyalty Reason Code");
+        SetJnlLineDimension(
+            GenJournalLine,
+            TwelveSetup."State Dimension",
+            StateCode);
+
+        SetJnlLineDimension(
+            GenJournalLine,
+            TwelveSetup."Store Dimension",
+            StoreCode);
+
+        GenJournalLine.Validate(
+            "Source Code",
+            TwelveSetup."Loyalty Source Code");
+        GenJournalLine.Validate(
+            "Reason Code",
+            TwelveSetup."Loyalty Reason Code");
         GenJournalLine.Modify(true);
     end;
 
@@ -222,8 +294,12 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPostBatch: Codeunit "Gen. Jnl.-Post Batch";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
+        GenJournalLine.SetRange(
+            "Journal Template Name",
+            TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange(
+            "Journal Batch Name",
+            TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPostErr);
@@ -237,8 +313,12 @@ codeunit 52122 "12E Loyalty Posting"
         GenJnlPost: Codeunit "Gen. Jnl.-Post";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
+        GenJournalLine.SetRange(
+            "Journal Template Name",
+            TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange(
+            "Journal Batch Name",
+            TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.FindFirst() then
             Error(NoJournalLinesToPreviewErr);
@@ -251,8 +331,12 @@ codeunit 52122 "12E Loyalty Posting"
         GenJournalLine: Record "Gen. Journal Line";
     begin
         GenJournalLine.Reset();
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
+        GenJournalLine.SetRange(
+            "Journal Template Name",
+            TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange(
+            "Journal Batch Name",
+            TwelveSetup."Loyalty Jnl. Batch");
 
         if not GenJournalLine.IsEmpty() then
             GenJournalLine.DeleteAll(true);
@@ -262,8 +346,12 @@ codeunit 52122 "12E Loyalty Posting"
     var
         GenJournalLine: Record "Gen. Journal Line";
     begin
-        GenJournalLine.SetRange("Journal Template Name", TwelveSetup."Loyalty Jnl. Template");
-        GenJournalLine.SetRange("Journal Batch Name", TwelveSetup."Loyalty Jnl. Batch");
+        GenJournalLine.SetRange(
+            "Journal Template Name",
+            TwelveSetup."Loyalty Jnl. Template");
+        GenJournalLine.SetRange(
+            "Journal Batch Name",
+            TwelveSetup."Loyalty Jnl. Batch");
 
         if GenJournalLine.FindLast() then
             exit(GenJournalLine."Line No." + 10000);
@@ -271,12 +359,39 @@ codeunit 52122 "12E Loyalty Posting"
         exit(10000);
     end;
 
-    procedure SetJnlLineDimension(var GenJnlLine: Record "Gen. Journal Line"; DimCode: Code[20]; DimValueCode: Code[20])
+    procedure SetJnlLineDimension(
+        var GenJnlLine: Record "Gen. Journal Line";
+        DimCode: Code[20];
+        DimValueCode: Code[20])
     var
         TempDimSetEntry: Record "Dimension Set Entry" temporary;
         DimMgt: Codeunit DimensionManagement;
+        DimensionValue: Record "Dimension Value";
     begin
-        DimMgt.GetDimensionSet(TempDimSetEntry, GenJnlLine."Dimension Set ID");
+        if DimCode = '' then
+            Error('Dimension Code must be configured in 12 Elements Setup.');
+
+        if DimValueCode <> '' then begin
+            if not DimensionValue.Get(DimCode, DimValueCode) then
+                Error(
+                    'Dimension value %1 does not exist for dimension %2.',
+                    DimValueCode,
+                    DimCode);
+
+            DimensionValue.TestField(Blocked, false);
+
+            if DimensionValue."Dimension Value Type" <>
+               DimensionValue."Dimension Value Type"::Standard
+            then
+                Error(
+                    'Dimension value %1 for dimension %2 must be a Standard dimension value.',
+                    DimValueCode,
+                    DimCode);
+        end;
+
+        DimMgt.GetDimensionSet(
+            TempDimSetEntry,
+            GenJnlLine."Dimension Set ID");
 
         TempDimSetEntry.SetRange("Dimension Code", DimCode);
         TempDimSetEntry.DeleteAll();
@@ -284,13 +399,15 @@ codeunit 52122 "12E Loyalty Posting"
 
         if DimValueCode <> '' then begin
             TempDimSetEntry.Init();
-            TempDimSetEntry."Dimension Set ID" := GenJnlLine."Dimension Set ID";
             TempDimSetEntry.Validate("Dimension Code", DimCode);
-            TempDimSetEntry.Validate("Dimension Value Code", DimValueCode);
+            TempDimSetEntry.Validate(
+                "Dimension Value Code",
+                DimValueCode);
             TempDimSetEntry.Insert();
         end;
 
-        GenJnlLine."Dimension Set ID" := DimMgt.GetDimensionSetID(TempDimSetEntry);
+        GenJnlLine."Dimension Set ID" :=
+            DimMgt.GetDimensionSetID(TempDimSetEntry);
 
         DimMgt.UpdateGlobalDimFromDimSetID(
             GenJnlLine."Dimension Set ID",

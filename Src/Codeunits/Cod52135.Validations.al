@@ -44,17 +44,17 @@ codeunit 52135 "12E Validations"
             Error(StrSubstNo(PayrollBatchDoesNotExistErrLbl, ClientIDPar, BatchIDPar));
     end;
 
-    procedure CheckLoyaltyPointsEarnedisLessThanZero(PointsEarned: Decimal)
-    begin
-        if PointsEarned < 0 then
-            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Earned'));
-    end;
+    // procedure CheckLoyaltyPointsEarnedisLessThanZero(PointsEarned: Decimal)
+    // begin
+    //     if PointsEarned < 0 then
+    //         Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Earned'));
+    // end;
 
-    procedure CheckLoyaltyPointsExpiredisLessThanZero(PointsExpired: Decimal)
-    begin
-        if PointsExpired < 0 then
-            Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Expired'));
-    end;
+    // procedure CheckLoyaltyPointsExpiredisLessThanZero(PointsExpired: Decimal)
+    // begin
+    //     if PointsExpired < 0 then
+    //         Error(StrSubstNo(ValueCannotBeLessThanZeroErrMsg, 'Points Expired'));
+    // end;
 
     procedure CheckWhetherLeadVendorMappingExists(DatasourceID: Integer; LeadVendor: Text[100])
     var

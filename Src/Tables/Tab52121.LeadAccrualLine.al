@@ -99,6 +99,18 @@ table 52121 "12E Lead Accrual Line"
             Editable = false;
             TableRelation = "Purch. Inv. Header"."No.";
         }
+        field(16; "Total Month Expense"; Decimal)
+        {
+            CalcFormula = Sum("12E Lead Source Reconciliation"."Lead Sold Cost" where("Lead Vendor" = field("Lead Vendor"), "Lead Original Date" = field("Date Filter")));
+            Caption = 'Total Month Expense';
+            Editable = false;
+            FieldClass = FlowField;
+        }
+        field(17; "Date Filter"; Date)
+        {
+            Caption = 'Date Filter';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

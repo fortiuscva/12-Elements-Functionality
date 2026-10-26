@@ -75,11 +75,11 @@ page 52123 "12E Lead Accrual Subform"
                         Page.RunModal(Page::"Posted Purchase Invoices", PurchInvHeader);
                     end;
                 }
-                field("Total Month Expense"; Rec."Total Month Expense")
+                field("Total Month Lead Sold Cost"; Rec."Total Month Lead Sold Cost")
                 {
                     ApplicationArea = All;
                     Editable = false;
-                    ToolTip = 'Specifies the value of the Total Month Expense field.', Comment = '%';
+                    ToolTip = 'Specifies the value of the Total Month Lead Sold Cost for this Lead Vendor.', Comment = '%';
                 }
             }
         }
@@ -130,11 +130,5 @@ page 52123 "12E Lead Accrual Subform"
     begin
         LeadAccrual.Get(Rec."Lead Accrual No.");
         LeadAccrual.TestStatusOpen();
-    end;
-
-    trigger OnAfterGetRecord()
-    begin
-        Rec.SetRange("Date Filter", Rec."From Date", Rec."To Date");
-        Rec.CalcFields("Total Month Expense");
     end;
 }

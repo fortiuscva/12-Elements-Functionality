@@ -88,8 +88,7 @@ table 52121 "12E Lead Accrual Line"
             var
                 LeadAccrualMgmt: Codeunit "12E Lead Accrual Mgmt";
             begin
-                if "Override Last PPI Posting Date" <> "Last PPI Posting Date" then
-                    LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
+                LeadAccrualMgmt.RecalculateAccrualAmount(Rec);
             end;
         }
         field(15; "Last Posted Purch. Invoice No."; Code[20])
@@ -99,16 +98,9 @@ table 52121 "12E Lead Accrual Line"
             Editable = false;
             TableRelation = "Purch. Inv. Header"."No.";
         }
-        field(16; "Total Month Expense"; Decimal)
+        field(16; "Total Month Lead Sold Cost"; Decimal)
         {
-            CalcFormula = Sum("12E Lead Source Reconciliation"."Lead Sold Cost" where("Lead Vendor" = field("Lead Vendor"), "Lead Original Date" = field("Date Filter")));
-            Caption = 'Total Month Expense';
-            Editable = false;
-            FieldClass = FlowField;
-        }
-        field(17; "Date Filter"; Date)
-        {
-            Caption = 'Date Filter';
+            Caption = 'Total Month Lead Sold Cost';
             DataClassification = CustomerContent;
         }
     }

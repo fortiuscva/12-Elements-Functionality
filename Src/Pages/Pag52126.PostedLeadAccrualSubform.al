@@ -75,6 +75,11 @@ page 52126 "12E Posted LeadAccrual Subform"
                         Page.RunModal(Page::"Posted Purchase Invoices", PurchInvHeader);
                     end;
                 }
+                field("Total Month Lead Sold Cost"; Rec."Total Month Lead Sold Cost")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Total Month Lead Sold Cost for this Lead Vendor.', Comment = '%';
+                }
             }
         }
     }

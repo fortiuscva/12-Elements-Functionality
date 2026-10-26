@@ -38,6 +38,7 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Total Invoiced Amount (Period)", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
+                    LeadAccLineLcl.Validate("Total Month Lead Sold Cost", CalculateLeadsMonthlyExpense(LeadAccLineLcl."Lead Vendor", LeadAccLineLcl."From Date", LeadAccLineLcl."To Date"));
                     RecalculateAccrualAmount(LeadAccLineLcl);
                     LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
                 end
@@ -200,6 +201,19 @@ codeunit 52115 "12E Lead Accrual Mgmt"
         if PostedLeadAccrual.FindFirst() then
             if not Confirm(ExistingPostedAccrualWarningQst, false, PostedLeadAccrual."No.") then
                 Error('');
+    end;
+
+    local procedure CalculateLeadsMonthlyExpense(LeadVendor: Text[100]; FromDate: Date; ToDate: Date): Decimal
+    var
+        LeadSourceRecon: Record "12E Lead Source Reconciliation";
+    begin
+        LeadSourceRecon.Reset();
+        LeadSourceRecon.SetRange("Datasource ID", GetDataSourceID());
+        LeadSourceRecon.SetRange("Lead Vendor", LeadVendor);
+        LeadSourceRecon.SetRange("Lead Original Date", FromDate, ToDate);
+        LeadSourceRecon.CalcSums("Lead Sold Cost");
+
+        exit(LeadSourceRecon."Lead Sold Cost");
     end;
 
     var

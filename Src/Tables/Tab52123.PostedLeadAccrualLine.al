@@ -88,6 +88,11 @@ table 52123 "12E Posted Lead Accrual Line"
             DataClassification = CustomerContent;
             TableRelation = "Purch. Inv. Header"."No.";
         }
+        field(16; "Total Month Lead Sold Cost"; Decimal)
+        {
+            Caption = 'Total Month Lead Sold Cost';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

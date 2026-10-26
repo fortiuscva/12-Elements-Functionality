@@ -143,7 +143,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
                 MonthEndDate := CalcDate('<CM>', LeadAccLine."To Date");
                 NextMonthStartDate := CalcDate('<CM+1D>', LeadAccLine."To Date");
 
-                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual(%1...%2)-%3', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Vendor Name"), 1, MaxStrLen(DescriptionTxt));
+                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
 
                 CreateGenJournalLine(
                     MonthEndDate,
@@ -157,7 +157,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
 
-                DescriptionTxt := CopyStr(StrSubstNo('%1-Accrual [%2-%3]-Reversal', LeadAccLine."Vendor No.", LeadAccLine."From Date", LeadAccLine."To Date"), 1, MaxStrLen(DescriptionTxt));
+                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3 - Reversal', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
 
                 CreateGenJournalLine(
                     NextMonthStartDate,

@@ -1,5 +1,6 @@
 page 52120 "12E Lead Source Reconciliation"
 {
+    ApplicationArea = All;
     Caption = 'Lead Source Reconciliation (Global)';
     PageType = List;
     InsertAllowed = false;
@@ -7,9 +8,7 @@ page 52120 "12E Lead Source Reconciliation"
     ModifyAllowed = false;
     SourceTable = "12E Lead Source Reconciliation";
     SourceTableView = sorting("PK ID") order(descending);
-    UsageCategory = Lists;
-    ApplicationArea = All;
-
+    // UsageCategory = Lists;
 
     layout
     {

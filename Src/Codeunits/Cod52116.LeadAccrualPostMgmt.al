@@ -127,6 +127,7 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
     var
         LeadAccLine: Record "12E Lead Accrual Line";
         NextLineNo: Integer;
+        StartDate: Date;
         MonthEndDate: Date;
         NextMonthStartDate: Date;
         DescriptionTxt: Text[100];
@@ -140,31 +141,36 @@ codeunit 52116 "12E Lead Accrual Post Mgmt"
             NextLineNo := GetNextGenJnlLineNo();
             FirstLineNo := NextLineNo;
             repeat
+                if LeadAccLine."Override Last PPI Posting Date" <> 0D then
+                    StartDate := CalcDate('<+1D>', LeadAccLine."Override Last PPI Posting Date")
+                else
+                    StartDate := LeadAccLine."From Date";
+
                 MonthEndDate := CalcDate('<CM>', LeadAccLine."To Date");
                 NextMonthStartDate := CalcDate('<CM+1D>', LeadAccLine."To Date");
 
-                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
+                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3', StartDate, MonthEndDate, LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
 
                 CreateGenJournalLine(
                     MonthEndDate,
                     LeadAccHeader."No.",
                     DescriptionTxt,
-                    GetVendorLeadCreditAccount(LeadAccLine."Vendor No."),
                     GetVendorLeadDebitAccount(LeadAccLine."Vendor No."),
+                    GetVendorLeadCreditAccount(LeadAccLine."Vendor No."),
                     LeadAccLine."Adjusted Accrual Amount",
                     LeadAccLine."Vendor No.");
 
                 LastLineNo := NextLineNo;
                 NextLineNo += 10000;
 
-                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3 - Reversal', LeadAccLine."From Date", LeadAccLine."To Date", LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
+                DescriptionTxt := CopyStr(StrSubstNo('Leads accrual (%1..%2) - %3 - Reversal', StartDate, MonthEndDate, LeadAccLine."Lead Vendor"), 1, MaxStrLen(DescriptionTxt));
 
                 CreateGenJournalLine(
                     NextMonthStartDate,
                     LeadAccHeader."No.",
                     DescriptionTxt,
-                    GetVendorLeadDebitAccount(LeadAccLine."Vendor No."),
                     GetVendorLeadCreditAccount(LeadAccLine."Vendor No."),
+                    GetVendorLeadDebitAccount(LeadAccLine."Vendor No."),
                     LeadAccLine."Adjusted Accrual Amount",
                     LeadAccLine."Vendor No.");
 

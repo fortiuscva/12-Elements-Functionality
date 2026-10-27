@@ -38,13 +38,15 @@ codeunit 52115 "12E Lead Accrual Mgmt"
                     LeadAccLineLcl.Validate("Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Override Last PPI Posting Date", LastPostingDate);
                     LeadAccLineLcl.Validate("Total Invoiced Amount (Period)", GetLeadAcqCostsForThisVendor(VendorLcl."No.", Rec."From Date", Rec."To Date"));
-                    LeadAccLineLcl.Validate("Total Month Lead Sold Cost", CalculateLeadsMonthlyExpense(LeadAccLineLcl."Lead Vendor", LeadAccLineLcl."From Date", LeadAccLineLcl."To Date"));
+                    LeadAccLineLcl.Validate("Total Month Lead Cost (DWH)", CalculateLeadsMonthlyExpense(LeadAccLineLcl."Lead Vendor", LeadAccLineLcl."From Date", LeadAccLineLcl."To Date"));
                     RecalculateAccrualAmount(LeadAccLineLcl);
                     LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
+                    LeadAccLineLcl.Validate("Total Acc. and Inv. Amounts", (LeadAccLineLcl."Accrual Amount" + LeadAccLineLcl."Total Invoiced Amount (Period)"));
                 end
                 else begin
                     LeadAccLineLcl.Validate("Accrual Amount", GetAccrualAmountsForThisVendor(VendorLcl."12E Lead Vendor Name", Rec."From Date", Rec."To Date"));
                     LeadAccLineLcl.Validate("Adjusted Accrual Amount", LeadAccLineLcl."Accrual Amount");
+                    LeadAccLineLcl.Validate("Total Month Lead Cost (DWH)", CalculateLeadsMonthlyExpense(LeadAccLineLcl."Lead Vendor", LeadAccLineLcl."From Date", LeadAccLineLcl."To Date"));
                 end;
 
                 LeadAccLineLcl.Modify(true);

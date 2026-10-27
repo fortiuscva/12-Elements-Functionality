@@ -60,7 +60,6 @@ table 52121 "12E Lead Accrual Line"
             Caption = 'Total Invoiced Amount (Period)';
             DecimalPlaces = 2 : 2;
             Editable = false;
-
         }
 
         field(10; "Accrual Amount"; Decimal)
@@ -98,10 +97,15 @@ table 52121 "12E Lead Accrual Line"
             Editable = false;
             TableRelation = "Purch. Inv. Header"."No.";
         }
-        field(16; "Total Month Lead Sold Cost"; Decimal)
+        field(16; "Total Month Lead Cost (DWH)"; Decimal)
         {
-            Caption = 'Total Month Lead Sold Cost';
+            Caption = 'Total Month Lead Cost from Data Warehouse';
             DataClassification = CustomerContent;
+        }
+        field(17; "Total Acc. and Inv. Amounts"; Decimal)
+        {
+            Caption = 'Total Accrual & Invoice Amounts';
+            DataClassification = ToBeClassified;
         }
     }
 

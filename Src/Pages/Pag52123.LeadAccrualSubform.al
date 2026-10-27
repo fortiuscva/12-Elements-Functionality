@@ -75,11 +75,17 @@ page 52123 "12E Lead Accrual Subform"
                         Page.RunModal(Page::"Posted Purchase Invoices", PurchInvHeader);
                     end;
                 }
-                field("Total Month Lead Sold Cost"; Rec."Total Month Lead Sold Cost")
+                field("Total Month Lead Sold Cost"; Rec."Total Month Lead Cost (DWH)")
                 {
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Total Month Lead Sold Cost for this Lead Vendor.', Comment = '%';
+                }
+                field("Total Acc. and Inv. Amounts"; Rec."Total Acc. and Inv. Amounts")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Total Accrual & Invoice Amounts field.', Comment = '%';
                 }
             }
         }
@@ -98,6 +104,7 @@ page 52123 "12E Lead Accrual Subform"
                 var
                     LeadAccrual: Record "12E Lead Accrual";
                     LeadSource: Record "12E Lead Source Reconciliation";
+                    FromDate: Date;
                     Vendor: Record Vendor;
                 begin
                     LeadAccrual.Get(Rec."Lead Accrual No.");
@@ -105,11 +112,12 @@ page 52123 "12E Lead Accrual Subform"
                     Vendor.Get(Rec."Vendor No.");
                     Vendor.TestField("12E Lead Vendor Name");
                     Rec.TestField("Override Last PPI Posting Date");
+                    FromDate := CalcDate('<+1D>', Rec."Override Last PPI Posting Date");
                     LeadAccrual.TestField("To Date");
 
                     LeadSource.Reset();
                     LeadSource.SetRange("Lead Vendor", Vendor."12E Lead Vendor Name");
-                    LeadSource.SetRange("Lead Original Date", Rec."Override Last PPI Posting Date", LeadAccrual."To Date");
+                    LeadSource.SetRange("Lead Original Date", FromDate, LeadAccrual."To Date");
 
                     Page.Run(Page::"12E Leads Data by Portfolio", LeadSource);
                 end;

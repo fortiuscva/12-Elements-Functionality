@@ -80,6 +80,12 @@ page 52126 "12E Posted LeadAccrual Subform"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Total Month Lead Sold Cost for this Lead Vendor.', Comment = '%';
                 }
+                field("Total Acc. and Inv. Amounts"; Rec."Total Acc. and Inv. Amounts")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Total Accrual & Invoice Amounts field.', Comment = '%';
+                }
             }
         }
     }

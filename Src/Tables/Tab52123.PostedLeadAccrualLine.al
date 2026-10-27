@@ -93,6 +93,11 @@ table 52123 "12E Posted Lead Accrual Line"
             Caption = 'Total Month Lead Sold Cost';
             DataClassification = CustomerContent;
         }
+        field(17; "Total Acc. and Inv. Amounts"; Decimal)
+        {
+            Caption = 'Total Accrual & Invoice Amounts';
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

@@ -4,6 +4,7 @@ report 52102 "12E Create CCD Sales Invoices"
     ApplicationArea = All;
     UsageCategory = Tasks;
     ProcessingOnly = true;
+    UseRequestPage = false;
 
     dataset
     {

@@ -99,12 +99,12 @@ table 52121 "12E Lead Accrual Line"
         }
         field(16; "Total Month Lead Cost (DWH)"; Decimal)
         {
-            Caption = 'Total Month Lead Cost from Data Warehouse';
+            Caption = 'Lead Source DW Amount';
             DataClassification = CustomerContent;
         }
         field(17; "Total Acc. and Inv. Amounts"; Decimal)
         {
-            Caption = 'Total Accrual & Invoice Amounts';
+            Caption = 'Accrual + Invoice Amount';
             DataClassification = ToBeClassified;
         }
     }

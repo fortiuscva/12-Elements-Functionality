@@ -21,7 +21,7 @@ report 52104 "12E Loyalty Posting"
 
     trigger OnPreReport()
     var
-        LoyaltyPreviewContext: Codeunit "12E Loyalty Preview Context";
+        LoyaltyPreviewContext: Codeunit "12E Suppress Preview Post";
     begin
         LoyaltyPreviewContext.SetSuppressPreviewEntries(true);
 

@@ -24,11 +24,11 @@ codeunit 52126 "12E LMS Batch Posting"
 
         if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
-            // LMSBatch.Get(LMSBatch."PK ID");
-            // LMSBatch."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSBatch."Posting Error"));
+            LMSBatch.Get(LMSBatch."PK ID");
+            LMSBatch."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSBatch."Posting Error"));
             // LMSBatch.ERPStatus := 'FAILED';
             // LMSBatch.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LMSBatch.ERPErrorMsg));
-            // LMSBatch.Modify(true);
+            LMSBatch.Modify(true);
             DeleteJournalLines();
 
             if GuiAllowed() then
@@ -59,6 +59,31 @@ codeunit 52126 "12E LMS Batch Posting"
         CreateJournalLines(LMSBatch);
         Commit();
         PreviewGenJournalLines();
+        DeleteJournalLines();
+    end;
+
+    procedure PreviewBatchPosting(var LMSBatch: Record "12E LMS Batch")
+    var
+        LMSBatchRecord: Record "12E LMS Batch";
+    begin
+        GetSetup();
+
+        LMSBatchRecord.CopyFilters(LMSBatch);
+        LMSBatchRecord.SetRange(Processed, false);
+
+        if not LMSBatchRecord.FindSet() then
+            Error('No unprocessed LMS Batch records were found.');
+
+        DeleteJournalLines();
+
+        repeat
+            CreateJournalLines(LMSBatchRecord);
+        until LMSBatchRecord.Next() = 0;
+
+        Commit();
+
+        PreviewGenJournalLines();
+
         DeleteJournalLines();
     end;
 

@@ -1,4 +1,4 @@
-codeunit 52136 "12E Loyalty Preview Context"
+codeunit 52136 "12E Suppress Preview Post"
 {
     SingleInstance = true;
 

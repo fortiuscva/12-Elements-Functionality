@@ -24,11 +24,11 @@ codeunit 52126 "12E LMS Batch Posting"
 
         if not TryPostJournal() then begin
             PostingError := GetLastErrorText();
-            LMSBatch.Get(LMSBatch."PK ID");
-            LMSBatch."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSBatch."Posting Error"));
-            LMSBatch.ERPStatus := 'FAILED';
-            LMSBatch.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LMSBatch.ERPErrorMsg));
-            LMSBatch.Modify(true);
+            // LMSBatch.Get(LMSBatch."PK ID");
+            // LMSBatch."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(LMSBatch."Posting Error"));
+            // LMSBatch.ERPStatus := 'FAILED';
+            // LMSBatch.ERPErrorMsg := CopyStr(PostingError, 1, MaxStrLen(LMSBatch.ERPErrorMsg));
+            // LMSBatch.Modify(true);
             DeleteJournalLines();
 
             if GuiAllowed() then

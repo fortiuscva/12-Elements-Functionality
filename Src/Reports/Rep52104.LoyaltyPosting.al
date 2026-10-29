@@ -3,7 +3,6 @@ report 52104 "12E Loyalty Posting"
     ApplicationArea = All;
     Caption = 'Loyalty Posting';
     ProcessingOnly = true;
-    // UsageCategory = Tasks;
 
     dataset
     {
@@ -20,6 +19,24 @@ report 52104 "12E Loyalty Posting"
         }
     }
 
+    trigger OnPreReport()
+    var
+        LoyaltyPreviewContext: Codeunit "12E Loyalty Preview Context";
+    begin
+        LoyaltyPreviewContext.SetSuppressPreviewEntries(true);
+
+        if not TryPreviewBatch() then begin
+            PreviewError := GetLastErrorText();
+            LoyaltyPreviewContext.SetSuppressPreviewEntries(false);
+
+            if PreviewError <> '' then
+                Error(PreviewError);
+
+        end;
+
+        LoyaltyPreviewContext.SetSuppressPreviewEntries(false);
+    end;
+
     trigger OnPostReport()
     begin
         if ProcessedCount > 0 then
@@ -29,6 +46,15 @@ report 52104 "12E Loyalty Posting"
 
     var
         ProcessedCount: Integer;
+        PreviewError: Text;
+
+    [TryFunction]
+    local procedure TryPreviewBatch()
+    var
+        LoyaltyPosting: Codeunit "12E Loyalty Posting";
+    begin
+        LoyaltyPosting.PreviewBatchPosting(LoyaltyPoints);
+    end;
 
     [TryFunction]
     local procedure TryPostRecord()
@@ -50,8 +76,10 @@ report 52104 "12E Loyalty Posting"
         ErrorText := GetLastErrorText();
 
         LoyaltyPoints.Get(LoyaltyPoints."PK ID");
-        LoyaltyPoints."Posting Error" := CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
-        LoyaltyPoints.ERPErrorMsg := CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
+        LoyaltyPoints."Posting Error" :=
+            CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+        LoyaltyPoints.ERPErrorMsg :=
+            CopyStr(ErrorText, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
         LoyaltyPoints.Modify(true);
     end;
 }

@@ -124,6 +124,7 @@ page 52151 "12E Loyalty Points"
                 Promoted = true;
                 PromotedCategory = Process;
                 ToolTip = 'Post the Loyalty Point entry.';
+                Visible = false;
 
                 trigger OnAction()
                 var
@@ -142,21 +143,22 @@ page 52151 "12E Loyalty Points"
                 end;
             }
 
-            action(PreviewPosting)
+            action(PreviewBatchPosting)
             {
                 ApplicationArea = All;
-                Caption = 'Preview Posting';
+                Caption = 'Preview Batch Posting';
                 Image = ViewPostedOrder;
                 Promoted = true;
                 PromotedCategory = Process;
-                ShortCutKey = 'Ctrl+Alt+F9';
-                ToolTip = 'Preview the General Ledger Entries that will be created.';
+                ToolTip = 'Preview the General Ledger Entries for multiple unprocessed Loyalty Point records.';
 
                 trigger OnAction()
                 var
-                    LoyaltyPosting: Codeunit "12E Loyalty Posting";
+                    LoyaltyPoints: Record "12E Loyalty Points";
                 begin
-                    LoyaltyPosting.PreviewPosting(Rec);
+                    LoyaltyPoints.CopyFilters(Rec);
+
+                    Report.RunModal(Report::"12E Loyalty Preview Posting", true, false, LoyaltyPoints);
                 end;
             }
 

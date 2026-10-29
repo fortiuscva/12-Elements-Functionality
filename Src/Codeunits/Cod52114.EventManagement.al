@@ -328,4 +328,22 @@ codeunit 52114 "12E Event Management"
         if Rec.Status = Rec.Status::Error then
             TweleveFunctions.HandleFailedJob(Rec);
     end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Preview", 'OnBeforeShowAllEntries', '', false, false)]
+    local procedure OnBeforeShowLoyaltyPreviewEntries(var TempDocumentEntry: Record "Document Entry" temporary; var IsHandled: Boolean; var PostingPreviewEventHandler: Codeunit "Posting Preview Event Handler")
+    var
+        LoyaltyPreviewContext: Codeunit "12E Loyalty Preview Context";
+    begin
+        if not LoyaltyPreviewContext.GetSuppressPreviewEntries() then
+            exit;
+
+        IsHandled := true;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Batch", OnBeforeThrowPreviewError, '', false, false)]
+    local procedure "Gen. Jnl.-Post Batch_OnBeforeThrowPreviewError"(var GenJournalLine: Record "Gen. Journal Line"; GLRegNo: Integer)
+    begin
+
+    end;
+
 }

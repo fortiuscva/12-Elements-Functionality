@@ -34,12 +34,12 @@ codeunit 52122 "12E Loyalty Posting"
         if not TryPostJournal(LoyaltyPoints) then begin
             PostingError := GetLastErrorText();
 
-            // LoyaltyPoints.Get(LoyaltyPoints."PK ID");
-            // LoyaltyPoints."Posting Error" :=
-            //     CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+            LoyaltyPoints.Get(LoyaltyPoints."PK ID");
+            LoyaltyPoints."Posting Error" :=
+                CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
             // LoyaltyPoints.ERPErrorMsg :=
             //     CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
-            // LoyaltyPoints.Modify(true);
+            LoyaltyPoints.Modify(true);
 
             DeleteJournalLines();
             exit;

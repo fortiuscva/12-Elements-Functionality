@@ -193,21 +193,47 @@ page 52161 "12E LMS Batches"
                     end;
                 }
 
-                action(PreviewPosting)
+                action(PreviewBatch)
                 {
                     ApplicationArea = All;
-                    Caption = 'Preview Posting';
+                    Caption = 'Preview Batch';
                     Image = ViewPostedOrder;
                     Promoted = true;
                     PromotedCategory = Process;
-                    ShortCutKey = 'Ctrl+Alt+F9';
-                    ToolTip = 'Preview the General Ledger Entries that will be created.';
+                    Ellipsis = true;
+                    ToolTip = 'Preview posting for multiple unprocessed LMS Batch records.';
 
                     trigger OnAction()
                     var
-                        LMSBatchPosting: Codeunit "12E LMS Batch Posting";
+                        LMSBatch: Record "12E LMS Batch";
                     begin
-                        LMSBatchPosting.PreviewPosting(Rec);
+                        LMSBatch.SetRange(Processed, false);
+                        Report.RunModal(
+                            Report::"12E LMS Batch Preview Posting",
+                            true,
+                            false,
+                            LMSBatch);
+
+                        CurrPage.Update(false);
+                    end;
+                }
+                action(PostBatch)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Post Batch';
+                    Image = PostBatch;
+                    Promoted = true;
+                    PromotedCategory = Process;
+                    Ellipsis = true;
+                    ToolTip = 'Post unprocessed LMS Batch records in bulk.';
+
+                    trigger OnAction()
+                    var
+                        LMSBatch: Record "12E LMS Batch";
+                    begin
+                        LMSBatch.SetRange(Processed, false);
+                        Report.RunModal(Report::"12E LMS Batch Posting", true, false, LMSBatch);
+                        CurrPage.Update(false);
                     end;
                 }
 

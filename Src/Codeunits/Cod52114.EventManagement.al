@@ -332,7 +332,7 @@ codeunit 52114 "12E Event Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Preview", 'OnBeforeShowAllEntries', '', false, false)]
     local procedure OnBeforeShowLoyaltyPreviewEntries(var TempDocumentEntry: Record "Document Entry" temporary; var IsHandled: Boolean; var PostingPreviewEventHandler: Codeunit "Posting Preview Event Handler")
     var
-        LoyaltyPreviewContext: Codeunit "12E Loyalty Preview Context";
+        LoyaltyPreviewContext: Codeunit "12E Suppress Preview Post";
     begin
         if not LoyaltyPreviewContext.GetSuppressPreviewEntries() then
             exit;

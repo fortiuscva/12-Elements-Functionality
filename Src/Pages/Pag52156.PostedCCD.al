@@ -139,12 +139,12 @@ page 52156 "12E Posted CCD"
                 trigger OnAction()
                 var
                     CreateCCDSalesInvoices: Report "12E Create CCD Sales Invoices";
-                    CreateConfirmQst: Label 'Do you want to create sales invoices for this posted contact center distribution document?';
+                    CreateConfirmQst: Label 'Do you want to create sales invoices for this posted CCD document?';
                 begin
                     if not Confirm(CreateConfirmQst) then
                         exit;
 
-                    CreateCCDSalesInvoices.RunModal();
+                    Report.Run(Report::"12E Create CCD Sales Invoices", false, false, Rec);
                 end;
             }
         }

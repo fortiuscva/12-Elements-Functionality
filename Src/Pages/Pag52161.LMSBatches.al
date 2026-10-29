@@ -207,7 +207,6 @@ page 52161 "12E LMS Batches"
                     var
                         LMSBatch: Record "12E LMS Batch";
                     begin
-                        LMSBatch.SetRange(Processed, false);
                         Report.RunModal(
                             Report::"12E LMS Batch Preview Posting",
                             true,
@@ -231,7 +230,6 @@ page 52161 "12E LMS Batches"
                     var
                         LMSBatch: Record "12E LMS Batch";
                     begin
-                        LMSBatch.SetRange(Processed, false);
                         Report.RunModal(Report::"12E LMS Batch Posting", true, false, LMSBatch);
                         CurrPage.Update(false);
                     end;

@@ -34,12 +34,12 @@ codeunit 52122 "12E Loyalty Posting"
         if not TryPostJournal(LoyaltyPoints) then begin
             PostingError := GetLastErrorText();
 
-            LoyaltyPoints.Get(LoyaltyPoints."PK ID");
-            LoyaltyPoints."Posting Error" :=
-                CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
-            LoyaltyPoints.ERPErrorMsg :=
-                CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
-            LoyaltyPoints.Modify(true);
+            // LoyaltyPoints.Get(LoyaltyPoints."PK ID");
+            // LoyaltyPoints."Posting Error" :=
+            //     CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints."Posting Error"));
+            // LoyaltyPoints.ERPErrorMsg :=
+            //     CopyStr(PostingError, 1, MaxStrLen(LoyaltyPoints.ERPErrorMsg));
+            // LoyaltyPoints.Modify(true);
 
             DeleteJournalLines();
             exit;
@@ -70,6 +70,34 @@ codeunit 52122 "12E Loyalty Posting"
         CreateJournalLines(LoyaltyPoints);
         Commit();
         PreviewGenJournalLines();
+        DeleteJournalLines();
+    end;
+
+    procedure PreviewBatchPosting(var LoyaltyPoints: Record "12E Loyalty Points")
+    var
+        LoyaltyPoint: Record "12E Loyalty Points";
+    begin
+        GetSetup();
+
+        LoyaltyPoint.CopyFilters(LoyaltyPoints);
+        LoyaltyPoint.SetRange(Processed, false);
+
+        if not LoyaltyPoint.FindSet() then
+            Error('No unprocessed Loyalty Point entries were found.');
+
+        DeleteJournalLines();
+
+        repeat
+            if (LoyaltyPoint."Points Earned" <> 0) or
+               (LoyaltyPoint."Points Expired" <> 0)
+            then
+                CreateJournalLines(LoyaltyPoint);
+        until LoyaltyPoint.Next() = 0;
+
+        Commit();
+
+        PreviewGenJournalLines();
+
         DeleteJournalLines();
     end;
 

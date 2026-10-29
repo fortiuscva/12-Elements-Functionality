@@ -182,6 +182,7 @@ page 52161 "12E LMS Batches"
                     Promoted = true;
                     PromotedCategory = Process;
                     ToolTip = 'Post the LMS Batch.';
+                    Visible = false;
 
                     trigger OnAction()
                     var

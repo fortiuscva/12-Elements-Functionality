@@ -89,13 +89,29 @@ page 52164 "12E LMS Transaction Document"
                 trigger OnAction()
                 var
                     LMSTransactionCreation: Codeunit "12E LMS Creation Management";
+                    PreviewContext: Codeunit "12E Suppress Preview Post";
+                    PreviewError: Text;
                 begin
                     if not Confirm('Do you want to create LMS Transactions?', false) then
                         exit;
 
+                    PreviewContext.SetSuppressPreviewEntries(true);
+
+                    if not TryPreviewLMSTransactions() then begin
+                        PreviewError := GetLastErrorText();
+                        PreviewContext.SetSuppressPreviewEntries(false);
+
+                        if PreviewError <> '' then
+                            Error(PreviewError);
+
+                    end;
+
+                    PreviewContext.SetSuppressPreviewEntries(false);
+
                     LMSTransactionCreation.CreateLMSTransactions();
                     CurrPage.Update(false);
                 end;
+
             }
             action("Show LMS Transaction Details")
             {
@@ -259,4 +275,11 @@ page 52164 "12E LMS Transaction Document"
             }
         }
     }
+    [TryFunction]
+    local procedure TryPreviewLMSTransactions()
+    var
+        LMSTransactionCreation: Codeunit "12E LMS Creation Management";
+    begin
+        LMSTransactionCreation.PreviewLMSTransactions();
+    end;
 }

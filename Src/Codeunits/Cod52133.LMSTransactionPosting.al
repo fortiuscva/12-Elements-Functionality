@@ -332,4 +332,75 @@ codeunit 52133 "12E LMS Transaction Posting"
 
         LMSHeader.Delete(true);
     end;
+
+    procedure PreviewTemporaryPosting(
+        var TempLMSHeader: Record "12E LMS Transaction Header" temporary;
+        var TempLMSLine: Record "12E LMS Transaction Line" temporary)
+    begin
+        TempLMSHeader.TestField("No.");
+        TempLMSHeader.TestField("Datasource ID");
+        TempLMSHeader.TestField("Transaction Date");
+
+        if TempLMSLine.IsEmpty() then
+            Error('No LMS Transaction Lines exist for preview document %1.', TempLMSHeader."No.");
+
+        GetSetup();
+        DeleteJournalLines();
+
+        if TempLMSLine.FindSet() then
+            repeat
+                CreatePreviewGenJournalLine(TempLMSHeader, TempLMSLine);
+            until TempLMSLine.Next() = 0;
+
+        Commit();
+        PreviewGenJournalLines();
+        DeleteJournalLines();
+    end;
+
+    local procedure CreatePreviewGenJournalLine(
+        TempLMSHeader: Record "12E LMS Transaction Header" temporary;
+        TempLMSLine: Record "12E LMS Transaction Line" temporary)
+    var
+        GenJournalLine: Record "Gen. Journal Line";
+    begin
+        GenJournalLine.Init();
+        GenJournalLine."Journal Template Name" := TwelveSetup."LMS Transaction Jnl. Template";
+        GenJournalLine."Journal Batch Name" := TwelveSetup."LMS Transaction Jnl. Batch";
+        GenJournalLine."Line No." := GetNextGenJnlLineNo();
+        GenJournalLine.Insert(true);
+        GenJournalLine.Validate("Posting Date", TempLMSHeader."Transaction Date");
+        GenJournalLine.Validate("Document No.", TempLMSHeader."No.");
+        GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
+        GenJournalLine.Validate("Account No.", TempLMSLine."Account No.");
+        GenJournalLine.Validate(Amount, TempLMSLine.Amount);
+        GenJournalLine.Validate("Source Code", TwelveSetup."LMS Source Code");
+        GenJournalLine.Validate("Reason Code", TwelveSetup."LMS Reason Code");
+        GenJournalLine.Validate("Shortcut Dimension 1 Code", TempLMSLine."Shortcut Dimension 1 Code");
+        GenJournalLine.Validate("Shortcut Dimension 2 Code", TempLMSLine."Shortcut Dimension 2 Code");
+        GenJournalLine.Validate("Dimension Set ID", GetPreviewDimensionSetID(TempLMSLine));
+        GenJournalLine.Modify(true);
+    end;
+
+    local procedure GetPreviewDimensionSetID(
+        TempLMSLine: Record "12E LMS Transaction Line" temporary): Integer
+    var
+        DimensionSetEntry: Record "Dimension Set Entry" temporary;
+        DimensionManagement: Codeunit DimensionManagement;
+    begin
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 3 Code");
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 4 Code");
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 5 Code");
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 6 Code");
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 7 Code");
+        AddDimensionSetEntry(DimensionSetEntry, TempLMSLine."Shortcut Dimension 8 Code");
+        if DimensionSetEntry.IsEmpty() then
+            exit(0);
+        exit(DimensionManagement.GetDimensionSetID(DimensionSetEntry));
+    end;
+
+    procedure CleanupPreviewJournalLines()
+    begin
+        GetSetup();
+        DeleteJournalLines();
+    end;
 }

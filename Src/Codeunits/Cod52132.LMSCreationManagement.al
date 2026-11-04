@@ -544,4 +544,128 @@ codeunit 52132 "12E LMS Creation Management"
 
         exit(0);
     end;
+
+    procedure PreviewLMSTransactions()
+    var
+        DataSourceID: Integer;
+        TempLMSHeader: Record "12E LMS Transaction Header" temporary;
+        TempLMSLine: Record "12E LMS Transaction Line" temporary;
+        LMSDataQuery: Query "12E LMS Transaction Data";
+        PreviewNo: Code[20];
+        LineNo: Integer;
+    begin
+        CurrentRunFailedTransactions.Reset();
+        CurrentRunFailedTransactions.DeleteAll();
+
+        DataSourceID := GetDataSourceID();
+        ValidateCompanyMapping(DataSourceID);
+        ValidateTransactions(DataSourceID);
+        ValidatePaymentBatchConflicts(DataSourceID);
+        ValidateTransactionBalances(DataSourceID);
+
+        LMSDataQuery.SetRange(Company, CompanyName());
+        LMSDataQuery.SetRange(DatasourceID, DataSourceID);
+        LMSDataQuery.Open();
+
+        while LMSDataQuery.Read() do begin
+            if LMSDataQuery.TransactionPostingDate = 0D then
+                continue;
+
+            if HasCurrentRunFailedTransactions(
+                DataSourceID,
+                LMSDataQuery.TransactionPostingDate,
+                LMSDataQuery.State,
+                LMSDataQuery.Store,
+                LMSDataQuery.DebitAccountNo,
+                LMSDataQuery.CreditAccountNo)
+            then
+                continue;
+
+            if not HasEligibleTransactionsForDocument(
+                DataSourceID,
+                LMSDataQuery.TransactionPostingDate,
+                LMSDataQuery.State,
+                LMSDataQuery.Store,
+                LMSDataQuery.DebitAccountNo,
+                LMSDataQuery.CreditAccountNo)
+            then
+                continue;
+
+            PreviewNo := GetPreviewDocumentNo(LMSDataQuery.TransactionPostingDate);
+
+            if not TempLMSHeader.Get(PreviewNo) then begin
+                TempLMSHeader.Init();
+                TempLMSHeader."No." := PreviewNo;
+                TempLMSHeader."Datasource ID" := DataSourceID;
+                TempLMSHeader."Transaction Date" := LMSDataQuery.TransactionPostingDate;
+                TempLMSHeader.Status := TempLMSHeader.Status::Released;
+                TempLMSHeader.Insert(false);
+            end;
+
+            TempLMSLine.Reset();
+            TempLMSLine.SetRange("Document No.", PreviewNo);
+            if TempLMSLine.FindLast() then
+                LineNo := TempLMSLine."Line No." + 10000
+            else
+                LineNo := 10000;
+
+            TempLMSLine.Init();
+            TempLMSLine."Document No." := PreviewNo;
+            TempLMSLine."Line No." := LineNo;
+            TempLMSLine."Datasource ID" := DataSourceID;
+            TempLMSLine."Account No." := GetAccountNo(LMSDataQuery);
+            TempLMSLine.Amount := GetPostingAmount(LMSDataQuery);
+            TempLMSLine."Shortcut Dimension 1 Code" := LMSDataQuery.State;
+            TempLMSLine."Shortcut Dimension 2 Code" := LMSDataQuery.Store;
+
+            if LMSDataQuery.DebitAccountNo <> '' then begin
+                TempLMSLine."Debit Amount" := LMSDataQuery.Amount;
+                TempLMSLine."Credit Amount" := 0;
+            end else begin
+                TempLMSLine."Debit Amount" := 0;
+                TempLMSLine."Credit Amount" := LMSDataQuery.Amount;
+            end;
+
+            TempLMSLine.Insert(false);
+        end;
+
+        LMSDataQuery.Close();
+
+        if TempLMSHeader.FindSet() then
+            repeat
+                TempLMSLine.Reset();
+                TempLMSLine.SetRange("Document No.", TempLMSHeader."No.");
+                PreviewSingleLMSDocument(TempLMSHeader, TempLMSLine);
+            until TempLMSHeader.Next() = 0;
+    end;
+
+    local procedure GetPreviewDocumentNo(TransactionDate: Date): Code[20]
+    begin
+        exit(CopyStr('PREVIEW' + Format(TransactionDate, 0, '<Year4><Month,2><Day,2>'), 1, 20));
+    end;
+
+    [TryFunction]
+    local procedure TryPreviewSingleLMSDocument(
+        var TempLMSHeader: Record "12E LMS Transaction Header" temporary;
+        var TempLMSLine: Record "12E LMS Transaction Line" temporary)
+    var
+        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+    begin
+        LMSTransactionPosting.PreviewTemporaryPosting(TempLMSHeader, TempLMSLine);
+    end;
+
+    local procedure PreviewSingleLMSDocument(
+        var TempLMSHeader: Record "12E LMS Transaction Header" temporary;
+        var TempLMSLine: Record "12E LMS Transaction Line" temporary)
+    var
+        LMSTransactionPosting: Codeunit "12E LMS Transaction Posting";
+        PreviewError: Text;
+    begin
+        if not TryPreviewSingleLMSDocument(TempLMSHeader, TempLMSLine) then begin
+            PreviewError := GetLastErrorText();
+            LMSTransactionPosting.CleanupPreviewJournalLines();
+            if PreviewError <> '' then
+                Error(PreviewError);
+        end;
+    end;
 }

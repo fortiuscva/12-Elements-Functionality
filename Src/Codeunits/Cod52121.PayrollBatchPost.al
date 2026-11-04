@@ -1,3 +1,4 @@
+
 codeunit 52121 "12E Payroll Batch Post"
 {
     var
@@ -36,11 +37,11 @@ codeunit 52121 "12E Payroll Batch Post"
 
         DeleteJournalLines();
 
-
         if not TryPostJournal(PayrollBatchHeader, PayrollBatchLine, BatchTotal) then begin
             PostingError := GetLastErrorText();
 
-            PayrollBatchHeader."Posting Error" := CopyStr(PostingError, 1, MaxStrLen(PayrollBatchHeader."Posting Error"));
+            PayrollBatchHeader."Posting Error" :=
+                CopyStr(PostingError, 1, MaxStrLen(PayrollBatchHeader."Posting Error"));
             PayrollBatchHeader.Modify(true);
 
             DeleteJournalLines();
@@ -77,15 +78,48 @@ codeunit 52121 "12E Payroll Batch Post"
         DeleteJournalLines();
     end;
 
+    procedure PreviewPayrollDocument(
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        var TempPayrollBatchLine: Record "12E Payroll Batch Line" temporary)
+    var
+        BatchTotal: Decimal;
+    begin
+        GetSetup();
+
+        if TempPayrollBatchLine.IsEmpty() then
+            Error(NoLinesToPreviewErr);
+
+        DeleteJournalLines();
+
+        CreatePreviewJournalLines(
+            PayrollBatchHeader,
+            TempPayrollBatchLine,
+            BatchTotal);
+
+        CreateBalancingJournalLine(
+            PayrollBatchHeader,
+            BatchTotal);
+
+        Commit();
+
+        PreviewGenJournalLines();
+
+        DeleteJournalLines();
+    end;
+
     local procedure GetSetup()
     begin
         TwelveSetup.Get();
+
         TwelveSetup.TestField("Payroll Jnl. Template");
         TwelveSetup.TestField("Payroll Jnl. Batch");
         TwelveSetup.TestField("Payroll Offset Account No.");
     end;
 
-    local procedure CreateJournalLines(PayrollBatchHeader: Record "12E Payroll Batch Header"; var PayrollBatchLine: Record "12E Payroll Batch Line"; var BatchTotal: Decimal)
+    local procedure CreateJournalLines(
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        var PayrollBatchLine: Record "12E Payroll Batch Line";
+        var BatchTotal: Decimal)
     var
         GenJournalLine: Record "Gen. Journal Line";
         DimensionManagement: Codeunit DimensionManagement;
@@ -110,6 +144,7 @@ codeunit 52121 "12E Payroll Batch Post"
                 PayrollBatchLine.CalcFields("Shortcut Dimension 1 Code");
                 PayrollBatchLine.CalcFields("Shortcut Dimension 2 Code");
                 PayrollBatchLine.TestField("Shortcut Dimension 1 Code");
+
                 GenJournalLine.Validate("Shortcut Dimension 1 Code", PayrollBatchLine."Shortcut Dimension 1 Code");
                 GenJournalLine.Validate("Shortcut Dimension 2 Code", PayrollBatchLine."Shortcut Dimension 2 Code");
 
@@ -121,7 +156,54 @@ codeunit 52121 "12E Payroll Batch Post"
             until PayrollBatchLine.Next() = 0;
     end;
 
-    local procedure CreateBalancingJournalLine(PayrollBatchHeader: Record "12E Payroll Batch Header"; BatchTotal: Decimal)
+    // New procedure: Same journal generation logic, but reads temporary payroll lines.
+    local procedure CreatePreviewJournalLines(
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        var TempPayrollBatchLine: Record "12E Payroll Batch Line" temporary;
+        var BatchTotal: Decimal)
+    var
+        GenJournalLine: Record "Gen. Journal Line";
+        NextLineNo: Integer;
+    begin
+        BatchTotal := 0;
+        NextLineNo := GetNextGenJnlLineNo();
+
+        if TempPayrollBatchLine.FindSet() then
+            repeat
+                GenJournalLine.Init();
+                GenJournalLine."Journal Template Name" := TwelveSetup."Payroll Jnl. Template";
+                GenJournalLine."Journal Batch Name" := TwelveSetup."Payroll Jnl. Batch";
+                GenJournalLine."Line No." := NextLineNo;
+                GenJournalLine.Insert(true);
+
+                GenJournalLine.Validate("Posting Date", PayrollBatchHeader."Pay Date");
+                GenJournalLine.Validate("Document No.", PayrollBatchHeader."No.");
+                GenJournalLine.Validate("Account Type", GenJournalLine."Account Type"::"G/L Account");
+                GenJournalLine.Validate("Account No.", TempPayrollBatchLine."G/L Account No.");
+
+                TempPayrollBatchLine.CalcFields("Shortcut Dimension 1 Code");
+                TempPayrollBatchLine.CalcFields("Shortcut Dimension 2 Code");
+                TempPayrollBatchLine.TestField("Shortcut Dimension 1 Code");
+
+                GenJournalLine.Validate(
+                    "Shortcut Dimension 1 Code",
+                    TempPayrollBatchLine."Shortcut Dimension 1 Code");
+
+                GenJournalLine.Validate(
+                    "Shortcut Dimension 2 Code",
+                    TempPayrollBatchLine."Shortcut Dimension 2 Code");
+
+                GenJournalLine.Validate(Amount, TempPayrollBatchLine.Amount);
+                GenJournalLine.Modify(true);
+
+                BatchTotal += TempPayrollBatchLine.Amount;
+                NextLineNo += 10000;
+            until TempPayrollBatchLine.Next() = 0;
+    end;
+
+    local procedure CreateBalancingJournalLine(
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        BatchTotal: Decimal)
     var
         GenJournalLine: Record "Gen. Journal Line";
         NextLineNo: Integer;
@@ -147,7 +229,10 @@ codeunit 52121 "12E Payroll Batch Post"
     end;
 
     [TryFunction]
-    local procedure TryPostJournal(PayrollBatchHeader: Record "12E Payroll Batch Header"; var PayrollBatchLine: Record "12E Payroll Batch Line"; var BatchTotal: Decimal)
+    local procedure TryPostJournal(
+        PayrollBatchHeader: Record "12E Payroll Batch Header";
+        var PayrollBatchLine: Record "12E Payroll Batch Line";
+        var BatchTotal: Decimal)
     begin
         CreateJournalLines(PayrollBatchHeader, PayrollBatchLine, BatchTotal);
         CreateBalancingJournalLine(PayrollBatchHeader, BatchTotal);
@@ -209,7 +294,8 @@ codeunit 52121 "12E Payroll Batch Post"
         exit(10000);
     end;
 
-    local procedure TransferToPostedPayroll(var PayrollBatchHeader: Record "12E Payroll Batch Header")
+    local procedure TransferToPostedPayroll(
+        var PayrollBatchHeader: Record "12E Payroll Batch Header")
     var
         PayrollBatchLine: Record "12E Payroll Batch Line";
         PostedPayrollBatchHeader: Record "12E Posted Payroll Header";
@@ -231,11 +317,16 @@ codeunit 52121 "12E Payroll Batch Post"
 
         PayrollBatchHeader.Delete(true);
 
-        if Confirm('Payroll document %1 posted successfully. Do you want to open the posted document?', true, PostedPayrollBatchHeader."No.") then
+        if Confirm(
+            'Payroll document %1 posted successfully. Do you want to open the posted document?',
+            true,
+            PostedPayrollBatchHeader."No.")
+        then
             Page.Run(Page::"12E Posted Payroll Document", PostedPayrollBatchHeader);
     end;
 
-    local procedure GetGLRegisterNo(PayrollBatchHeader: Record "12E Payroll Batch Header"): Integer
+    local procedure GetGLRegisterNo(
+        PayrollBatchHeader: Record "12E Payroll Batch Header"): Integer
     var
         GLEntry: Record "G/L Entry";
         GLRegister: Record "G/L Register";
@@ -268,7 +359,8 @@ codeunit 52121 "12E Payroll Batch Post"
         exit(0);
     end;
 
-    local procedure UpdatePayrollBatchAsPassed(var PayrollBatchHeader: Record "12E Payroll Batch Header")
+    local procedure UpdatePayrollBatchAsPassed(
+        var PayrollBatchHeader: Record "12E Payroll Batch Header")
     var
         PayrollBatch: Record "12E Questco Payroll Batch";
     begin

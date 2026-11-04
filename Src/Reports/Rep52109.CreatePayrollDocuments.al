@@ -62,7 +62,6 @@ report 52109 "12E Create Payroll Documents"
             if PreviewError <> '' then
                 Error(PreviewError);
 
-            Error('Payroll posting preview failed.');
         end;
 
         LoyaltyPreviewContext.SetSuppressPreviewEntries(false);

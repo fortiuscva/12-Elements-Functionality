@@ -1,3 +1,4 @@
+
 report 52109 "12E Create Payroll Documents"
 {
     Caption = 'Create Payroll Documents';
@@ -36,6 +37,10 @@ report 52109 "12E Create Payroll Documents"
                    (EndDate < StartDate)
                 then
                     Error('End Date cannot be earlier than Start Date.');
+
+                if (StartDate <> 0D) or (EndDate <> 0D) then
+                    if (StartDate = 0D) or (EndDate = 0D) then
+                        Error('Start Date and End Date cannot be blank.');
             end;
 
             exit(true);
@@ -45,10 +50,22 @@ report 52109 "12E Create Payroll Documents"
     trigger OnPreReport()
     var
         PayrollBatchMgmt: Codeunit "12E Payroll Batch Mgmt";
+        LoyaltyPreviewContext: Codeunit "12E Suppress Preview Post";
+        PreviewError: Text;
     begin
-        if (StartDate <> 0D) or (EndDate <> 0D) then
-            if (StartDate = 0D) or (EndDate = 0D) then
-                Error('Start Date and End Date cannot be blank.');
+        ValidateDateRange();
+
+        if not TryPreviewPayrollBatches() then begin
+            PreviewError := GetLastErrorText();
+            LoyaltyPreviewContext.SetSuppressPreviewEntries(false);
+
+            if PreviewError <> '' then
+                Error(PreviewError);
+
+            Error('Payroll posting preview failed.');
+        end;
+
+        LoyaltyPreviewContext.SetSuppressPreviewEntries(false);
 
         PayrollBatchMgmt.CreatePayrollBatches(StartDate, EndDate);
     end;
@@ -56,4 +73,27 @@ report 52109 "12E Create Payroll Documents"
     var
         StartDate: Date;
         EndDate: Date;
+
+    local procedure ValidateDateRange()
+    begin
+        if (StartDate <> 0D) or (EndDate <> 0D) then
+            if (StartDate = 0D) or (EndDate = 0D) then
+                Error('Start Date and End Date cannot be blank.');
+
+        if (StartDate <> 0D) and
+           (EndDate <> 0D) and
+           (EndDate < StartDate)
+        then
+            Error('End Date cannot be earlier than Start Date.');
+    end;
+
+    [TryFunction]
+    local procedure TryPreviewPayrollBatches()
+    var
+        PayrollBatchMgmt: Codeunit "12E Payroll Batch Mgmt";
+        LoyaltyPreviewContext: Codeunit "12E Suppress Preview Post";
+    begin
+        LoyaltyPreviewContext.SetSuppressPreviewEntries(true);
+        PayrollBatchMgmt.PreviewPayrollBatches(StartDate, EndDate);
+    end;
 }

@@ -173,6 +173,25 @@ page 52163 "12E LMS Transactions"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the export batch ID.';
                 }
+                field(Source; Rec.Source)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the source of the LMS transaction.';
+                }
+
+                field(JournalEntryID; Rec.JournalEntryID)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Journal Entry ID';
+                    ToolTip = 'Specifies the journal entry ID of the LMS transaction.';
+                }
+
+                field(BankRefID; Rec.BankRefID)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Bank Ref ID';
+                    ToolTip = 'Specifies the bank reference ID of the LMS transaction.';
+                }
             }
         }
     }

@@ -183,6 +183,17 @@ table 52135 "12E LMS Batch"
             Caption = 'Reversed';
             DataClassification = CustomerContent;
         }
+        field(38; Source; Text[20])
+        {
+            Caption = 'Source';
+            DataClassification = CustomerContent;
+        }
+
+        field(39; JournalEntryID; Text[20])
+        {
+            Caption = 'Journal Entry ID';
+            DataClassification = CustomerContent;
+        }
     }
 
     keys

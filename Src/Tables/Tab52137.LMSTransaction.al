@@ -169,6 +169,23 @@ table 52137 "12E LMS Transaction"
             CalcFormula = lookup("12E Posted LMS Trans. Details"."LMS Document No." where("PK ID" = field("PK ID")));
             Editable = false;
         }
+        field(31; Source; Text[20])
+        {
+            Caption = 'Source';
+            DataClassification = CustomerContent;
+        }
+
+        field(32; JournalEntryID; Text[20])
+        {
+            Caption = 'Journal Entry ID';
+            DataClassification = CustomerContent;
+        }
+
+        field(33; BankRefID; Text[20])
+        {
+            Caption = 'Bank Ref ID';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

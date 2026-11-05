@@ -13,7 +13,8 @@ codeunit 52132 "12E LMS Creation Management"
         DataSourceID := GetDataSourceID();
         ValidateCompanyMapping(DataSourceID);
         ValidateTransactions(DataSourceID);
-        ValidatePaymentBatchConflicts(DataSourceID);
+        ValidateNewUniquenessConditions();
+        // ValidatePaymentBatchConflicts(DataSourceID);
         ValidateTransactionBalances(DataSourceID);
         CreateDocuments(DataSourceID);
     end;
@@ -97,6 +98,91 @@ codeunit 52132 "12E LMS Creation Management"
             MarkTransactionGroupFailed(LMSTransaction, StrSubstNo('G/L Account %1 is blocked.', AccountNo));
             exit;
         end;
+    end;
+
+    local procedure ValidateNewUniquenessConditions()
+    var
+        LMSTransaction: Record "12E LMS Transaction";
+        DuplicateTransaction: Record "12E LMS Transaction";
+        DuplicatePKIDs: Text;
+    begin
+        LMSTransaction.Reset();
+        LMSTransaction.SetRange("LMS Transaction Document No.", '');
+        LMSTransaction.SetRange("Posted LMS Trans. Document No.", '');
+
+        if not LMSTransaction.FindSet() then
+            exit;
+
+        repeat
+            if not IsUnprocessedTransaction(LMSTransaction) or IsCurrentRunFailed(LMSTransaction) then
+                continue;
+
+            // Allow transactions without available identification fields.
+            if (LMSTransaction."Payment ID" = 0) and
+               (LMSTransaction.BankRefID = '') and
+               (LMSTransaction."Batch ID" = 0)
+            then
+                continue;
+
+            if (LMSTransaction."Payment ID" <> 0) and
+               (LMSTransaction.JournalEntryID <> '')
+            then begin
+                DuplicateTransaction.Reset();
+                DuplicateTransaction.SetRange("Payment ID", LMSTransaction."Payment ID");
+                DuplicateTransaction.SetRange(JournalEntryID, LMSTransaction.JournalEntryID);
+                DuplicateTransaction.SetRange("LMS Transaction Document No.", '');
+                DuplicateTransaction.SetRange("Posted LMS Trans. Document No.", '');
+
+                if DuplicateTransaction.FindSet() then
+                    repeat
+                        if (DuplicateTransaction."PK ID" <> LMSTransaction."PK ID") and
+                           IsUnprocessedTransaction(DuplicateTransaction) and
+                           not IsCurrentRunFailed(DuplicateTransaction)
+                        then begin
+                            DuplicatePKIDs := StrSubstNo(
+                                '%1, %2',
+                                LMSTransaction."PK ID",
+                                DuplicateTransaction."PK ID");
+
+                            Error(
+                                'Duplicate LMS transaction combination found: Payment ID %1 and Journal Entry ID %2. PK IDs: %3. No LMS transactions were created.',
+                                LMSTransaction."Payment ID",
+                                LMSTransaction.JournalEntryID,
+                                DuplicatePKIDs);
+                        end;
+                    until DuplicateTransaction.Next() = 0;
+
+            end else
+                if (LMSTransaction.BankRefID <> '') and
+                   (LMSTransaction.JournalEntryID <> '')
+                then begin
+                    DuplicateTransaction.Reset();
+                    DuplicateTransaction.SetRange(BankRefID, LMSTransaction.BankRefID);
+                    DuplicateTransaction.SetRange(JournalEntryID, LMSTransaction.JournalEntryID);
+                    DuplicateTransaction.SetRange("LMS Transaction Document No.", '');
+                    DuplicateTransaction.SetRange("Posted LMS Trans. Document No.", '');
+
+                    if DuplicateTransaction.FindSet() then
+                        repeat
+                            if (DuplicateTransaction."PK ID" <> LMSTransaction."PK ID") and
+                               IsUnprocessedTransaction(DuplicateTransaction) and
+                               not IsCurrentRunFailed(DuplicateTransaction)
+                            then begin
+                                DuplicatePKIDs := StrSubstNo(
+                                    '%1, %2',
+                                    LMSTransaction."PK ID",
+                                    DuplicateTransaction."PK ID");
+
+                                Error(
+                                    'Duplicate LMS transaction combination found: Bank Ref ID %1 and Journal Entry ID %2. PK IDs: %3. No LMS transactions were created.',
+                                    LMSTransaction.BankRefID,
+                                    LMSTransaction.JournalEntryID,
+                                    DuplicatePKIDs);
+                            end;
+                        until DuplicateTransaction.Next() = 0;
+                end;
+
+        until LMSTransaction.Next() = 0;
     end;
 
     local procedure ValidatePaymentBatchConflicts(DataSourceID: Integer)
@@ -560,7 +646,8 @@ codeunit 52132 "12E LMS Creation Management"
         DataSourceID := GetDataSourceID();
         ValidateCompanyMapping(DataSourceID);
         ValidateTransactions(DataSourceID);
-        ValidatePaymentBatchConflicts(DataSourceID);
+        ValidateNewUniquenessConditions();
+        // ValidatePaymentBatchConflicts(DataSourceID);
         ValidateTransactionBalances(DataSourceID);
 
         LMSDataQuery.SetRange(Company, CompanyName());
@@ -666,6 +753,7 @@ codeunit 52132 "12E LMS Creation Management"
             LMSTransactionPosting.CleanupPreviewJournalLines();
             if PreviewError <> '' then
                 Error(PreviewError);
+            Error('LMS Transaction posting preview failed.');
         end;
     end;
 }

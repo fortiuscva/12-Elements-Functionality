@@ -161,6 +161,18 @@ page 52161 "12E LMS Batches"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the ERP Error Message field.', Comment = '%';
                 }
+                field(Source; Rec.Source)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the source of the LMS transaction.';
+                }
+
+                field(JournalEntryID; Rec.JournalEntryID)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Journal Entry ID';
+                    ToolTip = 'Specifies the journal entry ID of the LMS transaction.';
+                }
             }
         }
     }

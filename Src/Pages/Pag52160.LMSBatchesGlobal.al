@@ -110,6 +110,18 @@ page 52160 "12E LMS Batches (Global)"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Export Batch ID field.', Comment = '%';
                 }
+                field(Source; Rec.Source)
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the source of the LMS transaction.';
+                }
+
+                field(JournalEntryID; Rec.JournalEntryID)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Journal Entry ID';
+                    ToolTip = 'Specifies the journal entry ID of the LMS transaction.';
+                }
             }
         }
     }

@@ -4,7 +4,7 @@ page 52173 "12E Bank Staging Global"
     Caption = 'Bank Staging (Global)';
     PageType = List;
     SourceTable = "12E Bank Staging";
-    UsageCategory = Lists;
+    UsageCategory = None;
 
     layout
     {

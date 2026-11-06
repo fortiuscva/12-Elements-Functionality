@@ -4,7 +4,7 @@ page 52174 "12E Bank Mapping"
     Caption = 'Bank Mapping';
     PageType = List;
     SourceTable = "12E Bank Mapping";
-    UsageCategory = Lists;
+    UsageCategory = None;
 
     layout
     {

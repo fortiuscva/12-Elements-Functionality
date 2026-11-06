@@ -8,7 +8,7 @@ table 52145 "12E Bank Mapping"
 
     fields
     {
-        field(1; DdaAccount; Integer)
+        field(1; DdaAccount; Code[20])
         {
             Caption = 'DdaAccount';
             DataClassification = CustomerContent;

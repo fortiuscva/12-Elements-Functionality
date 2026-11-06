@@ -23,7 +23,7 @@ table 52144 "12E Bank Staging"
             Caption = 'Portfolio';
             DataClassification = CustomerContent;
         }
-        field(4; DdaAccount; Integer)
+        field(4; DdaAccount; Code[20])
         {
             Caption = 'Bank Account No.';
             DataClassification = CustomerContent;
@@ -35,7 +35,7 @@ table 52144 "12E Bank Staging"
             Caption = 'Transaction Date';
             DataClassification = CustomerContent;
         }
-        field(6; "Check No."; Integer)
+        field(6; "Check No."; Code[20])
         {
             Caption = 'Check No.';
             DataClassification = CustomerContent;

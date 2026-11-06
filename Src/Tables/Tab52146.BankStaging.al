@@ -1,4 +1,4 @@
-table 52144 "12E Bank Staging"
+table 52146 "12E Bank Staging"
 {
     Caption = 'Bank Staging';
     DataClassification = CustomerContent;

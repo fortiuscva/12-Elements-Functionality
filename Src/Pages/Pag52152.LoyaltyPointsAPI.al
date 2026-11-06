@@ -6,7 +6,7 @@ page 52152 "12E Loyalty Points API"
     ApplicationArea = All;
     Caption = 'loyaltyPointsAPI';
     DelayedInsert = true;
-    EntityName = 'loyaltyPoint';
+    EntityName = 'loyaltyPoints';
     EntitySetName = 'loyaltyPoints';
     PageType = API;
     SourceTable = "12E Loyalty Points";

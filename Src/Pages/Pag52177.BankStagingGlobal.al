@@ -1,4 +1,4 @@
-page 52173 "12E Bank Staging Global"
+page 52177 "12E Bank Staging Global"
 {
     ApplicationArea = All;
     Caption = 'Bank Staging (Global)';

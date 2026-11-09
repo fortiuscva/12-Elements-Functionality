@@ -1,4 +1,4 @@
-page 52174 "12E Bank Mapping"
+page 52178 "12E Bank Mapping"
 {
     ApplicationArea = All;
     Caption = 'Bank Mapping';

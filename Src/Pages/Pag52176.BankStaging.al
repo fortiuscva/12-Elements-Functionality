@@ -1,7 +1,7 @@
 page 52176 "12E Bank Staging"
 {
     ApplicationArea = All;
-    Caption = '12E Bank Staging';
+    Caption = 'Bank Staging';
     PageType = List;
     SourceTable = "12E Bank Staging";
     UsageCategory = None;

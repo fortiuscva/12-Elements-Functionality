@@ -1,13 +1,14 @@
-page 52174 "CCD Role Center"
+page 52180 "12E Role Center"
 {
-    Caption = 'CCD Role Center';
+    ApplicationArea = All;
+    Caption = 'Role Center';
     PageType = RoleCenter;
 
     layout
     {
         area(rolecenter)
         {
-            part(CCDCue; "12E CCD Cue")
+            part(IntegrationRoleCenter; "12E Intg. RoleCenter")
             {
                 ApplicationArea = All;
             }

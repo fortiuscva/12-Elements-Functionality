@@ -1,0 +1,5 @@
+profile "12E Payroll Role Center Profile"
+{
+    Caption = 'Payroll Role Center';
+    RoleCenter = "12E Payroll Role Center";
+}

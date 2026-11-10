@@ -31,11 +31,18 @@ table 52145 "12E Bank Mapping"
                 BankAccountList: Page "Bank Account List";
             begin
                 BankAccount.Reset();
-                BankAccount.ChangeCompany(Company);
+
+                if Company <> '' then
+                    if not BankAccount.ChangeCompany(Company) then
+                        Error('Unable to access company %1.', Company);
+
+                BankAccountList.LookupMode(true);
                 BankAccountList.SetTableView(BankAccount);
+
                 if BankAccountList.RunModal() = Action::LookupOK then begin
-                    // BankAccountList.GetRecord(BankAccount);
-                    Validate("Bank Account No.", BankAccount."No.");
+                    BankAccountList.GetRecord(BankAccount);
+
+                    "Bank Account No." := BankAccount."No.";
                 end;
             end;
         }

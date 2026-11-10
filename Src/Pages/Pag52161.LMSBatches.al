@@ -289,6 +289,7 @@ page 52161 "12E LMS Batches"
     }
 
     trigger OnOpenPage()
+
     var
         CompanyMapping: Record "12E Company Mapping";
     begin

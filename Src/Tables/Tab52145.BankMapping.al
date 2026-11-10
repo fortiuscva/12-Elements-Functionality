@@ -61,6 +61,13 @@ table 52145 "12E Bank Mapping"
             Caption = 'Balance at Date';
             DataClassification = CustomerContent;
         }
+        field(7; "Bank Account Name"; Code[100])
+        {
+            CalcFormula = lookup("Bank Account"."Search Name" where("No." = field("Bank Account No.")));
+            Caption = 'Bank Account Name';
+            Editable = false;
+            FieldClass = FlowField;
+        }
     }
     keys
     {

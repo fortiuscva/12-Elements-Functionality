@@ -27,6 +27,12 @@ page 52178 "12E Bank Mapping"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Bank Account No. field.', Comment = '%';
                 }
+                field("Bank Account Name"; Rec."Bank Account Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Bank Account Name field.', Comment = '%';
+                }
                 field(Balance; Rec.Balance)
                 {
                     ApplicationArea = All;

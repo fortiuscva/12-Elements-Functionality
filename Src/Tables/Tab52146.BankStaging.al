@@ -62,6 +62,10 @@ table 52146 "12E Bank Staging"
         {
             Clustered = true;
         }
+        key(key2; DdaAccount, "Transaction Date")
+        {
+            SumIndexFields = Amount;
+        }
     }
     fieldgroups
     {

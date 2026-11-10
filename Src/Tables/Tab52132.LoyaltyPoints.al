@@ -3,7 +3,8 @@ table 52132 "12E Loyalty Points"
     Caption = 'Loyalty Points';
     DataClassification = CustomerContent;
     DataPerCompany = false;
-
+    LookupPageId = "12E Loyalty Points";
+    DrillDownPageId = "12E Loyalty Points";
     fields
     {
         field(1; "PK ID"; Integer)

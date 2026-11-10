@@ -36,16 +36,19 @@ page 52178 "12E Bank Mapping"
                 field(Balance; Rec.Balance)
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Balance field.', Comment = '%';
                 }
                 field("Balance at Date"; Rec."Balance at Date")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Balance at Date field.', Comment = '%';
                 }
                 field("Net Change"; Rec."Net Change")
                 {
                     ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Net Change field.', Comment = '%';
                 }
             }

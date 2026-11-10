@@ -43,30 +43,44 @@ table 52145 "12E Bank Mapping"
                     BankAccountList.GetRecord(BankAccount);
 
                     "Bank Account No." := BankAccount."No.";
+                    "Bank Account Name" := BankAccount.Name;
                 end;
             end;
         }
         field(4; "Net Change"; Decimal)
         {
+            CalcFormula = sum("12E Bank Staging".Amount where(DdaAccount = field(DdaAccount),
+                                                            "Transaction Date" = field("Date Filter")));
             Caption = 'Net Change';
-            DataClassification = CustomerContent;
+            Editable = false;
+            FieldClass = FlowField;
         }
         field(5; Balance; Decimal)
         {
+            CalcFormula = sum("12E Bank Staging".Amount where(DdaAccount = field(DdaAccount)));
             Caption = 'Balance';
-            DataClassification = CustomerContent;
+            Editable = false;
+            FieldClass = FlowField;
         }
         field(6; "Balance at Date"; Decimal)
         {
+            CalcFormula = sum("12E Bank Staging".Amount where(DdaAccount = field(DdaAccount),
+                                                            "Transaction Date" = field(upperlimit("Date Filter"))));
             Caption = 'Balance at Date';
-            DataClassification = CustomerContent;
-        }
-        field(7; "Bank Account Name"; Code[100])
-        {
-            CalcFormula = lookup("Bank Account"."Search Name" where("No." = field("Bank Account No.")));
-            Caption = 'Bank Account Name';
             Editable = false;
             FieldClass = FlowField;
+
+        }
+        field(7; "Bank Account Name"; Text[100])
+        {
+            Caption = 'Bank Account Name';
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(8; "Date Filter"; Date)
+        {
+            Caption = 'Date Filter';
+            FieldClass = FlowFilter;
         }
     }
     keys

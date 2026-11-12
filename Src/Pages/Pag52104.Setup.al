@@ -255,6 +255,16 @@ page 52104 "12E Setup"
                     }
                 }
             }
+            group(BankingSetup)
+            {
+                Caption = 'Banking';
+
+                field("Banking PK ID"; Rec."Banking PK ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the number series used to generate Banking PK IDs.';
+                }
+            }
         }
     }
     actions
@@ -271,6 +281,19 @@ page 52104 "12E Setup"
                     Caption = 'Company Mappings';
                     Image = MapAccounts;
                     RunObject = page "12E Company Mappings";
+                }
+            }
+            group(Banking)
+            {
+                Caption = 'Banking';
+                Image = Bank;
+
+                action(BankMapping)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Bank Mapping';
+                    Image = MapAccounts;
+                    RunObject = page "12E Bank Mapping";
                 }
             }
             group(StagingGlobal)
@@ -324,6 +347,13 @@ page 52104 "12E Setup"
                     Caption = 'LMS Transactions Global';
                     Image = Navigate;
                     RunObject = page "12E LMS Transactions Global";
+                }
+                action(BankStagingGlobal)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Bank Staging Global';
+                    Image = Navigate;
+                    RunObject = page "12E Bank Staging Global";
                 }
             }
             group(CCDistribution)
@@ -385,6 +415,14 @@ page 52104 "12E Setup"
                 {
                 }
             }
+            group(Category_Banking)
+            {
+                Caption = 'Banking';
+
+                actionref(BankMapping_Promoted; BankMapping)
+                {
+                }
+            }
             group(Category_Staging)
             {
                 Caption = 'Staging (Global)';
@@ -410,6 +448,9 @@ page 52104 "12E Setup"
                 }
 
                 actionref(LMSTransactionsGlobal_Promoted; LMSTransactionsGlobal)
+                {
+                }
+                actionref(BankStagingGlobal_Promoted; BankStagingGlobal)
                 {
                 }
             }

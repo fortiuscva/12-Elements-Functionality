@@ -4,7 +4,7 @@ page 52176 "12E Bank Staging"
     Caption = 'Bank Staging';
     PageType = List;
     SourceTable = "12E Bank Staging";
-    UsageCategory = None;
+    UsageCategory = Lists;
 
     layout
     {
@@ -57,6 +57,51 @@ page 52176 "12E Bank Staging"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Current Balance field.', Comment = '%';
                 }
+                field("Reconciliation Journal Line No."; Rec."Reconciliation Journal Line No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the reconciliation journal line associated with this Banking PK ID.';
+                }
+
+                field("Bank Ledger Entry No."; Rec."Bank Ledger Entry No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the bank ledger entry associated with this Banking PK ID.';
+                }
+            }
+        }
+    }
+    actions
+    {
+        area(Processing)
+        {
+            action(ExportBankStaging)
+            {
+                ApplicationArea = All;
+                Caption = 'Export to Excel';
+                Image = ExportToExcel;
+
+                trigger OnAction()
+                var
+                    BankStagingExcelMgt: Codeunit "12E Bank Staging Excel Mgt.";
+                begin
+                    BankStagingExcelMgt.ExportBankStaging(Rec);
+                end;
+            }
+
+            action(ImportBankStaging)
+            {
+                ApplicationArea = All;
+                Caption = 'Import from Excel';
+                Image = ImportExcel;
+
+                trigger OnAction()
+                var
+                    BankStagingExcelMgt: Codeunit "12E Bank Staging Excel Mgt.";
+                begin
+                    BankStagingExcelMgt.ImportBankStaging();
+                    CurrPage.Update(false);
+                end;
             }
         }
     }

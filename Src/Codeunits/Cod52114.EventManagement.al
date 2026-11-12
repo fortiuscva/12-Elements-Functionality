@@ -346,4 +346,26 @@ codeunit 52114 "12E Event Management"
 
     end;
 
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Bank Acc. Reconciliation Post", 'OnPostPaymentApplicationsOnAfterInitGenJnlLine', '', false, false)]
+    local procedure OnPostPaymentApplicationsOnAfterInitGenJnlLine(
+       var GenJournalLine: Record "Gen. Journal Line";
+       BankAccReconciliationLine: Record "Bank Acc. Reconciliation Line";
+       var IsApplied: Boolean;
+       var AppliedAmount: Decimal;
+       var PaymentLineAmount: Decimal;
+       var IsHandled: Boolean)
+    begin
+        if BankAccReconciliationLine."Banking PK ID" <> '' then
+            GenJournalLine."Banking PK ID" := BankAccReconciliationLine."Banking PK ID";
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Bank Account Ledger Entry", 'OnAfterCopyFromGenJnlLine', '', false, false)]
+    local procedure OnAfterCopyFromGenJnlLine(
+        var BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
+        GenJournalLine: Record "Gen. Journal Line")
+    begin
+        if GenJournalLine."Banking PK ID" <> '' then
+            BankAccountLedgerEntry."Banking PK ID" := GenJournalLine."Banking PK ID";
+    end;
+
 }

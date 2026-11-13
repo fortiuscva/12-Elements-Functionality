@@ -255,16 +255,6 @@ page 52104 "12E Setup"
                     }
                 }
             }
-            group(BankingSetup)
-            {
-                Caption = 'Banking';
-
-                field("Banking PK ID"; Rec."Banking PK ID")
-                {
-                    ApplicationArea = All;
-                    ToolTip = 'Specifies the number series used to generate Banking PK IDs.';
-                }
-            }
         }
     }
     actions
@@ -294,6 +284,20 @@ page 52104 "12E Setup"
                     Caption = 'Bank Mapping';
                     Image = MapAccounts;
                     RunObject = page "12E Bank Mapping";
+                }
+            }
+            group(Global)
+            {
+                Caption = 'Global';
+                Image = Setup;
+
+                action(GlobalSetup)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Global Setup';
+                    Image = Setup;
+                    RunObject = page "12E Global Setup";
+                    ToolTip = 'Opens the 12E Global Setup.';
                 }
             }
             group(StagingGlobal)
@@ -420,6 +424,14 @@ page 52104 "12E Setup"
                 Caption = 'Banking';
 
                 actionref(BankMapping_Promoted; BankMapping)
+                {
+                }
+            }
+            group(Category_Global)
+            {
+                Caption = 'Global';
+
+                actionref(GlobalSetup_Promoted; GlobalSetup)
                 {
                 }
             }

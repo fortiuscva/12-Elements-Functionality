@@ -57,7 +57,7 @@ page 52177 "12E Bank Staging Global"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Current Balance field.', Comment = '%';
                 }
-                field("Reconciliation Journal Line No."; Rec."Reconciliation Journal Line No.")
+                field("Reconciliation Journal Line No."; Rec."Reconciliation Jnl Line No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the reconciliation journal line associated with this Banking PK ID.';
@@ -67,6 +67,11 @@ page 52177 "12E Bank Staging Global"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the bank ledger entry associated with this Banking PK ID.';
+                }
+                field("Processed in Company"; Rec."Processed in Company")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the reconciliation journal line associated with this Processed in Company.';
                 }
             }
         }

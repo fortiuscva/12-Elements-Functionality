@@ -235,12 +235,6 @@ table 52104 "12E Setup"
             TableRelation = Dimension.Code;
             DataClassification = CustomerContent;
         }
-        field(61; "Banking PK ID"; Code[20])
-        {
-            Caption = 'Banking PK ID';
-            TableRelation = "No. Series";
-            DataClassification = CustomerContent;
-        }
     }
     keys
     {

@@ -97,4 +97,32 @@ table 52145 "12E Bank Mapping"
         fieldgroup(DropDown; DdaAccount, Company, "Bank Account No.")
         { }
     }
+
+
+    trigger OnModify()
+    var
+        UserSetup: Record "User Setup";
+        BankStaging: Record "12E Bank Staging";
+    begin
+        if (xRec.Company = Company) and
+           (xRec.DdaAccount = DdaAccount) and
+           (xRec."Bank Account No." = "Bank Account No.")
+        then
+            exit;
+
+        if UserSetup.Get(UserId()) then
+            if UserSetup."12E Allow Bank Mapping Mod." then
+                exit;
+
+        BankStaging.Reset();
+        BankStaging.SetRange(DdaAccount, xRec.DdaAccount);
+        BankStaging.SetFilter("Reconciliation Jnl Line No.", '<>%1', 0);
+        BankStaging.SetFilter("Bank Ledger Entry No.", '<>%1', 0);
+
+        if BankStaging.FindFirst() then
+            Error(
+                'Bank Mapping cannot be modified because processed banking transactions exist for DDA Account No. %1. Contact your administrator for permission.',
+                xRec.DdaAccount);
+    end;
+
 }

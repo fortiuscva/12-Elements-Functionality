@@ -1,3 +1,4 @@
+
 page 52176 "12E Bank Staging"
 {
     ApplicationArea = All;
@@ -57,16 +58,20 @@ page 52176 "12E Bank Staging"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Current Balance field.', Comment = '%';
                 }
-                field("Reconciliation Journal Line No."; Rec."Reconciliation Journal Line No.")
+                field("Reconciliation Journal Line No."; Rec."Reconciliation Jnl Line No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the reconciliation journal line associated with this Banking PK ID.';
                 }
-
                 field("Bank Ledger Entry No."; Rec."Bank Ledger Entry No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the bank ledger entry associated with this Banking PK ID.';
+                }
+                field("Processed in Company"; Rec."Processed in Company")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the reconciliation journal line associated with this Processed in Company.';
                 }
             }
         }
@@ -104,7 +109,22 @@ page 52176 "12E Bank Staging"
                 end;
             }
         }
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(ExportBankStaging_Promoted; ExportBankStaging)
+                {
+                }
+                actionref(ImportBankStaging_Promoted; ImportBankStaging)
+                {
+                }
+            }
+        }
     }
+
     trigger OnOpenPage()
     var
         CompanyMapping: Record "12E Company Mapping";

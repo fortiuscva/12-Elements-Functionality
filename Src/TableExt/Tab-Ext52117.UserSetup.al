@@ -1,3 +1,4 @@
+
 tableextension 52117 "12E User Setup" extends "User Setup"
 {
     fields
@@ -30,6 +31,11 @@ tableextension 52117 "12E User Setup" extends "User Setup"
         field(52105; "12E Allow LMS Trans. Reversal"; Boolean)
         {
             Caption = 'Allow LMS Transaction Reversal';
+            DataClassification = CustomerContent;
+        }
+        field(52106; "12E Allow Bank Mapping Mod."; Boolean)
+        {
+            Caption = 'Allow Bank Mapping Modifications';
             DataClassification = CustomerContent;
         }
     }

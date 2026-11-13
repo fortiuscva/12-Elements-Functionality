@@ -12,21 +12,21 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
 
         AddExcelHeader(TempExcelBuffer);
 
-        if BankStaging.FindSet() then
-            repeat
-                TempExcelBuffer.NewRow();
+        // if BankStaging.FindSet() then
+        //     repeat
+        //         TempExcelBuffer.NewRow();
 
-                //TempExcelBuffer.AddColumn(BankStaging.PKID, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                TempExcelBuffer.AddColumn(BankStaging."Datasource ID", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
-                TempExcelBuffer.AddColumn(BankStaging.Portfolio, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                TempExcelBuffer.AddColumn(BankStaging.DdaAccount, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                TempExcelBuffer.AddColumn(BankStaging."Transaction Date", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Date);
-                TempExcelBuffer.AddColumn(BankStaging."Check No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                TempExcelBuffer.AddColumn(BankStaging."Transaction Description", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-                TempExcelBuffer.AddColumn(BankStaging.Amount, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
-                TempExcelBuffer.AddColumn(BankStaging."Current Balance", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
-            //TempExcelBuffer.AddColumn(BankStaging."Entry No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
-            until BankStaging.Next() = 0;
+        //         //TempExcelBuffer.AddColumn(BankStaging.PKID, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging."Datasource ID", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
+        //         TempExcelBuffer.AddColumn(BankStaging.Portfolio, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging.DdaAccount, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging."Transaction Date", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Date);
+        //         TempExcelBuffer.AddColumn(BankStaging."Check No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging."Transaction Description", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging.Amount, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
+        //         TempExcelBuffer.AddColumn(BankStaging."Current Balance", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
+        //     //TempExcelBuffer.AddColumn(BankStaging."Entry No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
+        //     until BankStaging.Next() = 0;
 
         TempExcelBuffer.CreateNewBook(SheetName);
         TempExcelBuffer.WriteSheet(SheetName, CompanyName(), UserId());
@@ -38,7 +38,7 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
     procedure ImportBankStaging()
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
-        Setup: Record "12E Setup";
+        GlobalSetup: Record "12E Global Setup";
         CompanyMapping: Record "12E Company Mapping";
         BankStaging: Record "12E Bank Staging";
         NoSeries: Codeunit "No. Series";
@@ -54,11 +54,11 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
         CurrentBalance: Decimal;
         CellValue: Text;
     begin
-        if not Setup.Get() then
-            Error('12 Elements Consulting Setup is not configured.');
+        if not GlobalSetup.Get() then
+            Error('12EC Global Setup is not configured.');
 
-        if Setup."Banking PK ID" = '' then
-            Error('Please configure Banking PK ID No. Series in 12 Elements Consulting Setup.');
+        if GlobalSetup."Manual Banking Entry PK ID's" = '' then
+            Error('Please configure Manual Banking Entry PK ID''s in 12EC Global Setup.');
 
         CompanyMapping.SetRange(Company, CompanyName());
         CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
@@ -126,7 +126,7 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
                 BankStaging.Init();
                 BankStaging."Entry No." := 0;
                 BankStaging.PKID :=
-                    NoSeries.GetNextNo(Setup."Banking PK ID", WorkDate());
+                    NoSeries.GetNextNo(GlobalSetup."Manual Banking Entry PK ID's", WorkDate());
 
                 BankStaging."Datasource ID" := DatasourceID;
                 BankStaging.Portfolio :=

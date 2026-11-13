@@ -8,7 +8,7 @@ table 52146 "12E Bank Staging"
 
     fields
     {
-        field(1; PKID; Integer)
+        field(1; PKID; code[20])
         {
             Caption = 'PKID';
             DataClassification = CustomerContent;
@@ -55,10 +55,32 @@ table 52146 "12E Bank Staging"
             Caption = 'Current Balance';
             DataClassification = CustomerContent;
         }
+        field(10; "Entry No."; Integer)
+        {
+            Caption = 'Entry No.';
+            DataClassification = CustomerContent;
+            AutoIncrement = true;
+        }
+        field(11; "Reconciliation Journal Line No."; Integer)
+        {
+            Caption = 'Reconciliation Journal Line No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Bank Acc. Reconciliation Line"."Statement Line No."
+                where("Banking PK ID" = field(PKID)));
+            Editable = false;
+        }
+        field(12; "Bank Ledger Entry No."; Integer)
+        {
+            Caption = 'Bank Ledger Entry No.';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Bank Account Ledger Entry"."Entry No."
+                where("Banking PK ID" = field(PKID)));
+            Editable = false;
+        }
     }
     keys
     {
-        key(PK; PKID)
+        key(PK; "Entry No.")
         {
             Clustered = true;
         }

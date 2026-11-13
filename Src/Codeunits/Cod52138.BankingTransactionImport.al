@@ -6,6 +6,7 @@ codeunit 52138 "12E Banking Transaction Import"
         BankStaging: Record "12E Bank Staging";
         BankStagingList: Page "12E Bank Staging";
         BankAccReconciliationLine: Record "Bank Acc. Reconciliation Line";
+        BankMapping: Record "12E Bank Mapping";
         NextLineNo: Integer;
         ImportedCount: Integer;
     begin
@@ -16,7 +17,7 @@ codeunit 52138 "12E Banking Transaction Import"
             Error('Statement No. is missing from the current Payment Reconciliation Journal.');
 
         BankStaging.Reset();
-        BankStaging.SetRange("Reconciliation Journal Line No.", 0);
+        BankStaging.SetRange("Reconciliation Jnl Line No.", 0);
         BankStaging.SetRange("Bank Ledger Entry No.", 0);
 
         BankStagingList.SetTableView(BankStaging);
@@ -29,6 +30,19 @@ codeunit 52138 "12E Banking Transaction Import"
 
         if not BankStaging.FindSet() then
             exit;
+
+        repeat
+            if not BankMapping.Get(BankStaging.DdaAccount) then
+                Error(
+                    'Bank Mapping do not exists for DDA Account No. %1',
+                    BankStaging.DdaAccount);
+
+            if BankMapping.Company <> CompanyName() then
+                Error(
+                    'There are transactions selected for Bank which is not associated to this company.');
+        until BankStaging.Next() = 0;
+
+        BankStaging.FindSet(true);
 
         BankAccReconciliationLine.Reset();
         BankAccReconciliationLine.SetRange("Statement Type", StatementType);
@@ -54,6 +68,11 @@ codeunit 52138 "12E Banking Transaction Import"
             BankAccReconciliationLine.Validate("Statement Amount", BankStaging.Amount);
             BankAccReconciliationLine."Banking PK ID" := BankStaging.PKID;
             BankAccReconciliationLine.Insert(true);
+
+            BankStaging."Reconciliation Jnl Line No." := BankAccReconciliationLine."Statement Line No.";
+            BankStaging."Processed in Company" := CompanyName();
+
+            BankStaging.Modify(true);
 
             NextLineNo += 10000;
             ImportedCount += 1;

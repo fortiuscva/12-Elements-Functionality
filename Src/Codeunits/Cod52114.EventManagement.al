@@ -360,12 +360,37 @@ codeunit 52114 "12E Event Management"
     end;
 
     [EventSubscriber(ObjectType::Table, Database::"Bank Account Ledger Entry", 'OnAfterCopyFromGenJnlLine', '', false, false)]
-    local procedure OnAfterCopyFromGenJnlLine(
-        var BankAccountLedgerEntry: Record "Bank Account Ledger Entry";
-        GenJournalLine: Record "Gen. Journal Line")
+    local procedure OnAfterCopyFromGenJnlLine(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
+    var
+        BankStaging: Record "12E Bank Staging";
     begin
-        if GenJournalLine."Banking PK ID" <> '' then
+        if GenJournalLine."Banking PK ID" <> '' then begin
             BankAccountLedgerEntry."Banking PK ID" := GenJournalLine."Banking PK ID";
+
+            BankStaging.SetRange(PKID, GenJournalLine."Banking PK ID");
+
+            if BankStaging.FindFirst() then begin
+                BankStaging."Bank Ledger Entry No." := BankAccountLedgerEntry."Entry No.";
+                BankStaging.Modify(true);
+            end;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Table, Database::"Bank Acc. Reconciliation Line", 'OnAfterDeleteEvent', '', false, false)]
+    local procedure OnAfterDeleteBankAccReconciliationLine(var Rec: Record "Bank Acc. Reconciliation Line"; RunTrigger: Boolean)
+    var
+        BankStaging: Record "12E Bank Staging";
+    begin
+        if Rec."Banking PK ID" = '' then
+            exit;
+
+        BankStaging.SetRange(PKID, Rec."Banking PK ID");
+        BankStaging.SetRange("Reconciliation Jnl Line No.", Rec."Statement Line No.");
+
+        if BankStaging.FindFirst() then begin
+            BankStaging."Reconciliation Jnl Line No." := 0;
+            BankStaging.Modify(true);
+        end;
     end;
 
 }

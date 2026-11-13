@@ -61,20 +61,22 @@ table 52146 "12E Bank Staging"
             DataClassification = CustomerContent;
             AutoIncrement = true;
         }
-        field(11; "Reconciliation Journal Line No."; Integer)
+        field(11; "Reconciliation Jnl Line No."; Integer)
         {
             Caption = 'Reconciliation Journal Line No.';
-            FieldClass = FlowField;
-            CalcFormula = lookup("Bank Acc. Reconciliation Line"."Statement Line No."
-                where("Banking PK ID" = field(PKID)));
+            DataClassification = CustomerContent;
             Editable = false;
         }
         field(12; "Bank Ledger Entry No."; Integer)
         {
             Caption = 'Bank Ledger Entry No.';
-            FieldClass = FlowField;
-            CalcFormula = lookup("Bank Account Ledger Entry"."Entry No."
-                where("Banking PK ID" = field(PKID)));
+            DataClassification = CustomerContent;
+            Editable = false;
+        }
+        field(13; "Processed in Company"; Text[30])
+        {
+            Caption = 'Processed in Company';
+            DataClassification = CustomerContent;
             Editable = false;
         }
     }

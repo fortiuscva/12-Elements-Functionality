@@ -1,3 +1,4 @@
+
 pageextension 52108 "12E User Setup" extends "User Setup"
 {
     layout
@@ -35,7 +36,11 @@ pageextension 52108 "12E User Setup" extends "User Setup"
                 ApplicationArea = All;
                 ToolTip = 'Specifies the value of the Allow LMS Transaction Reversal.', Comment = '%';
             }
-
+            field("12E Allow Bank Mapping Modifications"; Rec."12E Allow Bank Mapping Mod.")
+            {
+                ApplicationArea = All;
+                ToolTip = 'Specifies whether the user can modify bank mappings when processed banking transactions exist.';
+            }
         }
     }
 }

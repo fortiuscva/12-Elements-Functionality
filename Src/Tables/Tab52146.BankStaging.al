@@ -25,7 +25,7 @@ table 52146 "12E Bank Staging"
         }
         field(4; DdaAccount; Code[20])
         {
-            Caption = 'Bank Account No.';
+            Caption = 'DdaAccount';
             DataClassification = CustomerContent;
             TableRelation = "12E Bank Mapping".DdaAccount;
             ValidateTableRelation = false;

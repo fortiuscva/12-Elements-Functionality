@@ -25,27 +25,27 @@ table 52145 "12E Bank Mapping"
             DataClassification = CustomerContent;
             TableRelation = "Bank Account"."No.";
             ValidateTableRelation = false;
-            trigger OnLookup()
-            var
-                BankAccount: Record "Bank Account";
-                BankAccountList: Page "Bank Account List";
-            begin
-                BankAccount.Reset();
+            // trigger OnLookup()
+            // var
+            //     BankAccount: Record "Bank Account";
+            //     BankAccountList: Page "Bank Account List";
+            // begin
+            //     BankAccount.Reset();
 
-                if Company <> '' then
-                    if not BankAccount.ChangeCompany(Company) then
-                        Error('Unable to access company %1.', Company);
+            //     if Company <> '' then
+            //         if not BankAccount.ChangeCompany(Company) then
+            //             Error('Unable to access company %1.', Company);
 
-                BankAccountList.LookupMode(true);
-                BankAccountList.SetTableView(BankAccount);
+            //     BankAccountList.LookupMode(true);
+            //     BankAccountList.SetTableView(BankAccount);
 
-                if BankAccountList.RunModal() = Action::LookupOK then begin
-                    BankAccountList.GetRecord(BankAccount);
+            //     if BankAccountList.RunModal() = Action::LookupOK then begin
+            //         BankAccountList.GetRecord(BankAccount);
 
-                    "Bank Account No." := BankAccount."No.";
-                    "Bank Account Name" := BankAccount.Name;
-                end;
-            end;
+            //         "Bank Account No." := BankAccount."No.";
+            //         "Bank Account Name" := BankAccount.Name;
+            //     end;
+            // end;
         }
         field(4; "Net Change"; Decimal)
         {

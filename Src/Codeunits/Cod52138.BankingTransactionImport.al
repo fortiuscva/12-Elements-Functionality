@@ -60,6 +60,8 @@ codeunit 52138 "12E Banking Transaction Import"
             BankAccReconciliationLine.Validate("Bank Account No.", BankAccountNo);
             BankAccReconciliationLine.Validate("Statement No.", StatementNo);
             BankAccReconciliationLine.Validate("Statement Line No.", NextLineNo);
+            BankAccReconciliationLine.Validate("Account Type", BankAccReconciliationLine."Account Type"::"G/L Account");
+            BankAccReconciliationLine.Validate("Account No.", GetGLAccount(BankAccountNo));
             BankAccReconciliationLine.Validate("Transaction Date", BankStaging."Transaction Date");
             BankAccReconciliationLine.Validate("Document No.", BankStaging."Check No.");
             BankAccReconciliationLine.Validate(
@@ -79,5 +81,14 @@ codeunit 52138 "12E Banking Transaction Import"
         until BankStaging.Next() = 0;
 
         Message('%1 Banking transactions imported successfully.', ImportedCount);
+    end;
+
+    local procedure GetGLAccount(BankAccountNo: Code[20]): Code[20]
+    var
+        BankAccountPostingGroup: Record "Bank Account Posting Group";
+    begin
+        if not BankAccountPostingGroup.Get(BankAccountNo) then
+            exit('');
+        exit(BankAccountPostingGroup."G/L Account No.");
     end;
 }

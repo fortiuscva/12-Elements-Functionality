@@ -7,6 +7,7 @@ codeunit 52138 "12E Banking Transaction Import"
         BankStagingList: Page "12E Bank Staging";
         BankAccReconciliationLine: Record "Bank Acc. Reconciliation Line";
         BankMapping: Record "12E Bank Mapping";
+        BankMappingErrLbl: Label 'Bank Mapping does not exist for this Bank Account No. %1';
         NextLineNo: Integer;
         ImportedCount: Integer;
     begin
@@ -16,7 +17,16 @@ codeunit 52138 "12E Banking Transaction Import"
         if StatementNo = '' then
             Error('Statement No. is missing from the current Payment Reconciliation Journal.');
 
+        BankMapping.Reset();
+        BankMapping.SetRange("Bank Account No.", BankAccountNo);
+        if not BankMapping.FindFirst() then
+            Error(StrSubstNo(BankMappingErrLbl, BankAccountNo));
+
+        if BankMapping.Company <> CompanyName() then
+            Error('The company in Bank Mapping (%1) does not match the current company (%2).', BankMapping.Company, CompanyName());
+
         BankStaging.Reset();
+        BankStaging.SetRange(DdaAccount, BankMapping.DdaAccount);
         BankStaging.SetRange("Reconciliation Jnl Line No.", 0);
         BankStaging.SetRange("Bank Ledger Entry No.", 0);
 
@@ -28,21 +38,8 @@ codeunit 52138 "12E Banking Transaction Import"
 
         BankStagingList.SetSelectionFilter(BankStaging);
 
-        if not BankStaging.FindSet() then
+        if not BankStaging.FindSet(true) then
             exit;
-
-        repeat
-            if not BankMapping.Get(BankStaging.DdaAccount) then
-                Error(
-                    'Bank Mapping do not exists for DDA Account No. %1',
-                    BankStaging.DdaAccount);
-
-            if BankMapping.Company <> CompanyName() then
-                Error(
-                    'There are transactions selected for Bank which is not associated to this company.');
-        until BankStaging.Next() = 0;
-
-        BankStaging.FindSet(true);
 
         BankAccReconciliationLine.Reset();
         BankAccReconciliationLine.SetRange("Statement Type", StatementType);
@@ -62,6 +59,8 @@ codeunit 52138 "12E Banking Transaction Import"
             BankAccReconciliationLine.Validate("Statement Line No.", NextLineNo);
             BankAccReconciliationLine.Validate("Account Type", BankAccReconciliationLine."Account Type"::"G/L Account");
             BankAccReconciliationLine.Validate("Account No.", GetGLAccount(BankAccountNo));
+            if BankAccReconciliationLine.Difference <> 0 then
+                BankAccReconciliationLine.TransferRemainingAmountToAccount();
             BankAccReconciliationLine.Validate("Transaction Date", BankStaging."Transaction Date");
             BankAccReconciliationLine.Validate("Document No.", BankStaging."Check No.");
             BankAccReconciliationLine.Validate(

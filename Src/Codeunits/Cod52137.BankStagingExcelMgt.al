@@ -125,8 +125,7 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
 
                 BankStaging.Init();
                 BankStaging."Entry No." := 0;
-                BankStaging.PKID :=
-                    NoSeries.GetNextNo(GlobalSetup."Manual Banking Entry PK ID's", WorkDate());
+                BankStaging.PKID := GetNextManualBankingPKID();
 
                 BankStaging."Datasource ID" := DatasourceID;
                 BankStaging.Portfolio :=
@@ -194,5 +193,25 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
             exit(TempExcelBuffer."Cell Value as Text");
 
         exit('');
+    end;
+
+    local procedure GetNextManualBankingPKID(): Code[20]
+    var
+        GlobalSetup: Record "12E Global Setup";
+    begin
+        GlobalSetup.LockTable();
+
+        if not GlobalSetup.Get() then
+            Error('12E Global Setup is not configured.');
+
+        if GlobalSetup."Manual Banking Entry PK ID's" = '' then
+            Error('Please configure Manual Banking Entry PK ID''s in 12E Global Setup.');
+
+        GlobalSetup."Manual Banking Entry PK ID's" :=
+            IncStr(GlobalSetup."Manual Banking Entry PK ID's");
+
+        GlobalSetup.Modify(true);
+
+        exit(GlobalSetup."Manual Banking Entry PK ID's");
     end;
 }

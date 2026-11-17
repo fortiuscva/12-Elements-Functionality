@@ -90,4 +90,5 @@ codeunit 52138 "12E Banking Transaction Import"
             exit('');
         exit(BankAccountPostingGroup."G/L Account No.");
     end;
+
 }

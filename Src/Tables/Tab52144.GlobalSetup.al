@@ -15,7 +15,6 @@ table 52144 "12E Global Setup"
         {
             Caption = 'Manual Banking Entry PK ID''s';
             DataClassification = CustomerContent;
-            TableRelation = "No. Series";
         }
     }
 

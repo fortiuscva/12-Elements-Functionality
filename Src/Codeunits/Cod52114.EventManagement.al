@@ -359,8 +359,8 @@ codeunit 52114 "12E Event Management"
             GenJournalLine."Banking PK ID" := BankAccReconciliationLine."Banking PK ID";
     end;
 
-    [EventSubscriber(ObjectType::Table, Database::"Bank Account Ledger Entry", 'OnAfterCopyFromGenJnlLine', '', false, false)]
-    local procedure OnAfterCopyFromGenJnlLine(var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; GenJournalLine: Record "Gen. Journal Line")
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnPostBankAccOnAfterBankAccLedgEntryInsert, '', false, false)]
+    local procedure "Gen. Jnl.-Post Line_OnPostBankAccOnAfterBankAccLedgEntryInsert"(var Sender: Codeunit "Gen. Jnl.-Post Line"; var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var GenJournalLine: Record "Gen. Journal Line"; BankAccount: Record "Bank Account")
     var
         BankStaging: Record "12E Bank Staging";
     begin
@@ -375,6 +375,7 @@ codeunit 52114 "12E Event Management"
             end;
         end;
     end;
+
 
     [EventSubscriber(ObjectType::Table, Database::"Bank Acc. Reconciliation Line", 'OnAfterDeleteEvent', '', false, false)]
     local procedure OnAfterDeleteBankAccReconciliationLine(var Rec: Record "Bank Acc. Reconciliation Line"; RunTrigger: Boolean)

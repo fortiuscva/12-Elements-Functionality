@@ -12,6 +12,7 @@ table 52145 "12E Bank Mapping"
         {
             Caption = 'DdaAccount';
             DataClassification = CustomerContent;
+            NotBlank = true;
         }
         field(2; Company; Text[30])
         {
@@ -116,13 +117,15 @@ table 52145 "12E Bank Mapping"
 
         BankStaging.Reset();
         BankStaging.SetRange(DdaAccount, xRec.DdaAccount);
-        BankStaging.SetFilter("Reconciliation Jnl Line No.", '<>%1', 0);
-        BankStaging.SetFilter("Bank Ledger Entry No.", '<>%1', 0);
+        // BankStaging.SetFilter("Reconciliation Jnl Line No.", '<>%1', 0);
+        // BankStaging.SetFilter("Bank Ledger Entry No.", '<>%1', 0);
 
-        if BankStaging.FindFirst() then
-            Error(
-                'Bank Mapping cannot be modified because processed banking transactions exist for DDA Account No. %1. Contact your administrator for permission.',
-                xRec.DdaAccount);
+        if BankStaging.FindSet() then begin
+            repeat
+                if ((BankStaging."Reconciliation Jnl Line No." <> 0) or (BankStaging."Bank Ledger Entry No." <> 0)) then
+                    Error('Bank Mapping cannot be modified because processed banking transactions exist for DDA Account No. %1. Contact your administrator for permission.', xRec.DdaAccount);
+            until BankStaging.Next() = 0;
+        end;
     end;
 
 }

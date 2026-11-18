@@ -362,7 +362,7 @@ codeunit 52114 "12E Event Management"
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Gen. Jnl.-Post Line", OnPostBankAccOnAfterBankAccLedgEntryInsert, '', false, false)]
     local procedure "Gen. Jnl.-Post Line_OnPostBankAccOnAfterBankAccLedgEntryInsert"(var Sender: Codeunit "Gen. Jnl.-Post Line"; var BankAccountLedgerEntry: Record "Bank Account Ledger Entry"; var GenJournalLine: Record "Gen. Journal Line"; BankAccount: Record "Bank Account")
     var
-        BankStaging: Record "12E Bank Staging";
+        BankStaging: Record "12E Bank Transaction Staging";
     begin
         if GenJournalLine."Banking PK ID" <> '' then begin
             BankAccountLedgerEntry."Banking PK ID" := GenJournalLine."Banking PK ID";
@@ -380,7 +380,7 @@ codeunit 52114 "12E Event Management"
     [EventSubscriber(ObjectType::Table, Database::"Bank Acc. Reconciliation Line", 'OnAfterDeleteEvent', '', false, false)]
     local procedure OnAfterDeleteBankAccReconciliationLine(var Rec: Record "Bank Acc. Reconciliation Line"; RunTrigger: Boolean)
     var
-        BankStaging: Record "12E Bank Staging";
+        BankStaging: Record "12E Bank Transaction Staging";
     begin
         if Rec."Banking PK ID" = '' then
             exit;
@@ -390,6 +390,7 @@ codeunit 52114 "12E Event Management"
 
         if BankStaging.FindFirst() then begin
             BankStaging."Reconciliation Jnl Line No." := 0;
+            BankStaging."Processed in Company" := '';
             BankStaging.Modify(true);
         end;
     end;

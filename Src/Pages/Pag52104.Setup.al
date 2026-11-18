@@ -278,12 +278,12 @@ page 52104 "12E Setup"
                 Caption = 'Banking';
                 Image = Bank;
 
-                action(BankMapping)
+                action("DDA Mapping")
                 {
                     ApplicationArea = All;
-                    Caption = 'Bank Mapping';
+                    Caption = 'DDA Mapping';
                     Image = MapAccounts;
-                    RunObject = page "12E Bank Mapping";
+                    RunObject = page "12E DDA Account Nos. Mapping";
                 }
             }
             group(Global)
@@ -357,7 +357,7 @@ page 52104 "12E Setup"
                     ApplicationArea = All;
                     Caption = 'Bank Staging Global';
                     Image = Navigate;
-                    RunObject = page "12E Bank Staging Global";
+                    RunObject = page "12E Banking Transactions";
                 }
             }
             group(CCDistribution)
@@ -423,7 +423,7 @@ page 52104 "12E Setup"
             {
                 Caption = 'Banking';
 
-                actionref(BankMapping_Promoted; BankMapping)
+                actionref(BankMapping_Promoted; "DDA Mapping")
                 {
                 }
             }

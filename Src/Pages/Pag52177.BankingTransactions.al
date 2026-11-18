@@ -1,10 +1,10 @@
-page 52177 "12E Bank Staging Global"
+page 52177 "12E Banking Transactions"
 {
     ApplicationArea = All;
-    Caption = 'Bank Staging (Global)';
+    Caption = 'Banking Transactions';
     PageType = List;
-    SourceTable = "12E Bank Staging";
-    UsageCategory = None;
+    SourceTable = "12E Bank Transaction Staging";
+    UsageCategory = Lists;
 
     layout
     {
@@ -27,15 +27,28 @@ page 52177 "12E Bank Staging Global"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
-                field(DdaAccount; Rec.DdaAccount)
+                field("DDA Account No."; Rec."DDA Account No.")
                 {
                     ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Bank Account No. field.', Comment = '%';
+                }
+                field("Company Name"; Rec."Company Name")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Company Name field.', Comment = '%';
+                }
+                field("Bank Account No."; Rec."Bank Account No.")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
                     ToolTip = 'Specifies the value of the Bank Account No. field.', Comment = '%';
                 }
                 field("Check No."; Rec."Check No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Check No. field.', Comment = '%';
+                    Visible = false;
                 }
                 field("Transaction Date"; Rec."Transaction Date")
                 {
@@ -107,6 +120,21 @@ page 52177 "12E Bank Staging Global"
                     BankStagingExcelMgt.ImportBankStaging();
                     CurrPage.Update(false);
                 end;
+            }
+        }
+
+        area(Promoted)
+        {
+            group(Category_Process)
+            {
+                Caption = 'Process';
+
+                actionref(ExportBankStaging_Promoted; ExportBankStaging)
+                {
+                }
+                actionref(ImportBankStaging_Promoted; ImportBankStaging)
+                {
+                }
             }
         }
     }

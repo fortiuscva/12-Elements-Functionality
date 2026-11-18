@@ -1,9 +1,9 @@
-page 52178 "12E Bank Mapping"
+page 52178 "12E DDA Account Nos. Mapping"
 {
     ApplicationArea = All;
-    Caption = 'Bank Mapping';
+    Caption = 'DDA Account Nos. Mapping';
     PageType = List;
-    SourceTable = "12E Bank Mapping";
+    SourceTable = "12E DDA Account Nos. Mapping";
     UsageCategory = None;
 
     layout
@@ -12,12 +12,12 @@ page 52178 "12E Bank Mapping"
         {
             repeater(General)
             {
-                field(DdaAccount; Rec.DdaAccount)
+                field(DdaAccount; Rec."DDA Account No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DdaAccount field.', Comment = '%';
                 }
-                field(Company; Rec.Company)
+                field(Company; Rec."Company Name")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Company field.', Comment = '%';
@@ -34,9 +34,9 @@ page 52178 "12E Bank Mapping"
                     begin
                         BankAccount.Reset();
 
-                        if Rec.Company <> '' then
-                            if not BankAccount.ChangeCompany(Rec.Company) then
-                                Error('Unable to access company %1.', Rec.Company);
+                        if Rec."Company Name" <> '' then
+                            if not BankAccount.ChangeCompany(Rec."Company Name") then
+                                Error('Unable to access company %1.', Rec."Company Name");
 
                         BankAccountList.LookupMode(true);
                         BankAccountList.SetTableView(BankAccount);

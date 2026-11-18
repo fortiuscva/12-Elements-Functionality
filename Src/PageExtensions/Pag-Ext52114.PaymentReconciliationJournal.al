@@ -34,6 +34,28 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
                         Rec."Statement No.");
                 end;
             }
+            action("12E Show Banking Transactions")
+            {
+                ApplicationArea = All;
+                Caption = 'Show Banking Transactions';
+                Image = ShowList;
+                ToolTip = 'Show Banking Transactions';
+                trigger OnAction()
+                var
+                    BankTransaction: Record "12E Bank Transaction Staging";
+                    BankMapping: Record "12E DDA Account Nos. Mapping";
+                begin
+                    BankMapping.Reset();
+                    BankMapping.SetRange("Company Name", CompanyName);
+                    BankMapping.SetRange("Bank Account No.", Rec."Bank Account No.");
+                    BankMapping.FindFirst();
+
+                    BankTransaction.Reset();
+                    BankTransaction.SetRange("DDA Account No.", BankMapping."DDA Account No.");
+                    BankTransaction.FindFirst();
+                    Page.RunModal(Page::"12E Banking Transactions", BankTransaction);
+                end;
+            }
         }
         addafter(ImportBankTransactions_Promoted)
         {

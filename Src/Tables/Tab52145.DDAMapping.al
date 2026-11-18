@@ -1,14 +1,14 @@
-table 52145 "12E DDA Account Nos. Mapping"
+table 52145 "12E DDA Mapping"
 {
-    Caption = '12EC DDA Account Nos. Mapping';
+    Caption = 'DDA Mapping';
     DataClassification = CustomerContent;
     DataPerCompany = false;
-    LookupPageId = "12E DDA Account Nos. Mapping";
-    DrillDownPageId = "12E DDA Account Nos. Mapping";
+    LookupPageId = "12E DDA Mapping";
+    DrillDownPageId = "12E DDA Mapping";
 
     fields
     {
-        field(1; "DDA Account No."; Code[20])
+        field(1; "DDA No."; Code[20])
         {
             Caption = 'DDA Account No.';
             DataClassification = CustomerContent;
@@ -50,7 +50,7 @@ table 52145 "12E DDA Account Nos. Mapping"
         }
         field(4; "Net Change"; Decimal)
         {
-            CalcFormula = sum("12E Bank Transaction Staging".Amount where("DDA Account No." = field("DDA Account No."),
+            CalcFormula = sum("12E Banking Transaction".Amount where("DDA No." = field("DDA No."),
                                                             "Transaction Date" = field("Date Filter")));
             Caption = 'Net Change';
             Editable = false;
@@ -58,14 +58,14 @@ table 52145 "12E DDA Account Nos. Mapping"
         }
         field(5; Balance; Decimal)
         {
-            CalcFormula = sum("12E Bank Transaction Staging".Amount where("DDA Account No." = field("DDA Account No.")));
+            CalcFormula = sum("12E Banking Transaction".Amount where("DDA No." = field("DDA No.")));
             Caption = 'Balance';
             Editable = false;
             FieldClass = FlowField;
         }
         field(6; "Balance at Date"; Decimal)
         {
-            CalcFormula = sum("12E Bank Transaction Staging".Amount where("DDA Account No." = field("DDA Account No."),
+            CalcFormula = sum("12E Banking Transaction".Amount where("DDA No." = field("DDA No."),
                                                             "Transaction Date" = field(upperlimit("Date Filter"))));
             Caption = 'Balance at Date';
             Editable = false;
@@ -86,16 +86,16 @@ table 52145 "12E DDA Account Nos. Mapping"
     }
     keys
     {
-        key(PK; "DDA Account No.")
+        key(PK; "DDA No.")
         {
             Clustered = true;
         }
     }
     fieldgroups
     {
-        fieldgroup(Brick; "DDA Account No.", "Company Name", "Bank Account No.")
+        fieldgroup(Brick; "DDA No.", "Company Name", "Bank Account No.")
         { }
-        fieldgroup(DropDown; "DDA Account No.", "Company Name", "Bank Account No.")
+        fieldgroup(DropDown; "DDA No.", "Company Name", "Bank Account No.")
         { }
     }
 
@@ -103,10 +103,11 @@ table 52145 "12E DDA Account Nos. Mapping"
     trigger OnModify()
     var
         UserSetup: Record "User Setup";
-        BankStaging: Record "12E Bank Transaction Staging";
+        BankStaging: Record "12E Banking Transaction";
+        MappingModErrLbl: Label 'Mapping cannot be modified because one or more processed banking transactions exist for this DDA No. %1', Comment = '%1 = DDA No.';
     begin
         if (xRec."Company Name" = "Company Name") and
-           (xRec."DDA Account No." = "DDA Account No.") and
+           (xRec."DDA No." = "DDA No.") and
            (xRec."Bank Account No." = "Bank Account No.")
         then
             exit;
@@ -116,14 +117,12 @@ table 52145 "12E DDA Account Nos. Mapping"
                 exit;
 
         BankStaging.Reset();
-        BankStaging.SetRange("DDA Account No.", xRec."DDA Account No.");
-        // BankStaging.SetFilter("Reconciliation Jnl Line No.", '<>%1', 0);
-        // BankStaging.SetFilter("Bank Ledger Entry No.", '<>%1', 0);
+        BankStaging.SetRange("DDA No.", xRec."DDA No.");
 
         if BankStaging.FindSet() then begin
             repeat
                 if ((BankStaging."Reconciliation Jnl Line No." <> 0) or (BankStaging."Bank Ledger Entry No." <> 0)) then
-                    Error('Bank Mapping cannot be modified because processed banking transactions exist for DDA Account No. %1. Contact your administrator for permission.', xRec."DDA Account No.");
+                    Error(MappingModErrLbl, xRec."DDA No.");
             until BankStaging.Next() = 0;
         end;
     end;

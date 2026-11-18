@@ -2,10 +2,11 @@ tableextension 52121 "Bank Acc. Reconciliation Line" extends "Bank Acc. Reconcil
 {
     fields
     {
-        field(52100; "Banking PK ID"; Code[20])
+        field(52100; "12E Banking PKID"; Code[20])
         {
-            Caption = 'Banking PK ID';
+            Caption = 'Banking PKID';
             DataClassification = CustomerContent;
+            TableRelation = "12E Banking Transaction".PKID;
         }
     }
 }

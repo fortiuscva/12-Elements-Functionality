@@ -1,9 +1,9 @@
-page 52178 "12E DDA Account Nos. Mapping"
+page 52178 "12E DDA Mapping"
 {
     ApplicationArea = All;
-    Caption = 'DDA Account Nos. Mapping';
+    Caption = 'DDA Mapping';
     PageType = List;
-    SourceTable = "12E DDA Account Nos. Mapping";
+    SourceTable = "12E DDA Mapping";
     UsageCategory = None;
 
     layout
@@ -12,7 +12,7 @@ page 52178 "12E DDA Account Nos. Mapping"
         {
             repeater(General)
             {
-                field(DdaAccount; Rec."DDA Account No.")
+                field(DdaAccount; Rec."DDA No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DdaAccount field.', Comment = '%';

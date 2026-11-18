@@ -4,7 +4,7 @@ page 52176 "12E Bank Staging"
     ApplicationArea = All;
     Caption = 'Bank Staging (Company-Filtered)';
     PageType = List;
-    SourceTable = "12E Bank Transaction Staging";
+    SourceTable = "12E Banking Transaction";
     UsageCategory = None;
 
     layout
@@ -28,7 +28,7 @@ page 52176 "12E Bank Staging"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
-                field("DDA Account No."; Rec."DDA Account No.")
+                field("DDA No."; Rec."DDA No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Bank Account No. field.', Comment = '%';

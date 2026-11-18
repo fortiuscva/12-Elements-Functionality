@@ -1,11 +1,12 @@
-tableextension 52122 "Gen. Journal Line" extends "Gen. Journal Line"
+tableextension 52122 "12E Gen. Journal Line" extends "Gen. Journal Line"
 {
     fields
     {
-        field(52100; "Banking PK ID"; Code[20])
+        field(52100; "12E Banking PKID"; Code[20])
         {
-            Caption = 'Banking PK ID';
+            Caption = 'Banking PKID';
             DataClassification = CustomerContent;
+            TableRelation = "12E Banking Transaction".PKID;
         }
     }
 }

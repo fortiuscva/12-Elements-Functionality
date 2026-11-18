@@ -283,7 +283,7 @@ page 52104 "12E Setup"
                     ApplicationArea = All;
                     Caption = 'DDA Mapping';
                     Image = MapAccounts;
-                    RunObject = page "12E DDA Account Nos. Mapping";
+                    RunObject = page "12E DDA Mapping";
                 }
             }
             group(Global)

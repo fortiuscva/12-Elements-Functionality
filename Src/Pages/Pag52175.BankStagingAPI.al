@@ -9,7 +9,7 @@ page 52175 "12E Bank Staging API"
     EntityName = 'BankStagingRecords';
     EntitySetName = 'BankStagingRecords';
     PageType = API;
-    SourceTable = "12E Bank Transaction Staging";
+    SourceTable = "12E Banking Transaction";
 
     layout
     {
@@ -29,7 +29,7 @@ page 52175 "12E Bank Staging API"
                 {
                     Caption = 'Portfolio';
                 }
-                field(ddaAccount; Rec."DDA Account No.")
+                field(ddaAccount; Rec."DDA No.")
                 {
                     Caption = 'Bank Account No.';
                 }

@@ -3,10 +3,10 @@ codeunit 52138 "12E Banking Transaction Import"
 {
     procedure ImportBankingTransactions(StatementType: Enum "Bank Acc. Rec. Stmt. Type"; BankAccountNo: Code[20]; StatementNo: Code[20])
     var
-        BankStaging: Record "12E Bank Transaction Staging";
+        BankStaging: Record "12E Banking Transaction";
         BankStagingList: Page "12E Banking Transactions";
         BankAccReconciliationLine: Record "Bank Acc. Reconciliation Line";
-        BankMapping: Record "12E DDA Account Nos. Mapping";
+        BankMapping: Record "12E DDA Mapping";
         BankMappingErrLbl: Label 'Bank Mapping does not exist for this Bank Account No. %1';
         NextLineNo: Integer;
         ImportedCount: Integer;
@@ -23,9 +23,11 @@ codeunit 52138 "12E Banking Transaction Import"
         BankMapping.FindFirst();
 
         BankStaging.Reset();
-        BankStaging.SetRange("DDA Account No.", BankMapping."DDA Account No.");
+        BankStaging.FilterGroup(10);
+        BankStaging.SetRange("DDA No.", BankMapping."DDA No.");
         BankStaging.SetRange("Reconciliation Jnl Line No.", 0);
         BankStaging.SetRange("Bank Ledger Entry No.", 0);
+        BankStaging.FilterGroup(0);
 
         BankStagingList.SetTableView(BankStaging);
         BankStagingList.LookupMode(true);
@@ -60,7 +62,7 @@ codeunit 52138 "12E Banking Transaction Import"
             BankAccReconciliationLine.Validate("Document No.", BankStaging."Check No.");
             BankAccReconciliationLine.Validate("Transaction Text", CopyStr(BankStaging."Transaction Description", 1, MaxStrLen(BankAccReconciliationLine."Transaction Text")));
             BankAccReconciliationLine.Validate("Statement Amount", BankStaging.Amount);
-            BankAccReconciliationLine."Banking PK ID" := BankStaging.PKID;
+            BankAccReconciliationLine."12E Banking PKID" := BankStaging.PKID;
             BankAccReconciliationLine.Modify(true);
 
             BankStaging."Reconciliation Jnl Line No." := BankAccReconciliationLine."Statement Line No.";

@@ -1,6 +1,6 @@
-table 52146 "12E Bank Transaction Staging"
+table 52146 "12E Banking Transaction"
 {
-    Caption = '12EC Bank Transaction Staging';
+    Caption = 'Banking Transaction';
     DataClassification = CustomerContent;
     DataPerCompany = false;
     DrillDownPageId = "12E Banking Transactions";
@@ -23,11 +23,11 @@ table 52146 "12E Bank Transaction Staging"
             Caption = 'Portfolio';
             DataClassification = CustomerContent;
         }
-        field(4; "DDA Account No."; Code[20])
+        field(4; "DDA No."; Code[20])
         {
-            Caption = 'DDA Account No.';
+            Caption = 'DDA No.';
             DataClassification = CustomerContent;
-            TableRelation = "12E DDA Account Nos. Mapping"."DDA Account No.";
+            TableRelation = "12E DDA Mapping"."DDA No.";
             ValidateTableRelation = false;
         }
         field(5; "Transaction Date"; Date)
@@ -81,14 +81,14 @@ table 52146 "12E Bank Transaction Staging"
         }
         field(14; "Bank Account No."; Code[20])
         {
-            CalcFormula = lookup("12E DDA Account Nos. Mapping"."Bank Account No." where("DDA Account No." = field("DDA Account No.")));
+            CalcFormula = lookup("12E DDA Mapping"."Bank Account No." where("DDA No." = field("DDA No.")));
             Caption = 'Bank Account No.';
             Editable = false;
             FieldClass = FlowField;
         }
         field(15; "Company Name"; Text[30])
         {
-            CalcFormula = lookup("12E DDA Account Nos. Mapping"."Company Name" where("DDA Account No." = field("DDA Account No.")));
+            CalcFormula = lookup("12E DDA Mapping"."Company Name" where("DDA No." = field("DDA No.")));
             Caption = 'Company Name';
             Editable = false;
             FieldClass = FlowField;
@@ -100,16 +100,16 @@ table 52146 "12E Bank Transaction Staging"
         {
             Clustered = true;
         }
-        key(key2; "DDA Account No.", "Transaction Date")
+        key(key2; "DDA No.", "Transaction Date")
         {
             SumIndexFields = Amount;
         }
     }
     fieldgroups
     {
-        fieldgroup(Brick; "Datasource ID", Portfolio, "DDA Account No.", "Transaction Date", "Transaction Description", Amount, "Current Balance")
+        fieldgroup(Brick; PKID, "DDA No.", "Transaction Date", "Transaction Description", Amount)
         { }
-        fieldgroup(DropDown; "Datasource ID", Portfolio, "DDA Account No.", "Transaction Date", "Transaction Description", Amount, "Current Balance")
+        fieldgroup(DropDown; PKID, "DDA No.", "Transaction Date", "Transaction Description", Amount)
         { }
     }
 }

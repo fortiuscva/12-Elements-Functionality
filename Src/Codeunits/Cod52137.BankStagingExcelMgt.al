@@ -1,6 +1,6 @@
 codeunit 52137 "12E Bank Staging Excel Mgt."
 {
-    procedure ExportBankStaging(var BankStaging: Record "12E Bank Transaction Staging")
+    procedure ExportBankStaging(var BankStaging: Record "12E Banking Transaction")
     var
         TempExcelBuffer: Record "Excel Buffer" temporary;
         SheetName: Text;
@@ -19,7 +19,7 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
         //         //TempExcelBuffer.AddColumn(BankStaging.PKID, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
         //         TempExcelBuffer.AddColumn(BankStaging."Datasource ID", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Number);
         //         TempExcelBuffer.AddColumn(BankStaging.Portfolio, false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
-        //         TempExcelBuffer.AddColumn(BankStaging."DDA Account No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
+        //         TempExcelBuffer.AddColumn(BankStaging."DDA No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
         //         TempExcelBuffer.AddColumn(BankStaging."Transaction Date", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Date);
         //         TempExcelBuffer.AddColumn(BankStaging."Check No.", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
         //         TempExcelBuffer.AddColumn(BankStaging."Transaction Description", false, '', false, false, false, '', TempExcelBuffer."Cell Type"::Text);
@@ -40,7 +40,7 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
         TempExcelBuffer: Record "Excel Buffer" temporary;
         GlobalSetup: Record "12E Global Setup";
         CompanyMapping: Record "12E Company Mapping";
-        BankStaging: Record "12E Bank Transaction Staging";
+        BankStaging: Record "12E Banking Transaction";
         NoSeries: Codeunit "No. Series";
         ExcelInStream: InStream;
         FileName: Text;
@@ -60,10 +60,10 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
         if GlobalSetup."Manual Banking Entry PK ID's" = '' then
             Error('Please configure Manual Banking Entry PK ID''s in 12EC Global Setup.');
 
-        CompanyMapping.SetRange(Company, CompanyName());
-        CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
-        if not CompanyMapping.FindFirst() then
-            Error('%1 is not mapped to any portfolio in 12 elements setup.', CompanyName());
+        // CompanyMapping.SetRange(Company, CompanyName());
+        // CompanyMapping.SetFilter("DataSource ID", '<>%1', 0);
+        // if not CompanyMapping.FindFirst() then
+        //     Error('%1 is not mapped to any portfolio in 12 elements setup.', CompanyName());
 
         if not UploadIntoStream(
             'Import Banking Staging Excel',
@@ -96,14 +96,14 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
 
             if CellValue <> '' then begin
                 Clear(DatasourceID);
-                if not Evaluate(DatasourceID, CellValue) then
-                    Error('Invalid Datasource ID in Excel row %1.', RowNo);
+                // if not Evaluate(DatasourceID, CellValue) then
+                //     Error('Invalid Datasource ID in Excel row %1.', RowNo);
 
-                if DatasourceID <> CompanyMapping."DataSource ID" then
-                    Error(
-                        'Datasource ID in Excel row %1 does not match the mapped Datasource ID for company %2.',
-                        RowNo,
-                        CompanyName());
+                // if DatasourceID <> CompanyMapping."DataSource ID" then
+                //     Error(
+                //         'Datasource ID in Excel row %1 does not match the mapped Datasource ID for company %2.',
+                //         RowNo,
+                //         CompanyName());
 
                 Clear(TransactionDate);
                 CellValue := GetExcelCellValue(TempExcelBuffer, RowNo, 4);
@@ -134,11 +134,11 @@ codeunit 52137 "12E Bank Staging Excel Mgt."
                         1,
                         MaxStrLen(BankStaging.Portfolio));
 
-                BankStaging."DDA Account No." :=
+                BankStaging."DDA No." :=
                     CopyStr(
                         GetExcelCellValue(TempExcelBuffer, RowNo, 3),
                         1,
-                        MaxStrLen(BankStaging."DDA Account No."));
+                        MaxStrLen(BankStaging."DDA No."));
 
                 BankStaging."Transaction Date" := TransactionDate;
 

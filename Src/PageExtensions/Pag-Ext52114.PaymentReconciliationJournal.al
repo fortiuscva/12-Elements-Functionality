@@ -5,7 +5,7 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
     {
         addlast(Control1)
         {
-            field("12E Banking PK ID"; Rec."Banking PK ID")
+            field("12E Banking PK ID"; Rec."12E Banking PKID")
             {
                 ApplicationArea = All;
                 ToolTip = 'Specifies the Banking PK ID associated with this reconciliation line.';
@@ -42,8 +42,8 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
                 ToolTip = 'Show Banking Transactions';
                 trigger OnAction()
                 var
-                    BankTransaction: Record "12E Bank Transaction Staging";
-                    BankMapping: Record "12E DDA Account Nos. Mapping";
+                    BankTransaction: Record "12E Banking Transaction";
+                    BankMapping: Record "12E DDA Mapping";
                 begin
                     BankMapping.Reset();
                     BankMapping.SetRange("Company Name", CompanyName);
@@ -51,7 +51,7 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
                     BankMapping.FindFirst();
 
                     BankTransaction.Reset();
-                    BankTransaction.SetRange("DDA Account No.", BankMapping."DDA Account No.");
+                    BankTransaction.SetRange("DDA No.", BankMapping."DDA No.");
                     BankTransaction.FindFirst();
                     Page.RunModal(Page::"12E Banking Transactions", BankTransaction);
                 end;
@@ -60,6 +60,8 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
         addafter(ImportBankTransactions_Promoted)
         {
             actionref(Import12ECBankingTransactions; "12E Import12ECBankingTransactions")
+            { }
+            actionref(ShowBankingTransactions; "12E Show Banking Transactions")
             { }
         }
     }

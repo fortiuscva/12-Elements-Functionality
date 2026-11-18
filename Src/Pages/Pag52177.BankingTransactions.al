@@ -3,7 +3,7 @@ page 52177 "12E Banking Transactions"
     ApplicationArea = All;
     Caption = 'Banking Transactions';
     PageType = List;
-    SourceTable = "12E Bank Transaction Staging";
+    SourceTable = "12E Banking Transaction";
     UsageCategory = Lists;
 
     layout
@@ -27,7 +27,7 @@ page 52177 "12E Banking Transactions"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Portfolio field.', Comment = '%';
                 }
-                field("DDA Account No."; Rec."DDA Account No.")
+                field("DDA No."; Rec."DDA No.")
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Bank Account No. field.', Comment = '%';
@@ -96,7 +96,7 @@ page 52177 "12E Banking Transactions"
             action(ExportBankStaging)
             {
                 ApplicationArea = All;
-                Caption = 'Export to Excel';
+                Caption = 'Export to Excel (Template)';
                 Image = ExportToExcel;
 
                 trigger OnAction()

@@ -10,7 +10,7 @@ table 52145 "12E DDA Mapping"
     {
         field(1; "DDA No."; Code[20])
         {
-            Caption = 'DDA Account No.';
+            Caption = 'DDA No.';
             DataClassification = CustomerContent;
             NotBlank = true;
         }

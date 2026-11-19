@@ -51,7 +51,9 @@ pageextension 52114 "Payment Reconciliation Journal" extends "Payment Reconcilia
                     BankMapping.FindFirst();
 
                     BankTransaction.Reset();
+                    BankTransaction.FilterGroup(10);
                     BankTransaction.SetRange("DDA No.", BankMapping."DDA No.");
+                    BankTransaction.FilterGroup(0);
                     BankTransaction.FindFirst();
                     Page.RunModal(Page::"12E Banking Transactions", BankTransaction);
                 end;

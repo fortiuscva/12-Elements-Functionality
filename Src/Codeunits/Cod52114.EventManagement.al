@@ -377,6 +377,7 @@ codeunit 52114 "12E Event Management"
 
             if BankStaging.FindFirst() then begin
                 BankStaging."Bank Ledger Entry No." := BankAccountLedgerEntry."Entry No.";
+                BankStaging."Processed in Company" := CompanyName();
                 BankStaging.Modify(true);
             end;
         end;
@@ -396,7 +397,8 @@ codeunit 52114 "12E Event Management"
 
         if BankStaging.FindFirst() then begin
             BankStaging."Reconciliation Jnl Line No." := 0;
-            BankStaging."Processed in Company" := '';
+            if BankStaging."Bank Ledger Entry No." = 0 then
+                BankStaging."Processed in Company" := '';
             BankStaging.Modify(true);
         end;
     end;

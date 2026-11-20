@@ -94,9 +94,9 @@ page 52104 "12E Setup"
                     ToolTip = 'Specifies the dimension used for Store values.';
                 }
             }
-            group(CCD)
+            group(CCI)
             {
-                Caption = 'CCD';
+                Caption = 'Contact Center Invoicing (CCI)';
                 field("CCD G/L Account No."; Rec."CCD G/L Account No.")
                 {
                     ApplicationArea = All;
@@ -359,22 +359,29 @@ page 52104 "12E Setup"
                     Image = Navigate;
                     RunObject = page "12E Banking Transactions";
                 }
+                action(CCIData)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Contact Center Invoicing Data';
+                    Image = Navigate;
+                    RunObject = page "12E CCD Data";
+                }
             }
             group(CCDistribution)
             {
-                Caption = 'CCD & Payroll';
+                Caption = 'CCI & Payroll';
                 Image = Setup;
                 action(CCDLocationMapping)
                 {
                     ApplicationArea = all;
-                    Caption = 'CCD Location Mapping';
+                    Caption = 'CCI Location Mapping';
                     Image = MapAccounts;
                     RunObject = page "12E CCD Loc. Mapping Details";
                 }
                 action(CCDCustomerPortfolioMapping)
                 {
                     ApplicationArea = all;
-                    Caption = 'CCD Customer Portfolio Mapping';
+                    Caption = 'CCI Customer Portfolio Mapping';
                     Image = MapAccounts;
                     RunObject = page "12E CCDPort. Cust. Map. Detail";
                 }
@@ -405,7 +412,7 @@ page 52104 "12E Setup"
             }
             group(Category_Category5)
             {
-                Caption = 'Contact Center Distribution & Payroll', Comment = 'Generated from the PromotedActionCategories property index 4.';
+                Caption = 'CCI & Payroll', Comment = 'Generated from the PromotedActionCategories property index 4.';
                 actionref(CCDLocationMapping_Promoted; CCDLocationMapping)
                 {
                 }
@@ -458,11 +465,13 @@ page 52104 "12E Setup"
                 actionref(LMSBatchesGlobal_Promoted; LMSBatchesGlobal)
                 {
                 }
-
                 actionref(LMSTransactionsGlobal_Promoted; LMSTransactionsGlobal)
                 {
                 }
                 actionref(BankStagingGlobal_Promoted; BankStagingGlobal)
+                {
+                }
+                actionref(CCIData_Promoted; CCIData)
                 {
                 }
             }

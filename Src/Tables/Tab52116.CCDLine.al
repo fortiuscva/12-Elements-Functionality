@@ -1,6 +1,6 @@
 table 52116 "12E CCD Line"
 {
-    Caption = 'CCD Line';
+    Caption = 'CCI Line';
     DataClassification = CustomerContent;
     DataPerCompany = True;
     fields

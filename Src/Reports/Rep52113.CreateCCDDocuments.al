@@ -1,6 +1,6 @@
 report 52113 "12E Create CCD Documents"
 {
-    Caption = 'Create CCD Documents';
+    Caption = 'Create CCI Documents';
     ProcessingOnly = true;
 
     requestpage

@@ -1,7 +1,7 @@
 page 52113 "12E CCD Data"
 {
     ApplicationArea = All;
-    Caption = 'CCD Detailed Data';
+    Caption = 'Contact Center Invoicing Data';
     PageType = List;
     InsertAllowed = false;
     DeleteAllowed = false;

@@ -67,7 +67,7 @@ table 52129 "12E Questco Payroll Batch"
         }
         field(13; "CCD No."; Code[20])
         {
-            Caption = 'CCD No.';
+            Caption = 'CCI No.';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = Lookup("12E CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));
@@ -75,7 +75,7 @@ table 52129 "12E Questco Payroll Batch"
 
         field(14; "Posted CCD No."; Code[20])
         {
-            Caption = 'Posted CCD No.';
+            Caption = 'Posted CCI No.';
             Editable = false;
             FieldClass = FlowField;
             CalcFormula = Lookup("12E Posted CCD Header"."No." where("Payroll Batch ID" = field("Batch ID")));

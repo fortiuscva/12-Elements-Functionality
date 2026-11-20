@@ -12,13 +12,13 @@ table 52147 "12E Intg. RoleCenter"
         }
         field(2; "CCD Documents"; Integer)
         {
-            Caption = 'CCD Documents';
+            Caption = 'CCI Documents';
             Editable = false;
         }
 
         field(3; "Posted CCD Documents"; Integer)
         {
-            Caption = 'Posted CCD Documents';
+            Caption = 'Posted CCI Documents';
             Editable = false;
         }
         field(4; "Payroll Documents"; Integer)

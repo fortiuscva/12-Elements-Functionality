@@ -1,7 +1,7 @@
 page 52157 "12E Posted CCD Subform"
 {
     ApplicationArea = All;
-    Caption = 'Posted CCD Subform';
+    Caption = 'Posted CCI Subform';
     PageType = ListPart;
     SourceTable = "12E Posted CCD Line";
     UsageCategory = None;

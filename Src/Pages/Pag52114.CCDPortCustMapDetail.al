@@ -1,7 +1,7 @@
 page 52114 "12E CCDPort. Cust. Map. Detail"
 {
     ApplicationArea = All;
-    Caption = 'CCD Portfolio Customer Mapping Details';
+    Caption = 'CCI Portfolio Customer Mapping Details';
     PageType = List;
     SourceTable = "12E CCD Port. Cust. Mapping";
     // UsageCategory = Lists;

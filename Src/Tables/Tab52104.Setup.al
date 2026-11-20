@@ -24,7 +24,7 @@ table 52104 "12E Setup"
         }
         field(13; "CCD Nos."; Code[20])
         {
-            Caption = 'Call Center Distribution Nos.';
+            Caption = 'Contact Center Invoicing Nos.';
             TableRelation = "No. Series";
             DataClassification = CustomerContent;
         }
@@ -54,7 +54,7 @@ table 52104 "12E Setup"
         }
         field(23; "CCD G/L Account No."; Code[20])
         {
-            Caption = 'CCD G/L Account No.';
+            Caption = 'CCI G/L Account No.';
             TableRelation = "G/L Account" where(Blocked = const(false));
             DataClassification = CustomerContent;
         }
@@ -138,7 +138,7 @@ table 52104 "12E Setup"
         }
         field(40; "Enable CCD Process"; Boolean)
         {
-            Caption = 'Enable CCD Process';
+            Caption = 'Enable CCI Process';
         }
         field(41; "Process Dialer Tone Invoices"; Boolean)
         {

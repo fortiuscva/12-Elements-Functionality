@@ -1,7 +1,7 @@
 page 52158 "12E Posted CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'Posted CCD Documents';
+    Caption = 'Posted CCI Documents';
     PageType = List;
     SourceTable = "12E Posted CCD Header";
     CardPageId = "12E Posted CCD";
@@ -83,7 +83,7 @@ page 52158 "12E Posted CCD Details"
                 ApplicationArea = All;
                 Caption = 'Create Sales Invoices';
                 Image = CreateDocument;
-                ToolTip = 'Create Sales Invoices for Posted CCDs that have not yet been invoiced.';
+                ToolTip = 'Create Sales Invoices for Posted CCIs that have not yet been invoiced.';
 
                 trigger OnAction()
                 var

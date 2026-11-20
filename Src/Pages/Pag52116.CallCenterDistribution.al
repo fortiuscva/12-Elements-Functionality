@@ -1,7 +1,7 @@
 page 52116 "12E Call Center Distribution"
 {
     ApplicationArea = All;
-    Caption = 'CCD Document';
+    Caption = 'CCI Document';
     PageType = Document;
     InsertAllowed = false;
     SourceTable = "12E CCD Header";

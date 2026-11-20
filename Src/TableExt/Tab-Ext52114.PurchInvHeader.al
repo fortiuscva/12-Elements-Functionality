@@ -19,13 +19,13 @@ tableextension 52114 "12E Purch. Inv. Header" extends "Purch. Inv. Header"
         }
         field(52103; "12E CCD No."; Code[20])
         {
-            Caption = 'CCD No.';
+            Caption = 'CCI No.';
             FieldClass = FlowField;
             CalcFormula = lookup("12E CCD Header"."No." where("Invoice No." = field("No.")));
         }
         field(52104; "12E Posted CCD No."; Code[20])
         {
-            Caption = 'Posted CCD No.';
+            Caption = 'Posted CCI No.';
             FieldClass = FlowField;
             CalcFormula = lookup("12E Posted CCD Header"."No." where("Invoice No." = field("No.")));
         }

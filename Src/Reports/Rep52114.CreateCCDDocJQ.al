@@ -1,6 +1,6 @@
 report 52114 "12E Create CCD Doc. JQ"
 {
-    Caption = 'Create CCD Documents';
+    Caption = 'Create CCI Documents';
     ProcessingOnly = true;
     UsageCategory = None;
 

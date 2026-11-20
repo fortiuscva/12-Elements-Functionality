@@ -19,7 +19,7 @@ codeunit 52105 "12E CCD Release Mgmt"
     local procedure CheckForManualRelease(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status = CCDHeader.Status::Released then
-            Error('Call Center Distribution document %1 is already Released.', CCDHeader."No.");
+            Error('Contact Center Invoicing document %1 is already Released.', CCDHeader."No.");
     end;
 
     local procedure PerformManualCheckAndRelease(var CCDHeader: Record "12E CCD Header")
@@ -43,7 +43,7 @@ codeunit 52105 "12E CCD Release Mgmt"
     local procedure CheckReopenStatus(var CCDHeader: Record "12E CCD Header")
     begin
         if CCDHeader.Status = CCDHeader.Status::Open then
-            Error('Call Center Distribution document %1 is already Open.', CCDHeader."No.");
+            Error('Contact Center Invoicing document %1 is already Open.', CCDHeader."No.");
     end;
 
     local procedure Reopen(var CCDHeader: Record "12E CCD Header")

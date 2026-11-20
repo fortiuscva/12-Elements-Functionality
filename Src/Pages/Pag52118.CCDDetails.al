@@ -1,7 +1,7 @@
 page 52118 "12E CCD Details"
 {
     ApplicationArea = All;
-    Caption = 'CCD Documents';
+    Caption = 'CCI Documents';
     PageType = List;
     SourceTable = "12E CCD Header";
     CardPageId = "12E Call Center Distribution";
@@ -167,7 +167,7 @@ page 52118 "12E CCD Details"
                 action(CreateCCDDocuments)
                 {
                     ApplicationArea = All;
-                    Caption = 'Create CCD Documents';
+                    Caption = 'Create CCI Documents';
                     Image = Document;
                     trigger OnAction()
                     var

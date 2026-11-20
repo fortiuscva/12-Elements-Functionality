@@ -9,7 +9,7 @@
       <am:Name>MSRB</am:Name>
       <am:Version>15.0.20283.0</am:Version>
     </am:UpdatedBy>
-    <am:LastModifiedTimestamp>2026-11-19T13:31:24.7308811Z</am:LastModifiedTimestamp>
+    <am:LastModifiedTimestamp>2026-11-19T20:59:15.2305066Z</am:LastModifiedTimestamp>
   </am:AuthoringMetadata>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
@@ -22,64 +22,6 @@
       <rd:DataSourceID>2a6c49f0-d5fb-41e5-b30f-f71aaba8b514</rd:DataSourceID>
     </DataSource>
   </DataSources>
-  <DataSets>
-    <DataSet Name="DataSet_Result">
-      <Query>
-        <DataSourceName>DataSource</DataSourceName>
-        <CommandText />
-      </Query>
-      <Fields>
-        <Field Name="OrderNo">
-          <DataField>OrderNo</DataField>
-        </Field>
-        <Field Name="ShipmentNo">
-          <DataField>ShipmentNo</DataField>
-        </Field>
-        <Field Name="ShipmentDate">
-          <DataField>ShipmentDate</DataField>
-        </Field>
-        <Field Name="ItemNo">
-          <DataField>ItemNo</DataField>
-        </Field>
-        <Field Name="ShipmentDescription">
-          <DataField>ShipmentDescription</DataField>
-        </Field>
-        <Field Name="ShipmentQuantity">
-          <DataField>ShipmentQuantity</DataField>
-        </Field>
-        <Field Name="ShipmentQuantityFormat">
-          <DataField>ShipmentQuantityFormat</DataField>
-        </Field>
-        <Field Name="InvoiceOrderNo">
-          <DataField>InvoiceOrderNo</DataField>
-        </Field>
-        <Field Name="InvoiceNo">
-          <DataField>InvoiceNo</DataField>
-        </Field>
-        <Field Name="InvoiceDate">
-          <DataField>InvoiceDate</DataField>
-        </Field>
-        <Field Name="InvoiceItemNo">
-          <DataField>InvoiceItemNo</DataField>
-        </Field>
-        <Field Name="InvoiceDescription">
-          <DataField>InvoiceDescription</DataField>
-        </Field>
-        <Field Name="InvoiceQuantity">
-          <DataField>InvoiceQuantity</DataField>
-        </Field>
-        <Field Name="InvoiceQuantityFormat">
-          <DataField>InvoiceQuantityFormat</DataField>
-        </Field>
-        <Field Name="InvoiceAmount">
-          <DataField>InvoiceAmount</DataField>
-        </Field>
-        <Field Name="InvoiceAmountFormat">
-          <DataField>InvoiceAmountFormat</DataField>
-        </Field>
-      </Fields>
-    </DataSet>
-  </DataSets>
   <ReportSections>
     <ReportSection>
       <Body>
@@ -1416,12 +1358,6 @@
       </Page>
     </ReportSection>
   </ReportSections>
-  <ReportParametersLayout>
-    <GridLayoutDefinition>
-      <NumberOfColumns>4</NumberOfColumns>
-      <NumberOfRows>2</NumberOfRows>
-    </GridLayoutDefinition>
-  </ReportParametersLayout>
   <Code>Public Function BlankZero(ByVal Value As Decimal)
     if Value = 0 then
         Return ""
@@ -1461,4 +1397,62 @@ End Function
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>0eeb6585-38ae-40f1-885b-8d50088d51b4</rd:ReportID>
+  <DataSets>
+    <DataSet Name="DataSet_Result">
+      <Fields>
+        <Field Name="OrderNo">
+          <DataField>OrderNo</DataField>
+        </Field>
+        <Field Name="ShipmentNo">
+          <DataField>ShipmentNo</DataField>
+        </Field>
+        <Field Name="ShipmentDate">
+          <DataField>ShipmentDate</DataField>
+        </Field>
+        <Field Name="ItemNo">
+          <DataField>ItemNo</DataField>
+        </Field>
+        <Field Name="ShipmentDescription">
+          <DataField>ShipmentDescription</DataField>
+        </Field>
+        <Field Name="ShipmentQuantity">
+          <DataField>ShipmentQuantity</DataField>
+        </Field>
+        <Field Name="ShipmentQuantityFormat">
+          <DataField>ShipmentQuantityFormat</DataField>
+        </Field>
+        <Field Name="InvoiceOrderNo">
+          <DataField>InvoiceOrderNo</DataField>
+        </Field>
+        <Field Name="InvoiceNo">
+          <DataField>InvoiceNo</DataField>
+        </Field>
+        <Field Name="InvoiceDate">
+          <DataField>InvoiceDate</DataField>
+        </Field>
+        <Field Name="InvoiceItemNo">
+          <DataField>InvoiceItemNo</DataField>
+        </Field>
+        <Field Name="InvoiceDescription">
+          <DataField>InvoiceDescription</DataField>
+        </Field>
+        <Field Name="InvoiceQuantity">
+          <DataField>InvoiceQuantity</DataField>
+        </Field>
+        <Field Name="InvoiceQuantityFormat">
+          <DataField>InvoiceQuantityFormat</DataField>
+        </Field>
+        <Field Name="InvoiceAmount">
+          <DataField>InvoiceAmount</DataField>
+        </Field>
+        <Field Name="InvoiceAmountFormat">
+          <DataField>InvoiceAmountFormat</DataField>
+        </Field>
+      </Fields>
+      <Query>
+        <DataSourceName>DataSource</DataSourceName>
+        <CommandText />
+      </Query>
+    </DataSet>
+  </DataSets>
 </Report>

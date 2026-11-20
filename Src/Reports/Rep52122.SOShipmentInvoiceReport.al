@@ -6,7 +6,7 @@ report 52122 "12E SO Shipment Invoice Report"
     ApplicationArea = All;
 
     DefaultLayout = RDLC;
-    RDLCLayout = 'SOShipmentInvoice.rdl';
+    RDLCLayout = './Src/Reports/Layouts/SOShipmentInvoice.rdl';
 
     dataset
     {
@@ -15,6 +15,7 @@ report 52122 "12E SO Shipment Invoice Report"
         {
             column(OrderNo; "Order No.") { }
             column(ShipmentNo; "Document No.") { }
+
             column(ShipmentDate; "Shipment Date") { }
             column(ItemNo; "No.") { }
             column(ShipmentDescription; Description) { }
@@ -22,9 +23,6 @@ report 52122 "12E SO Shipment Invoice Report"
 
             trigger OnPreDataItem()
             begin
-                if SalesOrderNo = '' then
-                    Error('Please enter Sales Order No.');
-
                 SetRange("Order No.", SalesOrderNo);
             end;
         }
@@ -68,9 +66,6 @@ report 52122 "12E SO Shipment Invoice Report"
                     {
                         ApplicationArea = All;
                         Caption = 'Sales Order No.';
-
-                        TableRelation = "Sales Header"."No."
-                            where("Document Type" = const(Order));
                     }
                 }
             }

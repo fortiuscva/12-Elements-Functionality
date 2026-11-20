@@ -1,6 +1,6 @@
 table 52115 "12E CCD Header"
 {
-    Caption = 'CCD Header';
+    Caption = 'CCI Header';
     LookupPageId = "12E CCD Details";
     DrillDownPageId = "12E CCD Details";
     DataClassification = CustomerContent;
@@ -107,7 +107,7 @@ table 52115 "12E CCD Header"
     trigger OnRename()
     begin
         if "No." <> xRec."No." then
-            Error('CCD Document No. cannot be changed.');
+            Error('CCI Document No. cannot be changed.');
     end;
 
     procedure AssistEdit(OldCCDHeader: Record "12E CCD Header"): Boolean
@@ -171,7 +171,7 @@ table 52115 "12E CCD Header"
         CCDLine.SetRange("Document No.", "No.");
         CCDLine.SetFilter("Invoice No.", '<>%1', '');
         if not CCDLine.IsEmpty() then
-            Error('CCD %1 cannot be deleted because it is attached to a posted invoice.', "No.");
+            Error('CCI %1 cannot be deleted because it is attached to a posted invoice.', "No.");
     end;
 
     procedure DeleteAllCallCenterDistributionLines()

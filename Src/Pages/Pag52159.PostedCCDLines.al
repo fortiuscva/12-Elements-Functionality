@@ -1,7 +1,7 @@
 page 52159 "12E Posted CCD Lines"
 {
     ApplicationArea = All;
-    Caption = 'Posted CCD Lines';
+    Caption = 'Posted CCI Lines';
     PageType = List;
     SourceTable = "12E Posted CCD Line";
     UsageCategory = None;

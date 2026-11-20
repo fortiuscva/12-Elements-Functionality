@@ -23,7 +23,7 @@ pageextension 52112 "Posted Purch. Invoice - Update" extends "Posted Purch. Invo
 
             group("12E CCD")
             {
-                Caption = 'CCD';
+                Caption = 'CCI';
 
                 field("12E Period Start Date"; Rec."12E Period Start Date")
                 {

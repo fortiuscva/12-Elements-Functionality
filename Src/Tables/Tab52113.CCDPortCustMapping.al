@@ -1,6 +1,6 @@
 table 52113 "12E CCD Port. Cust. Mapping"
 {
-    Caption = 'CCD Portfolio Customer Mapping';
+    Caption = 'CCI Portfolio Customer Mapping';
     LookupPageId = "12E CCDPort. Cust. Map. Detail";
     DrillDownPageId = "12E CCDPort. Cust. Map. Detail";
     DataPerCompany = false;

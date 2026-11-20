@@ -15,7 +15,7 @@ codeunit 52108 "12E CCD Mgmt"
         TwelveSetup.Get();
 
         if not TwelveSetup."Enable CCD Process" then
-            Error('CCD Process is not enabled for this company.');
+            Error('CCI Process is not enabled for this company.');
 
         ClientID := GetClientID();
 
@@ -170,10 +170,10 @@ codeunit 52108 "12E CCD Mgmt"
                 AllocationPercentage := Round((PortfolioHandleTime / TotalLocationHandleTime) * 100, 0.00001);
 
                 if not CCDLocationMapping.Get(CCDQuery.LocationCode) then
-                    Error('CCD Location Mapping does not exist for Location %1.', CCDQuery.LocationCode);
+                    Error('CCI Location Mapping does not exist for Location %1.', CCDQuery.LocationCode);
 
                 if CCDLocationMapping.Blocked then
-                    Error('CCD Location Mapping for Location %1 is blocked.', CCDQuery.LocationCode);
+                    Error('CCI Location Mapping for Location %1 is blocked.', CCDQuery.LocationCode);
 
                 if CCDLocationMapping."Processing Type" = CCDLocationMapping."Processing Type"::Payroll then begin
                     CreatePayrollCCDLine(
@@ -244,7 +244,7 @@ codeunit 52108 "12E CCD Mgmt"
         LinesCreated: Boolean;
     begin
         if not CCDLocationMapping.Get(LocationCode) then
-            Error('CCD Location Mapping does not exist for Location %1.', LocationCode);
+            Error('CCI Location Mapping does not exist for Location %1.', LocationCode);
 
         if CCDLocationMapping.Blocked then
             exit(false);

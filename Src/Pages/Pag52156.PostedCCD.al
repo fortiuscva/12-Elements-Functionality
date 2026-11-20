@@ -1,7 +1,7 @@
 page 52156 "12E Posted CCD"
 {
     ApplicationArea = All;
-    Caption = 'Posted CCD Document';
+    Caption = 'Posted CCI Document';
     PageType = Document;
     InsertAllowed = false;
     // ModifyAllowed = false;
@@ -134,7 +134,7 @@ page 52156 "12E Posted CCD"
                 ApplicationArea = All;
                 Caption = 'Create Sales Invoices';
                 Image = CreateDocument;
-                ToolTip = 'Create Sales Invoices for Posted CCDs that have not yet been invoiced.';
+                ToolTip = 'Create Sales Invoices for Posted CCIs that have not yet been invoiced.';
 
                 trigger OnAction()
                 var

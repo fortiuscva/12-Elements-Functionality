@@ -34,7 +34,7 @@ codeunit 52109 "12E CCD Post"
         // CCDLine.DeleteAll(true);
         CCDHeader.Delete(true);
 
-        if Confirm('CCD Document %1 Posted Successfully. Do you want to open the Posted CCD Document?', true, CCDNo) then
+        if Confirm('CCI Document %1 Posted Successfully. Do you want to open the Posted CCD Document?', true, CCDNo) then
             Page.Run(Page::"12E Posted CCD", PostedCCDHeader);
     end;
 
@@ -47,7 +47,7 @@ codeunit 52109 "12E CCD Post"
         TwelveSetup.Get();
 
         if not TwelveSetup."Enable CCD Process" then
-            Error('CCD Process is not enabled for this company.');
+            Error('CCI Process is not enabled for this company.');
 
         CCDHeader.TestField(Status, CCDHeader.Status::Released);
 

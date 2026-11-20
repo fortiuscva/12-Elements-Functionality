@@ -1,8 +1,8 @@
 report 52102 "12E Create CCD Sales Invoices"
 {
-    Caption = 'Create CCD Sales Invoices';
+    Caption = 'Create CCI Sales Invoices';
     ApplicationArea = All;
-    UsageCategory = Tasks;
+    UsageCategory = None;
     ProcessingOnly = true;
     UseRequestPage = false;
 
@@ -126,7 +126,7 @@ report 52102 "12E Create CCD Sales Invoices"
         SalesHeader.Insert(true);
 
         SalesHeader.Validate("Sell-to Customer No.", CustomerNo);
-        SalesHeader.Validate("External Document No.", ('CCD' + Format(PayDate, 0, '<Month,2><Day,2><Year4>')));
+        SalesHeader.Validate("External Document No.", ('CCI' + Format(PayDate, 0, '<Month,2><Day,2><Year4>')));
         SalesHeader.Validate("Posting Date", PayDate);
         SalesHeader.Modify(true);
 

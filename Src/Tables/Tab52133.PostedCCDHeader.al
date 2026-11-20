@@ -1,6 +1,6 @@
 table 52133 "12E Posted CCD Header"
 {
-    Caption = 'Posted CCD Header';
+    Caption = 'Posted CCI Header';
     LookupPageId = "12E Posted CCD Details";
     DrillDownPageId = "12E Posted CCD Details";
     DataClassification = CustomerContent;

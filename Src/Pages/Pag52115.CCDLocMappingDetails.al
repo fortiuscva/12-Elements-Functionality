@@ -1,7 +1,7 @@
 page 52115 "12E CCD Loc. Mapping Details"
 {
     ApplicationArea = All;
-    Caption = 'CCD Location Mapping Details';
+    Caption = 'CCI Location Mapping Details';
     PageType = List;
     SourceTable = "12E CCD Location Mapping";
     // UsageCategory = Lists;

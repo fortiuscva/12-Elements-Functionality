@@ -1,6 +1,6 @@
 table 52134 "12E Posted CCD Line"
 {
-    Caption = 'Posted CCD Line';
+    Caption = 'Posted CCI Line';
     LookupPageId = "12E Posted CCD Lines";
     DrillDownPageId = "12E Posted CCD Lines";
     DataClassification = CustomerContent;

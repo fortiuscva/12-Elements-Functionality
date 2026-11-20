@@ -1,7 +1,7 @@
 page 52117 "12E CCD Subform"
 {
     ApplicationArea = All;
-    Caption = 'CCD Subform';
+    Caption = 'CCI Subform';
     PageType = ListPart;
     SourceTable = "12E CCD Line";
     AutoSplitKey = true;

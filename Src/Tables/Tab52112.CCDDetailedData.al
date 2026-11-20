@@ -1,6 +1,6 @@
 table 52112 "12E CCD Detailed Data"
 {
-    Caption = 'CCD Detailed Data';
+    Caption = 'CCI Detailed Data';
     LookupPageId = "12E CCD Data";
     DrillDownPageId = "12E CCD Data";
     DataClassification = CustomerContent;

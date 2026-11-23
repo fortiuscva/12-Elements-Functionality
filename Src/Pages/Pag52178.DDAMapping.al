@@ -17,6 +17,12 @@ page 52178 "12E DDA Mapping"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DdaAccount field.', Comment = '%';
                 }
+                field("Last 4 Digits"; Rec."Last 4 Digits")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Last 4 Digits field.', Comment = '%';
+                }
                 field(Company; Rec."Company Name")
                 {
                     ApplicationArea = All;
@@ -37,7 +43,9 @@ page 52178 "12E DDA Mapping"
                         if Rec."Company Name" <> '' then
                             if not BankAccount.ChangeCompany(Rec."Company Name") then
                                 Error('Unable to access company %1.', Rec."Company Name");
-
+                        BankAccount.FilterGroup(8);
+                        BankAccount.SetFilter(Name, '*' + Rec."Last 4 Digits" + '*');
+                        BankAccount.FilterGroup(0);
                         BankAccountList.LookupMode(true);
                         BankAccountList.SetTableView(BankAccount);
 
@@ -54,6 +62,21 @@ page 52178 "12E DDA Mapping"
                     ApplicationArea = All;
                     Editable = false;
                     ToolTip = 'Specifies the value of the Bank Account Name field.', Comment = '%';
+                }
+                field("Entity Name"; Rec."Entity Name")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Entity Name field.', Comment = '%';
+                }
+                field("Bank Name"; Rec."Bank Name")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Bank Name field.', Comment = '%';
+                }
+                field("Account Type"; Rec."Account Type")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Account Type field.', Comment = '%';
                 }
                 field(Balance; Rec.Balance)
                 {

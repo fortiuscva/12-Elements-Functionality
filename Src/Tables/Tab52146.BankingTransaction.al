@@ -66,12 +66,14 @@ table 52146 "12E Banking Transaction"
             Caption = 'Reconciliation Journal Line No.';
             DataClassification = CustomerContent;
             Editable = false;
+            TableRelation = "Bank Acc. Reconciliation Line"."Statement Line No.";
         }
         field(12; "Bank Ledger Entry No."; Integer)
         {
             Caption = 'Bank Ledger Entry No.';
             DataClassification = CustomerContent;
             Editable = false;
+            TableRelation = "Bank Account Ledger Entry"."Entry No.";
         }
         field(13; "Processed in Company"; Text[30])
         {
@@ -93,6 +95,23 @@ table 52146 "12E Banking Transaction"
             Editable = false;
             FieldClass = FlowField;
         }
+
+        field(16; "Last Approved Date & Time"; DateTime)
+        {
+            Caption = 'Last Approved Date & Time';
+            DataClassification = CustomerContent;
+        }
+        field(17; "Last Approved By"; Code[50])
+        {
+            Caption = 'Last Approved By';
+            DataClassification = CustomerContent;
+        }
+        field(18; "Approved for Reconciliation"; Boolean)
+        {
+            Caption = 'Approved for Reconciliation';
+            DataClassification = CustomerContent;
+        }
+
     }
     keys
     {

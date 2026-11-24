@@ -235,6 +235,16 @@ table 52104 "12E Setup"
             TableRelation = Dimension.Code;
             DataClassification = CustomerContent;
         }
+        field(61; "Enable Leads Process"; Boolean)
+        {
+            Caption = 'Enable Leads Process';
+            DataClassification = CustomerContent;
+        }
+        field(62; "Enable Payroll Process"; Boolean)
+        {
+            Caption = 'Enable Payroll Process';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

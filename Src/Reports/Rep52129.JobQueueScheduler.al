@@ -32,9 +32,6 @@ report 52129 "12E Job Queue Scheduler"
         if not Setup.Get() then
             exit;
 
-        // Leads - Monthly
-        if Setup."Enable Leads Process" then
-            EnsureMonthlyJob(TargetCompany, Report::"12E Leads Reconciliation", 'Leads - Reconciliation');
 
         // Loyalty - Monthly
         if Setup."Enable Loyalty Process" then

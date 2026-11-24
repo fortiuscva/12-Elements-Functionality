@@ -37,6 +37,11 @@ page 52104 "12E Setup"
                         ApplicationArea = All;
                         ToolTip = 'Specifies the value of the Lead Accrual Journal Batch field.', Comment = '%';
                     }
+                    field("Enable Leads Process"; Rec."Enable Leads Process")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies the value of the Enable Leads Process field.', Comment = '%';
+                    }
                 }
             }
             group(Numbering)
@@ -133,6 +138,11 @@ page 52104 "12E Setup"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Payroll Offset Account No. field.', Comment = '%';
+                }
+                field("Enable Payroll Process"; Rec."Enable Payroll Process")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Enable Payroll Process field.', Comment = '%';
                 }
             }
             group(LoyaltyPoints)

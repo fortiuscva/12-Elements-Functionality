@@ -86,6 +86,41 @@ page 52177 "12E Banking Transactions"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the reconciliation journal line associated with this Processed in Company.';
                 }
+                field("Last Approved Date & Time"; Rec."Last Approved Date & Time")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Last Approved Date & Time field.', Comment = '%';
+                    Visible = false;
+                }
+                field("Last Approved By"; Rec."Last Approved By")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Last Approved By field.', Comment = '%';
+                    Visible = false;
+                }
+                field("Approved for Reconciliation"; Rec."Approved for Reconciliation")
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                    ToolTip = 'Specifies the value of the Approved for Reconciliation field.', Comment = '%';
+                    Visible = false;
+                }
+                field(SystemCreatedAt; Rec.SystemCreatedAt)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Created At';
+                    ToolTip = 'Specifies the value of the SystemCreatedAt field.', Comment = '%';
+                    Visible = false;
+                }
+                field(SystemModifiedAt; Rec.SystemModifiedAt)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Modified At';
+                    ToolTip = 'Specifies the value of the SystemModifiedAt field.', Comment = '%';
+                    Visible = false;
+                }
             }
         }
     }
@@ -121,6 +156,34 @@ page 52177 "12E Banking Transactions"
                     CurrPage.Update(false);
                 end;
             }
+
+            action(ApproveForReconciliation)
+            {
+                ApplicationArea = All;
+                Caption = 'Approve for Reconciliation';
+                Image = Approve;
+                ToolTip = 'Approves selected banking transactions for reconciliation.';
+
+                trigger OnAction()
+                var
+                    BankingTransaction: Record "12E Banking Transaction";
+                begin
+                    CurrPage.SetSelectionFilter(BankingTransaction);
+
+                    if BankingTransaction.FindSet(true) then
+                        repeat
+                            BankingTransaction.Validate("Last Approved Date & Time", CurrentDateTime);
+                            BankingTransaction.Validate("Last Approved By", UserId);
+                            BankingTransaction.Validate("Approved for Reconciliation", true);
+
+                            BankingTransaction.Modify(true);
+                        until BankingTransaction.Next() = 0;
+
+                    CurrPage.Update(false);
+                end;
+
+            }
+
         }
 
         area(Promoted)

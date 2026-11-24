@@ -291,20 +291,14 @@ page 52104 "12E Setup"
                 action("DDA Mapping")
                 {
                     ApplicationArea = All;
-                    Caption = 'DDA Mapping';
+                    Caption = 'DDA Mapping (Global)';
                     Image = MapAccounts;
                     RunObject = page "12E DDA Mapping";
                 }
-            }
-            group(Global)
-            {
-                Caption = 'Global';
-                Image = Setup;
-
                 action(GlobalSetup)
                 {
                     ApplicationArea = All;
-                    Caption = 'Global Setup';
+                    Caption = 'Banking PKID Setup';
                     Image = Setup;
                     RunObject = page "12E Global Setup";
                     ToolTip = 'Opens the 12E Global Setup.';
@@ -443,15 +437,11 @@ page 52104 "12E Setup"
                 actionref(BankMapping_Promoted; "DDA Mapping")
                 {
                 }
-            }
-            group(Category_Global)
-            {
-                Caption = 'Global';
-
                 actionref(GlobalSetup_Promoted; GlobalSetup)
                 {
                 }
             }
+
             group(Category_Staging)
             {
                 Caption = 'Staging (Global)';

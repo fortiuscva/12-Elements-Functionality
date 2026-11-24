@@ -12,7 +12,7 @@ page 52173 "12E Global Setup"
         {
             group(General)
             {
-                Caption = 'General';
+                Caption = 'Banking';
 
                 field("Manual Banking Entry PK ID's"; Rec."Manual Banking Entry PK ID's")
                 {

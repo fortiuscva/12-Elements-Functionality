@@ -264,6 +264,16 @@ page 52104 "12E Setup"
                         ApplicationArea = All;
                     }
                 }
+                group(BankingReconciliation)
+                {
+                    Caption = 'Banking';
+
+                    field("Enable Payment Reconciliation"; Rec."Enable Payment Reconciliation")
+                    {
+                        ApplicationArea = All;
+                        ToolTip = 'Specifies whether automatic Payment Reconciliation processing is enabled for this company.';
+                    }
+                }
             }
         }
     }

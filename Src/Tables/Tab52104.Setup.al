@@ -245,6 +245,11 @@ table 52104 "12E Setup"
             Caption = 'Enable Payroll Process';
             DataClassification = CustomerContent;
         }
+        field(63; "Enable Payment Reconciliation"; Boolean)
+        {
+            Caption = 'Enable Payment Reconciliation';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

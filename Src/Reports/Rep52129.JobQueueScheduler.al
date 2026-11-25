@@ -46,6 +46,10 @@ report 52129 "12E Job Queue Scheduler"
             EnsureRecurringJob(TargetCompany, Report::"12E Create Payroll Documents", 'Payroll - Create Documents', 20160);
 
         // LMS excluded until schedule is finalized.
+
+        // Banking Reconciliation
+        if Setup."Enable Payment Reconciliation" then
+            EnsureRecurringJob(TargetCompany, Report::"12E Create Bank Reconciliation", 'Payment Reconciliation', 20160);
     end;
 
     local procedure EnsureMonthlyJob(TargetCompany: Text[30]; ObjectID: Integer; JobDescription: Text[250])

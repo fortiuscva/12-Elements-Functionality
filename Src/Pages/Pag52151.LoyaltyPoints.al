@@ -26,6 +26,11 @@ page 52151 "12E Loyalty Points"
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the DWLoadDate field.', Comment = '%';
                 }
+                field("Datasource ID"; Rec."Datasource ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
+                }
                 field(Portfolio; Rec.Portfolio)
                 {
                     ApplicationArea = All;

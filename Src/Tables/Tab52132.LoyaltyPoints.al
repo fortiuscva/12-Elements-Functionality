@@ -99,6 +99,11 @@ table 52132 "12E Loyalty Points"
             Caption = 'Reversed';
             DataClassification = CustomerContent;
         }
+        field(19; "Datasource ID"; Integer)
+        {
+            Caption = 'Datasource ID';
+            DataClassification = CustomerContent;
+        }
     }
     keys
     {

@@ -165,8 +165,8 @@ codeunit 52114 "12E Event Management"
     var
         LoyaltyPoints: Record "12E Loyalty Points";
     begin
-        if GenJnlLine."Source Code" <> GetLoyaltySourceCode() then
-            exit(false);
+        // if GenJnlLine."Source Code" <> GetLoyaltySourceCode() then
+        //     exit(false);
 
         LoyaltyPoints.Reset();
         LoyaltyPoints.SetRange("Document No.", GenJnlLine."Document No.");

@@ -35,8 +35,6 @@ report 52130 "12E Create Bank Reconciliation"
     local procedure CreatePaymentReconciliationJournals()
     var
         BankTransaction: Record "12E Banking Transaction";
-        BankAccountNos: List of [Code[20]];
-        BankAccountNo: Code[20];
     begin
         BankTransaction.Reset();
         BankTransaction.SetRange("Approved for Reconciliation", true);
@@ -48,15 +46,11 @@ report 52130 "12E Create Bank Reconciliation"
                 BankTransaction.CalcFields("Company Name", "Bank Account No.");
 
                 if (BankTransaction."Company Name" = CompanyName()) and (BankTransaction."Bank Account No." <> '') then
-                    if not BankAccountNos.Contains(BankTransaction."Bank Account No.") then
-                        BankAccountNos.Add(BankTransaction."Bank Account No.");
+                    CreateReconciliationJournal(BankTransaction."Bank Account No.", BankTransaction."Transaction Date");
             until BankTransaction.Next() = 0;
-
-        foreach BankAccountNo in BankAccountNos do
-            CreateReconciliationJournal(BankAccountNo);
     end;
 
-    local procedure CreateReconciliationJournal(BankAccountNo: Code[20])
+    local procedure CreateReconciliationJournal(BankAccountNo: Code[20]; TransactionDate: Date)
     var
         BankTransaction: Record "12E Banking Transaction";
         BankAccount: Record "Bank Account";
@@ -72,19 +66,35 @@ report 52130 "12E Create Bank Reconciliation"
         BankAccountPostingGroup.Get(BankAccount."Bank Acc. Posting Group");
         BankAccountPostingGroup.TestField("G/L Account No.");
 
-        BankAccReconciliation.Init();
-        BankAccReconciliation.Validate("Statement Type", BankAccReconciliation."Statement Type"::"Payment Application");
-        BankAccReconciliation.Validate("Bank Account No.", BankAccountNo);
-        BankAccReconciliation.Validate("Statement Date", WorkDate());
-        BankAccReconciliation.Insert(true);
+        BankAccReconciliation.Reset();
+        BankAccReconciliation.SetRange("Statement Type", BankAccReconciliation."Statement Type"::"Payment Application");
+        BankAccReconciliation.SetRange("Bank Account No.", BankAccountNo);
+        BankAccReconciliation.SetRange("Statement Date", TransactionDate);
+
+        if not BankAccReconciliation.FindFirst() then begin
+            BankAccReconciliation.Init();
+            BankAccReconciliation.Validate("Statement Type", BankAccReconciliation."Statement Type"::"Payment Application");
+            BankAccReconciliation.Validate("Bank Account No.", BankAccountNo);
+            BankAccReconciliation.Validate("Statement Date", TransactionDate);
+            BankAccReconciliation.Insert(true);
+        end;
 
         StatementNo := BankAccReconciliation."Statement No.";
+
+        BankAccReconciliationLine.Reset();
+        BankAccReconciliationLine.SetRange("Statement Type", BankAccReconciliation."Statement Type");
+        BankAccReconciliationLine.SetRange("Bank Account No.", BankAccountNo);
+        BankAccReconciliationLine.SetRange("Statement No.", StatementNo);
+
         NextLineNo := 10000;
+        if BankAccReconciliationLine.FindLast() then
+            NextLineNo := BankAccReconciliationLine."Statement Line No." + 10000;
 
         BankTransaction.Reset();
         BankTransaction.SetRange("Approved for Reconciliation", true);
         BankTransaction.SetRange("Reconciliation Jnl Line No.", 0);
         BankTransaction.SetRange("Bank Ledger Entry No.", 0);
+        BankTransaction.SetRange("Transaction Date", TransactionDate);
 
         if BankTransaction.FindSet(true) then
             repeat
@@ -100,6 +110,7 @@ report 52130 "12E Create Bank Reconciliation"
                     BankAccReconciliationLine.Validate("Account No.", BankAccountPostingGroup."G/L Account No.");
                     BankAccReconciliationLine.Validate("Transaction Date", BankTransaction."Transaction Date");
                     BankAccReconciliationLine.Validate("Document No.", BankTransaction."Check No.");
+                    BankAccReconciliationLine.Validate("Check No.", BankTransaction."Check No.");
                     BankAccReconciliationLine.Validate("Transaction Text", CopyStr(BankTransaction."Transaction Description", 1, MaxStrLen(BankAccReconciliationLine."Transaction Text")));
                     BankAccReconciliationLine.Validate("Statement Amount", BankTransaction.Amount);
                     BankAccReconciliationLine."12E Banking PKID" := BankTransaction.PKID;

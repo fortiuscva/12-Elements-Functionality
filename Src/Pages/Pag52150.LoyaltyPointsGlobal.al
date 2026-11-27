@@ -1,13 +1,13 @@
 page 52150 "12E Loyalty Points Global"
 {
     Caption = 'Loyalty Points (Global)';
-    Editable = true;
+    Editable = false;
     PageType = List;
     SourceTable = "12E Loyalty Points";
     SourceTableView = sorting("PK ID") order(descending);
     InsertAllowed = false;
-    ModifyAllowed = true;
-    DeleteAllowed = true;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
 
     layout
     {

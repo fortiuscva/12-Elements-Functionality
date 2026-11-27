@@ -1,7 +1,7 @@
 page 52113 "12E CCD Data"
 {
     ApplicationArea = All;
-    Caption = 'Contact Center Invoicing Data';
+    Caption = 'Contact Center Invoicing [CCI] Data (Global)';
     PageType = List;
     InsertAllowed = false;
     DeleteAllowed = false;
@@ -35,6 +35,11 @@ page 52113 "12E CCD Data"
                 {
                     ApplicationArea = All;
                     ToolTip = 'Specifies the value of the Location Code field.', Comment = '%';
+                }
+                field("Datasource ID"; Rec."Datasource ID")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Specifies the value of the Datasource ID field.', Comment = '%';
                 }
                 field(Portfolio; Rec.Portfolio)
                 {

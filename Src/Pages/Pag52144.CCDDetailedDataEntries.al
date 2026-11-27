@@ -33,6 +33,10 @@ page 52144 "12E CCD Detailed Data Entries"
                 {
                     Caption = 'Location Code';
                 }
+                field(datasourceID; Rec."Datasource ID")
+                {
+                    Caption = 'Datasource ID';
+                }
                 field(portfolio; Rec.Portfolio)
                 {
                     Caption = 'Portfolio';

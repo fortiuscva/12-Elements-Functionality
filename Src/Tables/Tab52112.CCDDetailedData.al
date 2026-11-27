@@ -25,13 +25,11 @@ table 52112 "12E CCD Detailed Data"
         field(7; "Location Code"; Code[10])
         {
             Caption = 'Location Code';
-            // TableRelation = "12E CCD Location Mapping";
             DataClassification = CustomerContent;
         }
         field(9; Portfolio; Text[30])
         {
             Caption = 'Portfolio';
-            // TableRelation = "12E CCD Port. Cust. Mapping";
             DataClassification = CustomerContent;
         }
         field(10; "Handling Time"; BigInteger)
@@ -67,6 +65,11 @@ table 52112 "12E CCD Detailed Data"
         field(18; "Batch ID"; Guid)
         {
             Caption = 'Batch ID';
+            DataClassification = CustomerContent;
+        }
+        field(19; "Datasource ID"; Integer)
+        {
+            Caption = 'Datasource ID';
             DataClassification = CustomerContent;
         }
     }
